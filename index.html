@@ -739,6 +739,10 @@ input.narrow{width:88px}input.mid{width:108px}
 .tl-name{font-size:11px;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;font-family:var(--font-display)}
 .tl-dates{font-size:9px;color:var(--text-3);font-family:var(--font-mono)}
 .tl-bar{position:absolute;height:18px;top:5px;border-radius:3px;display:flex;align-items:center;padding:0 5px;font-size:9px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:3px}
+.tl-bar-interactive:hover{filter:brightness(1.25);box-shadow:0 2px 8px rgba(0,0,0,0.4)}
+.tl-bar-interactive:active{cursor:grabbing!important}
+.tl-resize{opacity:0;transition:opacity .12s}
+.tl-bar-interactive:hover .tl-resize{opacity:1}
 .tl-f1{background:#5A9ED4;color:#fff}
 .tl-f2{background:#4CAF72;color:#fff}
 .tl-hito{background:var(--accent);border-radius:50%!important;width:10px!important;padding:0!important;min-width:10px!important}
@@ -1695,6 +1699,160 @@ input.narrow{width:88px}input.mid{width:108px}
   <div class="fg"><label class="lbl">Descripción</label><textarea id="projDesc" rows="2" placeholder="Describe el proyecto brevemente..."></textarea></div>
 </div>
 
+<!-- Detalles de terreno (movido arriba) -->
+    <div class="sc">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <div class="sc-title" style="margin:0">Detalles de terreno</div>
+        <label class="tog" style="margin:0"><input type="checkbox" id="p2_tcActive" onchange="renderPrograma()"><span class="tog-sl"></span></label>
+      </div>
+      <div class="r2">
+        <div>
+          <label class="lbl">Largo (m)</label>
+          <div class="fg"><input type="number" id="p2_tL" value="15" oninput="renderPrograma()" step="0.01"></div>
+        </div>
+        <div>
+          <label class="lbl">Ancho (m)</label>
+          <div class="fg"><input type="number" id="p2_tA" value="12" oninput="renderPrograma()" step="0.01"></div>
+        </div>
+      </div>
+      <div style="margin-top:10px" id="p2_tc_wrap">
+        <label class="lbl">Costo total del terreno (Q)</label>
+        <div class="fg"><input type="number" id="p2_tc" placeholder="0" oninput="renderPrograma()" step="0.01"></div>
+      </div>
+      </div>
+
+<div class="sc">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.5rem;gap:10px;flex-wrap:wrap">
+    <div class="sc-title" style="margin:0">Programa arquitectónico</div>
+    <div style="display:flex;gap:6px;flex-shrink:0">
+      <button onclick="exportarProgramaJSON()" style="padding:5px 12px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📤 Exportar JSON</button>
+      <button onclick="genPDFPrograma()" style="padding:5px 12px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📄 PDF Resumen</button>
+    </div>
+  </div>
+  <p class="nt" style="margin-bottom:1rem">Presupuesto integral por ambientes, nivel y categoría. Arrastrá las filas ⠿ para reordenar los ambientes.</p>
+
+  <!-- Tabla de ambientes -->
+  <div style="overflow-x:auto;margin-bottom:12px">
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead>
+        <tr>
+          <th style="padding:7px 4px;border-bottom:1px solid var(--border);width:24px"></th>
+          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Ambiente</th>
+          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Nivel</th>
+          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Categoría</th>
+          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">m²</th>
+          <th style="padding:7px 10px;border-bottom:1px solid var(--border);width:30px"></th>
+        </tr>
+      </thead>
+      <tbody id="p2_roomsBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Agregar ambiente -->
+  <div style="display:grid;grid-template-columns:2fr 1fr 1.5fr 1fr auto;gap:8px;margin-bottom:18px;align-items:end">
+    <div>
+      <label class="lbl">Nombre</label>
+      <div class="fg"><input type="text" id="p2_nr_name" placeholder="Ej. Estudio"></div>
+    </div>
+    <div>
+      <label class="lbl">Nivel</label>
+      <div class="fg">
+        <select id="p2_nr_level">
+          <option value="1">N1</option><option value="2">N2</option><option value="3">N3</option><option value="4">N4</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="lbl">Categoría</label>
+      <div class="fg">
+        <select id="p2_nr_cat">
+          <option value="privada">Área privada</option>
+          <option value="servicio">Servicio / técnico</option>
+          <option value="social">Área social</option>
+          <option value="garaje">Garaje</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="lbl">m²</label>
+      <div class="fg"><input type="number" id="p2_nr_area" placeholder="0" step="0.01"></div>
+    </div>
+    <button onclick="addRoomCalc()" style="background:var(--accent);color:var(--text-on-accent);border:none;border-radius:var(--r-md);padding:10px 16px;font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;height:38px">+ Ambiente</button>
+  </div>
+
+  <!-- Resumen de áreas por nivel -->
+  <div id="p2_areaSums" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px"></div>
+</div>
+
+<!-- Costo base -->
+    <div class="sc">
+      <div class="sc-title">Costo base</div>
+
+      <label class="lbl">Obra gris (Q/m²)</label>
+      <div class="fg" style="position:relative;margin-bottom:14px">
+        <input type="number" id="p2_obraGris" value="3500" oninput="renderPrograma()" step="0.01">
+        <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">Q/m²</span>
+      </div>
+
+      <label class="lbl">Nivel de acabados</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+        <button class="fin-btn active" data-fin="economico" onclick="setFinish('economico')">
+          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Económico</div>
+          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+10%</div>
+        </button>
+        <button class="fin-btn" data-fin="medio" onclick="setFinish('medio')">
+          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Medio</div>
+          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+20%</div>
+        </button>
+        <button class="fin-btn" data-fin="premium" onclick="setFinish('premium')">
+          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Premium</div>
+          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+50%</div>
+        </button>
+      </div>
+    </div>
+
+<!-- Indirectos -->
+    <div class="sc">
+      <div class="sc-title">Costos indirectos (%)</div>
+      <div class="r2">
+        <div>
+          <label class="lbl">Diseño</label>
+          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_design" value="10" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
+          <div class="ind-amt" id="p2_ind_design_amt">Q 0.00</div>
+        </div>
+        <div>
+          <label class="lbl">Permisos</label>
+          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_permits" value="2.5" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
+          <div class="ind-amt" id="p2_ind_permits_amt">Q 0.00</div>
+        </div>
+      </div>
+      <div class="r2" style="margin-top:10px">
+        <div>
+          <label class="lbl">Supervisión</label>
+          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_supervision" value="4" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
+          <div class="ind-amt" id="p2_ind_supervision_amt">Q 0.00</div>
+        </div>
+        <div>
+          <label class="lbl">Contingencia</label>
+          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_contingency" value="7" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
+          <div class="ind-amt" id="p2_ind_contingency_amt">Q 0.00</div>
+        </div>
+      </div>
+    </div>
+
+<!-- Resumen del presupuesto -->
+<div class="sc">
+  <div class="sc-title">Resumen del presupuesto</div>
+  <div class="r2" style="gap:16px;align-items:start">
+    <div>
+      <div id="p2_terrainViz" style="margin-bottom:8px"></div>
+      <div id="p2_terrainInfo"></div>
+    </div>
+    <div id="p2_out"></div>
+  </div>
+</div>
+
+
 <div class="sc">
   <div class="sc-title">Configuración general</div>
   <div class="r2">
@@ -1718,10 +1876,14 @@ input.narrow{width:88px}input.mid{width:108px}
         <div class="fg"><label class="lbl">Monto adicional (ajustes, reuniones)</label><div class="fr"><input type="number" id="p1Extra" value="0" min="0" class="mid" oninput="calc()"><span style="font-size:12px;color:var(--text-3)" id="p1ExtraCur">GTQ</span></div></div>
       </div>
       <div>
-        <ul style="list-style:none;font-size:11px;color:var(--text-2);line-height:2">
-          <li>· Diseño arquitectónico</li><li>· Modelado 3D</li><li>· Renderización</li>
-          <li>· Plantas amuebladas, acotadas, techo</li><li>· Elevaciones y secciones</li>
-        </ul>
+        <div style="font-size:11px;color:var(--text-2)">
+          <p class="nt" style="margin-bottom:4px">Incluido en esta cotización:</p>
+          <label style="display:flex;align-items:center;gap:7px;padding:2px 0;cursor:pointer"><input type="checkbox" id="apInc1" checked onchange="calc()" style="accent-color:var(--accent)">Diseño arquitectónico</label>
+          <label style="display:flex;align-items:center;gap:7px;padding:2px 0;cursor:pointer"><input type="checkbox" id="apInc2" checked onchange="calc()" style="accent-color:var(--accent)">Modelado 3D</label>
+          <label style="display:flex;align-items:center;gap:7px;padding:2px 0;cursor:pointer"><input type="checkbox" id="apInc3" checked onchange="calc()" style="accent-color:var(--accent)">Renderización</label>
+          <label style="display:flex;align-items:center;gap:7px;padding:2px 0;cursor:pointer"><input type="checkbox" id="apInc4" checked onchange="calc()" style="accent-color:var(--accent)">Plantas amuebladas, acotadas, techo</label>
+          <label style="display:flex;align-items:center;gap:7px;padding:2px 0;cursor:pointer"><input type="checkbox" id="apInc5" checked onchange="calc()" style="accent-color:var(--accent)">Elevaciones y secciones</label>
+        </div>
       </div>
     </div>
     <div class="r2" style="margin-top:.65rem">
@@ -2136,237 +2298,8 @@ input.narrow{width:88px}input.mid{width:108px}
 
 
 <!-- ═══════════════════════════════════════════════ PÁGINA: PROGRAMA ARQUITECTÓNICO -->
-<div class="page" id="pg-programa">
+<div class="page" id="pg-programa" style="display:none"></div>
 
-<div class="sc">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.5rem;gap:10px;flex-wrap:wrap">
-    <div class="sc-title" style="margin:0">Programa arquitectónico</div>
-    <div style="display:flex;gap:6px;flex-shrink:0">
-      <button onclick="exportarProgramaJSON()" style="padding:5px 12px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📤 Exportar JSON</button>
-      <button onclick="genPDFPrograma()" style="padding:5px 12px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📄 PDF Resumen</button>
-    </div>
-  </div>
-  <p class="nt" style="margin-bottom:1rem">Presupuesto integral por ambientes, nivel y categoría. Incluye obras especiales, terreno e indirectos.</p>
-
-  <!-- Tabla de ambientes -->
-  <div style="overflow-x:auto;margin-bottom:12px">
-    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
-      <thead>
-        <tr>
-          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Ambiente</th>
-          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Nivel</th>
-          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Categoría</th>
-          <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">m²</th>
-          <th style="padding:7px 10px;border-bottom:1px solid var(--border);width:30px"></th>
-        </tr>
-      </thead>
-      <tbody id="p2_roomsBody"></tbody>
-    </table>
-  </div>
-
-  <!-- Agregar ambiente -->
-  <div style="display:grid;grid-template-columns:2fr 1fr 1.5fr 1fr auto;gap:8px;margin-bottom:18px;align-items:end">
-    <div>
-      <label class="lbl">Nombre</label>
-      <div class="fg"><input type="text" id="p2_nr_name" placeholder="Ej. Estudio"></div>
-    </div>
-    <div>
-      <label class="lbl">Nivel</label>
-      <div class="fg">
-        <select id="p2_nr_level">
-          <option value="1">N1</option><option value="2">N2</option><option value="3">N3</option><option value="4">N4</option>
-        </select>
-      </div>
-    </div>
-    <div>
-      <label class="lbl">Categoría</label>
-      <div class="fg">
-        <select id="p2_nr_cat">
-          <option value="privada">Área privada</option>
-          <option value="servicio">Servicio / técnico</option>
-          <option value="social">Área social</option>
-          <option value="garaje">Garaje</option>
-        </select>
-      </div>
-    </div>
-    <div>
-      <label class="lbl">m²</label>
-      <div class="fg"><input type="number" id="p2_nr_area" placeholder="0" step="0.01"></div>
-    </div>
-    <button onclick="addRoomCalc()" style="background:var(--accent);color:var(--text-on-accent);border:none;border-radius:var(--r-md);padding:10px 16px;font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;height:38px">+ Ambiente</button>
-  </div>
-
-  <!-- Resumen de áreas por nivel -->
-  <div id="p2_areaSums" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px"></div>
-</div>
-
-<div class="r2" style="gap:18px">
-  <!-- Columna izquierda: parámetros -->
-  <div>
-    <!-- Detalles de terreno (movido arriba) -->
-    <div class="sc">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-        <div class="sc-title" style="margin:0">Detalles de terreno</div>
-        <label class="tog" style="margin:0"><input type="checkbox" id="p2_tcActive" onchange="renderPrograma()"><span class="tog-sl"></span></label>
-      </div>
-      <div class="r2">
-        <div>
-          <label class="lbl">Largo (m)</label>
-          <div class="fg"><input type="number" id="p2_tL" value="15" oninput="renderPrograma()" step="0.01"></div>
-        </div>
-        <div>
-          <label class="lbl">Ancho (m)</label>
-          <div class="fg"><input type="number" id="p2_tA" value="12" oninput="renderPrograma()" step="0.01"></div>
-        </div>
-      </div>
-      <div style="margin-top:10px" id="p2_tc_wrap">
-        <label class="lbl">Costo total del terreno (Q)</label>
-        <div class="fg"><input type="number" id="p2_tc" placeholder="0" oninput="renderPrograma()" step="0.01"></div>
-      </div>
-      <div id="p2_terrainViz" style="margin-top:12px"></div>
-      <div id="p2_terrainInfo" style="margin-top:10px"></div>
-    </div>
-
-    <!-- Costo base -->
-    <div class="sc">
-      <div class="sc-title">Costo base</div>
-
-      <label class="lbl">Obra gris (Q/m²)</label>
-      <div class="fg" style="position:relative;margin-bottom:14px">
-        <input type="number" id="p2_obraGris" value="3500" oninput="renderPrograma()" step="0.01">
-        <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">Q/m²</span>
-      </div>
-
-      <label class="lbl">Nivel de acabados</label>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
-        <button class="fin-btn active" data-fin="economico" onclick="setFinish('economico')">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Económico</div>
-          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+10%</div>
-        </button>
-        <button class="fin-btn" data-fin="medio" onclick="setFinish('medio')">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Medio</div>
-          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+20%</div>
-        </button>
-        <button class="fin-btn" data-fin="premium" onclick="setFinish('premium')">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Premium</div>
-          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+50%</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- Sección 2: Ajustes constructivos -->
-    <div class="sc">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-        <div class="sc-title" style="margin:0">Ajustes constructivos</div>
-        <label class="tog" style="margin:0"><input type="checkbox" id="p2_sec2" onchange="renderPrograma()"><span class="tog-sl"></span></label>
-      </div>
-      <p class="nt" style="margin-bottom:.75rem">Circulación, niveles, tipo de techo y pendiente del terreno.</p>
-
-      <div id="p2_sec2_body" style="display:none">
-        <label class="lbl">Circulación</label>
-        <div class="fg" style="margin-bottom:12px">
-          <select id="p2_circOpt" onchange="renderPrograma()">
-            <option value="libre">4 muros libres (+20%)</option>
-            <option value="tres">3 muros colindantes (+15%)</option>
-            <option value="cuatro">4 muros colindantes (+12%)</option>
-          </select>
-        </div>
-
-        <label class="lbl">Niveles</label>
-        <div class="fg" style="margin-bottom:12px">
-          <select id="p2_levels" onchange="renderPrograma()">
-            <option value="1">1 nivel</option>
-            <option value="2" selected>2 niveles (+8%)</option>
-            <option value="3">3 niveles (+20%)</option>
-            <option value="4">4 niveles (+32%)</option>
-          </select>
-        </div>
-
-        <label class="lbl">Tipo de techo</label>
-        <div class="fg" style="margin-bottom:12px">
-          <select id="p2_roofT" onchange="renderPrograma()">
-            <option value="metalico">Techo metálico</option>
-            <option value="losa" selected>Losa de concreto (+15%)</option>
-            <option value="mixto">Mixto (+8%)</option>
-          </select>
-        </div>
-
-        <label class="lbl">Pendiente del terreno</label>
-        <div class="fg">
-          <select id="p2_slopeT" onchange="renderPrograma()">
-            <option value="plano" selected>Plano</option>
-            <option value="moderado">Moderado 5–15% (+10%)</option>
-            <option value="inclinado">Inclinado &gt;15% (+22%)</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <!-- Indirectos -->
-    <div class="sc">
-      <div class="sc-title">Costos indirectos (%)</div>
-      <div class="r2">
-        <div>
-          <label class="lbl">Diseño</label>
-          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_design" value="10" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
-          <div class="ind-amt" id="p2_ind_design_amt">Q 0.00</div>
-        </div>
-        <div>
-          <label class="lbl">Permisos</label>
-          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_permits" value="2.5" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
-          <div class="ind-amt" id="p2_ind_permits_amt">Q 0.00</div>
-        </div>
-      </div>
-      <div class="r2" style="margin-top:10px">
-        <div>
-          <label class="lbl">Supervisión</label>
-          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_supervision" value="4" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
-          <div class="ind-amt" id="p2_ind_supervision_amt">Q 0.00</div>
-        </div>
-        <div>
-          <label class="lbl">Contingencia</label>
-          <div class="fg" style="position:relative;margin-bottom:2px"><input type="number" id="p2_ind_contingency" value="7" oninput="renderPrograma()" step="0.1"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">%</span></div>
-          <div class="ind-amt" id="p2_ind_contingency_amt">Q 0.00</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Obras especiales -->
-    <div class="sc">
-      <div class="sc-title">Obras especiales</div>
-      <p class="nt" style="margin-bottom:.75rem">Piscina, muros de contención, pozo, etc.</p>
-
-      <div id="p2_specialsList"></div>
-
-      <div style="display:grid;grid-template-columns:2fr 1fr auto;gap:8px;align-items:end;margin-top:8px">
-        <div>
-          <label class="lbl">Nombre</label>
-          <div class="fg"><input type="text" id="p2_ns_name" placeholder="Piscina"></div>
-        </div>
-        <div>
-          <label class="lbl">Costo (Q)</label>
-          <div class="fg"><input type="number" id="p2_ns_cost" placeholder="0" step="0.01"></div>
-        </div>
-        <button onclick="addSpecialCalc()" style="background:var(--accent);color:var(--text-on-accent);border:none;border-radius:var(--r-md);padding:10px 14px;font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;height:38px">+ Obra</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Columna derecha: resultado -->
-  <div>
-    <div class="sc" style="position:sticky;top:76px">
-      <div class="sc-title">Resumen del presupuesto</div>
-      <div id="p2_out"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Onda de marca -->
-<svg viewBox="0 0 400 12" style="width:100%;display:block;margin-top:18px">
-  <path d="M0,6 C60,0 120,12 180,6 S300,0 360,6 S400,10 420,6" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none"/>
-</svg>
-
-</div><!-- /pg-programa -->
 
 
 
@@ -6209,6 +6142,7 @@ function cerrarMenuConfigFuera(e){
 }
 
 function showPage(id) {
+  if(id==='programa') id='calc';  // programa vive dentro del cotizador ahora
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   document.getElementById('pg-'+id).classList.add('active');
@@ -6526,7 +6460,7 @@ function calc(){
 
 // ═══════ CALENDARIO ═══════
 function addSprint(type){
-  const d={f1:{title:'Nuevo sprint — Anteproyecto',entregables:[],clientNote:'',needsFeedback:false,weeks:2,overlapDays:0},pe:{title:'Nuevo sprint — Pre entrega',entregables:[],clientNote:'',needsFeedback:false,weeks:1,overlapDays:0},f2:{title:'Nuevo sprint — Planimetrías',entregables:[],clientNote:'',needsFeedback:false,weeks:2,overlapDays:0},hito:{title:'Nuevo hito',entregables:[],clientNote:'',needsFeedback:false,weeks:0,overlapDays:0}};
+  const d={f1:{title:'Nuevo sprint — Anteproyecto',entregables:[],clientNote:'',needsFeedback:false,days:14},pe:{title:'Nuevo sprint — Pre entrega',entregables:[],clientNote:'',needsFeedback:false,days:7},f2:{title:'Nuevo sprint — Planimetrías',entregables:[],clientNote:'',needsFeedback:false,days:14},hito:{title:'Nuevo hito',entregables:[],clientNote:'',needsFeedback:false,days:0}};
   sprints.push({id:nextId++,type,...d[type]});
   if(typeof _projEndManual!=='undefined'&&!_projEndManual&&typeof recalcProjEnd==='function') recalcProjEnd(); else renderAll();
   setTimeout(()=>{const ins=document.querySelectorAll('.sprint-title-inp');if(ins.length)ins[ins.length-1].focus()},50);
@@ -6702,24 +6636,21 @@ function fmtDate(v){if(!v)return null;const[y,m,d]=v.split('-');const mo=['enero
 function getSprintDates(){
   /* Cadena estrictamente secuencial por fases:
      F1 sprints → Hito F1 → PE sprints → F2 sprints → Hito F2
-     
-     Dentro de cada fase los sprints son secuenciales.
+
+     REGLA DE ORO (project management):
+     La FECHA DE ENTREGA FINAL es una restricción dura (deadline).
+     Si la suma natural de los sprints excede el deadline,
+     el cronograma SE COMPRIME proporcionalmente para cumplirla.
+     Ningún sprint ni hito puede terminar después del deadline.
+
      s.overlapDays (default 0): el sprint empieza N días
      ANTES de que termine el anterior (traslape manual).
-     cursor advance = duracion_dias − overlapDays.
-     
-     Cada hito se coloca al día siguiente del último sprint
-     de su fase y actúa como barrera: la siguiente fase
-     empieza el día después del hito (o del último sprint
-     de la fase anterior si no hay hito). */
+     cursor advance = duracion_dias − overlapDays.  */
 
   const sv = parseFechaGT(document.getElementById('projStart').value);
   if(!sv) return {};
-  const result = {};
 
   const PHASE_ORDER = ['f1','pe','f2'];
-
-  // Separar sprints por fase y hitos
   const byPhase = {f1:[],pe:[],f2:[]};
   const hitos   = [];
   sprints.forEach(s=>{
@@ -6727,31 +6658,9 @@ function getSprintDates(){
     else if(byPhase[s.type]) byPhase[s.type].push(s);
   });
 
-  // Función: procesar una fase, devuelve la fecha del día
-  // siguiente al último sprint (o start si fase vacía)
-  function processPhase(phase, phaseStart){
-    const list = byPhase[phase] || [];
-    let cur = new Date(phaseStart);
-    let lastEnd = new Date(addDays(cur,-1)); // un día antes del inicio
-    list.forEach(s=>{
-      const wk  = parseFloat(s.weeks)||2;
-      const days = Math.max(1, Math.round(wk*7));
-      const ov   = Math.max(0, Math.min(parseInt(s.overlapDays)||0, days-1));
-      const start= new Date(cur);
-      const end  = addDays(start, days-1);
-      result[s.id] = {start, end, wk};
-      lastEnd = end;
-      cur = addDays(start, days - ov); // avanza menos si hay traslape
-    });
-    return list.length ? addDays(lastEnd,1) : new Date(phaseStart);
-  }
-
-  // Función: encontrar el hito cuyo tipo coincide con la fase dada
-  // (el primer hito que sigue a un sprint de esa fase en el array)
   function hitoDePhase(phase){
     for(let i=0;i<sprints.length;i++){
       if(sprints[i].type==='hito'){
-        // Buscar el sprint no-hito más cercano antes de este hito
         for(let j=i-1;j>=0;j--){
           if(sprints[j].type!=='hito'){
             if(sprints[j].type===phase) return sprints[i];
@@ -6763,28 +6672,106 @@ function getSprintDates(){
     return null;
   }
 
-  let cursor = new Date(sv+'T12:00:00');
+  /* ── Cálculo con factor de compresión ──────────────────────
+     factor 1.0 = duraciones naturales.
+     factor <1  = todas las duraciones se escalan para caber
+     en el deadline (mínimo 1 día por sprint).            */
+  const projStartDate = new Date(sv+'T12:00:00');
+  function sprintDays(s){
+    return Math.max(1, parseInt(s.days) || Math.round((parseFloat(s.weeks)||2)*7));
+  }
+  function computeAll(factor){
+    const result = {};
+    function processPhase(phase, phaseStart){
+      const list = byPhase[phase] || [];
+      let cur = new Date(phaseStart);
+      let lastEnd = new Date(addDays(cur,-1));
+      list.forEach(s=>{
+        const rawDays = sprintDays(s);
+        if(s.startDay != null && !isNaN(parseInt(s.startDay))){
+          /* Posición MANUAL (arrastrada en la timeline):
+             se coloca en su offset absoluto; NO empuja la cadena.
+             Permite tareas simultáneas. */
+          const days  = rawDays;   // sin compresión: el usuario la fijó
+          const start = addDays(projStartDate, Math.max(0, parseInt(s.startDay)));
+          const end   = addDays(start, days-1);
+          result[s.id] = {start, end, manual:true};
+          if(end > lastEnd) lastEnd = end;
+        } else {
+          /* Posición AUTOMÁTICA: secuencial en la cadena */
+          const days  = Math.max(1, Math.round(rawDays*factor));
+          const start = new Date(cur);
+          const end   = addDays(start, days-1);
+          result[s.id] = {start, end};
+          if(end > lastEnd) lastEnd = end;
+          cur = addDays(end, 1);
+        }
+      });
+      return list.length ? addDays(lastEnd,1) : new Date(phaseStart);
+    }
 
-  // ── Fase F1 ────────────────────────────────────────────────
-  const afterF1 = processPhase('f1', cursor);
-  const hitoF1  = hitoDePhase('f1');
-  if(hitoF1){
-    result[hitoF1.id] = {start:new Date(afterF1), end:new Date(afterF1), wk:0};
-    cursor = addDays(afterF1, 1); // PE empieza DESPUÉS del hito F1
-  } else {
-    cursor = new Date(afterF1);   // sin hito: PE empieza justo después de F1
+    let cursor = new Date(sv+'T12:00:00');
+
+    const afterF1 = processPhase('f1', cursor);
+    const hitoF1  = hitoDePhase('f1');
+    if(hitoF1){
+      result[hitoF1.id] = {start:new Date(afterF1), end:new Date(afterF1), wk:0};
+      cursor = addDays(afterF1, 1);
+    } else {
+      cursor = new Date(afterF1);
+    }
+
+    const afterPE = processPhase('pe', cursor);
+    cursor = new Date(afterPE);
+
+    const afterF2 = processPhase('f2', cursor);
+    const hitoF2  = hitoDePhase('f2');
+    if(hitoF2){
+      result[hitoF2.id] = {start:new Date(afterF2), end:new Date(afterF2), wk:0};
+    }
+    return result;
   }
 
-  // ── Fase PE ────────────────────────────────────────────────
-  const afterPE = processPhase('pe', cursor);
-  // No hay hito propio de PE; F2 empieza al día siguiente del último PE
-  cursor = new Date(afterPE);
+  /* ── Pasada 1: duraciones naturales ─────────────────────── */
+  let result = computeAll(1.0);
+  window._sprintCompression = null;   // sin compresión por defecto
 
-  // ── Fase F2 ────────────────────────────────────────────────
-  const afterF2 = processPhase('f2', cursor);
-  const hitoF2  = hitoDePhase('f2');
-  if(hitoF2){
-    result[hitoF2.id] = {start:new Date(afterF2), end:new Date(afterF2), wk:0};
+  /* ── Deadline: restricción dura ─────────────────────────── */
+  const projEndEl  = document.getElementById('projEnd');
+  const deadlineIso= (typeof _projEndManual!=='undefined' && _projEndManual)
+                     ? parseFechaGT(projEndEl ? projEndEl.value : '')
+                     : null;
+  if(deadlineIso){
+    const deadline = new Date(deadlineIso+'T12:00:00');
+    // Fecha final natural del cronograma
+    let lastEnd = null;
+    Object.values(result).forEach(r=>{ if(!lastEnd || r.end>lastEnd) lastEnd = r.end; });
+
+    if(lastEnd && lastEnd > deadline){
+      const startDate = new Date(sv+'T12:00:00');
+      const MS = 24*3600*1000;
+      const availDays = Math.max(1, Math.round((deadline-startDate)/MS)+1);
+      const reqDays   = Math.max(1, Math.round((lastEnd -startDate)/MS)+1);
+      let factor = availDays/reqDays;
+
+      /* Pasada 2: comprimido. Puede quedar 1-2 días fuera por
+         redondeos; iterar reduciendo el factor hasta caber. */
+      for(let iter=0; iter<8; iter++){
+        result = computeAll(factor);
+        let newLast = null;
+        Object.values(result).forEach(r=>{ if(!newLast || r.end>newLast) newLast = r.end; });
+        if(!newLast || newLast <= deadline) break;
+        factor *= 0.96;
+      }
+
+      /* Clamp final de seguridad: nada termina después del deadline */
+      Object.values(result).forEach(r=>{
+        if(r.end   > deadline) r.end   = new Date(deadline);
+        if(r.start > deadline) r.start = new Date(deadline);
+      });
+
+      window._sprintCompression = Math.round(factor*100);
+    }
   }
 
   return result;
@@ -6805,9 +6792,6 @@ function renderEditor(){
       const cls=on?(s.type==='f2'?'ent-tag f2-on':s.type==='pe'?'ent-tag pe-on':'ent-tag on'):'ent-tag';
       return`<span class="${cls}" onclick="toggleEnt(${s.id},'${e}')">${on?'✓ ':'+'}${e}</span>`;
     }).join('');
-    const _wkVal=parseFloat(s.weeks)||2;
-    const _wkList=[{v:0.143,l:'1 día'},{v:0.5,l:'½ sem'},{v:1,l:'1 sem'},{v:2,l:'2 sems'},{v:3,l:'3 sems'},{v:4,l:'4 sems'}];
-    const wkOpts=s.type==='hito'?'':`<option value="" disabled>— Duración —</option>`+_wkList.map(({v,l})=>`<option value="${v}" ${Math.abs(_wkVal-v)<0.01?'selected':''}>${l}</option>`).join('');
     const tl=s.type==='f1'?'Anteproyecto':s.type==='f2'?'Planimetrías':s.type==='pe'?'Pre entrega':'Hito';
     // Acordeón opcional para sprints con listas largas (collapsible:true)
     const isCollapsible = s.collapsible === true;
@@ -6845,18 +6829,13 @@ function renderEditor(){
         ${s.type!=='hito'?`<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-3);flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:4px">
             Duración:
-            <select style="width:auto;padding:2px 6px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--text)"
-              onchange="sprints.find(x=>x.id===${s.id}).weeks=parseFloat(this.value);if(!_projEndManual){recalcProjEnd();}else{renderAll();}">
-              ${wkOpts}
-            </select>
-          </div>
-          <div style="display:flex;align-items:center;gap:4px" title="Días de traslape con el sprint anterior (0 = sin traslape)">
-            Traslape:
-            <input type="number" min="0" max="27" step="1"
-              value="${parseInt(s.overlapDays)||0}"
-              onchange="sprints.find(x=>x.id===${s.id}).overlapDays=Math.max(0,parseInt(this.value)||0);if(!_projEndManual){recalcProjEnd();}else{renderAll();}"
-              style="width:44px;padding:2px 5px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--text);font-family:var(--font-mono);text-align:center">
+            <input type="number" min="1" max="365" step="1"
+              value="${parseInt(s.days)||Math.round((parseFloat(s.weeks)||2)*7)}"
+              onchange="sprints.find(x=>x.id===${s.id}).days=Math.max(1,parseInt(this.value)||1);if(!_projEndManual){recalcProjEnd();}else{renderAll();}"
+              style="width:56px;padding:2px 5px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--text);font-family:var(--font-mono);text-align:center">
             <span style="font-size:10px;color:var(--text-3)">días</span>
+          </div>
+          ${s.startDay!=null?`<span style="font-size:9.5px;color:#E8973A" title="Posición manual — doble clic en la barra del timeline para volver a la cadena automática">📌 manual</span>`:''}
           </div>
         </div>`:''}
         <button class="feedback-btn ${s.needsFeedback?'on':''}" onclick="toggleFb(${s.id})">${s.needsFeedback?'✓ Requiere aprobación':'+ Marcar aprobación cliente'}</button>
@@ -6887,6 +6866,77 @@ function tlSetZoom(z){
   renderTimeline();
 }
 
+
+/* ═══ TIMELINE INTERACTIVA — mover y redimensionar barras ═══ */
+var _tlDrag = null;   // {sid, mode:'move'|'resize', startX, origStartDay, origDays}
+
+function _tlSprintDays(s){
+  return Math.max(1, parseInt(s.days) || Math.round((parseFloat(s.weeks)||2)*7));
+}
+function _tlCurrentStartDay(sid){
+  /* offset actual del sprint en días desde projStart (según getSprintDates) */
+  const dates = getSprintDates();
+  const d = dates[sid]; if(!d) return 0;
+  const sv = parseFechaGT(document.getElementById('projStart').value);
+  if(!sv) return 0;
+  const ps = new Date(sv+'T12:00:00');
+  return Math.round((d.start - ps)/86400000);
+}
+
+function tlBarDown(e, sid){
+  if(e.button!==0) return;
+  e.preventDefault();
+  const s = sprints.find(x=>x.id===sid); if(!s) return;
+  _tlDrag = { sid, mode:'move', startX:e.clientX,
+              origStartDay:_tlCurrentStartDay(sid), origDays:_tlSprintDays(s) };
+  document.body.style.userSelect='none';
+  document.addEventListener('mousemove', tlDragMove);
+  document.addEventListener('mouseup',   tlDragUp);
+}
+function tlResizeDown(e, sid){
+  if(e.button!==0) return;
+  e.preventDefault();
+  const s = sprints.find(x=>x.id===sid); if(!s) return;
+  _tlDrag = { sid, mode:'resize', startX:e.clientX,
+              origStartDay:_tlCurrentStartDay(sid), origDays:_tlSprintDays(s) };
+  document.body.style.userSelect='none';
+  document.addEventListener('mousemove', tlDragMove);
+  document.addEventListener('mouseup',   tlDragUp);
+}
+function tlDragMove(e){
+  if(!_tlDrag) return;
+  const PX = window._tlPX || 20;
+  const deltaDays = Math.round((e.clientX - _tlDrag.startX)/PX);
+  if(deltaDays === (_tlDrag._lastDelta||0)) return;   // sin cambio en días → no re-render
+  _tlDrag._lastDelta = deltaDays;
+  const s = sprints.find(x=>x.id===_tlDrag.sid); if(!s) return;
+  if(_tlDrag.mode==='move'){
+    s.startDay = Math.max(0, _tlDrag.origStartDay + deltaDays);  // fija posición manual → simultaneidad posible
+  } else {
+    s.days = Math.max(1, _tlDrag.origDays + deltaDays);
+  }
+  renderTimeline();  // feedback en vivo (solo timeline, no todo)
+}
+function tlDragUp(){
+  if(_tlDrag){
+    _tlDrag = null;
+    document.body.style.userSelect='';
+    if(!_projEndManual && typeof recalcProjEnd==='function') recalcProjEnd();
+    else renderAll();
+    if(typeof saveDraft==='function') saveDraft();
+  }
+  document.removeEventListener('mousemove', tlDragMove);
+  document.removeEventListener('mouseup',   tlDragUp);
+}
+function tlBarReset(sid){
+  const s = sprints.find(x=>x.id===sid); if(!s) return;
+  delete s.startDay;   // vuelve a la cadena automática
+  if(!_projEndManual && typeof recalcProjEnd==='function') recalcProjEnd(); else renderAll();
+  if(typeof saveDraft==='function') saveDraft();
+}
+window.tlBarDown=tlBarDown; window.tlResizeDown=tlResizeDown;
+window.tlBarReset=tlBarReset;
+
 function renderTimeline(){
   const dates = getSprintDates();
   const sv    = parseFechaGT(document.getElementById('projStart').value);
@@ -6897,6 +6947,19 @@ function renderTimeline(){
 
   const MS_DAY = 86400000;
   const ps = new Date(sv+'T12:00:00');
+
+  // ── Banner de compresión por deadline ─────────────────────────
+  let compressionBanner = '';
+  if(window._sprintCompression && window._sprintCompression < 100){
+    const projEndVal = document.getElementById('projEnd')?.value || '';
+    compressionBanner = `<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;margin-bottom:10px;background:rgba(224,151,58,0.08);border:1px solid rgba(224,151,58,0.3);border-radius:var(--r-md)">
+      <span style="font-size:15px">⚠</span>
+      <div style="flex:1">
+        <div style="font-size:11.5px;font-weight:500;color:#E8973A">Cronograma comprimido al ${window._sprintCompression}% de su duración natural</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:1px">La suma de los sprints excede la fecha de entrega (${projEndVal}). Las duraciones se ajustaron proporcionalmente para cumplir el deadline. Ampliá la fecha de entrega o reducí las semanas de los sprints.</div>
+      </div>
+    </div>`;
+  }
 
   // ── Span total en días desde getSprintDates() ──────────────────
   const keys = Object.keys(dates);
@@ -6916,6 +6979,7 @@ function renderTimeline(){
 
   // ── Pixels por día según zoom ──────────────────────────────────
   const PX = {day:40, week:20, month:6, quarter:3}[_tlZoom] || 20;
+  window._tlPX = PX;  // px por día, usado por drag/resize
   const totalPx = totalDays * PX;
   const minPx   = 500;
   const IW = 200; // px fijo para columna de nombres
@@ -7027,8 +7091,13 @@ function renderTimeline(){
       </div>
       <div style="flex:1;min-width:${totalPx}px;position:relative;height:26px">
         ${gridLines()}
-        <div class="tl-bar ${bc}" style="position:absolute;left:${offPx}px;width:${Math.max(barPx,4)}px;top:3px;height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+        <div class="tl-bar ${bc} ${s.type!=='hito'?'tl-bar-interactive':''}" data-sid="${s.id}"
+          onmousedown="${s.type!=='hito'?`tlBarDown(event,${s.id})`:''}"
+          ondblclick="${s.type!=='hito'?`tlBarReset(${s.id})`:''}"
+          title="${s.type!=='hito'?'Arrastrá para mover · Borde derecho para cambiar duración · Doble clic para volver a la cadena automática':''}"
+          style="position:absolute;left:${offPx}px;width:${Math.max(barPx,4)}px;top:3px;height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;${s.type!=='hito'?'cursor:grab':''};${d.manual?'box-shadow:0 0 0 1.5px rgba(232,151,58,0.6)':''}">
           ${label}
+          ${s.type!=='hito'?`<div class="tl-resize" onmousedown="event.stopPropagation();tlResizeDown(event,${s.id})" style="position:absolute;right:0;top:0;bottom:0;width:7px;cursor:ew-resize;background:rgba(255,255,255,0.18);border-radius:0 3px 3px 0"></div>`:''}
         </div>
       </div>
     </div>`;
@@ -7057,11 +7126,13 @@ function renderTimeline(){
   let endMarker = '';
   if(projEndDate){
     const endPx = Math.min(trackPx - 2, Math.max(0, Math.round((projEndDate-ps)/MS_DAY)*PX));
+    const isCompressed = !!window._sprintCompression;
+    const mkColor = isCompressed ? '#E8973A' : 'var(--accent)';
     endMarker = `<div style="position:absolute;left:${IW+endPx}px;top:0;bottom:0;width:2px;
-      border-left:2px dashed var(--accent);z-index:4;pointer-events:none">
-      <span style="position:absolute;top:2px;left:3px;font-size:9px;color:var(--accent);
+      border-left:2px ${isCompressed?'solid':'dashed'} ${mkColor};z-index:4;pointer-events:none">
+      <span style="position:absolute;top:2px;left:3px;font-size:9px;color:${mkColor};
         white-space:nowrap;font-family:var(--font-mono);font-weight:600">
-        Entrega: ${fmtS(projEndDate)}
+        ${isCompressed?'⚠ ':''}Entrega: ${fmtS(projEndDate)}
       </span>
     </div>`;
   }
@@ -7126,13 +7197,14 @@ function renderTimeline(){
   </div>`;
 
   cont.innerHTML = `
+    ${compressionBanner}
     <div style="overflow-x:auto;border:0.5px solid var(--border);border-radius:var(--r-md);margin-top:10px;position:relative">
       ${endMarker}
       ${hdrRow}
       <div>${sprintRows}</div>
     </div>
     ${leg}
-    <p class="nt" style="margin-top:6px">${trackDays} días · Inicio: <strong>${fmtL(ps)}</strong>${projEndDate?' · Entrega: <strong>'+fmtL(projEndDate)+'</strong>':''}</p>`;
+    <p class="nt" style="margin-top:6px">${trackDays} días · Inicio: <strong>${fmtL(ps)}</strong>${projEndDate?(' · Entrega: <strong style="color:'+(window._sprintCompression?'#E8973A':'inherit')+'">'+fmtL(projEndDate)+'</strong>'):''}${window._sprintCompression?(' · <span style="color:#E8973A">⚠ comprimido al '+window._sprintCompression+'%</span>'):''}</p>`;
 }
 
 function renderClienteView(){
@@ -7216,6 +7288,9 @@ function renderAll(){
 // ═══════ COTIZACIÓN ═══════
 function genCotizacion(){
   const s=window._st||{};
+  // Checklist del Anteproyecto → lista de servicios incluidos
+  const _apLbls=['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones'];
+  s.apIncluye=_apLbls.filter((_,i)=>document.getElementById('apInc'+(i+1))?.checked);
   const f=n=>s.cur+' '+Math.round(n).toLocaleString();
   const cn=svEl('clientName')||'Cliente';
   const pt=svEl('projTitle')||'Proyecto de diseño arquitectónico';
@@ -7225,11 +7300,57 @@ function genCotizacion(){
   const cotNum='COT-'+today.getFullYear()+String(today.getMonth()+1).padStart(2,'0')+String(today.getDate()).padStart(2,'0');
   // Resumen del programa arquitectónico (si está configurado)
   let progResumen = '';
+  let progTabla = '';
+  let progTerreno = '';
   if(typeof estadoCalc !== 'undefined' && estadoCalc.programa && estadoCalc.programa.rooms && estadoCalc.programa.rooms.length){
-    const rooms = estadoCalc.programa.rooms;
-    const totalNet = rooms.reduce((s,r)=>s+(parseFloat(r.area)||0),0);
-    const nLevels = [...new Set(rooms.map(r=>r.level||1))].length;
-    progResumen = `El proyecto contempla un programa de ${rooms.length} ambiente${rooms.length!==1?'s':''} distribuidos en ${nLevels} nivel${nLevels!==1?'es':''}, con un área neta total de <strong>${totalNet.toLocaleString('es-GT',{maximumFractionDigits:0})} m²</strong>.`;
+    const _rooms = estadoCalc.programa.rooms;
+    const _totalNet = _rooms.reduce((s,r)=>s+(parseFloat(r.area)||0),0);
+    const _nLevels = [...new Set(_rooms.map(r=>r.level||1))].length;
+    progResumen = `El proyecto contempla un programa de ${_rooms.length} ambiente${_rooms.length!==1?'s':''} distribuidos en ${_nLevels} nivel${_nLevels!==1?'es':''}, con un área neta total de <strong>${_totalNet.toLocaleString('es-GT',{maximumFractionDigits:0})} m²</strong>.`;
+
+    /* Tabla resumida del programa */
+    progTabla = `<table style="width:100%;border-collapse:collapse;font-size:10.5px;margin-top:8px">
+      <thead><tr>
+        <th style="text-align:left;padding:3px 8px;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#999;border-bottom:1px solid #ddd">Ambiente</th>
+        <th style="text-align:center;padding:3px 8px;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#999;border-bottom:1px solid #ddd">Nivel</th>
+        <th style="text-align:right;padding:3px 8px;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#999;border-bottom:1px solid #ddd">m²</th>
+      </tr></thead><tbody>
+      ${_rooms.map(r=>`<tr>
+        <td style="padding:3px 8px;color:#444;border-bottom:0.5px solid #f2f2f2">${r.name||'—'}</td>
+        <td style="padding:3px 8px;text-align:center;color:#999;border-bottom:0.5px solid #f2f2f2">N${r.level||1}</td>
+        <td style="padding:3px 8px;text-align:right;font-family:monospace;color:#333;border-bottom:0.5px solid #f2f2f2">${(parseFloat(r.area)||0).toLocaleString('es-GT',{minimumFractionDigits:1,maximumFractionDigits:1})}</td>
+      </tr>`).join('')}
+      <tr><td colspan="2" style="padding:5px 8px;font-weight:600;color:#1a1a18;border-top:1.5px solid #1a1a18">Área neta total</td>
+      <td style="padding:5px 8px;text-align:right;font-family:monospace;font-weight:600;color:#B8861A;border-top:1.5px solid #1a1a18">${_totalNet.toLocaleString('es-GT',{minimumFractionDigits:1,maximumFractionDigits:1})} m²</td></tr>
+      </tbody></table>`;
+
+    /* Diagrama del terreno (tema claro) */
+    const _tL = parseFloat(estadoCalc.programa.tL)||0;
+    const _tA = parseFloat(estadoCalc.programa.tA)||0;
+    if(_tL && _tA){
+      const _terrArea = _tL*_tA;
+      const _n1A = _rooms.filter(r=>(r.level||1)===1).reduce((s,r)=>s+(parseFloat(r.area)||0),0);
+      const _fos = _terrArea>0?Math.round(_n1A/_terrArea*100):0;
+      const W=240,H=130,pad=24;
+      const asp=_tA/_tL;
+      let tw,th;
+      if(asp>(H-2*pad)/(W-2*pad)){ th=H-2*pad; tw=th/asp; } else { tw=W-2*pad; th=tw*asp; }
+      const tx=(W-tw)/2, ty=(H-th)/2;
+      const scl=Math.sqrt(Math.min(_n1A/_terrArea,1));
+      const fw=Math.min(tw*scl,tw), fh=Math.min(th*scl,th);
+      const fx=tx+(tw-fw)/2, fy=ty+(th-fh)/2;
+      progTerreno = `<div style="text-align:center;margin-top:10px">
+        <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="display:inline-block">
+          <defs><pattern id="cotHatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#B8861A" stroke-width="1.2" opacity="0.55"/></pattern></defs>
+          <rect x="${tx}" y="${ty}" width="${tw}" height="${th}" fill="#faf8f2" stroke="#8B7355" stroke-width="1.2" stroke-dasharray="5,3" rx="2"/>
+          <text x="${tx+tw/2}" y="${ty-6}" text-anchor="middle" font-size="8" fill="#999" font-family="monospace">${_tL} m</text>
+          <text x="${tx-7}" y="${ty+th/2+2}" text-anchor="middle" font-size="8" fill="#999" font-family="monospace" transform="rotate(-90,${tx-7},${ty+th/2})">${_tA} m</text>
+          ${fw>2&&fh>2?`<rect x="${fx}" y="${fy}" width="${fw}" height="${fh}" fill="url(#cotHatch)" stroke="#B8861A" stroke-width="1.2" rx="1"/>
+          <text x="${fx+fw/2}" y="${fy+fh/2+3}" text-anchor="middle" font-size="8" fill="#8a6614" font-weight="600" font-family="monospace">${_n1A.toLocaleString('es-GT',{maximumFractionDigits:0})} m²</text>`:''}
+        </svg>
+        <p style="font-size:9px;color:#aaa;font-style:italic;margin-top:4px;line-height:1.5">Diagrama con fines gráficos: relación del terreno (${_terrArea.toLocaleString('es-GT',{maximumFractionDigits:0})} m²) con la huella del programa arquitectónico en planta baja · FOS ${_fos}%</p>
+      </div>`;
+    }
   }
   let planosText='';
   if(s.f2){
@@ -7314,11 +7435,13 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-
 <div class="cb"><div><div class="cl">Presentado a</div><div class="cn2">${cn}</div><div class="pn">${pt}</div></div><div style="text-align:right"><div class="badge" style="margin-bottom:4px">${s.m2||150} m²</div><span style="font-size:9px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;color:#aaa">${cotNum}</span><br><span style="font-size:9px;color:#bbb">${fecha}</span></div></div>
 <p style="font-size:13px;margin-bottom:8px">Estimado/a ${cn},</p>
 <p style="font-size:12px;color:#555;line-height:1.8;margin-bottom:${progResumen?'14px':'28px'}">Por medio de la presente, me es grato presentarle la cotización formal de servicios ${s.f1&&s.f2?'de diseño arquitectónico y planos constructivos':s.f1?'de diseño arquitectónico':'de planos constructivos'} para el proyecto <strong>${pt}</strong>.${pd?' '+pd+'.':''} A continuación encontrará el detalle de los servicios propuestos y las condiciones de contratación.</p>
-${progResumen ? `<div style="margin-bottom:24px;padding:12px 16px;background:#f8f8f8;border-radius:6px;border-left:3px solid #D4A843">
+${progResumen ? `<div style="margin-bottom:24px;padding:12px 16px;background:#f8f8f8;border-radius:6px;border-left:3px solid #D4A843;page-break-inside:avoid">
   <div style="font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:#888;font-weight:500;margin-bottom:4px">Programa arquitectónico</div>
   <p style="font-size:11.5px;color:#555;line-height:1.7">${progResumen}</p>
+  ${progTabla}
+  ${progTerreno}
 </div>` : ''}
-${s.f1?`<div class="sec"><div class="sl">Anteproyecto</div><p class="sd">Desarrollo integral del diseño arquitectónico para un área de <strong>${s.m2} m²</strong>, incluyendo concepto, modelado 3D, visualización y documentación de planos de presentación.</p><div><div class="svc"><div><div class="sn">Diseño arquitectónico e imagen del proyecto</div><div class="snt">Modelado 3D, renderización y planos de presentación</div></div><div class="sa">${f(s.fee1)}</div></div></div></div>`:''}
+${s.f1?`<div class="sec"><div class="sl">Anteproyecto</div><p class="sd">Desarrollo integral del diseño arquitectónico para un área de <strong>${s.m2} m²</strong>. Esta fase incluye: <strong>${(s.apIncluye&&s.apIncluye.length?s.apIncluye:['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones']).join(' · ')}</strong>.</p><div><div class="svc"><div><div class="sn">Diseño arquitectónico e imagen del proyecto</div><div class="snt">${(s.apIncluye&&s.apIncluye.length?s.apIncluye:['Modelado 3D','renderización y planos de presentación']).join(', ')}</div></div><div class="sa">${f(s.fee1)}</div></div></div></div>`:''}
 ${s.f2?`<div class="sec"><div class="sl">Planimetrías</div><p class="sd">Elaboración del juego completo de planos técnicos: ${planosText}.</p><div><div class="svc"><div><div class="sn">Documentación técnica constructiva</div><div class="snt">Juego completo de planos para ejecución de obra</div></div><div class="sa">${f(s.fee2)}</div></div></div></div>`:''}
 ${calRows?`<div class="sec"><div class="sl">Plan de entregas</div><table style="width:100%;border-collapse:collapse">${calRows}</table></div>`:''}
 <div class="tb">
@@ -10245,7 +10368,7 @@ function importarJSON(evt){
       // Recargar estado de calculadora y refrescar si están visibles
       if(typeof cargarCalc==='function') cargarCalc();
       const pgEst = document.getElementById('pg-estimado');
-      const pgPro = document.getElementById('pg-programa');
+      const pgPro = document.getElementById('pg-calc');
       if(pgEst){ delete pgEst.dataset.hydrated; }
       if(pgPro){ delete pgPro.dataset.hydrated; }
       if(typeof renderEstimado==='function') renderEstimado();
@@ -10804,7 +10927,7 @@ async function bajarNube(){
       if(document.getElementById('pg-est').classList.contains('active')) renderEstatus();
       if(typeof cargarCalc==='function') cargarCalc();
       const pgEst2 = document.getElementById('pg-estimado');
-      const pgPro2 = document.getElementById('pg-programa');
+      const pgPro2 = document.getElementById('pg-calc');
       if(pgEst2){ delete pgEst2.dataset.hydrated; }
       if(pgPro2){ delete pgPro2.dataset.hydrated; }
       if(typeof renderEstimado==='function') renderEstimado();
@@ -11030,9 +11153,30 @@ function hidratarProgramaDOM(){
   });
 }
 
+
+/* ─── Drag-reorder de ambientes ─── */
+var _roomDragIdx = null;
+function roomDragStart(e,i){ _roomDragIdx=i; e.dataTransfer.effectAllowed='move'; e.currentTarget.style.opacity='.4'; }
+function roomDragOver(e,i){ e.preventDefault(); e.dataTransfer.dropEffect='move';
+  const tr=e.currentTarget; tr.style.borderTop = i<_roomDragIdx ? '2px solid var(--accent)' : '';
+  tr.style.borderBottom = i>_roomDragIdx ? '2px solid var(--accent)' : '1px solid rgba(255,255,255,.03)'; }
+function roomDrop(e,i){ e.preventDefault();
+  if(_roomDragIdx===null || _roomDragIdx===i) return;
+  const rooms=estadoCalc.programa.rooms;
+  const [moved]=rooms.splice(_roomDragIdx,1);
+  rooms.splice(i,0,moved);
+  _roomDragIdx=null;
+  renderPrograma();
+}
+function roomDragEnd(e){ e.currentTarget.style.opacity='';
+  document.querySelectorAll('#p2_roomsBody tr').forEach(tr=>{tr.style.borderTop='';tr.style.borderBottom='1px solid rgba(255,255,255,.03)';});
+  _roomDragIdx=null; }
+window.roomDragStart=roomDragStart; window.roomDragOver=roomDragOver;
+window.roomDrop=roomDrop; window.roomDragEnd=roomDragEnd;
+
 function renderPrograma(){
   // Si la página no está visible aún, salir silenciosamente
-  const pg = document.getElementById('pg-programa');
+  const pg = document.getElementById('pg-calc');
   if(!pg) return;
 
   // Primera vez: hidratar inputs del DOM
@@ -11053,7 +11197,11 @@ function renderPrograma(){
   const body = document.getElementById('p2_roomsBody');
   if(body){
     body.innerHTML = estadoCalc.programa.rooms.map((r,i) => `
-      <tr style="border-bottom:1px solid rgba(255,255,255,.03);background:${i%2?'rgba(255,255,255,.01)':'transparent'}">
+      <tr draggable="true" data-ridx="${i}"
+          ondragstart="roomDragStart(event,${i})" ondragover="roomDragOver(event,${i})"
+          ondrop="roomDrop(event,${i})" ondragend="roomDragEnd(event)"
+          style="border-bottom:1px solid rgba(255,255,255,.03);background:${i%2?'rgba(255,255,255,.01)':'transparent'}">
+        <td style="padding:6px 4px;text-align:center;cursor:grab;color:var(--text-3);font-size:13px;user-select:none" title="Arrastrá para reordenar">⠿</td>
         <td style="padding:8px 10px;font-family:var(--font-body);color:var(--text)">
           <input type="text" value="${escapeHtmlCalc(r.name)}" onchange="updateRoomCalc(${r.id},'name',this.value)" style="background:transparent;border:none;color:var(--text);font:inherit;width:100%;padding:3px 0;outline:none;border-bottom:1px solid transparent" onfocus="this.style.borderBottom='1px solid var(--border-accent)'" onblur="this.style.borderBottom='1px solid transparent'">
         </td>
@@ -11190,13 +11338,16 @@ function renderPrograma(){
     const pct = terrArea > 0 ? (n1A/terrArea)*100 : 0;
     const over = terrArea > 0 && n1A > terrArea;
 
+    const nivelesArr = [1,2,3].map(lv=>({
+      lv, a: estadoCalc.programa.rooms.filter(r=>(r.level||1)===lv).reduce((s,r)=>s+(parseFloat(r.area)||0),0)
+    })).filter(x=>x.a>0);
     tInfo.innerHTML = terrArea > 0 ? `
       <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);padding:7px 0;border-top:1px solid var(--border)">
-        <div style="display:flex;justify-content:space-between;padding:3px 0"><span>Área terreno</span><span style="color:var(--text-2)">${fmtCalc(terrArea)} m²</span></div>
-        <div style="display:flex;justify-content:space-between;padding:3px 0"><span>Área N1</span><span style="color:var(--text-2)">${fmtCalc(n1A)} m²</span></div>
-        <div style="display:flex;justify-content:space-between;padding:3px 0"><span>Ocupación</span><span style="color:${over?'var(--red)':'var(--accent)'}">${fmtCalc(pct)}%</span></div>
+        <div style="display:flex;justify-content:space-between;padding:3px 0"><span>Área del terreno</span><span style="color:var(--text-2)">${fmtCalc(terrArea)} m²</span></div>
+        ${nivelesArr.map(x=>`<div style="display:flex;justify-content:space-between;padding:3px 0"><span>Área nivel ${x.lv}</span><span style="color:var(--text-2)">${fmtCalc(x.a)} m²</span></div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-top:0.5px solid var(--border);margin-top:3px"><span style="color:var(--text-2)">Ocupación (N1 / terreno)</span><span style="color:${over?'var(--red)':'var(--accent)'};font-weight:600">${fmtCalc(pct)}%</span></div>
         ${over?'<p style="color:var(--red);font-size:10.5px;margin-top:5px;font-style:italic">⚠ El área del nivel 1 supera el terreno disponible.</p>':''}
-      </div>` : '';
+      </div>` : '<p class="nt">Ingresá largo y ancho del terreno para ver el análisis.</p>';
   }
 
   // Wrap del costo de terreno
@@ -11406,7 +11557,7 @@ if(typeof window !== 'undefined'){
                         'cRevit','cD5','cCanva','cElec','cGas','cViat',
                         'ivaRate','pctAntic','pctF1pay',
                         'timbreCosto','capRate'];
-  const CHECK_FIELDS = ['fase1On','fase2On','ivaOn','timbresOn','isrOn','capOn'];
+  const CHECK_FIELDS = ['fase1On','fase2On','ivaOn','timbresOn','isrOn','capOn','apInc1','apInc2','apInc3','apInc4','apInc5'];
 
   /* ── Helpers DOM ─────────────────────────────────────── */
   const $  = id => document.getElementById(id);
@@ -11572,6 +11723,7 @@ if(typeof window !== 'undefined'){
                 ? fmtFechaGT(new Date().toISOString().split('T')[0]) : '';
             }
             if(typeof recalcProjEnd === 'function' && !window._projEndManual) recalcProjEnd();
+            if(typeof renderPrograma === 'function') renderPrograma();
           }
         });
       });
