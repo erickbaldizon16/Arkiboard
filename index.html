@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Estudio AVIT — Honorarios & Proyecto</title>
+<title>Arquiboard — Gestión para estudios de arquitectura</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -68,47 +69,46 @@
 /* MODO CLARO — override de las variables CSS      */
 /* ═══════════════════════════════════════════════ */
 [data-theme="light"]{
-  /* ── Fondos ── beige cálido en vez de blanco puro */
-  --bg-base:#F5F2EB;
-  --bg-card:rgba(255,253,247,0.85);
-  --bg-surface:rgba(0,0,0,0.025);
-  --bg-elevated:rgba(0,0,0,0.05);
-  --bg-surface-2:#FBF8F1;
-  /* ── Grises invertidos ── */
-  --gray-800:#E8E5DD;--gray-750:#DDD8CC;--gray-700:#BCB6A6;
-  --gray-600:#9A9382;--gray-500:#7A7466;--gray-400:#5A554A;
-  --gray-300:#4A463D;--gray-200:#3A372F;--gray-100:#2A2823;--gray-50:#1F1D1A;
-  /* ── Acento mostaza más oscuro para contraste sobre claro ── */
-  --accent:#B8902A;--accent-light:#D4A843;--accent-dim:#7A5F18;
-  --accent-subtle:rgba(184,144,42,0.10);--accent-glow:rgba(184,144,42,0.07);
-  /* ── Texto oscuro sobre claro ── */
-  --text:#1F1D1A;--text-2:#5A554A;--text-3:#9A9382;--text-on-accent:#FFFFFF;
-  /* ── Bordes oscuros sutiles ── */
-  --border:rgba(0,0,0,0.08);--border-2:rgba(0,0,0,0.12);
-  --border-accent:rgba(184,144,42,0.40);--border-focus:rgba(184,144,42,0.65);
-  /* ── Semánticos: ajustar para WCAG contrast sobre fondo claro ── */
-  --green:#2D8050;--green-lt:rgba(45,128,80,0.12);--green-dk:#2D8050;
-  --blue:#3A7BB0;--blue-lt:rgba(58,123,176,0.12);--blue-dk:#3A7BB0;
-  --red:#C0392B;--red-lt:rgba(192,57,43,0.10);
-  --amber:#B8902A;--amber-lt:rgba(184,144,42,0.12);
-  --purple-lt:rgba(109,60,199,0.10);--purple-dk:#7A4FB8;
-  --teal-lt:rgba(45,128,80,0.10);--teal-dk:#2D8050;
-  --pink-lt:rgba(180,60,100,0.10);--pink-dk:#B43C64;
-  /* ── Sombras más sutiles ── */
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md:0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg:0 8px 32px rgba(0,0,0,0.10);
-  --shadow-xl:0 24px 60px rgba(0,0,0,0.14);
-  --shadow-accent:0 4px 20px rgba(184,144,42,0.18);
-  /* ── Tintes invertidos: sombras oscuras en vez de blancas ── */
-  --tint-on-bg-soft:rgba(0,0,0,0.02);
-  --tint-on-bg-medium:rgba(0,0,0,0.05);
-  --tint-on-bg-strong:rgba(0,0,0,0.08);
-  --tint-on-bg-stronger:rgba(0,0,0,0.12);
+  /* ══ "Mis Finanzas" — glassmorphism cálido/menta ══ */
+  /* ── Fondos ── */
+  --bg-base:#E0EDF2;                       /* fallback; el gradiente va en body */
+  --bg-card:rgba(255,255,255,0.65);
+  --bg-surface:rgba(255,255,255,0.45);
+  --bg-elevated:rgba(255,255,255,0.75);
+  --bg-surface-2:#F1F8FA;
+  /* ── Grises invertidos (tonos verdosos fríos) ── */
+  --gray-800:#DAE8ED;--gray-750:#CBDEE5;--gray-700:#B1C7CF;
+  --gray-600:#96A9B0;--gray-500:#7A8E95;--gray-400:#5A7076;
+  --gray-300:#465A61;--gray-200:#37494F;--gray-100:#293A40;--gray-50:#203035;
+  /* ── Acento: verde menta (marca "Mis Finanzas") ── */
+  --accent:#35B4DC;--accent-light:#67D5F3;--accent-dim:#1E86AA;
+  --accent-subtle:rgba(103,213,243,0.14);--accent-glow:rgba(103,213,243,0.10);
+  /* ── Texto ── */
+  --text:#293A40;--text-2:#5A7076;--text-3:#96A9B0;--text-on-accent:#FFFFFF;
+  /* ── Bordes: blancos translúcidos (glassmorphism) ── */
+  --border:rgba(255,255,255,0.80);--border-2:rgba(41,58,64,0.12);
+  --border-accent:rgba(53,180,220,0.45);--border-focus:rgba(53,180,220,0.65);
+  /* ── Semánticos ── */
+  --green:#2FA88A;--green-lt:rgba(47,168,138,0.12);--green-dk:#1F7A63;
+  --blue:#4E86B0;--blue-lt:rgba(127,180,216,0.16);--blue-dk:#3D6E94;
+  --red:#C05555;--red-lt:rgba(224,122,122,0.12);
+  --amber:#A87F1F;--amber-lt:rgba(212,168,67,0.14);
+  --purple-lt:rgba(176,139,212,0.16);--purple-dk:#8A63B0;
+  --teal-lt:rgba(47,168,138,0.10);--teal-dk:#1F7A63;
+  --pink-lt:rgba(233,161,124,0.16);--pink-dk:#C77A50;
+  /* ── Sombras suaves y difusas ── */
+  --shadow-sm:0 2px 8px rgba(41,58,64,0.05);
+  --shadow-md:0 8px 32px rgba(41,58,64,0.07);
+  --shadow-lg:0 12px 40px rgba(41,58,64,0.09);
+  --shadow-xl:0 24px 64px rgba(41,58,64,0.12);
+  --shadow-accent:0 8px 20px rgba(103,213,243,0.40);
+  /* ── Tintes ── */
+  --tint-on-bg-soft:rgba(41,58,64,0.02);
+  --tint-on-bg-medium:rgba(41,58,64,0.05);
+  --tint-on-bg-strong:rgba(41,58,64,0.08);
+  --tint-on-bg-stronger:rgba(41,58,64,0.12);
   /* ── Compat ── */
   --bg:var(--bg-base);--surface:var(--bg-card);
-  --border-2:rgba(0,0,0,0.12);
-  /* ── Logo: invertir el blanco a negro ── */
   --logo-invert:1;
 }
 
@@ -134,7 +134,7 @@ body::before,body::after{
 }
 body::before{
   top:-20%;right:-5%;width:500px;height:500px;
-  background:radial-gradient(circle,rgba(212,168,67,0.07) 0%,transparent 65%);
+  background:radial-gradient(circle,var(--border-accent) 0%,transparent 65%);
 }
 body::after{
   bottom:-15%;left:-8%;width:420px;height:420px;
@@ -142,7 +142,7 @@ body::after{
 }
 /* En modo claro, los orbs son más sutiles */
 [data-theme="light"] body::before{
-  background:radial-gradient(circle,rgba(184,144,42,0.10) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(53,180,220,0.32) 0%,transparent 65%);
 }
 [data-theme="light"] body::after{
   background:radial-gradient(circle,rgba(58,123,176,0.08) 0%,transparent 65%);
@@ -196,8 +196,8 @@ body::after{
 .ntab:hover{background:rgba(255,255,255,0.05);color:var(--text-2)}
 .ntab:focus,.ntab:focus-visible{outline:none}
 .ntab.active{
-  background:rgba(212,168,67,0.12);color:var(--accent);
-  font-weight:600;border:1px solid rgba(212,168,67,0.25);
+  background:var(--accent-subtle);color:var(--accent);
+  font-weight:600;border:1px solid var(--border-accent);
 }
 .topbar-actions{min-width:120px;display:flex;justify-content:flex-end;gap:6px;align-items:center}
 .btn-print{
@@ -219,7 +219,7 @@ body::after{
   letter-spacing:0.08em;text-transform:uppercase;
   transition:border-color .2s,color .2s;
 }
-.btn-data:hover{border-color:rgba(212,168,67,0.40);color:var(--accent)}
+.btn-data:hover{border-color:var(--border-accent);color:var(--accent)}
 .btn-data.verde{
   background:rgba(76,175,114,0.15);color:#4CAF72;
   border-color:rgba(76,175,114,0.30);
@@ -249,8 +249,8 @@ body::after{
 .home-hero{
   display:flex;justify-content:space-between;align-items:center;
   padding:24px 28px;margin-bottom:18px;
-  background:linear-gradient(135deg,rgba(212,168,67,0.08) 0%,rgba(24,24,26,0.70) 60%);
-  border:1px solid rgba(212,168,67,0.18);
+  background:linear-gradient(135deg,var(--accent-glow) 0%,rgba(24,24,26,0.70) 60%);
+  border:1px solid var(--border-accent);
   border-radius:var(--r-lg);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
 }
@@ -451,7 +451,7 @@ body::after{
 .p0{background:rgba(157,111,224,0.15);color:#9D6FE0;border:1px solid rgba(157,111,224,0.25)}
 .p1{background:rgba(90,158,212,0.15);color:#5A9ED4;border:1px solid rgba(90,158,212,0.25)}
 .p2{background:rgba(76,175,114,0.15);color:#4CAF72;border:1px solid rgba(76,175,114,0.25)}
-.p3{background:rgba(212,168,67,0.15);color:#D4A843;border:1px solid rgba(212,168,67,0.25)}
+.p3{background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent)}
 .p4{background:rgba(224,112,152,0.15);color:#E07098;border:1px solid rgba(224,112,152,0.25)}
 .p5{background:rgba(76,175,114,0.10);color:#6FD49A;border:1px solid rgba(76,175,114,0.20)}
 .p6{background:rgba(224,90,90,0.15);color:#E05A5A;border:1px solid rgba(224,90,90,0.25)}
@@ -479,8 +479,8 @@ input[type=text],input[type=date],input[type=number],textarea,select{
 }
 input[type=text]:focus,input[type=date]:focus,
 input[type=number]:focus,textarea:focus,select:focus{
-  border-color:rgba(212,168,67,0.60)!important;
-  box-shadow:0 0 0 3px rgba(212,168,67,0.10)!important;
+  border-color:var(--border-focus)!important;
+  box-shadow:0 0 0 3px var(--accent-glow)!important;
 }
 select option{background:#1C1C1C;color:#E0E0E0}
 input[type=number]::-webkit-inner-spin-button,
@@ -576,8 +576,8 @@ input.narrow{width:88px}input.mid{width:108px}
 .sv-g{font-weight:500;color:#4CAF72;font-family:var(--font-mono)}
 .sum-badge{
   font-size:9px;padding:2px 8px;border-radius:20px;font-weight:500;
-  background:rgba(212,168,67,0.12);color:var(--accent);
-  border:1px solid rgba(212,168,67,0.25);font-family:var(--font-mono);
+  background:var(--accent-subtle);color:var(--accent);
+  border:1px solid var(--border-accent);font-family:var(--font-mono);
 }
 .grand-row{display:flex;justify-content:space-between;align-items:baseline;padding-top:.65rem;border-top:1px solid rgba(255,255,255,0.08);margin-top:.4rem}
 .grand-val{font-size:22px;font-weight:400;color:var(--accent);font-family:var(--font-mono);letter-spacing:-0.01em}
@@ -614,8 +614,8 @@ input.narrow{width:88px}input.mid{width:108px}
   transition:all .15s;
 }
 .cur-btn.active{
-  background:rgba(212,168,67,0.12);color:var(--accent);
-  border-color:rgba(212,168,67,0.30);
+  background:var(--accent-subtle);color:var(--accent);
+  border-color:var(--border-accent);
 }
 
 /* ── SYNC BANNER ── */
@@ -667,7 +667,7 @@ input.narrow{width:88px}input.mid{width:108px}
 }
 .f1 .sprint-num{background:rgba(90,158,212,0.15);color:#82BAE0}
 .f2 .sprint-num{background:rgba(76,175,114,0.15);color:#6FD49A}
-.hito .sprint-num{background:rgba(212,168,67,0.15);color:var(--accent)}
+.hito .sprint-num{background:var(--accent-subtle);color:var(--accent)}
 .sprint-title-inp{
   font-size:13px;font-weight:500;border:none;background:transparent;
   color:var(--text);width:100%;padding:0;outline:none;
@@ -677,7 +677,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .type-badge{font-size:9px;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-family:var(--font-mono);letter-spacing:0.06em}
 .badge-f1{background:rgba(90,158,212,0.15);color:#82BAE0;border:1px solid rgba(90,158,212,0.25)}
 .badge-f2{background:rgba(76,175,114,0.15);color:#6FD49A;border:1px solid rgba(76,175,114,0.25)}
-.badge-hito{background:rgba(212,168,67,0.15);color:var(--accent);border:1px solid rgba(212,168,67,0.25)}
+.badge-hito{background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent)}
 .badge-pe{background:rgba(224,123,46,0.15);color:#E07B2E;border:1px solid rgba(224,123,46,0.25)}
 .ent-wrap{margin-top:6px}
 .ent-tag{
@@ -696,11 +696,11 @@ input.narrow{width:88px}input.mid{width:108px}
   font-family:var(--font-body);margin-top:6px;resize:none;min-height:34px;line-height:1.4;
   outline:none;transition:border-color .2s;
 }
-.client-note:focus{border-color:rgba(212,168,67,0.50)}
+.client-note:focus{border-color:var(--border-focus)}
 .sprint-meta{display:flex;gap:8px;align-items:center;margin-top:7px;flex-wrap:wrap}
 .feedback-btn{
-  background:rgba(212,168,67,0.12);color:var(--accent);font-size:9px;
-  padding:2px 9px;border-radius:20px;border:1px solid rgba(212,168,67,0.25);
+  background:var(--accent-subtle);color:var(--accent);font-size:9px;
+  padding:2px 9px;border-radius:20px;border:1px solid var(--border-accent);
   cursor:pointer;font-family:var(--font-body);transition:all .15s;
 }
 .feedback-btn.on{background:rgba(76,175,114,0.15);color:#6FD49A;border-color:rgba(76,175,114,0.30)}
@@ -718,7 +718,7 @@ input.narrow{width:88px}input.mid{width:108px}
   cursor:pointer;margin-bottom:7px;font-family:var(--font-display);
   letter-spacing:0.10em;text-transform:uppercase;transition:all .2s;
 }
-.add-sp-btn:hover{border-color:rgba(212,168,67,0.30);color:var(--accent)}
+.add-sp-btn:hover{border-color:var(--border-accent);color:var(--accent)}
 
 /* ── TIMELINE ── */
 .view-tabs{
@@ -749,7 +749,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .tl-pe{background:#E07B2E;color:#fff}
 .tl-tag{font-size:9px;padding:1px 5px;border-radius:20px;display:inline-block;margin:1px 1px 0;font-family:var(--font-mono)}
 .tl-feedback{background:rgba(76,175,114,0.15);color:#6FD49A}
-.tl-hito-tag{background:rgba(212,168,67,0.15);color:var(--accent)}
+.tl-hito-tag{background:var(--accent-subtle);color:var(--accent)}
 .empty{text-align:center;padding:2rem;color:var(--text-3);font-size:12px;font-family:var(--font-body)}
 
 /* ── CLIENT VIEW ── */
@@ -779,7 +779,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .cv-ent{background:rgba(90,158,212,0.15);color:#82BAE0}
 .cv-ent-f2{background:rgba(76,175,114,0.15);color:#6FD49A}
 .cv-fb{background:rgba(76,175,114,0.15);color:#6FD49A}
-.cv-hito{background:rgba(212,168,67,0.15);color:var(--accent)}
+.cv-hito{background:var(--accent-subtle);color:var(--accent)}
 .cv-foot{
   font-size:9px;color:var(--text-3);margin-top:12px;padding-top:10px;
   border-top:1px solid rgba(255,255,255,0.05);line-height:1.6;font-family:var(--font-body);
@@ -799,7 +799,7 @@ input.narrow{width:88px}input.mid{width:108px}
   font-family:var(--font-mono);letter-spacing:0.06em;backdrop-filter:blur(8px);
 }
 .est-aprobada{background:rgba(90,158,212,0.15);color:#82BAE0;border:1px solid rgba(90,158,212,0.25)}
-.est-en_progreso{background:rgba(212,168,67,0.15);color:var(--accent);border:1px solid rgba(212,168,67,0.25)}
+.est-en_progreso{background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent)}
 .est-pre_entrega{background:rgba(224,123,46,0.12);color:#E07B2E;border:1px solid rgba(224,123,46,0.25)}
 .est-parcial{background:rgba(157,111,224,0.15);color:#9D6FE0;border:1px solid rgba(157,111,224,0.25)}
 .est-completada{background:rgba(76,175,114,0.15);color:#6FD49A;border:1px solid rgba(76,175,114,0.25)}
@@ -828,7 +828,7 @@ input.narrow{width:88px}input.mid{width:108px}
 }
 .kanban-col.kcol-emitida{border-top-color:#555}
 .kanban-col.kcol-proceso{border-top-color:#5A9ED4}
-.kanban-col.kcol-f1entregada{border-top-color:#D4A843}
+.kanban-col.kcol-f1entregada{border-top-color:var(--accent)}
 .kanban-col.kcol-cobradaf1{border-top-color:#7BAEE0}
 .kanban-col.kcol-f2entregada{border-top-color:#9D6FE0}
 .kanban-col.kcol-cobrada{border-top-color:#4CAF72}
@@ -859,18 +859,18 @@ input.narrow{width:88px}input.mid{width:108px}
   background:rgba(255,255,255,0.04);color:var(--text);cursor:pointer;
   font-family:var(--font-mono);outline:none;transition:border-color .2s;
 }
-.kanban-state-select:focus{border-color:rgba(212,168,67,0.50)}
+.kanban-state-select:focus{border-color:var(--border-focus)}
 
 /* ═══ Kanban rediseñado (5 columnas + sprints) ═══ */
 .kanban-col.kcol-cotizado{border-top-color:#5A9ED4}
 .kanban-col.kcol-anteproyecto{border-top-color:#9D6FE0}
 .kanban-col.kcol-preentrega{border-top-color:#E07B2E}
-.kanban-col.kcol-planos{border-top-color:#D4A843}
+.kanban-col.kcol-planos{border-top-color:var(--accent)}
 .kanban-col.kcol-aprobado{border-top-color:#4CAF72}
 .kanban-col.kcol-cobrado{border-top-color:#1D9E75}
 .kanban-col{min-width:250px;flex:0 0 250px}
 .kanban-col-sub{font-size:9px;color:var(--text-3);font-family:var(--font-mono);margin-top:2px;letter-spacing:.06em}
-.kanban-col.drag-over{background:rgba(212,168,67,0.05);border-color:rgba(212,168,67,0.3)}
+.kanban-col.drag-over{background:var(--accent-glow);border-color:var(--border-accent)}
 .kanban-card[draggable="true"]{cursor:grab}
 .kanban-card.dragging{opacity:0.5;cursor:grabbing}
 .kanban-card{padding:.75rem .8rem;margin-bottom:8px}
@@ -882,7 +882,7 @@ input.narrow{width:88px}input.mid{width:108px}
 }
 .pay-badge.pay-pagado{background:rgba(76,175,114,0.15);color:#6FD49A;border-color:rgba(76,175,114,0.3)}
 .pay-badge.pay-bloqueado{background:rgba(224,90,90,0.12);color:#E08686;border-color:rgba(224,90,90,0.25)}
-.pay-badge.pay-pendiente{background:rgba(212,168,67,0.15);color:var(--accent);border-color:rgba(212,168,67,0.3)}
+.pay-badge.pay-pendiente{background:var(--accent-subtle);color:var(--accent);border-color:var(--border-accent)}
 .sprint-row{
   margin-top:6px;padding:6px 8px;border-radius:6px;
   background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);
@@ -955,7 +955,7 @@ input.narrow{width:88px}input.mid{width:108px}
   font-size:13px;font-weight:400;
 }
 .colab-avatar.empty:hover{
-  background:rgba(212,168,67,0.10);
+  background:var(--accent-subtle);
   color:var(--accent);
   border-color:var(--border-accent);
 }
@@ -978,7 +978,7 @@ input.narrow{width:88px}input.mid{width:108px}
   border:1px solid var(--border-accent);
   border-radius:var(--r-lg);
   padding:12px;
-  box-shadow:0 10px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,168,67,0.12);
+  box-shadow:0 10px 40px rgba(0,0,0,0.6), 0 0 0 1px var(--border-accent);
   z-index:9999;
   animation:popIn .15s var(--ease-out);
 }
@@ -1046,7 +1046,7 @@ input.narrow{width:88px}input.mid{width:108px}
   background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
   border-radius:var(--r-md);transition:all .15s;
 }
-.sprint-accordion-head:hover{border-color:rgba(212,168,67,0.25);background:rgba(255,255,255,0.05)}
+.sprint-accordion-head:hover{border-color:var(--border-accent);background:rgba(255,255,255,0.05)}
 .sprint-accordion-chev{font-size:9px;color:var(--text-3);transition:transform .2s}
 .sprint-accordion-chev.open{transform:rotate(90deg)}
 .sprint-accordion-body{padding-top:6px}
@@ -1101,15 +1101,15 @@ input.narrow{width:88px}input.mid{width:108px}
   font-family:var(--font-display);letter-spacing:0.08em;text-transform:uppercase;
   transition:all .15s;
 }
-.btn-editar:hover{border-color:rgba(212,168,67,0.35);color:var(--accent)}
+.btn-editar:hover{border-color:var(--border-accent);color:var(--accent)}
 .btn-recibo{
   padding:4px 10px;font-size:10px;
-  border:1px solid rgba(212,168,67,0.30);border-radius:var(--r-md);
-  background:rgba(212,168,67,0.08);color:var(--accent);cursor:pointer;
+  border:1px solid var(--border-accent);border-radius:var(--r-md);
+  background:var(--accent-glow);color:var(--accent);cursor:pointer;
   font-family:var(--font-display);letter-spacing:0.08em;text-transform:uppercase;
   transition:all .15s;
 }
-.btn-recibo:hover{background:rgba(212,168,67,0.16);border-color:rgba(212,168,67,0.50)}
+.btn-recibo:hover{background:var(--accent-subtle);border-color:var(--border-focus)}
 
 /* ═══ Calculadora (Estimado + Programa) ═══ */
 .fin-btn{
@@ -1146,7 +1146,7 @@ input.narrow{width:88px}input.mid{width:108px}
   z-index:150;
   background:rgba(17,18,20,0.92);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid rgba(212,168,67,0.25);
+  border-top:1px solid var(--border-accent);
   padding:10px 20px;
   display:none; /* se muestra solo en pestaña Cotizador */
   align-items:center;
@@ -1154,8 +1154,8 @@ input.narrow{width:88px}input.mid{width:108px}
   box-shadow:0 -8px 32px rgba(0,0,0,0.4);
 }
 [data-theme="light"] #cotSticky{
-  background:rgba(245,242,235,0.92)!important;
-  border-top-color:rgba(184,144,42,0.30)!important;
+  background:rgba(240,247,250,0.92)!important;
+  border-top-color:rgba(53,180,220,0.30)!important;
   box-shadow:0 -4px 20px rgba(0,0,0,0.08)!important;
 }
 .cot-sticky-col{
@@ -1225,8 +1225,8 @@ input.narrow{width:88px}input.mid{width:108px}
 
 /* Hero del Home con gradient adaptado */
 [data-theme="light"] .home-hero{
-  background:linear-gradient(135deg,rgba(184,144,42,0.12) 0%,rgba(255,253,247,0.85) 60%)!important;
-  border-color:rgba(184,144,42,0.25)!important;
+  background:linear-gradient(135deg,rgba(53,180,220,0.32) 0%,rgba(255,253,247,0.85) 60%)!important;
+  border-color:rgba(53,180,220,0.32)!important;
 }
 
 /* Tabs */
@@ -1234,8 +1234,10 @@ input.narrow{width:88px}input.mid{width:108px}
   background:rgba(0,0,0,0.04)!important;
 }
 [data-theme="light"] .ntab.active{
-  background:rgba(184,144,42,0.14)!important;
-  border-color:rgba(184,144,42,0.30)!important;
+  background:linear-gradient(135deg,#67D5F3,#35B4DC)!important;
+  border-color:transparent!important;
+  color:#fff!important;border-radius:999px;
+  box-shadow:0 6px 16px rgba(103,213,243,0.40)!important;
 }
 
 /* Botones primarios y data */
@@ -1404,7 +1406,7 @@ input.narrow{width:88px}input.mid{width:108px}
 /* ═══ CLIENTES ═══════════════════════════════════════════════════ */
 .cli-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-lg);
   padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:8px}
-.cli-card:hover{border-color:var(--accent);background:rgba(212,168,67,0.04)}
+.cli-card:hover{border-color:var(--accent);background:var(--accent-glow)}
 .cli-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .cli-name{font-size:13px;font-weight:500;color:var(--text)}
 .cli-empresa{font-size:11px;color:var(--text-3);margin-top:1px}
@@ -1415,7 +1417,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .cli-stat{font-size:11px;color:var(--text-3)}
 .cli-stat strong{color:var(--text-2);font-weight:500}
 .cli-captacion{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500;
-  background:rgba(212,168,67,0.10);color:var(--accent);border:1px solid rgba(212,168,67,0.2);
+  background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent);
   white-space:nowrap}
 .cli-detail-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-3);
   cursor:pointer;margin-bottom:16px;padding:4px 0;transition:color .15s}
@@ -1466,12 +1468,12 @@ input.narrow{width:88px}input.mid{width:108px}
 .sched-day-date{font-size:12px;font-weight:500;color:var(--text);margin-top:1px;font-family:var(--font-mono)}
 .sched-day-hdr.today .sched-day-name{color:var(--accent)}
 .sched-day-hdr.today .sched-day-date{color:var(--accent)}
-.sched-day-hdr.today{background:rgba(212,168,67,0.07)}
+.sched-day-hdr.today{background:var(--accent-glow)}
 .sched-cell{min-height:80px;padding:5px;border-right:0.5px solid var(--border);
   border-bottom:0.5px solid rgba(255,255,255,0.04);vertical-align:top;
   background:var(--bg);transition:background .1s;position:relative}
 .sched-cell:last-child{border-right:none}
-.sched-cell.today{background:rgba(212,168,67,0.035)}
+.sched-cell.today{background:var(--accent-glow)}
 .sched-cell.past{opacity:.6}
 .sched-item{padding:5px 7px;border-radius:var(--r-sm);margin-bottom:4px;
   font-size:10px;line-height:1.4;cursor:pointer;position:relative;
@@ -1480,7 +1482,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .sched-item.f1{background:rgba(58,130,217,0.15);border-left-color:#378ADD}
 .sched-item.f2{background:rgba(76,175,114,0.15);border-left-color:#4CAF72}
 .sched-item.pe{background:rgba(224,123,46,0.15);border-left-color:#E07B2E}
-.sched-item.hito{background:rgba(212,168,67,0.15);border-left-color:var(--accent)}
+.sched-item.hito{background:var(--accent-subtle);border-left-color:var(--accent)}
 .sched-item-proj{font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sched-item-client{font-size:9px;color:var(--text-3);margin-top:1px}
 .sched-item-sprint{font-size:9.5px;color:var(--text-2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1491,7 +1493,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .sched-add-btn{width:100%;background:transparent;border:0.5px dashed rgba(255,255,255,0.08);
   border-radius:var(--r-sm);color:var(--text-3);cursor:pointer;font-size:18px;
   padding:4px;line-height:1;transition:border-color .15s,color .15s;margin-top:2px}
-.sched-add-btn:hover{border-color:rgba(212,168,67,0.4);color:var(--accent)}
+.sched-add-btn:hover{border-color:var(--border-accent);color:var(--accent)}
 
 /* ═══ MARKETING SUB-TABS & ESTRATEGIAS ══════════════════════ */
 .mkt-subtab{padding:5px 12px;font-size:10px;border:none;border-bottom:2px solid transparent;
@@ -1509,7 +1511,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .mkt-badge-active{background:rgba(76,175,114,0.15);color:#4CAF72;border:1px solid rgba(76,175,114,0.25)}
 .mkt-badge-plan{background:rgba(90,158,212,0.15);color:#5AABF0;border:1px solid rgba(90,158,212,0.25)}
 .mkt-badge-done{background:rgba(255,255,255,0.06);color:var(--text-3);border:1px solid rgba(255,255,255,0.08)}
-.mkt-badge-eval{background:rgba(212,168,67,0.15);color:var(--accent);border:1px solid rgba(212,168,67,0.25)}
+.mkt-badge-eval{background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent)}
 .mkt-campana-row{display:flex;align-items:center;gap:8px;padding:6px 0;
   border-bottom:0.5px solid rgba(255,255,255,0.04);font-size:11px}
 .mkt-campana-row:last-child{border-bottom:none}
@@ -1519,7 +1521,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .mkt-progress{height:4px;border-radius:2px;background:rgba(255,255,255,0.06);overflow:hidden;flex:1;min-width:60px}
 .mkt-progress-fill{height:100%;border-radius:2px;transition:width .4s}
 /* Analizador IA */
-.mkt-ia-box{background:rgba(212,168,67,0.04);border:1px solid rgba(212,168,67,0.15);
+.mkt-ia-box{background:var(--accent-glow);border:1px solid var(--border-accent);
   border-radius:var(--r-lg);padding:16px 18px;margin-bottom:12px}
 .mkt-ia-title{font-family:var(--font-display);font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--accent);margin-bottom:10px}
@@ -1550,22 +1552,22 @@ input.narrow{width:88px}input.mid{width:108px}
   transition:border-color .2s,box-shadow .2s,transform .15s;
 }
 .org-node-inner:hover{
-  border-color:rgba(212,168,67,0.45);
-  box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 0 1px rgba(212,168,67,0.15);
+  border-color:var(--border-accent);
+  box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 0 1px var(--border-accent);
   transform:translateY(-1px);
 }
 .org-node-inner.selected{
-  border-color:rgba(212,168,67,0.7)!important;
-  box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 0 2px rgba(212,168,67,0.25)!important;
+  border-color:var(--border-accent)!important;
+  box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 0 2px var(--border-accent)!important;
 }
 .org-node-root .org-node-inner{
-  background:rgba(212,168,67,0.10);
-  border-color:rgba(212,168,67,0.35);
+  background:var(--accent-subtle);
+  border-color:var(--border-accent);
 }
 .org-avatar{width:36px;height:36px;border-radius:50%;margin:0 auto 7px;
   display:flex;align-items:center;justify-content:center;
   font-size:13px;font-weight:600;font-family:var(--font-display);
-  background:rgba(212,168,67,0.15);color:var(--accent);border:1px solid rgba(212,168,67,0.25)}
+  background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent)}
 .org-name{font-size:11px;font-weight:500;color:var(--text);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
 .org-rol{font-size:9.5px;color:var(--text-3);margin-top:2px;
@@ -1583,6 +1585,272 @@ input.narrow{width:88px}input.mid{width:108px}
   border-radius:5px;display:flex;align-items:center;gap:8px;transition:background .1s}
 .org-ctx-item:hover{background:rgba(255,255,255,0.06);color:var(--text)}
 .org-ctx-sep{height:1px;background:rgba(255,255,255,0.06);margin:3px 0}
+
+/* ══ Mis Finanzas — superficies glassmorphism (modo claro) ══ */
+[data-theme="light"] body{
+  background:linear-gradient(160deg,#D8E9F0 0%,#E9F3F6 55%,#DDEDF2 100%) fixed;
+}
+[data-theme="light"] .sc{
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border:1px solid rgba(255,255,255,0.80);
+  border-radius:24px;
+  box-shadow:0 8px 32px rgba(41,58,64,0.07);
+}
+[data-theme="light"] .modal-box{
+  background:rgba(255,255,255,0.82);
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  border:1px solid rgba(255,255,255,0.85);
+  border-radius:26px;
+  box-shadow:0 24px 64px rgba(41,58,64,0.14);
+}
+[data-theme="light"] .topbar{
+  background:rgba(232,240,238,0.80);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid rgba(255,255,255,0.75);
+}
+[data-theme="light"] input,[data-theme="light"] select,[data-theme="light"] textarea{
+  background:rgba(255,255,255,0.70);
+  border-color:rgba(44,58,56,0.12);
+  border-radius:12px;
+}
+[data-theme="light"] input:focus,[data-theme="light"] select:focus,[data-theme="light"] textarea:focus{
+  border-color:rgba(53,180,220,0.55);
+  box-shadow:0 0 0 3px rgba(103,213,243,0.16);
+}
+[data-theme="light"] .sc-title{color:#9AAAA6;letter-spacing:0.14em}
+[data-theme="light"] body::before{
+  background:radial-gradient(circle,rgba(103,213,243,0.14) 0%,transparent 65%);
+}
+[data-theme="light"] body::after{
+  background:radial-gradient(circle,rgba(127,180,216,0.10) 0%,transparent 65%);
+}
+[data-theme="light"] .ntab.active{
+  background:linear-gradient(135deg,#67D5F3,#35B4DC);
+  color:#fff;border-radius:999px;
+  box-shadow:0 8px 20px rgba(103,213,243,0.40);
+}
+[data-theme="light"] .tog input:checked + .tog-sl{background:linear-gradient(135deg,#67D5F3,#35B4DC)}
+[data-theme="light"] .metric{background:rgba(255,255,255,0.55);border-radius:16px}
+[data-theme="light"] table th{color:#9AAAA6}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE MÓVIL — ajustes para formato vertical (≤720px)
+   Colocado al final para ganar en cascada.
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width:720px){
+
+  /* ── Topbar: logo compacto + tabs con scroll horizontal ── */
+  .topbar{padding:0 .6rem;gap:.5rem}
+  .topbar-logo{min-width:auto}
+  .topbar-logo span{display:none}
+  .nav-tabs{
+    justify-content:flex-start;
+    overflow-x:auto;overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    flex-wrap:nowrap;
+  }
+  .nav-tabs::-webkit-scrollbar{display:none}
+  .ntab{padding:6px 11px;font-size:10px;letter-spacing:0.06em;white-space:nowrap;flex-shrink:0}
+
+  /* ── Páginas y tarjetas: menos padding, más aire vertical ── */
+  .page{padding:1rem .65rem 4.5rem}
+  .sc{padding:.9rem .85rem;margin-bottom:.7rem}
+  .sc-title{font-size:9.5px;margin-bottom:.7rem;overflow-wrap:break-word}
+
+  /* ── Grid de 2 columnas → 1 columna ── */
+  .r2{grid-template-columns:1fr!important}
+
+  /* ── Grids inline de 3 y 4 columnas → 2 columnas ── */
+  [style*="grid-template-columns:repeat(3,1fr)"],
+  [style*="grid-template-columns:repeat(3,minmax(0,1fr))"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  [style*="grid-template-columns:repeat(4,1fr)"],
+  [style*="grid-template-columns:repeat(4,minmax(0,1fr))"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  /* Fila "Agregar ambiente" (2fr 1fr 1.5fr 1fr auto) → 2 cols */
+  [style*="grid-template-columns:2fr 1fr 1.5fr 1fr auto"]{
+    grid-template-columns:1fr 1fr!important;
+  }
+  [style*="grid-template-columns:1.4fr 1fr"]{
+    grid-template-columns:1fr!important;
+  }
+
+  /* ── Prevenir textos superpuestos ── */
+  .sc, .sc *{min-width:0}
+  .sc p, .sc span, .sc label, .sc td, .sc th, .sc div{overflow-wrap:break-word}
+  .fr{flex-wrap:wrap}
+  .fv{flex-shrink:0}
+  .metric .mv{font-size:15px;overflow-wrap:anywhere}
+  .metric .ml{font-size:9px}
+
+  /* ── Tablas: fuente menor + scroll horizontal ── */
+  table{font-size:10.5px}
+  th,td{padding:5px 6px!important}
+  .sc > div[style*="overflow-x"]{-webkit-overflow-scrolling:touch}
+
+  /* ── Modales: bottom sheet a ancho completo ── */
+  .modal-back{align-items:flex-end!important;padding:0!important}
+  .modal-box{
+    max-width:100%!important;width:100%!important;
+    border-radius:22px 22px 0 0!important;
+    max-height:88vh!important;
+    padding:1.1rem .95rem!important;
+    margin:0!important;
+  }
+
+  /* ── Botones y toolbars: envolver sin desbordar ── */
+  .sc button{white-space:nowrap}
+  .sc [style*="display:flex"][style*="gap"]{flex-wrap:wrap}
+
+  /* ── Timeline y kanban: scroll horizontal táctil ── */
+  #timelineContent > div[style*="overflow-x"],
+  #kanbanBoard{-webkit-overflow-scrolling:touch}
+
+  /* ── Organigrama: canvas ajustado ── */
+  #orgWrap{height:420px!important}
+
+  /* ── Inputs: alto cómodo para tocar ── */
+  input,select,textarea{font-size:13px;min-height:36px}
+  input[type="checkbox"],input[type="radio"]{min-height:auto}
+  input[type="range"]{min-height:auto}
+}
+
+@media (max-width:560px){
+  /* ── Pantallas muy angostas: todo a 1 columna ── */
+  [style*="grid-template-columns:repeat(3,1fr)"],
+  [style*="grid-template-columns:repeat(3,minmax(0,1fr))"],
+  [style*="grid-template-columns:repeat(4,1fr)"],
+  [style*="grid-template-columns:repeat(4,minmax(0,1fr))"]{
+    grid-template-columns:1fr!important;
+  }
+  [style*="grid-template-columns:1fr 1fr"]:not([style*="90px"]){
+    grid-template-columns:1fr!important;
+  }
+  .page{padding:.85rem .55rem 4rem}
+  .sc{padding:.8rem .7rem;border-radius:18px}
+  .metric .mv{font-size:14px}
+  h1,.hero-title{font-size:20px}
+  /* Editor de sprints: meta en columna */
+  .sprint-meta{flex-direction:column;align-items:flex-start!important}
+}
+
+/* ── Menús desplegables: no recortar ni desbordar en móvil ── */
+@media (max-width:720px){
+  #studioMenu{min-width:170px!important;max-width:calc(100vw - 16px)!important}
+  #menuConfig{min-width:180px!important;max-width:calc(100vw - 16px)!important;
+    right:0!important;left:auto!important}
+  /* La topbar no debe recortar los menús que cuelgan de ella */
+  .topbar{overflow:visible}
+  .topbar-actions{overflow:visible}
+}
+
+/* ══ Modo claro: eliminar mostaza → verde menta ══ */
+[data-theme="light"] .home-hero{
+  background:linear-gradient(135deg,rgba(103,213,243,0.16) 0%,rgba(255,255,255,0.65) 60%)!important;
+  border:1px solid rgba(53,180,220,0.28)!important;
+}
+[data-theme="light"] .kanban-col{
+  background:rgba(255,255,255,0.55)!important;
+  border:1px solid rgba(255,255,255,0.75)!important;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+[data-theme="light"] .kanban-col.kcol-f1entregada{border-top-color:#35B4DC!important}
+[data-theme="light"] .kanban-card{
+  background:rgba(255,255,255,0.80)!important;
+  border:1px solid rgba(41,58,64,0.10)!important;
+}
+[data-theme="light"] .kanban-card:hover{box-shadow:0 4px 16px rgba(41,58,64,0.12)!important}
+[data-theme="light"] .kanban-badge{
+  background:rgba(41,58,64,0.06)!important;border:1px solid rgba(41,58,64,0.10)!important;
+}
+/* Botones y elementos con mostaza inline → verde en modo claro */
+[data-theme="light"] [style*="rgba(212,168,67"]{
+  border-color:rgba(53,180,220,0.35)!important;
+}
+[data-theme="light"] .draft-badge, [data-theme="light"] #draftBadge{
+  background:rgba(103,213,243,0.12)!important;border-color:rgba(53,180,220,0.32)!important;
+}
+
+[data-theme="light"] .kanban-col.drag-over{
+  background:rgba(103,213,243,0.10)!important;border-color:rgba(53,180,220,0.40)!important;
+}
+[data-theme="light"] .kanban-board{background:transparent}
+[data-theme="light"] .kanban-col-title{color:var(--text-2)!important}
+
+/* ══ Modo claro: cero amarillo — turquesa en su lugar ══ */
+[data-theme="light"] [style*="212,168,67"]{
+  border-color:rgba(53,180,220,0.35)!important;
+  color:var(--accent)!important;
+}
+[data-theme="light"] [style*="background:rgba(212,168,67"]{
+  background:rgba(103,213,243,0.14)!important;
+}
+[data-theme="light"] [style*="background:linear-gradient"][style*="212,168,67"]{
+  background:linear-gradient(135deg,rgba(103,213,243,0.16),rgba(255,255,255,0.5))!important;
+}
+[data-theme="light"] [style*="color:var(--accent)"]{color:var(--accent)!important}
+[data-theme="light"] [style*="background:var(--accent)"]{background:var(--accent)!important;color:#fff!important}
+[data-theme="light"] [style*="border-left:3px solid var(--accent)"]{border-left-color:var(--accent)!important}
+/* Píldora mostaza .p3 → turquesa en claro */
+[data-theme="light"] .p3{
+  background:rgba(103,213,243,0.16)!important;color:#1E86AA!important;
+  border:1px solid rgba(53,180,220,0.30)!important;
+}
+/* Onda decorativa y SVGs con stroke mostaza */
+[data-theme="light"] svg path[stroke="var(--accent)"]{stroke:#35B4DC}
+[data-theme="light"] svg line[stroke="var(--accent)"]{stroke:#35B4DC}
+/* Sombra dorada del sticky/badges */
+[data-theme="light"] [style*="var(--border-accent)"]{box-shadow:none!important}
+/* ══ Login — campos estéticos ══ */
+.auth-field{margin-bottom:.85rem}
+.auth-field .lbl{margin-bottom:6px}
+.auth-input-wrap{
+  display:flex;align-items:center;gap:11px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border-2);
+  border-radius:14px;padding:0 14px;
+  transition:border-color .2s var(--ease-out),box-shadow .2s var(--ease-out),background .2s;
+}
+.auth-input-wrap:hover{border-color:rgba(128,148,158,0.35)}
+.auth-input-wrap:focus-within{
+  border-color:var(--border-focus);
+  box-shadow:0 0 0 3.5px var(--accent-glow),0 4px 18px rgba(0,0,0,0.10);
+  background:rgba(255,255,255,0.06);
+}
+.auth-input-wrap svg.auth-ico{
+  width:17px;height:17px;flex-shrink:0;
+  color:var(--text-3);transition:color .2s;
+}
+.auth-input-wrap:focus-within svg.auth-ico{color:var(--accent)}
+.auth-input-wrap input{
+  flex:1;background:transparent!important;border:none!important;
+  box-shadow:none!important;outline:none!important;
+  padding:13px 0!important;min-height:46px;
+  font-size:13.5px;color:var(--text);border-radius:0!important;
+  font-family:var(--font-body);
+}
+.auth-input-wrap input::placeholder{color:var(--text-3);opacity:.7;letter-spacing:.02em}
+.auth-eye{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;flex-shrink:0;border:none;background:transparent;
+  color:var(--text-3);cursor:pointer;border-radius:50%;
+  transition:color .15s,background .15s;padding:0;
+}
+.auth-eye:hover{color:var(--accent);background:var(--accent-glow)}
+.auth-eye svg{width:17px;height:17px}
+[data-theme="light"] .auth-input-wrap{
+  background:rgba(255,255,255,0.72);
+  border:1px solid rgba(41,58,64,0.14);
+  box-shadow:inset 0 1px 3px rgba(41,58,64,0.04);
+}
+[data-theme="light"] .auth-input-wrap:focus-within{
+  background:rgba(255,255,255,0.92);
+  box-shadow:0 0 0 3.5px rgba(103,213,243,0.18),0 6px 20px rgba(41,58,64,0.08);
+}
 </style>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 </head>
@@ -1590,8 +1858,8 @@ input.narrow{width:88px}input.mid{width:108px}
 
 <div class="topbar">
   <div class="topbar-logo">
-    <span style="font-size:8px;font-weight:300;letter-spacing:0.44em;color:var(--gray-500);text-transform:uppercase;font-family:var(--font-display)">Estudio</span>
-    <span style="font-size:20px;font-weight:600;letter-spacing:0.06em;color:#D0D0D0;font-family:var(--font-display);line-height:1">AVIT</span>
+    <span style="font-size:15px;font-weight:700;letter-spacing:0.10em;color:var(--text);font-family:var(--font-display);line-height:1.1;text-transform:uppercase">Arquiboard</span>
+    <span id="empresaNombreTop" style="font-size:8.5px;font-weight:400;letter-spacing:0.20em;color:var(--accent);text-transform:uppercase;font-family:var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px"></span>
   </div>
   <div class="nav-tabs">
     <button class="ntab active" data-page="home" onclick="showPage('home')">Inicio</button>
@@ -1606,7 +1874,7 @@ input.narrow{width:88px}input.mid{width:108px}
         border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;
         color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;
         text-transform:uppercase;transition:all .15s var(--ease-out)"
-        onmouseover="this.style.borderColor='rgba(212,168,67,0.4)';this.style.color='var(--accent)'"
+        onmouseover="this.style.borderColor='var(--border-accent)';this.style.color='var(--accent)'"
         onmouseout="if(!document.getElementById('studioMenu').dataset.open){this.style.borderColor='';this.style.color='var(--text-2)';}">
         📋 Studio <span id="studioChevron" style="font-size:9px;transition:transform .15s">▾</span>
       </button>
@@ -1638,24 +1906,48 @@ input.narrow{width:88px}input.mid{width:108px}
   </div>
   <div class="topbar-actions" style="min-width:auto;gap:6px;align-items:center">
     <!-- +Nueva movido al home-hero -->
-    <!-- Menú ⚙ -->
-    <div style="position:relative" id="menuConfigWrap">
-      <button onclick="toggleMenuConfig()" title="Herramientas y datos" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--r-md);border:0.5px solid var(--border-2);background:transparent;color:var(--text-2);cursor:pointer;font-size:15px;transition:all .2s var(--ease-out)">⚙</button>
-      <div id="menuConfig" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:6px;min-width:200px;box-shadow:0 10px 40px rgba(0,0,0,0.5);z-index:200;animation:popIn .15s var(--ease-out)">
-        <div style="padding:5px 10px 3px;font-family:var(--font-display);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Datos</div>
-        <button onclick="exportarJSON();toggleMenuConfig()" class="menu-config-item">⬇ Exportar JSON</button>
-        <button onclick="exportarExcel();toggleMenuConfig()" class="menu-config-item">📊 Exportar Excel</button>
-        <label class="menu-config-item" style="cursor:pointer">⬆ Importar JSON<input type="file" id="importInput" accept=".json" style="display:none" onchange="importarJSON(event);toggleMenuConfig()"></label>
-        <div style="height:1px;background:rgba(255,255,255,0.06);margin:4px 0"></div>
-        <div style="padding:5px 10px 3px;font-family:var(--font-display);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Ayuda</div>
-        <button onclick="mostrarAtajos();toggleMenuConfig()" class="menu-config-item">⌨ Atajos de teclado</button>
-        <div style="height:1px;background:rgba(255,255,255,0.06);margin:4px 0"></div>
-        <div style="padding:5px 10px 3px;font-family:var(--font-display);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Datos</div>
-        <button onclick="togglePanelNube();toggleMenuConfig()" class="menu-config-item" id="btnNube">☁ Nube <span id="syncStatusMenu" style="font-family:var(--font-mono);font-size:9px;color:var(--green);margin-left:4px"></span></button>
+    <!-- Burbuja de usuario -->
+    <div style="position:relative" id="userBubbleWrap">
+      <button onclick="toggleUserMenu()" id="userBubbleBtn" title="Mi cuenta"
+        style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+        border-radius:50%;border:1.5px solid var(--border-accent);cursor:pointer;
+        background:linear-gradient(135deg,var(--accent-subtle),transparent);
+        color:var(--accent);font-family:var(--font-display);font-size:12px;font-weight:700;
+        letter-spacing:.02em;transition:all .2s var(--ease-out)">
+        <span id="userBubbleInitials">·</span>
+      </button>
+      <div id="userMenu" style="display:none;position:fixed;top:0;left:0;
+        background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);
+        border-radius:var(--r-lg);padding:8px;min-width:240px;max-width:calc(100vw - 16px);
+        box-shadow:0 12px 44px rgba(0,0,0,0.5);z-index:300;animation:popIn .15s var(--ease-out)">
+        <!-- Sesión -->
+        <div style="padding:8px 10px 10px;border-bottom:1px solid rgba(128,128,128,0.12);margin-bottom:5px">
+          <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px">Sesión iniciada</div>
+          <div id="userMenuEmail" style="font-family:var(--font-mono);font-size:11px;color:var(--text);overflow-wrap:anywhere">—</div>
+          <div id="userMenuNombre" style="font-size:10.5px;color:var(--text-3);margin-top:2px"></div>
+        </div>
+        <!-- Empresa -->
+        <div style="padding:4px 10px 8px">
+          <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px">Nombre de la empresa</div>
+          <div style="display:flex;gap:5px">
+            <input type="text" id="userMenuEmpresa" placeholder="Mi estudio"
+              style="flex:1;padding:6px 9px;font-size:11.5px;min-height:auto">
+            <button onclick="guardarEmpresaNombre()" title="Guardar"
+              style="padding:6px 10px;font-size:11px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer">✓</button>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(128,128,128,0.12);margin:4px 0"></div>
+        <!-- Tema -->
+        <button onclick="toggleTheme();actualizarUserMenuTema()" class="menu-config-item" id="userMenuTema">🌙 Modo oscuro</button>
+        <!-- Atajos -->
+        <button onclick="mostrarAtajos();toggleUserMenu()" class="menu-config-item">⌨ Atajos de teclado</button>
+        <!-- Excel -->
+        <button onclick="exportarExcel();toggleUserMenu()" class="menu-config-item">📊 Exportar Excel</button>
+        <div style="height:1px;background:rgba(128,128,128,0.12);margin:4px 0"></div>
+        <!-- Cerrar sesión -->
+        <button onclick="cerrarSesion()" class="menu-config-item" style="color:var(--red)">⏻ Cerrar sesión</button>
       </div>
     </div>
-    <!-- Toggle tema -->
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambiar entre modo claro y oscuro" aria-label="Cambiar tema">🌙</button>
     <div class="sync-status" id="syncStatus"></div>
   </div>
 </div>
@@ -2222,7 +2514,7 @@ input.narrow{width:88px}input.mid{width:108px}
 
 <button onclick="genCotizacion()" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;font-size:14px;font-weight:500;border:none;border-radius:var(--r-lg);background:var(--accent);color:#1C1C1C;cursor:pointer;margin-top:.5rem">
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 6V2h8v4M4 12H3a1 1 0 01-1-1V7a1 1 0 011-1h10a1 1 0 011 1v4a1 1 0 01-1 1h-1M4 9h8v5H4V9z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  Generar cotización formal — Estudio AVIT
+  Generar cotización formal
 </button>
 <button onclick="showPage('ing');showFormCot()" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px 16px;font-size:13px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-lg);background:var(--surface);color:var(--text);cursor:pointer;margin-top:.5rem">
   + Registrar cotización aprobada en Proyectos
@@ -3628,15 +3920,59 @@ function toggleStudioMenu(){
   const menu = document.getElementById('studioMenu');
   const btn  = document.getElementById('studioMenuBtn');
   const chev = document.getElementById('studioChevron');
-  if(!menu) return;
+  if(!menu || !btn) return;
   const open = menu.style.display === 'none' || !menu.style.display;
-  menu.style.display = open ? 'block' : 'none';
-  menu.dataset.open  = open ? '1' : '';
-  if(chev) chev.style.transform = open ? 'rotate(180deg)' : '';
-  if(btn){ btn.style.borderColor=open?'rgba(212,168,67,0.4)':''; btn.style.color=open?'var(--accent)':''; }
+
   if(open){
-    const close = e=>{ if(!document.getElementById('studioMenuWrap')?.contains(e.target)){ menu.style.display='none'; menu.dataset.open=''; if(chev) chev.style.transform=''; if(btn){ btn.style.borderColor=''; btn.style.color=''; } document.removeEventListener('click',close); } };
-    setTimeout(()=>document.addEventListener('click',close),10);
+    /* position:fixed anclado al botón — inmune al overflow de .nav-tabs
+       (que en móvil recorta cualquier hijo con position:absolute). */
+    const r = btn.getBoundingClientRect();
+    menu.style.position = 'fixed';
+    menu.style.display  = 'block';
+    menu.style.top      = (r.bottom + 7) + 'px';
+    menu.style.right    = 'auto';
+    menu.style.left     = '0px';   // temporal, se corrige tras medir
+    menu.style.bottom   = 'auto';
+
+    /* Alinear el borde derecho del menú con el del botón, sin salirse
+       de la pantalla (importante en móvil). */
+    const mw   = menu.offsetWidth || 190;
+    const vw   = window.innerWidth;
+    let left   = r.right - mw;
+    if(left + mw > vw - 8) left = vw - mw - 8;
+    if(left < 8) left = 8;
+    menu.style.left = left + 'px';
+
+    /* Si no cabe abajo, abrir hacia arriba */
+    const mh = menu.offsetHeight || 200;
+    if(r.bottom + 7 + mh > window.innerHeight - 8){
+      menu.style.top = Math.max(8, r.top - mh - 7) + 'px';
+    }
+  } else {
+    menu.style.display = 'none';
+  }
+
+  menu.dataset.open = open ? '1' : '';
+  if(chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+  btn.style.borderColor = open ? 'var(--border-accent)' : '';
+  btn.style.color       = open ? 'var(--accent)' : '';
+
+  if(open){
+    const close = e=>{
+      if(!document.getElementById('studioMenuWrap')?.contains(e.target) && !menu.contains(e.target)){
+        menu.style.display='none'; menu.dataset.open='';
+        if(chev) chev.style.transform='';
+        btn.style.borderColor=''; btn.style.color='';
+        document.removeEventListener('click',close);
+        window.removeEventListener('resize',close);
+        window.removeEventListener('scroll',close,true);
+      }
+    };
+    setTimeout(()=>{
+      document.addEventListener('click',close);
+      window.addEventListener('resize',close);
+      window.addEventListener('scroll',close,true);  // reposicionar/cerrar al hacer scroll
+    },10);
   }
 }
 
@@ -4237,7 +4573,7 @@ function adminGenReporte(){
     <div class="rpt-period">${periodo}</div>
   </div>
   <div class="rpt-brand">
-    <div class="rpt-brand-name">Estudio AVIT</div>
+    <div class="rpt-brand-name">${_empresaN()}</div>
     <div class="rpt-brand-sub">Arquitectura &amp; Interiorismo</div>
     <div class="rpt-brand-sub" style="margin-top:4px">Generado el ${generadoEl}</div>
   </div>
@@ -4277,12 +4613,12 @@ function adminGenReporte(){
 
 <div class="footer">
   <div class="footer-legal">
-    Reporte generado automáticamente por el Dashboard de Estudio AVIT.<br>
+    Reporte generado automáticamente por Arquiboard.<br>
     Los datos provienen de cotizaciones registradas y costos ingresados manualmente.<br>
     Período: ${periodo}
   </div>
   <div class="footer-sign">
-    <strong>Estudio AVIT</strong>
+    <strong>${_empresaN()}</strong>
     www.estudioavit.com
   </div>
 </div>
@@ -5315,7 +5651,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;
     font-size:8pt;color:#aaa;
   }
   @bottom-center{
-    content:'Estudio AVIT · www.estudioavit.com — Página ' counter(page) ' de ' counter(pages);
+    content:'${_empresaN()} · Arquiboard — Página ' counter(page) ' de ' counter(pages);
     font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
     font-size:8pt;color:#aaa;
   }
@@ -5393,7 +5729,7 @@ tr:nth-child(even) td{background:#fafafa}
 
   const html = `<!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8">
-<title>Programa Arquitectónico — Estudio AVIT</title>
+<title>Programa Arquitectónico — ${_empresaN()}</title>
 <style>${CSS}</style>
 </head><body>
 <div class="page">
@@ -5405,7 +5741,7 @@ tr:nth-child(even) td{background:#fafafa}
     <div class="doc-sub">Resumen de áreas, obras y presupuesto estimado</div>
   </div>
   <div style="text-align:right">
-    <span class="brand-name">Estudio AVIT</span>
+    <span class="brand-name">${_empresaN()}</span>
     <span class="brand-sub">Arquitectura &amp; Interiorismo<br>${fecha}</span>
   </div>
 </div>
@@ -5529,7 +5865,7 @@ tr:nth-child(even) td{background:#fafafa}
 <!-- Footer del documento -->
 <div class="doc-footer">
   <div>
-    Programa Arquitectónico · Estudio AVIT · ${fecha}<br>
+    Programa Arquitectónico · ${_empresaN()} · ${fecha}<br>
     Las áreas son referenciales y sujetas a ajuste durante el proceso de diseño.
   </div>
   <div style="text-align:right">www.estudioavit.com</div>
@@ -5567,7 +5903,7 @@ function exportarProgramaJSON(){
 
   const payload={
     _exportado:new Date().toISOString(),
-    _fuente:'Estudio AVIT Dashboard',
+    _fuente:'Arquiboard',
     resumen:{
       totalAmbientes:rooms.length,
       totalNiveles:Object.keys(byLevel).length,
@@ -6008,7 +6344,7 @@ tr:nth-child(even) td{background:#fafafa}
   </svg>`;
 
   const html=`<!DOCTYPE html><html lang="es"><head>
-<meta charset="UTF-8"><title>Constancia Organigrama — Estudio AVIT</title>
+<meta charset="UTF-8"><title>Constancia Organigrama — ${_empresaN()}</title>
 <style>${CSS}</style></head><body>
 
 <div class="watermark">AVIT</div>
@@ -6034,14 +6370,14 @@ tr:nth-child(even) td{background:#fafafa}
 <!-- Título -->
 <div class="doc-title-box">
   <div class="doc-title">Constancia de Organigrama Institucional</div>
-  <div class="doc-subtitle">Estructura organizacional de Estudio AVIT · Documento oficial</div>
+  <div class="doc-subtitle">Estructura organizacional de ${_empresaN()} · Documento oficial</div>
 </div>
 
 <!-- Considerandos -->
 <div class="considerandos">
   <div class="considerando">
     <div class="considerando-num">I.</div>
-    <div>Que <strong>Estudio AVIT</strong>, firma dedicada a la arquitectura e interiorismo con sede en Guatemala, ha establecido formalmente su estructura organizacional para el correcto funcionamiento de sus operaciones y la asignación de responsabilidades entre sus colaboradores.</div>
+    <div>Que <strong>${_empresaN()}</strong>, firma dedicada a la arquitectura e interiorismo con sede en Guatemala, ha establecido formalmente su estructura organizacional para el correcto funcionamiento de sus operaciones y la asignación de responsabilidades entre sus colaboradores.</div>
   </div>
   <div class="considerando">
     <div class="considerando-num">II.</div>
@@ -6080,18 +6416,18 @@ tr:nth-child(even) td{background:#fafafa}
   <div class="firma-box">
     <div class="firma-line"></div>
     <div class="firma-name">${root?root.nombre:'Director'}</div>
-    <div class="firma-rol">${root?root.rol:'Director / Fundador'} — Estudio AVIT</div>
+    <div class="firma-rol">${root?root.rol:'Director / Fundador'} — ${_empresaN()}</div>
   </div>
   <div class="firma-box">
     <div class="firma-line"></div>
     <div class="firma-name">Sello y firma</div>
-    <div class="firma-rol">Estudio AVIT — Guatemala</div>
+    <div class="firma-rol">${_empresaN()} — Guatemala</div>
   </div>
 </div>
 
 <!-- Footer -->
 <div class="doc-footer">
-  <div>Constancia emitida por el sistema de gestión de Estudio AVIT<br>
+  <div>Constancia emitida con Arquiboard — ${_empresaN()}<br>
   Documento generado el ${fecha}</div>
   <div style="text-align:right">www.estudioavit.com<br>Guatemala, C.A.</div>
 </div>
@@ -6116,6 +6452,334 @@ window.adminShowTab = function(tab){
     requestAnimationFrame(orgRender);
   }
 };
+
+
+/* ══════════════════════════════════════════════════════════════
+   ARQUIBOARD — AUTENTICACIÓN (Supabase) + PERFIL + SYNC
+   ══════════════════════════════════════════════════════════════ */
+
+/* ▼▼ CONFIGURÁ TU PROYECTO SUPABASE AQUÍ ▼▼ */
+var SUPABASE_URL      = '';   // ej: 'https://xxxx.supabase.co'
+var SUPABASE_ANON_KEY = '';   // tu anon/public key
+/* ▲▲ Dejar vacío = modo local (desarrollo) ▲▲ */
+
+var _sb = null;          // cliente supabase
+var _sbUser = null;      // usuario actual
+var _syncTimer = null;
+
+function _sbConfigured(){ return !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase); }
+
+/* ── Perfil local (empresa, nombre, encuesta) ─────────────── */
+function _perfil(){
+  try{ return JSON.parse(localStorage.getItem('avit_perfil')||'{}'); }catch(e){ return {}; }
+}
+function _perfilSave(p){
+  localStorage.setItem('avit_perfil', JSON.stringify(p));
+  aplicarPerfilUI();
+}
+function _empresaN(){ return (_perfil().empresa||'').trim() || 'Mi estudio'; }
+function _usuarioN(){ return (_perfil().nombre||'').trim() || ''; }
+
+/* ── Aplicar perfil a la UI (headline, saludo, burbuja) ────── */
+function aplicarPerfilUI(){
+  const p = _perfil();
+  const top = document.getElementById('empresaNombreTop');
+  if(top) top.textContent = p.empresa || '';
+  const em = document.getElementById('userMenuEmail');
+  if(em) em.textContent = _sbUser?.email || p.email || 'modo local';
+  const nm = document.getElementById('userMenuNombre');
+  if(nm) nm.textContent = p.nombre || '';
+  const emp = document.getElementById('userMenuEmpresa');
+  if(emp && !emp.matches(':focus')) emp.value = p.empresa || '';
+  const ini = document.getElementById('userBubbleInitials');
+  if(ini){
+    const n = (p.nombre||_sbUser?.email||'?').trim();
+    const w = n.split(/\s+/);
+    ini.textContent = (w.length>=2 ? w[0][0]+w[w.length-1][0] : n.slice(0,2)).toUpperCase();
+  }
+  const greet = document.getElementById('home-greeting');
+  if(greet && p.nombre) greet.textContent = 'Hola, ' + p.nombre.split(/\s+/)[0];
+  actualizarUserMenuTema();
+}
+function actualizarUserMenuTema(){
+  const b = document.getElementById('userMenuTema');
+  if(!b) return;
+  const light = document.documentElement.getAttribute('data-theme')==='light';
+  b.textContent = light ? '🌙 Cambiar a modo oscuro' : '☀️ Cambiar a modo claro';
+}
+function guardarEmpresaNombre(){
+  const v = (document.getElementById('userMenuEmpresa')?.value||'').trim();
+  const p = _perfil(); p.empresa = v; _perfilSave(p);
+  if(_sbConfigured() && _sbUser) _sb.auth.updateUser({data:{empresa:v}}).catch(()=>{});
+  const ss=document.getElementById('syncStatus');
+  if(ss){ss.textContent='✦ Empresa actualizada';setTimeout(()=>{if(ss.textContent==='✦ Empresa actualizada')ss.textContent='';},1800);}
+}
+
+/* ── Menú de la burbuja ────────────────────────────────────── */
+function toggleUserMenu(){
+  const menu = document.getElementById('userMenu');
+  const btn  = document.getElementById('userBubbleBtn');
+  if(!menu||!btn) return;
+  const open = menu.style.display==='none' || !menu.style.display;
+  if(open){
+    aplicarPerfilUI();
+    const r = btn.getBoundingClientRect();
+    menu.style.display='block';
+    const mw = menu.offsetWidth||240;
+    let left = r.right - mw;
+    if(left<8) left=8;
+    menu.style.left = left+'px';
+    menu.style.top  = (r.bottom+8)+'px';
+    const close = e=>{
+      if(!document.getElementById('userBubbleWrap')?.contains(e.target) && !menu.contains(e.target)){
+        menu.style.display='none';
+        document.removeEventListener('click',close);
+      }
+    };
+    setTimeout(()=>document.addEventListener('click',close),10);
+  } else {
+    menu.style.display='none';
+  }
+}
+window.toggleUserMenu=toggleUserMenu;
+window.guardarEmpresaNombre=guardarEmpresaNombre;
+window.actualizarUserMenuTema=actualizarUserMenuTema;
+
+/* ── AUTH: login / signup / logout ─────────────────────────── */
+function _authErr(msg){
+  const e=document.getElementById('authError');
+  if(e){ e.textContent=msg; e.style.display=msg?'block':'none'; }
+}
+function _initSupabase(){
+  if(!_sbConfigured()) return null;
+  if(_sb) return _sb;
+  /* "Mantener sesión": si el usuario NO marcó el checkbox al entrar,
+     guardamos un marcador en sessionStorage; al recargar en una pestaña
+     nueva sin marcador → cerrar sesión. */
+  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return _sb;
+}
+async function authLogin(){
+  _authErr('');
+  if(!_sbConfigured()){ document.getElementById('authNoConfig').style.display='block'; return; }
+  const email=(document.getElementById('authEmail')?.value||'').trim();
+  const pass = document.getElementById('authPass')?.value||'';
+  if(!email||!pass){ _authErr('Ingresá correo y contraseña.'); return; }
+  const btn=document.getElementById('authLoginBtn'); if(btn){btn.textContent='Ingresando…';btn.disabled=true;}
+  try{
+    const sb=_initSupabase();
+    const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error){ _authErr(error.message==='Invalid login credentials'?'Correo o contraseña incorrectos.':error.message); return; }
+    _sbUser=data.user;
+    const keep=document.getElementById('authKeep')?.checked;
+    localStorage.setItem('avit_keepSession', keep?'1':'0');
+    sessionStorage.setItem('avit_tabSession','1');
+    await _postLogin();
+  }catch(err){ _authErr('Error de conexión: '+(err.message||err)); }
+  finally{ if(btn){btn.textContent='Iniciar sesión';btn.disabled=false;} }
+}
+async function authSignup(){
+  _authErr('');
+  if(!_sbConfigured()){ document.getElementById('authNoConfig').style.display='block'; return; }
+  const email=(document.getElementById('authEmail')?.value||'').trim();
+  const pass = document.getElementById('authPass')?.value||'';
+  if(!email||!pass){ _authErr('Ingresá correo y contraseña para crear tu cuenta.'); return; }
+  if(pass.length<6){ _authErr('La contraseña debe tener al menos 6 caracteres.'); return; }
+  const btn=document.getElementById('authSignupBtn'); if(btn){btn.textContent='Creando…';btn.disabled=true;}
+  try{
+    const sb=_initSupabase();
+    const {data,error}=await sb.auth.signUp({email,password:pass});
+    if(error){ _authErr(error.message); return; }
+    if(data.user && !data.session){
+      _authErr('Revisá tu correo para confirmar la cuenta y luego iniciá sesión.');
+      return;
+    }
+    _sbUser=data.user;
+    localStorage.setItem('avit_keepSession', document.getElementById('authKeep')?.checked?'1':'0');
+    sessionStorage.setItem('avit_tabSession','1');
+    await _postLogin();
+  }catch(err){ _authErr('Error: '+(err.message||err)); }
+  finally{ if(btn){btn.textContent='Crear cuenta nueva';btn.disabled=false;} }
+}
+function authLocalMode(){
+  localStorage.setItem('avit_localMode','1');
+  document.getElementById('authOverlay').style.display='none';
+  aplicarPerfilUI();
+  if(!_perfil().onboarded) mostrarOnboarding();
+}
+async function cerrarSesion(){
+  if(_sbConfigured() && _sb){ try{ await _sb.auth.signOut(); }catch(e){} }
+  localStorage.removeItem('avit_localMode');
+  sessionStorage.removeItem('avit_tabSession');
+  _sbUser=null;
+  location.reload();
+}
+
+/* ── Mostrar / ocultar contraseña en el login ── */
+function togglePassVis(){
+  const inp = document.getElementById('authPass');
+  const ico = document.getElementById('authEyeIco');
+  if(!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  if(ico){
+    ico.innerHTML = show
+      ? '<path d="M3 3l18 18"/><path d="M10.6 5.8A9.8 9.8 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17.5 17.5 0 0 1-2.7 3.4M6.6 6.9C4 8.8 2.5 12 2.5 12S6 18.5 12 18.5c1.2 0 2.3-.25 3.3-.66"/><path d="M9.9 10.1a2.8 2.8 0 0 0 3.9 3.9"/>'
+      : '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>';
+  }
+  inp.focus();
+}
+window.togglePassVis = togglePassVis;
+
+window.authLogin=authLogin; window.authSignup=authSignup;
+window.authLocalMode=authLocalMode; window.cerrarSesion=cerrarSesion;
+
+/* ── Post-login: perfil remoto, encuesta, sync ─────────────── */
+async function _postLogin(){
+  document.getElementById('authOverlay').style.display='none';
+  const meta=_sbUser?.user_metadata||{};
+  const p=_perfil();
+  if(meta.empresa) p.empresa=meta.empresa;
+  if(meta.nombre)  p.nombre =meta.nombre;
+  if(meta.onboarded) p.onboarded=true;
+  p.email=_sbUser?.email||'';
+  _perfilSave(p);
+  await _pullDatos();
+  _instalarAutoSync();
+  aplicarPerfilUI();
+  if(typeof renderHome==='function') try{renderHome();}catch(e){}
+  if(!p.onboarded) mostrarOnboarding();
+}
+
+/* ── Onboarding (encuesta) ─────────────────────────────────── */
+function mostrarOnboarding(){
+  const ov=document.getElementById('onboardOverlay');
+  if(!ov) return;
+  const p=_perfil();
+  const e1=document.getElementById('obEmpresa'); if(e1) e1.value=p.empresa||'';
+  const e2=document.getElementById('obNombre');  if(e2) e2.value=p.nombre||'';
+  ov.style.display='flex';
+}
+function _obError(msg){
+  const e=document.getElementById('obError');
+  if(e){ e.textContent=msg||''; e.style.display=msg?'block':'none'; }
+}
+function guardarOnboarding(){
+  try{
+    _obError('');
+    const eEmp=document.getElementById('obEmpresa');
+    const eNom=document.getElementById('obNombre');
+    const empresa=(eEmp?.value||'').trim();
+    const nombre =(eNom?.value||'').trim();
+    const fuente = document.getElementById('obFuente')?.value||'';
+    const equipo = document.getElementById('obEquipo')?.value||'';
+
+    /* Validación visual, sin alerts bloqueantes */
+    let falta=false;
+    if(!empresa && eEmp){ eEmp.style.borderColor='var(--red)'; falta=true; } else if(eEmp){ eEmp.style.borderColor=''; }
+    if(!nombre  && eNom){ eNom.style.borderColor='var(--red)'; falta=true; } else if(eNom){ eNom.style.borderColor=''; }
+    if(falta){ _obError('Completá el nombre del estudio y tu nombre para continuar.'); return; }
+
+    /* 1º cerrar el modal — la app nunca queda atascada */
+    const ov=document.getElementById('onboardOverlay');
+    if(ov) ov.style.display='none';
+
+    /* 2º persistir localmente */
+    const p=_perfil();
+    Object.assign(p,{empresa,nombre,fuente,equipo,onboarded:true});
+    try{ _perfilSave(p); }catch(e){ console.warn('[Arquiboard] perfil local', e); }
+
+    /* 3º persistir en Supabase: metadata + TABLA DE ENCUESTAS
+          (estudio de mercado — base de datos aparte) */
+    if(_sbConfigured() && _sbUser){
+      _sb.auth.updateUser({data:{empresa,nombre,fuente,equipo,onboarded:true}}).catch(()=>{});
+      _sb.from('arquiboard_encuestas').insert({
+        user_id: _sbUser.id,
+        email:   _sbUser.email||'',
+        empresa, nombre, fuente, equipo
+      }).then(({error})=>{
+        if(error) console.warn('[Arquiboard] encuesta no guardada:', error.message);
+        else console.log('[Arquiboard] encuesta registrada ✓');
+      }).catch(()=>{});
+    }
+    if(typeof renderHome==='function') try{renderHome();}catch(e){}
+  }catch(err){
+    console.error('[Arquiboard] guardarOnboarding', err);
+    _obError('Ocurrió un error: '+(err.message||err)+'. Podés omitir la encuesta abajo.');
+  }
+}
+function omitirOnboarding(){
+  const p=_perfil(); p.onboarded=true;
+  try{ _perfilSave(p); }catch(e){}
+  const ov=document.getElementById('onboardOverlay');
+  if(ov) ov.style.display='none';
+}
+window.omitirOnboarding=omitirOnboarding;
+window.mostrarOnboarding=mostrarOnboarding;
+window.guardarOnboarding=guardarOnboarding;
+
+/* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
+const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft'];
+async function _pullDatos(){
+  if(!_sbConfigured() || !_sbUser) return;
+  try{
+    const {data,error}=await _sb.from('avit_data').select('payload').eq('user_id',_sbUser.id).maybeSingle();
+    if(error || !data || !data.payload) return;
+    const pl=data.payload;
+    _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
+    console.log('[Arquiboard] Datos sincronizados desde la nube');
+  }catch(e){ console.warn('[Arquiboard] pull falló', e); }
+}
+async function _pushDatos(){
+  if(!_sbConfigured() || !_sbUser) return;
+  try{
+    const payload={};
+    _SYNC_KEYS.forEach(k=>{ const v=localStorage.getItem(k); if(v!=null) payload[k]=v; });
+    await _sb.from('avit_data').upsert({user_id:_sbUser.id, payload, updated_at:new Date().toISOString()});
+    const ss=document.getElementById('syncStatus');
+    if(ss){ss.textContent='☁ guardado';setTimeout(()=>{if(ss.textContent==='☁ guardado')ss.textContent='';},1500);}
+  }catch(e){ console.warn('[Arquiboard] push falló', e); }
+}
+function _instalarAutoSync(){
+  if(window._syncInstalled) return;
+  window._syncInstalled=true;
+  const orig=localStorage.setItem.bind(localStorage);
+  localStorage.setItem=function(k,v){
+    orig(k,v);
+    if(_SYNC_KEYS.includes(k) && _sbUser){
+      clearTimeout(_syncTimer);
+      _syncTimer=setTimeout(_pushDatos, 2500);   // debounce 2.5s
+    }
+  };
+}
+
+/* ── Arranque: ¿hay sesión activa? ─────────────────────────── */
+(async function _authBoot(){
+  aplicarPerfilUI();
+  if(localStorage.getItem('avit_localMode')==='1'){
+    document.getElementById('authOverlay').style.display='none';
+    if(!_perfil().onboarded) mostrarOnboarding();
+    return;
+  }
+  if(!_sbConfigured()){
+    const nc=document.getElementById('authNoConfig');
+    if(nc) nc.style.display='block';
+    return;
+  }
+  try{
+    const sb=_initSupabase();
+    const {data}=await sb.auth.getSession();
+    if(data && data.session){
+      const keep=localStorage.getItem('avit_keepSession')!=='0';
+      const tab =sessionStorage.getItem('avit_tabSession')==='1';
+      if(!keep && !tab){ await sb.auth.signOut(); return; }   // no mantener → pedir login de nuevo
+      _sbUser=data.session.user;
+      sessionStorage.setItem('avit_tabSession','1');
+      await _postLogin();
+    }
+  }catch(e){ console.warn('[Arquiboard] boot auth', e); }
+})();
+
 
 function toggleMenuConfig(){
   const m = document.getElementById('menuConfig');
@@ -7291,6 +7955,9 @@ function genCotizacion(){
   // Checklist del Anteproyecto → lista de servicios incluidos
   const _apLbls=['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones'];
   s.apIncluye=_apLbls.filter((_,i)=>document.getElementById('apInc'+(i+1))?.checked);
+  // Marca del estudio + autor (Arquiboard)
+  s.empresaNombre = (typeof _empresaN==='function') ? _empresaN() : 'Mi estudio';
+  s.autorNombre   = (typeof _usuarioN==='function') ? _usuarioN() : '';
   const f=n=>s.cur+' '+Math.round(n).toLocaleString();
   const cn=svEl('clientName')||'Cliente';
   const pt=svEl('projTitle')||'Proyecto de diseño arquitectónico';
@@ -7375,7 +8042,7 @@ function genCotizacion(){
       calRows+=`<tr><td style="padding:6px 10px 6px 0;vertical-align:top;width:14px"><div style="width:8px;height:8px;border-radius:50%;background:${dotC};margin-top:4px"></div></td><td style="padding:6px 8px"><div style="font-size:12px;font-weight:500;color:#1a1a18">${sp.title}</div><div style="font-size:10px;color:#888;margin-top:1px">${ds}</div>${sp.clientNote?`<div style="font-size:11px;color:#555;margin-top:3px;line-height:1.5">${sp.clientNote}</div>`:''}<div style="margin-top:4px">${entTags}${fb}</div></td></tr>`;
     });
   }
-  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cotización ${cotNum} — Estudio AVIT</title>
+  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cotización ${cotNum} — ${s.empresaNombre||"Mi estudio"}</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-size:12px;line-height:1.7;background-image:url('data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnsAKj5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5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AAAAAAAAAAAAAnTsgnTsCQAAAAAAAAAAAAAAAAABPYJ7AqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATp2QTp2BIAAAAAAAAAAAAAAAAAAnsE9gVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ07IJ07AkAAAAAAAAAAAAAAAAAAT2AFQs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFadOz3lj0exER2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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');background-size:100% 100%;background-repeat:no-repeat;background-attachment:fixed;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -7461,7 +8128,7 @@ ${calRows?`<div class="sec"><div class="sl">Plan de entregas</div><table style="
   <ul style="margin:0;padding-left:16px;font-size:10.5px;color:#444;line-height:1.9">
     ${!s.f2?`<li>No incluye planos hidráulicos, eléctricos ni constructivos de ningún tipo.</li>`:''}
     <li>No incluye cálculo ni asesoría estructural. Los planos estructurales se transcribirán con base y respaldo de la información calculada por un ingeniero estructural.</li>
-    <li>Las imágenes fotorrealistas (renders) de este proyecto pueden ser utilizadas con fines publicitarios por Estudio AVIT. Si desea reservar el contenido en privado, por favor indicarlo al aceptar esta cotización.</li>
+    <li>Las imágenes fotorrealistas (renders) de este proyecto pueden ser utilizadas con fines publicitarios por ${s.empresaNombre||"el estudio"}. Si desea reservar el contenido en privado, por favor indicarlo al aceptar esta cotización.</li>
     <li>Esta cotización no incluye trámites de permisos, licencias gubernamentales, cálculos ni planos estructurales oficiales.</li>
     <li>Todo lo que no se describe en este documento no está incluido, y puede cotizarse como rubro adicional.</li>
     <li>Los tiempos para cambios están considerados; sin embargo, si se solicitan cambios adicionales a los normales, el cronograma deberá ajustarse para contemplar ese tiempo extra.</li>
@@ -7469,7 +8136,7 @@ ${calRows?`<div class="sec"><div class="sl">Plan de entregas</div><table style="
     ${!s.timbresOn?`<li>No incluye firma ni sello de planos finales.</li>`:''}
   </ul>
 </div>
-<div class="fb"><div class="fb-l"><strong>Estudio AVIT</strong><span>Servicios de diseño arquitectónico</span><span style="margin-top:2px;display:block">${fecha}</span></div><div style="font-size:10px;color:#ccc">Vigencia: 30 días</div></div>
+<div class="fb"><div class="fb-l"><strong>${s.empresaNombre||"Mi estudio"}</strong><span>Servicios de diseño arquitectónico</span><span style="margin-top:2px;display:block">${fecha}${s.autorNombre?" · Elaborado por "+s.autorNombre:""}</span></div><div style="font-size:10px;color:#ccc">Vigencia: 30 días</div></div>
 </div>
 <div class="ft-sep"></div>
 <div class="ft"><p>Cotización ${cotNum} &nbsp;·&nbsp; ${fecha} &nbsp;·&nbsp; No incluye gastos de construcción, permisos ni estudios de suelos. Trabajo adicional requiere aprobación escrita.</p></div>
@@ -7520,7 +8187,7 @@ function genCotizacionDesde(id){
   const ps=Math.max(0,100-pa-pf);
 
   const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<title>Cotización ${cotNum} — Estudio AVIT</title>
+<title>Cotización ${cotNum} — ${_empresaN()}</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-size:12px;line-height:1.7;background-image:url('data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnsAKj5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5yC0VfOT5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AAAAAAAAAAAAAnTsgnTsCQAAAAAAAAAAAAAAAAABPYJ7AqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATp2QTp2BIAAAAAAAAAAAAAAAAAAnsE9gVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJ07IJ07AkAAAAAAAAAAAAAAAAAAT2AFQs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFYs5Y9Dlj0BWLOWPQ5Y9AVizlj0OWPQFadOz3lj0exER2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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');background-size:100% 100%;background-repeat:no-repeat;background-attachment:fixed;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -7579,7 +8246,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-
 </style></head><body>
 <div class="pdf-ph">
   <div style="display:flex;flex-direction:column">
-    <span style="font-size:11px;font-weight:500;color:#1a1a18;letter-spacing:.5px;text-transform:uppercase">Estudio AVIT</span>
+    <span style="font-size:11px;font-weight:500;color:#1a1a18;letter-spacing:.5px;text-transform:uppercase">${_empresaN()}</span>
     <span style="font-size:9px;color:#aaa;letter-spacing:.3px">Arquitectura &amp; Interiorismo</span>
   </div>
   <div style="text-align:right">
@@ -7614,13 +8281,13 @@ ${f2on?`<div class="sec"><div class="sl">Planimetrías</div>${planosText?`<p cla
   <ul style="margin:0;padding-left:16px;font-size:10.5px;color:#444;line-height:1.9">
     ${!f2on?`<li>No incluye planos hidráulicos, eléctricos ni constructivos de ningún tipo.</li>`:''}
     <li>No incluye cálculo ni asesoría estructural.</li>
-    <li>Las imágenes fotorrealistas (renders) pueden ser utilizadas con fines publicitarios por Estudio AVIT. Si desea reservar el contenido en privado, indicarlo al aceptar esta cotización.</li>
+    <li>Las imágenes fotorrealistas (renders) pueden ser utilizadas con fines publicitarios por ${_empresaN()}. Si desea reservar el contenido en privado, indicarlo al aceptar esta cotización.</li>
     <li>Esta cotización no incluye trámites de permisos, licencias gubernamentales, cálculos ni planos estructurales oficiales.</li>
     <li>Todo lo que no se describe en este documento no está incluido y puede cotizarse como rubro adicional.</li>
     <li>No incluye impresión de planos.</li>
   </ul>
 </div>
-<div class="fb"><div class="fb-l"><strong>Estudio AVIT</strong><span>Servicios de diseño arquitectónico</span><span style="margin-top:2px;display:block">${fecha}</span></div><div style="font-size:10px;color:#ccc">Vigencia: 30 días</div></div>
+<div class="fb"><div class="fb-l"><strong>${_empresaN()}</strong><span>Servicios de diseño arquitectónico</span><span style="margin-top:2px;display:block">${fecha}${_usuarioN()?" · Elaborado por "+_usuarioN():""}</span></div><div style="font-size:10px;color:#ccc">Vigencia: 30 días</div></div>
 </div>
 <div class="ft-sep"></div>
 <div class="ft"><p>Cotización ${cotNum} &nbsp;·&nbsp; ${fecha} &nbsp;·&nbsp; No incluye gastos de construcción, permisos ni estudios de suelos.</p></div>
@@ -8071,7 +8738,7 @@ function generarReciboHTML(id){
   const montoFormateado = c.cur + ' ' + Math.round(monto).toLocaleString('es-GT');
 
   // HTML imprimible del recibo
-  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Recibo ${numero} — Estudio AVIT</title>
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Recibo ${numero} — ${_empresaN()}</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;background:#fff;font-size:12px;line-height:1.7}
@@ -8108,7 +8775,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;backg
   @page{size:A4;margin:15mm 12mm 18mm 12mm}
 }
 </style></head><body><button class="print-bar" onclick="window.print()">🖨 Imprimir / PDF</button><div class="page">
-<div class="lh"><img src="data:image/png;base64,${LOGO_B64}" alt="Estudio AVIT"><div class="lh-r"><div class="cn">Recibo No.</div><div class="num">${escapeHtmlBasic(numero)}</div></div></div>
+<div class="lh"><img src="data:image/png;base64,${LOGO_B64}" alt="${_empresaN()}"><div class="lh-r"><div class="cn">Recibo No.</div><div class="num">${escapeHtmlBasic(numero)}</div></div></div>
 
 <div class="titulo">
   <h1>Recibo</h1>
@@ -8129,7 +8796,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;backg
 <div class="firma">
   <div class="col">
     <div class="ln">
-      <div class="nm">Estudio AVIT</div>
+      <div class="nm">${_empresaN()}</div>
       <div class="rl">Receptor</div>
     </div>
   </div>
@@ -8141,7 +8808,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;backg
   </div>
 </div>
 
-<div class="ft"><p>Este recibo es válido como comprobante de pago. Estudio AVIT — Arquitectura e interiorismo.</p></div>
+<div class="ft"><p>Este recibo es válido como comprobante de pago. ${_empresaN()} — Arquitectura e interiorismo.</p></div>
 </div>
 </body></html>`;
 
@@ -11947,7 +12614,7 @@ function pmRenderRuler(){
       const colDays=Math.min(daysToQEnd,PM_WINDOW-d);
       const el=document.createElement('div'); el.className='pm-ruler-month-el';
       el.style.left=(d*pmPxPerDay)+'px'; el.style.width=(colDays*pmPxPerDay)+'px';
-      el.style.borderLeftColor='rgba(212,168,67,0.4)';
+      el.style.borderLeftColor='var(--border-accent)';
       el.textContent=Q_LABELS[Math.floor(mo/3)]+' '+yr;
       mDiv.appendChild(el);
       d+=colDays;
@@ -12253,6 +12920,116 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 </div>
 
+
+
+<!-- ═══════════════ ARQUIBOARD — LOGIN ═══════════════ -->
+<div id="authOverlay" style="position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg-base)">
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none">
+    <div style="position:absolute;top:-140px;left:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 65%)"></div>
+    <div style="position:absolute;bottom:-160px;right:-120px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(90,158,212,0.07) 0%,transparent 65%)"></div>
+  </div>
+  <div class="sc" style="width:100%;max-width:380px;position:relative;padding:2rem 1.8rem">
+    <div style="text-align:center;margin-bottom:1.4rem">
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:0.10em;color:var(--text);text-transform:uppercase">Arquiboard</div>
+      <div style="font-size:10px;color:var(--text-3);letter-spacing:0.22em;text-transform:uppercase;margin-top:4px;font-family:var(--font-display)">Gestión para estudios de arquitectura</div>
+    </div>
+    <div id="authError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
+    <div class="auth-field">
+      <label class="lbl" for="authEmail">Correo electrónico</label>
+      <div class="auth-input-wrap">
+        <svg class="auth-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="3"/>
+          <path d="M3.5 7l7.4 5.4a2 2 0 0 0 2.2 0L20.5 7"/>
+        </svg>
+        <input type="email" id="authEmail" placeholder="tu@correo.com" autocomplete="email" spellcheck="false">
+      </div>
+    </div>
+    <div class="auth-field" style="margin-bottom:.9rem">
+      <label class="lbl" for="authPass">Contraseña</label>
+      <div class="auth-input-wrap">
+        <svg class="auth-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/>
+          <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
+          <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
+        </svg>
+        <input type="password" id="authPass" placeholder="••••••••" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')authLogin()">
+        <button type="button" class="auth-eye" onclick="togglePassVis()" title="Mostrar / ocultar contraseña" tabindex="-1">
+          <svg id="authEyeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/>
+            <circle cx="12" cy="12" r="2.8"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text-2);cursor:pointer;margin-bottom:1.1rem">
+      <input type="checkbox" id="authKeep" checked style="accent-color:var(--accent);min-height:auto">
+      Mantener la sesión iniciada en este dispositivo
+    </label>
+    <button onclick="authLogin()" id="authLoginBtn"
+      style="width:100%;padding:11px;font-size:12px;font-weight:600;border:none;border-radius:999px;
+      background:linear-gradient(135deg,var(--accent-light,var(--accent)),var(--accent));color:var(--text-on-accent);
+      cursor:pointer;font-family:var(--font-display);letter-spacing:.10em;text-transform:uppercase;
+      box-shadow:var(--shadow-accent,0 8px 20px rgba(212,168,67,0.3));transition:transform .15s">
+      Iniciar sesión
+    </button>
+    <button onclick="authSignup()" id="authSignupBtn"
+      style="width:100%;margin-top:9px;padding:10px;font-size:11px;border:1px solid var(--border-2);border-radius:999px;
+      background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">
+      Crear cuenta nueva
+    </button>
+    <p id="authNoConfig" style="display:none;font-size:10px;color:var(--text-3);text-align:center;margin-top:12px;line-height:1.6">
+      ⚠ Supabase no está configurado aún.<br>
+      <button onclick="authLocalMode()" style="margin-top:5px;padding:5px 14px;font-size:10px;border:0.5px solid var(--border-2);border-radius:999px;background:transparent;color:var(--text-3);cursor:pointer">Entrar en modo local (desarrollo)</button>
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════ ONBOARDING (encuesta) ═══════════════ -->
+<div id="onboardOverlay" style="position:fixed;inset:0;z-index:8900;display:none;align-items:flex-start;justify-content:center;padding:20px;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);overflow-y:auto">
+  <div class="sc" style="width:100%;max-width:420px;padding:1.8rem 1.7rem;margin:auto 0">
+    <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px">Bienvenido a Arquiboard</div>
+    <p style="font-size:12px;color:var(--text-2);margin-bottom:1.2rem">Contanos un poco de tu estudio para personalizar tu experiencia.</p>
+    <div id="obError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
+    <div class="fg" style="margin-bottom:.65rem">
+      <label class="lbl">¿Cómo se llama tu estudio de arquitectura?</label>
+      <input type="text" id="obEmpresa" placeholder="Estudio AVIT">
+    </div>
+    <div class="fg" style="margin-bottom:.65rem">
+      <label class="lbl">¿Cuál es tu nombre?</label>
+      <input type="text" id="obNombre" placeholder="Tu nombre">
+    </div>
+    <div class="fg" style="margin-bottom:.65rem">
+      <label class="lbl">¿Cómo te enteraste de Arquiboard?</label>
+      <select id="obFuente">
+        <option value="">Seleccioná una opción…</option>
+        <option>Instagram</option><option>Facebook</option><option>TikTok</option>
+        <option>Recomendación de un colega</option><option>Búsqueda en Google</option>
+        <option>Evento / conferencia</option><option>Otro</option>
+      </select>
+    </div>
+    <div class="fg" style="margin-bottom:1.2rem">
+      <label class="lbl">¿Cuántas personas trabajan en el estudio?</label>
+      <select id="obEquipo">
+        <option value="">Seleccioná una opción…</option>
+        <option>Solo yo</option><option>2 a 5</option><option>6 a 10</option>
+        <option>11 a 20</option><option>Más de 20</option>
+      </select>
+    </div>
+    <button onclick="guardarOnboarding()"
+      style="width:100%;padding:11px;font-size:12px;font-weight:600;border:none;border-radius:999px;
+      background:linear-gradient(135deg,var(--accent-light,var(--accent)),var(--accent));color:var(--text-on-accent);
+      cursor:pointer;font-family:var(--font-display);letter-spacing:.10em;text-transform:uppercase;
+      box-shadow:var(--shadow-accent,0 8px 20px rgba(212,168,67,0.3))">
+      Comenzar →
+    </button>
+    <button onclick="omitirOnboarding()"
+      style="width:100%;margin-top:8px;padding:8px;font-size:10.5px;border:none;border-radius:999px;
+      background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">
+      Omitir por ahora
+    </button>
+  </div>
+</div>
 
 </body>
 </html>
