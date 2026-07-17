@@ -6459,8 +6459,8 @@ window.adminShowTab = function(tab){
    ══════════════════════════════════════════════════════════════ */
 
 /* ▼▼ CONFIGURÁ TU PROYECTO SUPABASE AQUÍ ▼▼ */
-var SUPABASE_URL      = '';   // ej: 'https://xxxx.supabase.co'
-var SUPABASE_ANON_KEY = '';   // tu anon/public key
+var SUPABASE_URL      = 'https://gqzfwbvmjbpvazzoohmt.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxemZ3YnZtamJwdmF6em9vaG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNjU2MjMsImV4cCI6MjA5OTY0MTYyM30.4h81sp225UnsOqsW-8idrUybWxC3OF-uXXLrG7YzvPk';
 /* ▲▲ Dejar vacío = modo local (desarrollo) ▲▲ */
 
 var _sb = null;          // cliente supabase
@@ -6719,7 +6719,7 @@ window.mostrarOnboarding=mostrarOnboarding;
 window.guardarOnboarding=guardarOnboarding;
 
 /* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
-const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft'];
+const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
 async function _pullDatos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
