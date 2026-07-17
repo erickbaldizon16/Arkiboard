@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Arquiboard — Gestión para estudios de arquitectura</title>
+<title>Arkiboard — Gestión para estudios de arquitectura</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
@@ -1858,7 +1858,7 @@ input.narrow{width:88px}input.mid{width:108px}
 
 <div class="topbar">
   <div class="topbar-logo">
-    <span style="font-size:15px;font-weight:700;letter-spacing:0.10em;color:var(--text);font-family:var(--font-display);line-height:1.1;text-transform:uppercase">Arquiboard</span>
+    <span style="font-size:15px;font-weight:700;letter-spacing:0.10em;color:var(--text);font-family:var(--font-display);line-height:1.1;text-transform:uppercase">Arkiboard</span>
     <span id="empresaNombreTop" style="font-size:8.5px;font-weight:400;letter-spacing:0.20em;color:var(--accent);text-transform:uppercase;font-family:var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px"></span>
   </div>
   <div class="nav-tabs">
@@ -4613,7 +4613,7 @@ function adminGenReporte(){
 
 <div class="footer">
   <div class="footer-legal">
-    Reporte generado automáticamente por Arquiboard.<br>
+    Reporte generado automáticamente por Arkiboard.<br>
     Los datos provienen de cotizaciones registradas y costos ingresados manualmente.<br>
     Período: ${periodo}
   </div>
@@ -5651,7 +5651,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;
     font-size:8pt;color:#aaa;
   }
   @bottom-center{
-    content:'${_empresaN()} · Arquiboard — Página ' counter(page) ' de ' counter(pages);
+    content:'${_empresaN()} · Arkiboard — Página ' counter(page) ' de ' counter(pages);
     font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
     font-size:8pt;color:#aaa;
   }
@@ -5903,7 +5903,7 @@ function exportarProgramaJSON(){
 
   const payload={
     _exportado:new Date().toISOString(),
-    _fuente:'Arquiboard',
+    _fuente:'Arkiboard',
     resumen:{
       totalAmbientes:rooms.length,
       totalNiveles:Object.keys(byLevel).length,
@@ -6427,7 +6427,7 @@ tr:nth-child(even) td{background:#fafafa}
 
 <!-- Footer -->
 <div class="doc-footer">
-  <div>Constancia emitida con Arquiboard — ${_empresaN()}<br>
+  <div>Constancia emitida con Arkiboard — ${_empresaN()}<br>
   Documento generado el ${fecha}</div>
   <div style="text-align:right">www.estudioavit.com<br>Guatemala, C.A.</div>
 </div>
@@ -6455,7 +6455,7 @@ window.adminShowTab = function(tab){
 
 
 /* ══════════════════════════════════════════════════════════════
-   ARQUIBOARD — AUTENTICACIÓN (Supabase) + PERFIL + SYNC
+   ARKIBOARD — AUTENTICACIÓN (Supabase) + PERFIL + SYNC
    ══════════════════════════════════════════════════════════════ */
 
 /* ▼▼ CONFIGURÁ TU PROYECTO SUPABASE AQUÍ ▼▼ */
@@ -6687,7 +6687,7 @@ function guardarOnboarding(){
     /* 2º persistir localmente */
     const p=_perfil();
     Object.assign(p,{empresa,nombre,fuente,equipo,onboarded:true});
-    try{ _perfilSave(p); }catch(e){ console.warn('[Arquiboard] perfil local', e); }
+    try{ _perfilSave(p); }catch(e){ console.warn('[Arkiboard] perfil local', e); }
 
     /* 3º persistir en Supabase: metadata + TABLA DE ENCUESTAS
           (estudio de mercado — base de datos aparte) */
@@ -6698,13 +6698,13 @@ function guardarOnboarding(){
         email:   _sbUser.email||'',
         empresa, nombre, fuente, equipo
       }).then(({error})=>{
-        if(error) console.warn('[Arquiboard] encuesta no guardada:', error.message);
-        else console.log('[Arquiboard] encuesta registrada ✓');
+        if(error) console.warn('[Arkiboard] encuesta no guardada:', error.message);
+        else console.log('[Arkiboard] encuesta registrada ✓');
       }).catch(()=>{});
     }
     if(typeof renderHome==='function') try{renderHome();}catch(e){}
   }catch(err){
-    console.error('[Arquiboard] guardarOnboarding', err);
+    console.error('[Arkiboard] guardarOnboarding', err);
     _obError('Ocurrió un error: '+(err.message||err)+'. Podés omitir la encuesta abajo.');
   }
 }
@@ -6727,8 +6727,8 @@ async function _pullDatos(){
     if(error || !data || !data.payload) return;
     const pl=data.payload;
     _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
-    console.log('[Arquiboard] Datos sincronizados desde la nube');
-  }catch(e){ console.warn('[Arquiboard] pull falló', e); }
+    console.log('[Arkiboard] Datos sincronizados desde la nube');
+  }catch(e){ console.warn('[Arkiboard] pull falló', e); }
 }
 async function _pushDatos(){
   if(!_sbConfigured() || !_sbUser) return;
@@ -6738,7 +6738,7 @@ async function _pushDatos(){
     await _sb.from('avit_data').upsert({user_id:_sbUser.id, payload, updated_at:new Date().toISOString()});
     const ss=document.getElementById('syncStatus');
     if(ss){ss.textContent='☁ guardado';setTimeout(()=>{if(ss.textContent==='☁ guardado')ss.textContent='';},1500);}
-  }catch(e){ console.warn('[Arquiboard] push falló', e); }
+  }catch(e){ console.warn('[Arkiboard] push falló', e); }
 }
 function _instalarAutoSync(){
   if(window._syncInstalled) return;
@@ -6777,7 +6777,7 @@ function _instalarAutoSync(){
       sessionStorage.setItem('avit_tabSession','1');
       await _postLogin();
     }
-  }catch(e){ console.warn('[Arquiboard] boot auth', e); }
+  }catch(e){ console.warn('[Arkiboard] boot auth', e); }
 })();
 
 
@@ -7955,7 +7955,7 @@ function genCotizacion(){
   // Checklist del Anteproyecto → lista de servicios incluidos
   const _apLbls=['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones'];
   s.apIncluye=_apLbls.filter((_,i)=>document.getElementById('apInc'+(i+1))?.checked);
-  // Marca del estudio + autor (Arquiboard)
+  // Marca del estudio + autor (Arkiboard)
   s.empresaNombre = (typeof _empresaN==='function') ? _empresaN() : 'Mi estudio';
   s.autorNombre   = (typeof _usuarioN==='function') ? _usuarioN() : '';
   const f=n=>s.cur+' '+Math.round(n).toLocaleString();
@@ -12922,7 +12922,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 
-<!-- ═══════════════ ARQUIBOARD — LOGIN ═══════════════ -->
+<!-- ═══════════════ ARKIBOARD — LOGIN ═══════════════ -->
 <div id="authOverlay" style="position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg-base)">
   <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none">
     <div style="position:absolute;top:-140px;left:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 65%)"></div>
@@ -12930,7 +12930,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div>
   <div class="sc" style="width:100%;max-width:380px;position:relative;padding:2rem 1.8rem">
     <div style="text-align:center;margin-bottom:1.4rem">
-      <div style="font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:0.10em;color:var(--text);text-transform:uppercase">Arquiboard</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:0.10em;color:var(--text);text-transform:uppercase">Arkiboard</div>
       <div style="font-size:10px;color:var(--text-3);letter-spacing:0.22em;text-transform:uppercase;margin-top:4px;font-family:var(--font-display)">Gestión para estudios de arquitectura</div>
     </div>
     <div id="authError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
@@ -12988,7 +12988,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <!-- ═══════════════ ONBOARDING (encuesta) ═══════════════ -->
 <div id="onboardOverlay" style="position:fixed;inset:0;z-index:8900;display:none;align-items:flex-start;justify-content:center;padding:20px;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);overflow-y:auto">
   <div class="sc" style="width:100%;max-width:420px;padding:1.8rem 1.7rem;margin:auto 0">
-    <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px">Bienvenido a Arquiboard</div>
+    <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px">Bienvenido a Arkiboard</div>
     <p style="font-size:12px;color:var(--text-2);margin-bottom:1.2rem">Contanos un poco de tu estudio para personalizar tu experiencia.</p>
     <div id="obError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
     <div class="fg" style="margin-bottom:.65rem">
@@ -13000,7 +13000,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       <input type="text" id="obNombre" placeholder="Tu nombre">
     </div>
     <div class="fg" style="margin-bottom:.65rem">
-      <label class="lbl">¿Cómo te enteraste de Arquiboard?</label>
+      <label class="lbl">¿Cómo te enteraste de Arkiboard?</label>
       <select id="obFuente">
         <option value="">Seleccioná una opción…</option>
         <option>Instagram</option><option>Facebook</option><option>TikTok</option>
