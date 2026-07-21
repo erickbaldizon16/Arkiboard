@@ -9,44 +9,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* ══ CYBER NEÓN — modo oscuro ══ */
   /* ── Fondos ── */
-  --bg-base:#060A18;
-  --bg-card:rgba(12,22,44,0.72);
-  --bg-surface:rgba(0,229,255,0.04);
-  --bg-elevated:rgba(0,229,255,0.07);
-  --bg-surface-2:#0A1024;
-  /* ── Grises (azulados fríos hacia el cian) ── */
-  --gray-800:#0C162C;--gray-750:#101B34;--gray-700:#16233F;
-  --gray-600:#22344F;--gray-500:#4A6B7A;--gray-400:#5E7A8C;
-  --gray-300:#7A93A8;--gray-200:#A8C4D2;--gray-100:#CDE4EC;--gray-50:#E8F6FA;
-  /* ── Acento cian neón ── */
-  --accent:#00E5FF;--accent-light:#6FF3FF;--accent-dim:#0FA9BF;
-  --accent-subtle:rgba(0,229,255,0.08);--accent-glow:rgba(0,229,255,0.12);
+  --bg-base:#111214;
+  --bg-card:rgba(24,24,26,0.82);
+  --bg-surface:rgba(255,255,255,0.045);
+  --bg-elevated:rgba(255,255,255,0.07);
+  --bg-surface-2:#1a1b1e;
+  /* ── Grises ── */
+  --gray-800:#1C1C1C;--gray-750:#242426;--gray-700:#2E2E2E;
+  --gray-600:#3D3D3D;--gray-500:#555;--gray-400:#777;
+  --gray-300:#999;--gray-200:#BBB;--gray-100:#D0D0D0;--gray-50:#E8E8E8;
+  /* ── Acento mostaza ── */
+  --accent:#D4A843;--accent-light:#E6C06A;--accent-dim:#A07A28;
+  --accent-subtle:rgba(212,168,67,0.10);--accent-glow:rgba(212,168,67,0.07);
   /* ── Texto ── */
-  --text:#E8F6FA;--text-2:#7A93A8;--text-3:#5E7A8C;--text-on-accent:#04121A;
+  --text:#E0E0E0;--text-2:#999;--text-3:#4A4A4A;--text-on-accent:#1C1C1C;
   /* ── Bordes ── */
-  --border:rgba(0,229,255,0.18);--border-2:rgba(0,229,255,0.22);
-  --border-accent:rgba(0,229,255,0.22);--border-focus:rgba(0,229,255,0.75);
+  --border:rgba(255,255,255,0.08);--border-2:rgba(255,255,255,0.12);
+  --border-accent:rgba(212,168,67,0.35);--border-focus:rgba(212,168,67,0.60);
   /* ── Semánticos ── */
-  --green:#3DE8B0;--green-lt:rgba(61,232,176,0.12);--green-dk:#3DE8B0;
-  --blue:#00E5FF;--blue-lt:rgba(0,229,255,0.12);--blue-dk:#6FF3FF;
-  --red:#FF5C7A;--red-lt:rgba(255,92,122,0.12);
-  --amber:#00E5FF;--amber-lt:rgba(0,229,255,0.12);
-  --purple-lt:rgba(139,92,246,0.14);--purple-dk:#A78BFA;
-  --teal-lt:rgba(0,229,255,0.10);--teal-dk:#3DE8B0;
-  --pink-lt:rgba(255,92,122,0.12);--pink-dk:#FF7AA0;
-  /* ── Sombras + glow ── */
-  --shadow-sm:0 1px 3px rgba(0,0,0,0.45);
-  --shadow-md:0 8px 24px rgba(0,0,0,0.55);
-  --shadow-lg:0 16px 40px rgba(0,0,0,0.60);
-  --shadow-xl:0 24px 60px rgba(0,0,0,0.65),0 0 40px rgba(0,229,255,0.08);
-  --shadow-accent:0 0 24px rgba(0,229,255,0.25);
+  --green:#4CAF72;--green-lt:rgba(76,175,114,0.12);--green-dk:#4CAF72;
+  --blue:#5A9ED4;--blue-lt:rgba(90,158,212,0.12);--blue-dk:#5A9ED4;
+  --red:#E05A5A;--red-lt:rgba(224,90,90,0.12);
+  --amber:#D4A843;--amber-lt:rgba(212,168,67,0.12);
+  --purple-lt:rgba(109,60,199,0.12);--purple-dk:#9D6FE0;
+  --teal-lt:rgba(8,80,65,0.15);--teal-dk:#4CAF72;
+  --pink-lt:rgba(114,36,62,0.12);--pink-dk:#E07098;
+  /* ── Sombras ── */
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.35);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.45);
+  --shadow-lg:0 8px 32px rgba(0,0,0,0.55);
+  --shadow-xl:0 24px 60px rgba(0,0,0,0.65);
+  --shadow-accent:0 4px 20px rgba(212,168,67,0.20);
   /* ── Tintes para mezclas (referenciables en otras reglas) ── */
-  --tint-on-bg-soft:rgba(0,229,255,0.02);
-  --tint-on-bg-medium:rgba(0,229,255,0.05);
-  --tint-on-bg-strong:rgba(0,229,255,0.08);
-  --tint-on-bg-stronger:rgba(0,229,255,0.12);
+  --tint-on-bg-soft:rgba(255,255,255,0.02);
+  --tint-on-bg-medium:rgba(255,255,255,0.05);
+  --tint-on-bg-strong:rgba(255,255,255,0.08);
+  --tint-on-bg-stronger:rgba(255,255,255,0.12);
   /* ── Radios ── */
   --r-sm:6px;--r-md:10px;--r-lg:12px;--r-xl:16px;--r-2xl:22px;
   /* ── Tipografías ── */
@@ -124,12 +123,7 @@ body, .sc, .ntab, .home-kpi, .home-summary-card, .modal-box, .topbar{
 
 html{scroll-behavior:smooth}
 body{
-  /* ── Escena Cyber Neón: gradiente en capas ── */
-  background:
-    radial-gradient(circle at 80% 0%, rgba(0,229,255,0.10) 0%, transparent 45%),
-    radial-gradient(circle at 10% 90%, rgba(139,92,246,0.14) 0%, transparent 50%),
-    linear-gradient(160deg, #060A18 0%, #0A1230 60%, #0D0A28 100%);
-  background-attachment:fixed;
+  background:var(--bg-base);
   font-family:var(--font-body);
   color:var(--text);font-size:14px;line-height:1.55;min-height:100vh;
   position:relative;
@@ -139,18 +133,14 @@ body::before,body::after{
   content:'';position:fixed;border-radius:50%;pointer-events:none;z-index:0;
 }
 body::before{
-  top:-18%;right:-6%;width:480px;height:480px;
-  background:radial-gradient(circle,rgba(0,229,255,0.12) 0%,transparent 62%);
+  top:-20%;right:-5%;width:500px;height:500px;
+  background:radial-gradient(circle,var(--border-accent) 0%,transparent 65%);
 }
 body::after{
-  bottom:-14%;left:-8%;width:440px;height:440px;
-  background:radial-gradient(circle,rgba(139,92,246,0.13) 0%,transparent 62%);
+  bottom:-15%;left:-8%;width:420px;height:420px;
+  background:radial-gradient(circle,rgba(90,140,212,0.05) 0%,transparent 65%);
 }
-/* En modo claro, fondo y orbs originales (glassmorphism cálido/menta) */
-[data-theme="light"] body{
-  background:linear-gradient(135deg,#D8E9F0 0%,#E9F3F6 50%,#DDEDF2 100%);
-  background-attachment:fixed;
-}
+/* En modo claro, los orbs son más sutiles */
 [data-theme="light"] body::before{
   background:radial-gradient(circle,rgba(53,180,220,0.32) 0%,transparent 65%);
 }
@@ -160,52 +150,36 @@ body::after{
 
 /* ── GLASS SYSTEM ── */
 .glass{
-  background:rgba(0,229,255,0.04);
+  background:rgba(255,255,255,0.045);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(0,229,255,0.18);
-  box-shadow:inset 0 1px 0 rgba(0,229,255,0.10),0 2px 10px rgba(0,0,0,0.35);
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.07),0 2px 10px rgba(0,0,0,0.25);
 }
 .glass-card{
-  background:rgba(12,22,44,0.72);
+  background:rgba(24,24,26,0.82);
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  border:1px solid rgba(0,229,255,0.22);
-  box-shadow:0 24px 60px rgba(0,0,0,0.65),0 0 40px rgba(0,229,255,0.08),inset 0 1px 0 rgba(0,229,255,0.10);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 24px 60px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,255,255,0.07);
   border-radius:22px;
 }
 .glass-elevated{
-  background:rgba(0,229,255,0.07);
+  background:rgba(255,255,255,0.07);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(0,229,255,0.20);
-  box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 24px rgba(0,229,255,0.10),inset 0 1px 0 rgba(0,229,255,0.09);
-}
-/* En modo claro, glass system vuelve al glassmorphism cálido/menta */
-[data-theme="light"] .glass{
-  background:rgba(255,255,255,0.45);
-  border-color:rgba(255,255,255,0.80);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6),0 2px 10px rgba(41,58,64,0.06);
-}
-[data-theme="light"] .glass-card{
-  background:rgba(255,255,255,0.65);
-  border-color:rgba(255,255,255,0.80);
-  box-shadow:0 24px 60px rgba(41,58,64,0.12),inset 0 1px 0 rgba(255,255,255,0.6);
-}
-[data-theme="light"] .glass-elevated{
-  background:rgba(255,255,255,0.75);
-  border-color:rgba(255,255,255,0.80);
-  box-shadow:0 8px 32px rgba(41,58,64,0.09),inset 0 1px 0 rgba(255,255,255,0.6);
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.09);
 }
 
 /* ── NAV ── */
 .topbar{
   position:sticky;top:0;z-index:100;height:var(--nav-h);
   display:flex;align-items:center;padding:0 1.25rem;gap:1rem;
-  background:rgba(6,10,24,0.85);
+  background:rgba(17,18,20,0.85);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(0,229,255,0.18);
+  border-bottom:1px solid rgba(255,255,255,0.07);
 }
 .topbar-logo{
   font-family:var(--font-display);font-size:13px;font-weight:600;
-  letter-spacing:.06em;color:var(--gray-100);
+  letter-spacing:.06em;color:#D0D0D0;
   display:flex;flex-direction:column;gap:1px;min-width:100px;
 }
 .topbar-logo span{
@@ -219,15 +193,12 @@ body::after{
   font-family:var(--font-display);transition:all .15s;font-weight:400;
   letter-spacing:0.12em;text-transform:uppercase;
 }
-.ntab:hover{background:rgba(0,229,255,0.06);color:var(--text-2)}
+.ntab:hover{background:rgba(255,255,255,0.05);color:var(--text-2)}
 .ntab:focus,.ntab:focus-visible{outline:none}
 .ntab.active{
   background:var(--accent-subtle);color:var(--accent);
-  font-weight:600;border:1px solid rgba(0,229,255,0.55);
-  box-shadow:0 0 16px rgba(0,229,255,0.18);
-  text-shadow:0 0 12px rgba(0,229,255,0.35);
+  font-weight:600;border:1px solid var(--border-accent);
 }
-[data-theme="light"] .ntab:hover{background:rgba(0,0,0,0.04)}
 .topbar-actions{min-width:120px;display:flex;justify-content:flex-end;gap:6px;align-items:center}
 .btn-print{
   padding:7px 16px;font-size:10px;font-weight:600;border:none;
@@ -267,18 +238,18 @@ body::after{
 
 /* ── CARDS ── */
 .sc{
-  background:rgba(12,22,44,0.70);
+  background:rgba(24,24,26,0.70);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border:1px solid rgba(0,229,255,0.18);
+  border:1px solid rgba(255,255,255,0.07);
   border-radius:var(--r-lg);padding:1.25rem;margin-bottom:.85rem;
-  box-shadow:0 4px 16px rgba(0,0,0,0.35),0 0 24px rgba(0,229,255,0.05),inset 0 1px 0 rgba(0,229,255,0.06);
+  box-shadow:0 4px 16px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* ═══════ HOME DASHBOARD ═══════ */
 .home-hero{
   display:flex;justify-content:space-between;align-items:center;
   padding:24px 28px;margin-bottom:18px;
-  background:linear-gradient(135deg,var(--accent-glow) 0%,rgba(12,22,44,0.70) 60%);
+  background:linear-gradient(135deg,var(--accent-glow) 0%,rgba(24,24,26,0.70) 60%);
   border:1px solid var(--border-accent);
   border-radius:var(--r-lg);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
@@ -312,14 +283,14 @@ body::after{
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px;
 }
 .home-kpi{
-  background:rgba(12,22,44,0.70);
+  background:rgba(24,24,26,0.70);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border:1px solid rgba(0,229,255,0.18);
+  border:1px solid rgba(255,255,255,0.07);
   border-radius:var(--r-lg);padding:18px 20px;
   position:relative;overflow:hidden;
-  transition:border-color .2s,box-shadow .2s;
+  transition:border-color .2s;
 }
-.home-kpi:hover{border-color:rgba(0,229,255,0.40);box-shadow:0 0 24px rgba(0,229,255,0.12)}
+.home-kpi:hover{border-color:rgba(255,255,255,0.13)}
 .home-kpi .kpi-label{
   font-size:9.5px;color:var(--text-3);font-weight:500;
   text-transform:uppercase;letter-spacing:0.16em;
@@ -335,16 +306,15 @@ body::after{
 }
 .home-kpi.kpi-green .kpi-value{color:var(--green)}
 .home-kpi.kpi-blue .kpi-value{color:var(--blue)}
-.home-kpi.kpi-accent .kpi-value{color:var(--accent);text-shadow:0 0 12px rgba(0,229,255,0.35)}
-[data-theme="light"] .home-kpi.kpi-accent .kpi-value{text-shadow:none}
+.home-kpi.kpi-accent .kpi-value{color:var(--accent)}
 
 .home-summary-grid{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:18px;
 }
 .home-summary-card{
-  background:rgba(12,22,44,0.70);
+  background:rgba(24,24,26,0.70);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border:1px solid rgba(0,229,255,0.18);
+  border:1px solid rgba(255,255,255,0.07);
   border-radius:var(--r-lg);padding:16px 18px;
   display:flex;flex-direction:column;
 }
@@ -510,14 +480,9 @@ input[type=text],input[type=date],input[type=number],textarea,select{
 input[type=text]:focus,input[type=date]:focus,
 input[type=number]:focus,textarea:focus,select:focus{
   border-color:var(--border-focus)!important;
-  box-shadow:0 0 0 3px rgba(0,229,255,0.12),0 0 18px rgba(0,229,255,0.25)!important;
-}
-[data-theme="light"] input[type=text]:focus,[data-theme="light"] input[type=date]:focus,
-[data-theme="light"] input[type=number]:focus,[data-theme="light"] textarea:focus,[data-theme="light"] select:focus{
   box-shadow:0 0 0 3px var(--accent-glow)!important;
 }
-select option{background:#0A1024;color:#E8F6FA}
-[data-theme="light"] select option{background:#F1F8FA;color:#293A40}
+select option{background:#1C1C1C;color:#E0E0E0}
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input[type=number]{-moz-appearance:textfield}
@@ -798,7 +763,7 @@ input.narrow{width:88px}input.mid{width:108px}
 .cv-header h2{color:var(--text);font-size:13px;font-weight:400;letter-spacing:.2px;font-family:var(--font-display)}
 .cv-meta{color:var(--text-3);font-size:9px;text-align:right;line-height:1.8;font-family:var(--font-mono)}
 .cv-body{
-  background:rgba(12,22,44,0.70);border:1px solid rgba(0,229,255,0.18);
+  background:rgba(24,24,26,0.70);border:1px solid rgba(255,255,255,0.08);
   border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:18px 22px;
 }
 .cv-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
@@ -876,7 +841,7 @@ input.narrow{width:88px}input.mid{width:108px}
   font-family:var(--font-mono);
 }
 .kanban-card{
-  background:rgba(12,22,44,0.85);
+  background:rgba(24,24,26,0.85);
   border:1px solid rgba(255,255,255,0.07);
   border-radius:var(--r-md);padding:.65rem .75rem;margin-bottom:6px;
   transition:box-shadow .15s,border-color .15s;
@@ -1100,7 +1065,7 @@ input.narrow{width:88px}input.mid{width:108px}
   z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;
 }
 .modal-box{
-  background:rgba(12,22,44,0.95);
+  background:rgba(24,24,26,0.95);
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   border:1px solid rgba(255,255,255,0.10);
   border-radius:var(--r-2xl);padding:1.4rem;width:100%;max-width:520px;
@@ -1273,7 +1238,6 @@ input.narrow{width:88px}input.mid{width:108px}
   border-color:transparent!important;
   color:#fff!important;border-radius:999px;
   box-shadow:0 6px 16px rgba(103,213,243,0.40)!important;
-  text-shadow:none!important;
 }
 
 /* Botones primarios y data */
@@ -6760,21 +6724,45 @@ async function _pullDatos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
     const {data,error}=await _sb.from('avit_data').select('payload').eq('user_id',_sbUser.id).maybeSingle();
-    if(error || !data || !data.payload) return;
+    if(error){
+      console.error('[Arkiboard] pull falló:', error.message);
+      const ss=document.getElementById('syncStatus');
+      if(ss){ ss.style.color='var(--red, #e5484d)'; ss.textContent='⚠ No se pudo cargar tus datos de la nube'; }
+      return;
+    }
+    if(!data || !data.payload) return; // usuario nuevo sin datos aún: normal
     const pl=data.payload;
     _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
     console.log('[Arkiboard] Datos sincronizados desde la nube');
-  }catch(e){ console.warn('[Arkiboard] pull falló', e); }
+  }catch(e){
+    console.error('[Arkiboard] pull falló:', e);
+    const ss=document.getElementById('syncStatus');
+    if(ss){ ss.style.color='var(--red, #e5484d)'; ss.textContent='⚠ Sin conexión con la nube'; }
+  }
 }
 async function _pushDatos(){
   if(!_sbConfigured() || !_sbUser) return;
+  const ss=document.getElementById('syncStatus');
   try{
     const payload={};
     _SYNC_KEYS.forEach(k=>{ const v=localStorage.getItem(k); if(v!=null) payload[k]=v; });
-    await _sb.from('avit_data').upsert({user_id:_sbUser.id, payload, updated_at:new Date().toISOString()});
-    const ss=document.getElementById('syncStatus');
-    if(ss){ss.textContent='☁ guardado';setTimeout(()=>{if(ss.textContent==='☁ guardado')ss.textContent='';},1500);}
-  }catch(e){ console.warn('[Arkiboard] push falló', e); }
+    // Capturamos el {error} que devuelve Supabase: RLS, red o permisos
+    // pueden rechazar el guardado sin lanzar excepción.
+    const {error}=await _sb.from('avit_data').upsert({user_id:_sbUser.id, payload, updated_at:new Date().toISOString()});
+    if(error){ _syncFallo(error.message); return; }
+    if(ss){ss.style.color='';ss.textContent='☁ guardado';setTimeout(()=>{if(ss.textContent==='☁ guardado')ss.textContent='';},1500);}
+  }catch(e){ _syncFallo(e && e.message ? e.message : 'sin conexión'); }
+}
+/* Aviso VISIBLE cuando el guardado en la nube falla, con reintento. */
+function _syncFallo(motivo){
+  console.error('[Arkiboard] push falló:', motivo);
+  const ss=document.getElementById('syncStatus');
+  if(ss){
+    ss.style.color='var(--red, #e5484d)';
+    ss.textContent='⚠ No se guardó en la nube — reintentando…';
+  }
+  clearTimeout(window._syncRetry);
+  window._syncRetry=setTimeout(_pushDatos, 8000); // reintento silencioso a los 8s
 }
 function _instalarAutoSync(){
   if(window._syncInstalled) return;
