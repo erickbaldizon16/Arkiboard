@@ -1972,6 +1972,39 @@ code.emp-tag{font-family:var(--font-mono)}
 .emp-obs-row.drag-over{border-color:var(--accent);box-shadow:0 0 14px rgba(0,229,255,0.18)}
 @media(max-width:640px){.emp-uploads{grid-template-columns:1fr}}
 
+/* ═══ Editor de sprints del Kanban ═══ */
+.tpl-col{margin-bottom:16px;padding:12px 14px;background:var(--bg-surface);
+  border:1px solid var(--border);border-radius:var(--r-md)}
+.tpl-col-head{display:flex;align-items:baseline;gap:9px;margin-bottom:4px;flex-wrap:wrap}
+.tpl-col-name{font-size:12.5px;font-weight:600;color:var(--text);font-family:var(--font-display);letter-spacing:.03em}
+.tpl-col-note{font-size:10px;color:var(--text-3);font-family:var(--font-mono)}
+.tpl-sprint{margin:10px 0;padding:10px 12px;background:rgba(0,229,255,0.03);
+  border:1px solid var(--border);border-radius:var(--r-md)}
+.tpl-sprint.dragging{opacity:.45}
+.tpl-sprint.drag-over{border-color:var(--accent);box-shadow:0 0 14px rgba(0,229,255,0.18)}
+.tpl-sprint-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.tpl-drag{cursor:grab;color:var(--text-3);font-size:13px;user-select:none;flex-shrink:0;line-height:1}
+.tpl-sprint-title{flex:1;font-size:12.5px;font-weight:500;padding:5px 9px!important}
+.tpl-items{padding-left:14px;border-left:2px solid var(--border-accent);margin-left:4px}
+.tpl-item{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.tpl-item.dragging{opacity:.45}
+.tpl-item.drag-over > input{border-color:var(--accent)!important}
+.tpl-item input[type=text]{flex:1;font-size:11.5px;padding:5px 9px!important}
+.tpl-item select{width:auto;min-width:130px;font-size:10.5px;padding:4px 7px!important;flex-shrink:0}
+.tpl-x{flex-shrink:0;width:24px;height:24px;border-radius:var(--r-sm);border:1px solid var(--border-2);
+  background:transparent;color:var(--text-3);cursor:pointer;font-size:12px;line-height:1;
+  display:flex;align-items:center;justify-content:center;transition:all .15s}
+.tpl-x:hover{border-color:var(--red);color:var(--red)}
+.tpl-hito{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;
+  border-radius:999px;font-size:9.5px;font-family:var(--font-mono);letter-spacing:.04em;
+  background:var(--accent-subtle);border:1px solid var(--border-accent);color:var(--accent);white-space:nowrap}
+.tpl-add{font-size:10.5px;padding:5px 11px;margin-top:4px}
+@media(max-width:720px){
+  .tpl-item{flex-wrap:wrap}
+  .tpl-item input[type=text]{min-width:60%}
+  .tpl-item select{min-width:0;flex:1}
+}
+
 /* ═══════════════════════════════════════════════════════════
    LAYOUT DASHBOARD — escritorio amplio, móvil compacto
    ═══════════════════════════════════════════════════════════ */
@@ -2314,6 +2347,24 @@ code.emp-tag{font-family:var(--font-mono)}
         <button class="emp-btn" onclick="empObsAdd()">＋ Agregar punto</button>
         <button class="emp-btn ghost" onclick="empResetObs()">↺ Restaurar por defecto</button>
       </div>
+    </div>
+
+    <!-- Sprints del Kanban -->
+    <div class="sc">
+      <div class="emp-sec-head">🗂 Sprints del Kanban</div>
+      <p style="font-size:11px;color:var(--text-3);line-height:1.6;margin-bottom:12px">
+        Definí el proceso de tu estudio: los sprints y tareas que se crean automáticamente en cada proyecto nuevo.
+        Reordenalos, editalos o agregá los tuyos.
+      </p>
+      <div style="display:flex;gap:9px;align-items:flex-start;padding:10px 13px;margin-bottom:14px;background:var(--accent-subtle);border:1px solid var(--border-accent);border-radius:var(--r-md)">
+        <span style="font-size:13px;line-height:1.4">📐</span>
+        <p style="font-size:11px;color:var(--text-2);line-height:1.6;margin:0">
+          La columna <strong>Planimetrías</strong> no se configura acá: sus sprints se arman solos con los planos
+          que cotizaste en cada proyecto (constructivos, hidráulicos y eléctricos).
+        </p>
+      </div>
+      <div id="empTplList"></div>
+      <button class="emp-btn ghost" onclick="empTplReset()" style="margin-top:12px">↺ Restaurar proceso por defecto</button>
     </div>
 
     <div style="display:flex;gap:10px;align-items:center;margin:4px 0 24px">
@@ -6947,8 +6998,84 @@ const EMP_OBS_DEFAULT = [
   'No incluye impresión de planos.'
 ];
 
+/* ═══ PLANTILLA DE SPRINTS DEL KANBAN ═══
+   Editable por estudio desde el Panel de la empresa.
+   OJO: la columna PLANIMETRÍAS no se configura acá — sus sprints se generan
+   siempre desde los planos cotizados en cada proyecto individual. */
+const SPRINT_COLS = [
+  {key:'cotizado',     label:'💬 Cotizado',      type:'cot',     req:['anticipo'],
+   nota:'Se muestra en todos los proyectos.'},
+  {key:'anteproyecto', label:'🎨 Anteproyecto',  type:'f1',      req:['entrega_f1'],
+   nota:'Sólo aparece si la cotización incluye Anteproyecto.'},
+  {key:'pre_entrega',  label:'🔄 Pre entrega',   type:'pe',      req:['entrega_pre'],
+   nota:'Sólo aparece si la cotización incluye Anteproyecto y Planimetrías.'},
+  {key:'entrega',      label:'✓ Entrega',        type:'entrega', req:['aprobado','cobrado'],
+   nota:'Cierre del proyecto. Se muestra en todos.'}
+];
+const MILESTONE_INFO = {
+  anticipo:    'Cobra el anticipo y avanza de columna',
+  entrega_f1:  'Cierra Anteproyecto y avanza de columna',
+  entrega_pre: 'Cierra Pre entrega y avanza de columna',
+  entrega_f2:  'Cobra la entrega de planos y avanza',
+  aprobado:    'Marca la aprobación del cliente',
+  cobrado:     'Cobra el saldo final y cierra el proyecto'
+};
+const AUTO_COLAB_OPTS = [
+  {v:'',       l:'— Sin asignación automática —'},
+  {v:'3D',     l:'Colaborador de Modelado 3D'},
+  {v:'Rend',   l:'Colaborador de Renderización'},
+  {v:'Planos', l:'Colaborador de Planos'}
+];
+const SPRINT_TPL_DEFAULT = {
+  cotizado: [
+    {title:'Solicitud de anticipo', items:[
+      {name:'Anticipo cobrado', milestone:'anticipo'}
+    ]}
+  ],
+  anteproyecto: [
+    {title:'Concepto y Presentación', items:[
+      {name:'Concepto'}, {name:'Boceto'}, {name:'Presentación'}, {name:'Reunión con cliente'}
+    ]},
+    {title:'Modelado 3D y Renders', items:[
+      {name:'Ajustes de diseño'},
+      {name:'Modelado 3D', autoColab:'3D'},
+      {name:'Iluminación y ambientación'},
+      {name:'Renders', autoColab:'Rend'},
+      {name:'Reunión con cliente'}
+    ]},
+    {title:'Documentación Anteproyecto', items:[
+      {name:'Ajustes de diseño'}, {name:'Plantas'}, {name:'Elevaciones'}, {name:'Secciones'},
+      {name:'Entrega Anteproyecto', milestone:'entrega_f1'}
+    ]}
+  ],
+  pre_entrega: [
+    {title:'Revisión y ajustes con cliente', items:[
+      {name:'Reunión con cliente'}, {name:'Realización de cambios'},
+      {name:'Reunión de cambios'}, {name:'Ajustes finales'},
+      {name:'Entrega', milestone:'entrega_pre'}
+    ]}
+  ],
+  entrega: [
+    {title:'Aprobación y cobro final', items:[
+      {name:'Aprobado por cliente', milestone:'aprobado'},
+      {name:'Cobrado en su totalidad', milestone:'cobrado'}
+    ]}
+  ]
+};
+/* Devuelve la plantilla guardada por el estudio, o la de fábrica */
+function _sprintTpl(){
+  const t = _perfil().sprintTpl;
+  if(!t || typeof t !== 'object') return JSON.parse(JSON.stringify(SPRINT_TPL_DEFAULT));
+  const out = {};
+  SPRINT_COLS.forEach(c=>{
+    out[c.key] = Array.isArray(t[c.key]) ? t[c.key] : JSON.parse(JSON.stringify(SPRINT_TPL_DEFAULT[c.key]||[]));
+  });
+  return out;
+}
+
 let _empDirty = false;
 let _empObs = [];            // working copy de observaciones en el editor
+let _empTpl = null;          // working copy de la plantilla de sprints
 
 function empMarkDirty(){ _empDirty = true; }
 
@@ -6969,6 +7096,9 @@ function renderEmpresa(){
   // Observaciones
   _empObs = Array.isArray(p.observaciones) ? p.observaciones.slice() : EMP_OBS_DEFAULT.slice();
   empObsRender();
+  // Plantilla de sprints
+  _empTpl = _sprintTpl();
+  empTplRender();
   _empDirty = false;
   const msg = document.getElementById('empSaveMsg'); if(msg) msg.textContent='';
 }
@@ -7084,6 +7214,191 @@ function empObsAdd(){ _empObs.push(''); empMarkDirty(); empObsRender();
 }
 function empResetObs(){ _empObs = EMP_OBS_DEFAULT.slice(); empMarkDirty(); empObsRender(); }
 
+/* ── Editor de plantilla de sprints del Kanban ────────────── */
+function empTplRender(){
+  const cont = document.getElementById('empTplList');
+  if(!cont) return;
+  if(!_empTpl) _empTpl = _sprintTpl();
+  cont.innerHTML = '';
+
+  SPRINT_COLS.forEach(col=>{
+    const lista = _empTpl[col.key] || (_empTpl[col.key] = []);
+    const box = document.createElement('div');
+    box.className = 'tpl-col';
+
+    let html = `<div class="tpl-col-head">
+        <span class="tpl-col-name">${col.label}</span>
+        <span class="tpl-col-note">${col.nota}</span>
+      </div>`;
+
+    lista.forEach((sp, si)=>{
+      const tieneHito = (sp.items||[]).some(it=>it.milestone);
+      html += `<div class="tpl-sprint" draggable="true" data-col="${col.key}" data-si="${si}">
+        <div class="tpl-sprint-head">
+          <span class="tpl-drag" title="Arrastrar para reordenar">⠿</span>
+          <input type="text" class="tpl-sprint-title" value="${escapeHtmlK(sp.title||'')}"
+            placeholder="Nombre del sprint" data-col="${col.key}" data-si="${si}" data-f="title">
+          ${tieneHito
+            ? `<span class="tpl-hito" title="Contiene un paso clave del flujo, no se puede eliminar">🔒 con hito</span>`
+            : `<button class="tpl-x" title="Quitar sprint" data-act="delsp" data-col="${col.key}" data-si="${si}">✕</button>`}
+        </div>
+        <div class="tpl-items">`;
+
+      (sp.items||[]).forEach((it, ii)=>{
+        const ms = it.milestone;
+        html += `<div class="tpl-item" draggable="${ms?'false':'true'}" data-col="${col.key}" data-si="${si}" data-ii="${ii}">
+          ${ms ? '' : '<span class="tpl-drag" title="Arrastrar">⠿</span>'}
+          <input type="text" value="${escapeHtmlK(it.name||'')}" placeholder="Nombre de la tarea"
+            data-col="${col.key}" data-si="${si}" data-ii="${ii}" data-f="name">
+          ${ms
+            ? `<span class="tpl-hito" title="${MILESTONE_INFO[ms]||''}">◆ ${MILESTONE_INFO[ms]||'hito'}</span>`
+            : `<select data-col="${col.key}" data-si="${si}" data-ii="${ii}" data-f="autoColab" title="Asignar colaborador automáticamente">
+                 ${AUTO_COLAB_OPTS.map(o=>`<option value="${o.v}" ${(it.autoColab||'')===o.v?'selected':''}>${o.l}</option>`).join('')}
+               </select>
+               <button class="tpl-x" title="Quitar tarea" data-act="delit" data-col="${col.key}" data-si="${si}" data-ii="${ii}">✕</button>`}
+        </div>`;
+      });
+
+      html += `<button class="emp-btn ghost tpl-add" data-act="additem" data-col="${col.key}" data-si="${si}">＋ Tarea</button>
+        </div></div>`;
+    });
+
+    html += `<button class="emp-btn ghost tpl-add" data-act="addsp" data-col="${col.key}">＋ Agregar sprint</button>`;
+    box.innerHTML = html;
+    cont.appendChild(box);
+  });
+
+  _empTplBind(cont);
+}
+
+/* Un solo juego de listeners delegados: sobrevive a los re-render */
+function _empTplBind(cont){
+  const num = v => parseInt(v,10);
+
+  cont.oninput = e=>{
+    const t=e.target, f=t.dataset.f;
+    if(!f) return;
+    const col=t.dataset.col, si=num(t.dataset.si);
+    if(f==='title'){ _empTpl[col][si].title = t.value; }
+    else {
+      const ii=num(t.dataset.ii);
+      if(f==='name') _empTpl[col][si].items[ii].name = t.value;
+    }
+    empMarkDirty();
+  };
+  cont.onchange = e=>{
+    const t=e.target;
+    if(t.dataset.f!=='autoColab') return;
+    const col=t.dataset.col, si=num(t.dataset.si), ii=num(t.dataset.ii);
+    const it=_empTpl[col][si].items[ii];
+    if(t.value) it.autoColab=t.value; else delete it.autoColab;
+    empMarkDirty();
+  };
+  cont.onclick = e=>{
+    const btn=e.target.closest('[data-act]');
+    if(!btn) return;
+    const act=btn.dataset.act, col=btn.dataset.col;
+    const si=btn.dataset.si!==undefined?num(btn.dataset.si):null;
+    if(act==='addsp'){
+      _empTpl[col].push({title:'Nuevo sprint', items:[{name:'Nueva tarea'}]});
+    } else if(act==='delsp'){
+      if(!confirm('¿Quitar este sprint de la plantilla?')) return;
+      _empTpl[col].splice(si,1);
+    } else if(act==='additem'){
+      _empTpl[col][si].items.push({name:'Nueva tarea'});
+    } else if(act==='delit'){
+      _empTpl[col][si].items.splice(num(btn.dataset.ii),1);
+    }
+    empMarkDirty(); empTplRender();
+  };
+
+  /* Drag & drop: sprints dentro de su columna, tareas dentro de su sprint */
+  let drag=null;
+  cont.ondragstart = e=>{
+    const item=e.target.closest('.tpl-item');
+    const sp=e.target.closest('.tpl-sprint');
+    if(item && item.draggable){
+      drag={tipo:'item', col:item.dataset.col, si:num(item.dataset.si), ii:num(item.dataset.ii)};
+      item.classList.add('dragging');
+    } else if(sp){
+      drag={tipo:'sprint', col:sp.dataset.col, si:num(sp.dataset.si)};
+      sp.classList.add('dragging');
+    } else return;
+    e.dataTransfer.effectAllowed='move';
+    e.stopPropagation();
+  };
+  cont.ondragover = e=>{
+    if(!drag) return;
+    const dest = drag.tipo==='item' ? e.target.closest('.tpl-item') : e.target.closest('.tpl-sprint');
+    if(!dest || dest.dataset.col!==drag.col) return;
+    if(drag.tipo==='item' && num(dest.dataset.si)!==drag.si) return;  // sólo dentro del mismo sprint
+    e.preventDefault();
+    cont.querySelectorAll('.drag-over').forEach(x=>x.classList.remove('drag-over'));
+    dest.classList.add('drag-over');
+  };
+  cont.ondrop = e=>{
+    if(!drag) return;
+    e.preventDefault();
+    const dest = drag.tipo==='item' ? e.target.closest('.tpl-item') : e.target.closest('.tpl-sprint');
+    if(dest && dest.dataset.col===drag.col){
+      if(drag.tipo==='sprint'){
+        const to=num(dest.dataset.si);
+        if(to!==drag.si){
+          const arr=_empTpl[drag.col];
+          arr.splice(to,0,arr.splice(drag.si,1)[0]);
+          empMarkDirty();
+        }
+      } else if(num(dest.dataset.si)===drag.si){
+        const to=num(dest.dataset.ii);
+        if(to!==drag.ii){
+          const arr=_empTpl[drag.col][drag.si].items;
+          arr.splice(to,0,arr.splice(drag.ii,1)[0]);
+          empMarkDirty();
+        }
+      }
+    }
+    drag=null; empTplRender();
+  };
+  cont.ondragend = ()=>{
+    drag=null;
+    cont.querySelectorAll('.dragging,.drag-over').forEach(x=>x.classList.remove('dragging','drag-over'));
+  };
+}
+
+function empTplReset(){
+  if(!confirm('¿Restaurar el proceso de sprints por defecto?\n\nSe perderán los sprints y tareas que hayas personalizado.')) return;
+  _empTpl = JSON.parse(JSON.stringify(SPRINT_TPL_DEFAULT));
+  empMarkDirty(); empTplRender();
+}
+
+/* Garantiza que no se pierdan los pasos que disparan cobros y avance de columna */
+function _empTplSanear(tpl){
+  SPRINT_COLS.forEach(col=>{
+    if(!Array.isArray(tpl[col.key]) || !tpl[col.key].length){
+      tpl[col.key] = JSON.parse(JSON.stringify(SPRINT_TPL_DEFAULT[col.key]||[]));
+      return;
+    }
+    // limpiar vacíos
+    tpl[col.key].forEach(sp=>{
+      sp.title = (sp.title||'').trim() || 'Sprint';
+      sp.items = (sp.items||[]).filter(it => (it.name||'').trim() || it.milestone);
+      sp.items.forEach(it=>{ it.name = (it.name||'').trim() || 'Tarea'; });
+    });
+    tpl[col.key] = tpl[col.key].filter(sp => sp.items.length);
+    // re-inyectar milestones faltantes
+    col.req.forEach(ms=>{
+      const existe = tpl[col.key].some(sp => sp.items.some(it=>it.milestone===ms));
+      if(existe) return;
+      const orig = (SPRINT_TPL_DEFAULT[col.key]||[])
+        .flatMap(sp=>sp.items).find(it=>it.milestone===ms) || {name:'Hito', milestone:ms};
+      if(!tpl[col.key].length) tpl[col.key].push({title:'Cierre', items:[]});
+      tpl[col.key][tpl[col.key].length-1].items.push({name:orig.name, milestone:ms});
+    });
+  });
+  return tpl;
+}
+window.empTplReset=empTplReset;
+
 /* ── Guardar todo ── */
 function empGuardar(){
   const p = _perfil();
@@ -7092,7 +7407,9 @@ function empGuardar(){
   const sal = (document.getElementById('empSaludo')?.value || '').trim();
   p.saludo = sal || EMP_SALUDO_DEFAULT;
   p.observaciones = _empObs.map(t => (t||'').trim()).filter(Boolean);
+  if(_empTpl) p.sprintTpl = _empTplSanear(JSON.parse(JSON.stringify(_empTpl)));
   _perfilSave(p);
+  if(_empTpl){ _empTpl = _sprintTpl(); empTplRender(); }
   if(_sbConfigured() && _sbUser){
     _sb.auth.updateUser({data:{empresa:p.empresa, nombre:p.nombre}}).catch(()=>{});
   }
@@ -7184,28 +7501,92 @@ async function authLogin(){
   }catch(err){ _authErr('Error de conexión: '+(err.message||err)); }
   finally{ if(btn){btn.textContent='Iniciar sesión';btn.disabled=false;} }
 }
-async function authSignup(){
-  _authErr('');
+/* ── Modal de registro (nueva cuenta) ───────────────────────── */
+function abrirRegistro(){
   if(!_sbConfigured()){ document.getElementById('authNoConfig').style.display='block'; return; }
-  const email=(document.getElementById('authEmail')?.value||'').trim();
-  const pass = document.getElementById('authPass')?.value||'';
-  if(!email||!pass){ _authErr('Ingresá correo y contraseña para crear tu cuenta.'); return; }
-  if(pass.length<6){ _authErr('La contraseña debe tener al menos 6 caracteres.'); return; }
-  const btn=document.getElementById('authSignupBtn'); if(btn){btn.textContent='Creando…';btn.disabled=true;}
+  _regErr(''); _regOk('');
+  const ov=document.getElementById('registroOverlay');
+  const form=document.getElementById('regForm');
+  if(form) form.style.display='';
+  // Prefill: si ya escribió su correo en la pantalla de login, lo copiamos
+  const emailLogin=(document.getElementById('authEmail')?.value||'').trim();
+  const re=document.getElementById('regEmail');
+  if(re) re.value=emailLogin;
+  ['regPass','regPass2'].forEach(id=>{const el=document.getElementById(id); if(el){el.value='';el.type='password';}});
+  document.getElementById('regMatchMsg').textContent='';
+  if(ov){ ov.style.display='flex'; }
+  setTimeout(()=>{ (emailLogin?document.getElementById('regPass'):re)?.focus(); },60);
+  // Cerrar al hacer clic en el fondo oscuro
+  ov.onclick = e=>{ if(e.target===ov) cerrarRegistro(); };
+  // Cerrar con Escape
+  document.addEventListener('keydown', _regEsc);
+}
+function _regEsc(e){
+  if(e.key==='Escape'){ cerrarRegistro(); document.removeEventListener('keydown', _regEsc); }
+}
+function cerrarRegistro(){
+  const ov=document.getElementById('registroOverlay');
+  if(ov) ov.style.display='none';
+}
+function regTogglePass(inputId, icoId){
+  const inp=document.getElementById(inputId);
+  if(inp) inp.type = inp.type==='password' ? 'text' : 'password';
+}
+function regCheckMatch(){
+  const p1=document.getElementById('regPass')?.value||'';
+  const p2=document.getElementById('regPass2')?.value||'';
+  const msg=document.getElementById('regMatchMsg');
+  if(!msg) return;
+  if(!p2){ msg.textContent=''; return; }
+  if(p1===p2){ msg.textContent='✓ Las contraseñas coinciden'; msg.style.color='var(--green)'; }
+  else { msg.textContent='Las contraseñas no coinciden'; msg.style.color='var(--red)'; }
+}
+function _regErr(m){
+  const e=document.getElementById('regError');
+  if(e){ e.textContent=m||''; e.style.display=m?'block':'none'; }
+}
+function _regOk(m){
+  const e=document.getElementById('regOk');
+  if(e){ e.innerHTML=m||''; e.style.display=m?'block':'none'; }
+}
+async function authRegistrar(){
+  _regErr(''); _regOk('');
+  if(!_sbConfigured()){ _regErr('Supabase no está configurado.'); return; }
+  const email=(document.getElementById('regEmail')?.value||'').trim();
+  const p1=document.getElementById('regPass')?.value||'';
+  const p2=document.getElementById('regPass2')?.value||'';
+  if(!email){ _regErr('Ingresá tu correo electrónico.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ _regErr('El correo no parece válido.'); return; }
+  if(!p1||!p2){ _regErr('Completá y confirmá tu contraseña.'); return; }
+  if(p1.length<6){ _regErr('La contraseña debe tener al menos 6 caracteres.'); return; }
+  if(p1!==p2){ _regErr('Las contraseñas no coinciden.'); return; }
+
+  const btn=document.getElementById('regSubmitBtn');
+  if(btn){ btn.textContent='Creando…'; btn.disabled=true; }
   try{
     const sb=_initSupabase();
-    const {data,error}=await sb.auth.signUp({email,password:pass});
-    if(error){ _authErr(error.message); return; }
+    const {data,error}=await sb.auth.signUp({email,password:p1});
+    if(error){
+      const m=/already registered|already exists|User already/i.test(error.message||'')
+        ? 'Ese correo ya tiene una cuenta. Iniciá sesión.' : error.message;
+      _regErr(m); return;
+    }
+    /* Confirmación por correo activada: no hay sesión inmediata */
     if(data.user && !data.session){
-      _authErr('Revisá tu correo para confirmar la cuenta y luego iniciá sesión.');
+      document.getElementById('regForm').style.display='none';
+      _regOk('✓ Cuenta creada. Te enviamos un correo de confirmación a <strong>'+email+'</strong>. Confirmala y volvé para iniciar sesión.');
+      // dejar el correo listo en la pantalla de login
+      const ae=document.getElementById('authEmail'); if(ae) ae.value=email;
       return;
     }
+    /* Sin confirmación por correo: entra directo */
     _sbUser=data.user;
-    localStorage.setItem('avit_keepSession', document.getElementById('authKeep')?.checked?'1':'0');
+    localStorage.setItem('avit_keepSession','1');
     sessionStorage.setItem('avit_tabSession','1');
+    cerrarRegistro();
     await _postLogin();
-  }catch(err){ _authErr('Error: '+(err.message||err)); }
-  finally{ if(btn){btn.textContent='Crear cuenta nueva';btn.disabled=false;} }
+  }catch(err){ _regErr('Error de conexión: '+(err.message||err)); }
+  finally{ if(btn){ btn.textContent='Crear mi cuenta'; btn.disabled=false; } }
 }
 function authLocalMode(){
   localStorage.setItem('avit_localMode','1');
@@ -7237,8 +7618,11 @@ function togglePassVis(){
 }
 window.togglePassVis = togglePassVis;
 
-window.authLogin=authLogin; window.authSignup=authSignup;
+window.authLogin=authLogin;
 window.authLocalMode=authLocalMode; window.cerrarSesion=cerrarSesion;
+window.abrirRegistro=abrirRegistro; window.cerrarRegistro=cerrarRegistro;
+window.authRegistrar=authRegistrar; window.regTogglePass=regTogglePass;
+window.regCheckMatch=regCheckMatch;
 
 /* ── Post-login: perfil remoto, encuesta, sync ─────────────── */
 async function _postLogin(){
@@ -10249,60 +10633,35 @@ function ensureDefaultSprints(c){
   const hasF2 = (c.f2||0) > 0;
   sprints = [];
 
-  // ═══ Columna COTIZADO — 1 sprint, 1 item: Anticipo ═══
-  sprints.push({
-    id:'sp_cot', col:'cotizado', type:'cot', title:'Solicitud de anticipo',
-    items:[
-      {id:'b1', name:'Anticipo cobrado', done:false, colab:'', milestone:'anticipo'}
-    ]
-  });
+  /* Sprints configurables por el estudio (Panel de la empresa).
+     Planimetrías NO entra acá: se arma desde los planos cotizados. */
+  const tpl = (typeof _sprintTpl==='function') ? _sprintTpl() : SPRINT_TPL_DEFAULT;
+  const colMeta = {cotizado:'cot', anteproyecto:'f1', pre_entrega:'pe', entrega:'entrega'};
+  const _mkCol = (colKey) => {
+    (tpl[colKey]||[]).forEach((sp, si)=>{
+      sprints.push({
+        id:'sp_'+colKey+'_'+si,
+        col:colKey,
+        type:colMeta[colKey]||'f1',
+        title: sp.title || 'Sprint',
+        items: (sp.items||[]).map((it, ii)=>{
+          const o = {id:'b'+ii, name: it.name||'Tarea', done:false, colab:''};
+          if(it.milestone) o.milestone = it.milestone;
+          if(it.autoColab) o.autoColab = it.autoColab;
+          return o;
+        })
+      });
+    });
+  };
 
-  // ═══ Columna ANTEPROYECTO — sprints F1 ═══
-  if(hasF1){
-    sprints.push({
-      id:'sp_ap1', col:'anteproyecto', type:'f1', title:'Concepto y Presentación',
-      items:[
-        {id:'b1', name:'Concepto',            done:false, colab:''},
-        {id:'b2', name:'Boceto',              done:false, colab:''},
-        {id:'b3', name:'Presentación',        done:false, colab:''},
-        {id:'b4', name:'Reunión con cliente', done:false, colab:''}
-      ]
-    });
-    sprints.push({
-      id:'sp_ap2', col:'anteproyecto', type:'f1', title:'Modelado 3D y Renders',
-      items:[
-        {id:'b1', name:'Ajustes de diseño',           done:false, colab:''},
-        {id:'b2', name:'Modelado 3D',                 done:false, colab:'', autoColab:'3D'},
-        {id:'b3', name:'Iluminación y ambientación', done:false, colab:''},
-        {id:'b4', name:'Renders',                     done:false, colab:'', autoColab:'Rend'},
-        {id:'b5', name:'Reunión con cliente',         done:false, colab:''}
-      ]
-    });
-    sprints.push({
-      id:'sp_ap3', col:'anteproyecto', type:'f1', title:'Documentación Anteproyecto',
-      items:[
-        {id:'b1', name:'Ajustes de diseño',    done:false, colab:''},
-        {id:'b2', name:'Plantas',              done:false, colab:''},
-        {id:'b3', name:'Elevaciones',          done:false, colab:''},
-        {id:'b4', name:'Secciones',            done:false, colab:''},
-        {id:'b5', name:'Entrega Anteproyecto',       done:false, colab:'', milestone:'entrega_f1'}
-      ]
-    });
-  }
+  // ═══ Columna COTIZADO ═══
+  _mkCol('cotizado');
 
-  // ═══ Columna PRE ENTREGA — solo si hay F1 y F2 ═══
-  if(hasF1 && hasF2){
-    sprints.push({
-      id:'sp_pe', col:'pre_entrega', type:'pe', title:'Revisión y ajustes con cliente',
-      items:[
-        {id:'b1', name:'Reunión con cliente',    done:false, colab:''},
-        {id:'b2', name:'Realización de cambios', done:false, colab:''},
-        {id:'b3', name:'Reunión de cambios',     done:false, colab:''},
-        {id:'b4', name:'Ajustes finales',        done:false, colab:''},
-        {id:'b5', name:'Entrega',                done:false, colab:'', milestone:'entrega_pre'}
-      ]
-    });
-  }
+  // ═══ Columna ANTEPROYECTO — sólo si se cotizó F1 ═══
+  if(hasF1) _mkCol('anteproyecto');
+
+  // ═══ Columna PRE ENTREGA — sólo si hay F1 y F2 ═══
+  if(hasF1 && hasF2) _mkCol('pre_entrega');
 
   // ═══ Columna PLANOS — un sprint por GRUPO con planos cotizados (cantidad > 0) ═══
   if(hasF2){
@@ -10359,14 +10718,8 @@ function ensureDefaultSprints(c){
     });
   }
 
-  // ═══ Columna ENTREGA — Aprobado + Cobrado ═══
-  sprints.push({
-    id:'sp_en', col:'entrega', type:'entrega', title:'Aprobación y cobro final',
-    items:[
-      {id:'b1', name:'Aprobado por cliente', done:false, colab:'', milestone:'aprobado'},
-      {id:'b2', name:'Cobrado en su totalidad', done:false, colab:'', milestone:'cobrado'}
-    ]
-  });
+  // ═══ Columna ENTREGA — configurable (aprobación y cobro final) ═══
+  _mkCol('entrega');
 
   // Auto-asignar colaboradores desde la cotización
   autoAsignarColaboradores(c, sprints);
@@ -13665,15 +14018,91 @@ document.addEventListener('DOMContentLoaded',()=>{
       box-shadow:var(--shadow-accent,0 8px 20px rgba(212,168,67,0.3));transition:transform .15s">
       Iniciar sesión
     </button>
-    <button onclick="authSignup()" id="authSignupBtn"
+    <button onclick="abrirRegistro()" id="authSignupBtn"
       style="width:100%;margin-top:9px;padding:10px;font-size:11px;border:1px solid var(--border-2);border-radius:999px;
       background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">
       Crear cuenta nueva
     </button>
-    <p id="authNoConfig" style="display:none;font-size:10px;color:var(--text-3);text-align:center;margin-top:12px;line-height:1.6">
-      ⚠ Supabase no está configurado aún.<br>
-      <button onclick="authLocalMode()" style="margin-top:5px;padding:5px 14px;font-size:10px;border:0.5px solid var(--border-2);border-radius:999px;background:transparent;color:var(--text-3);cursor:pointer">Entrar en modo local (desarrollo)</button>
-    </p>
+  </div>
+</div>
+
+<!-- ═══════════════ MODAL: CREAR CUENTA ═══════════════ -->
+<div id="registroOverlay" style="position:fixed;inset:0;z-index:9100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);overflow-y:auto">
+  <div class="sc" style="width:100%;max-width:400px;position:relative;padding:1.9rem 1.8rem;margin:auto 0">
+    <button onclick="cerrarRegistro()" title="Cerrar" aria-label="Cerrar"
+      style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--border-2);background:transparent;color:var(--text-2);cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+
+    <div style="text-align:center;margin-bottom:1.3rem">
+      <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:5px">Crear cuenta</div>
+      <div style="font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--text);letter-spacing:.01em">Empezá a usar Arkiboard</div>
+      <div style="font-size:11px;color:var(--text-3);margin-top:5px;line-height:1.5">Creá tu cuenta gratis en menos de un minuto.</div>
+    </div>
+
+    <div id="regError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(255,92,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
+    <div id="regOk" style="display:none;padding:10px 12px;margin-bottom:12px;background:var(--green-lt);border:1px solid rgba(61,232,176,0.35);border-radius:var(--r-md);font-size:11px;color:var(--green);line-height:1.55"></div>
+
+    <div id="regForm">
+      <div class="auth-field">
+        <label class="lbl" for="regEmail">Correo electrónico</label>
+        <div class="auth-input-wrap">
+          <svg class="auth-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="3"/>
+            <path d="M3.5 7l7.4 5.4a2 2 0 0 0 2.2 0L20.5 7"/>
+          </svg>
+          <input type="email" id="regEmail" placeholder="tu@correo.com" autocomplete="email" spellcheck="false">
+        </div>
+      </div>
+
+      <div class="auth-field">
+        <label class="lbl" for="regPass">Contraseña</label>
+        <div class="auth-input-wrap">
+          <svg class="auth-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/>
+            <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
+            <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
+          </svg>
+          <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" autocomplete="new-password"
+            oninput="regCheckMatch()">
+          <button type="button" class="auth-eye" onclick="regTogglePass('regPass','regEye1')" title="Mostrar / ocultar" tabindex="-1">
+            <svg id="regEye1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-field" style="margin-bottom:.6rem">
+        <label class="lbl" for="regPass2">Confirmar contraseña</label>
+        <div class="auth-input-wrap">
+          <svg class="auth-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/>
+            <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
+            <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
+          </svg>
+          <input type="password" id="regPass2" placeholder="Repetí la contraseña" autocomplete="new-password"
+            oninput="regCheckMatch()" onkeydown="if(event.key==='Enter')authRegistrar()">
+          <button type="button" class="auth-eye" onclick="regTogglePass('regPass2','regEye2')" title="Mostrar / ocultar" tabindex="-1">
+            <svg id="regEye2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>
+            </svg>
+          </button>
+        </div>
+        <p id="regMatchMsg" style="font-size:10.5px;margin-top:6px;min-height:14px;line-height:1.4"></p>
+      </div>
+
+      <button onclick="authRegistrar()" id="regSubmitBtn"
+        style="width:100%;padding:11px;font-size:12px;font-weight:600;border:none;border-radius:999px;
+        background:linear-gradient(135deg,var(--accent-light,var(--accent)),var(--accent));color:var(--text-on-accent);
+        cursor:pointer;font-family:var(--font-display);letter-spacing:.10em;text-transform:uppercase;
+        box-shadow:var(--shadow-accent);transition:transform .15s">
+        Crear mi cuenta
+      </button>
+    </div>
+
+    <div style="text-align:center;margin-top:14px;font-size:11px;color:var(--text-3)">
+      ¿Ya tenés cuenta?
+      <button onclick="cerrarRegistro()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:11px;font-family:var(--font-display);letter-spacing:.03em;padding:0 2px">Iniciá sesión</button>
+    </div>
   </div>
 </div>
 
