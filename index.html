@@ -419,7 +419,12 @@ body::after{
   display:flex;align-items:flex-end;justify-content:center;
 }
 .home-bar:hover{filter:brightness(1.15)}
-.home-bar.empty{background:rgba(255,255,255,0.06)}
+/* OJO: existe una clase global .empty (mensajes vacíos) con padding:2rem.
+   Al colisionar forzaba un ancho mínimo de 64px por barra y rompía el layout. */
+.home-bar.empty{
+  background:rgba(255,255,255,0.06);
+  padding:0;text-align:inherit;font-size:inherit;font-family:inherit;
+}
 .home-bar-tooltip{
   position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
   background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);
@@ -433,6 +438,12 @@ body::after{
   font-size:9px;color:var(--text-3);font-family:var(--font-mono);
 }
 .home-bar-axis-label{flex:1;text-align:center;min-width:14px;text-transform:uppercase;letter-spacing:0.05em}
+
+/* El gráfico nunca debe empujar el ancho de la página (rompía el layout en móvil) */
+.home-charts{min-width:0}
+.home-chart-box{min-width:0}
+#home-chart-bars{max-width:100%}
+.home-bar-chart,.home-bar-axis{max-width:100%}
 
 /* Donut chart */
 .home-donut{position:relative;width:120px;height:120px;flex-shrink:0}
@@ -2102,6 +2113,15 @@ code.emp-tag{font-family:var(--font-mono)}
   .kanban-card-client{font-size:12.5px}
   .home-summary-item{align-items:flex-start}
   .home-summary-item-value{white-space:nowrap;margin-left:10px}
+
+  /* ── Gráfico de cobros: contenido dentro de su tarjeta ── */
+  .home-chart-box{overflow:hidden}
+  .home-bar-chart{gap:2px;padding:0 2px}
+  .home-bar{min-width:0!important;flex:1 1 0!important;width:auto!important}
+  .home-bar-axis{gap:2px;padding:0 2px;font-size:8px}
+  .home-bar-axis-label{min-width:0!important;letter-spacing:0}
+  /* El tooltip es absoluto y ensanchaba el layout; en táctil no hay hover */
+  .home-bar-tooltip{display:none!important}
 }
 </style>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
@@ -2210,7 +2230,7 @@ code.emp-tag{font-family:var(--font-mono)}
       <div class="emp-sec-head">🏢 Identidad</div>
       <div class="fg" style="margin-bottom:14px">
         <label class="lbl">Nombre del estudio de arquitectura</label>
-        <input type="text" id="empNombre" placeholder="Ej. Estudio Avit" oninput="empMarkDirty()">
+        <input type="text" id="empNombre" placeholder="Ej. Mi Estudio de Arquitectura" oninput="empMarkDirty()">
       </div>
 
       <div class="emp-uploads">
@@ -2289,9 +2309,26 @@ code.emp-tag{font-family:var(--font-mono)}
       </div>
     </div>
 
-    <div style="display:flex;gap:10px;align-items:center;margin:4px 0 40px">
+    <div style="display:flex;gap:10px;align-items:center;margin:4px 0 24px">
       <button class="emp-btn primary" onclick="empGuardar()">Guardar cambios</button>
       <span id="empSaveMsg" style="font-size:11px;color:var(--green);font-family:var(--font-mono)"></span>
+    </div>
+
+    <!-- Restablecer -->
+    <div class="sc" style="border-color:rgba(255,92,122,0.30);margin-bottom:40px">
+      <div class="emp-sec-head" style="color:var(--red);text-shadow:none">⚠️ Restablecer aplicación</div>
+      <p style="font-size:11.5px;color:var(--text-2);line-height:1.7;margin-bottom:12px">
+        Borra <strong>todos</strong> los datos guardados en este navegador: proyectos, cotizaciones, clientes,
+        registros administrativos, cronograma, organigrama y la identidad de la empresa.
+        Útil para dejar la app como recién instalada. <strong style="color:var(--red)">Esta acción no se puede deshacer.</strong>
+      </p>
+      <p style="font-size:11px;color:var(--text-3);margin-bottom:12px">
+        Antes de continuar, exportá un respaldo desde el menú de usuario si querés conservar algo.
+      </p>
+      <button class="emp-btn" onclick="empResetApp()"
+        style="border-color:rgba(255,92,122,0.45);background:rgba(255,92,122,0.10);color:var(--red)">
+        Borrar todos los datos
+      </button>
     </div>
   </div>
 </div>
@@ -2344,11 +2381,11 @@ code.emp-tag{font-family:var(--font-mono)}
       <div class="r2">
         <div>
           <label class="lbl">Largo (m)</label>
-          <div class="fg"><input type="number" id="p2_tL" value="15" oninput="renderPrograma()" step="0.01"></div>
+          <div class="fg"><input type="number" id="p2_tL" value="" placeholder="0" oninput="renderPrograma()" step="0.01"></div>
         </div>
         <div>
           <label class="lbl">Ancho (m)</label>
-          <div class="fg"><input type="number" id="p2_tA" value="12" oninput="renderPrograma()" step="0.01"></div>
+          <div class="fg"><input type="number" id="p2_tA" value="" placeholder="0" oninput="renderPrograma()" step="0.01"></div>
         </div>
       </div>
       <div style="margin-top:10px" id="p2_tc_wrap">
@@ -2426,7 +2463,7 @@ code.emp-tag{font-family:var(--font-mono)}
 
       <label class="lbl">Obra gris (Q/m²)</label>
       <div class="fg" style="position:relative;margin-bottom:14px">
-        <input type="number" id="p2_obraGris" value="3500" oninput="renderPrograma()" step="0.01">
+        <input type="number" id="p2_obraGris" value="" placeholder="0" oninput="renderPrograma()" step="0.01">
         <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">Q/m²</span>
       </div>
 
@@ -2492,8 +2529,8 @@ code.emp-tag{font-family:var(--font-mono)}
 <div class="sc">
   <div class="sc-title">Configuración general</div>
   <div class="r2">
-    <div class="fg"><label class="lbl">Metros cuadrados</label><div class="fr"><input type="number" id="m2S" min="1" max="99999" step="1" value="150" oninput="syncM2(this.value)" style="width:110px;font-size:15px;font-weight:500"><span class="fv" style="margin-left:6px">m²</span></div></div>
-    <div class="fg"><label class="lbl">Tarifa por m²</label><div class="fr"><input type="number" id="m2Rate" value="80" min="1" class="mid" oninput="calc()"><span class="fv" id="cSym">GTQ/m²</span></div></div>
+    <div class="fg"><label class="lbl">Metros cuadrados</label><div class="fr"><input type="number" id="m2S" min="1" max="99999" step="1" value="" placeholder="0" oninput="syncM2(this.value)" style="width:110px;font-size:15px;font-weight:500"><span class="fv" style="margin-left:6px">m²</span></div></div>
+    <div class="fg"><label class="lbl">Tarifa por m²</label><div class="fr"><input type="number" id="m2Rate" value="" placeholder="0" min="1" class="mid" oninput="calc()"><span class="fv" id="cSym">GTQ/m²</span></div></div>
   </div>
   <div class="cur-row">
     <button class="cur-btn active" onclick="setCur('GTQ')">GTQ</button>
@@ -2548,7 +2585,7 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
     <div id="timbresBody" style="opacity:.35;pointer-events:none">
       <div class="fr" style="gap:10px;margin-bottom:.5rem">
-        <div style="flex:1"><label class="lbl">Costo de timbre por plano</label><div class="fr"><input type="number" id="timbreCosto" value="50" min="0" class="mid" oninput="calc()"><span style="font-size:12px;color:var(--text-3)" id="timbreCurLbl">GTQ/plano</span></div></div>
+        <div style="flex:1"><label class="lbl">Costo de timbre por plano</label><div class="fr"><input type="number" id="timbreCosto" value="0" min="0" class="mid" oninput="calc()"><span style="font-size:12px;color:var(--text-3)" id="timbreCurLbl">GTQ/plano</span></div></div>
         <div style="flex:1"><div class="metric"><p class="ml">Total timbres</p><p class="mv" id="timbresTotal">—</p></div></div>
       </div>
       <p class="nt">Se multiplica el costo por el total de planos activos en Planimetrías.</p>
@@ -2585,7 +2622,7 @@ code.emp-tag{font-family:var(--font-mono)}
         <input type="text" id="colNombre3D" placeholder="Nombre del colaborador" style="font-size:11px;padding:4px 7px;margin-bottom:0" oninput="calc()">
       </div>
       <div class="colab-r">
-        <input class="colab-pct" type="number" id="col3D" value="25" min="0" max="100" oninput="calc()">
+        <input class="colab-pct" type="number" id="col3D" value="0" min="0" max="100" oninput="calc()">
         <span style="font-size:11px;color:var(--text-3)">% de F1</span>
         <span class="colab-amt" id="colAmt3D">—</span>
       </div>
@@ -2630,12 +2667,12 @@ code.emp-tag{font-family:var(--font-mono)}
 <div class="sc">
   <span class="pl p3" style="margin-bottom:.75rem;display:inline-block">Costos internos</span>
   <p class="nt" style="margin:.4rem 0 .75rem">Costos fijos del proyecto — se descuentan de tu utilidad</p>
-  <div class="cost-row"><span style="color:var(--text-2)">Revit</span><div class="fr" style="gap:6px"><input type="number" id="cRevit" value="25" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">D5 Render</span><div class="fr" style="gap:6px"><input type="number" id="cD5" value="25" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Canva</span><div class="fr" style="gap:6px"><input type="number" id="cCanva" value="25" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Electricidad</span><div class="fr" style="gap:6px"><input type="number" id="cElec" value="25" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Gasolina</span><div class="fr" style="gap:6px"><input type="number" id="cGas" value="25" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Viáticos / otros</span><div class="fr" style="gap:6px"><input type="number" id="cViat" value="25" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Revit</span><div class="fr" style="gap:6px"><input type="number" id="cRevit" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">D5 Render</span><div class="fr" style="gap:6px"><input type="number" id="cD5" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Canva</span><div class="fr" style="gap:6px"><input type="number" id="cCanva" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Electricidad</span><div class="fr" style="gap:6px"><input type="number" id="cElec" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Gasolina</span><div class="fr" style="gap:6px"><input type="number" id="cGas" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Viáticos / otros</span><div class="fr" style="gap:6px"><input type="number" id="cViat" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
   <div class="sep"></div>
   <div class="metric"><p class="ml">Total costos internos</p><p class="mv" id="ohAmt">—</p></div>
 </div>
@@ -2698,7 +2735,7 @@ code.emp-tag{font-family:var(--font-mono)}
 <div class="sc" id="capSection">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
     <div>
-      <span class="pl p5" style="display:inline-block">Capitalización Estudio Avit</span>
+      <span class="pl p5" style="display:inline-block">Capitalización del estudio</span>
       <p class="nt" style="margin:.3rem 0 0">% reservado de la utilidad pre-cap, antes de impuestos</p>
     </div>
     <label class="tog"><input type="checkbox" id="capOn" onchange="toggleCap();if(typeof saveDraft==='function')saveDraft()"><span class="tog-sl"></span></label>
@@ -3381,7 +3418,7 @@ code.emp-tag{font-family:var(--font-mono)}
 
 <div class="home-hero">
   <div>
-    <p class="home-hero-greeting" id="home-greeting">Hola, Baldi</p>
+    <p class="home-hero-greeting" id="home-greeting">Hola</p>
     <p class="home-hero-date" id="home-date"></p>
   </div>
   <button onclick="showPage('programa')" title="Iniciar nuevo proyecto desde Programa Arquitectónico"
@@ -5802,7 +5839,7 @@ function syncImportar(input){
 
       // Verificar que es un backup de Avit
       if(!datos._app && !datos.avit_cots){
-        throw new Error('El archivo no parece ser un backup de Estudio Avit.');
+        throw new Error('El archivo no parece ser un backup de Arkiboard.');
       }
 
       // Merge inteligente para cotizaciones
@@ -6298,14 +6335,7 @@ window.exportarProgramaJSON = exportarProgramaJSON;
    ══════════════════════════════════════════════════════════════ */
 
 const ORG_DEFAULT = {nodes:[
-  {id:'n0',nombre:'Erick Baldizon',rol:'Director / Fundador',parentId:null,x:320,y:30,color:'#D4A843'},
-  {id:'n1',nombre:'Enrique Galindo',rol:'Colaborador',parentId:'n0',x:20,y:190},
-  {id:'n2',nombre:'Cristian Arauz',rol:'Colaborador',parentId:'n0',x:175,y:190},
-  {id:'n3',nombre:'Jefferson Salzbrener',rol:'Colaborador',parentId:'n0',x:330,y:190},
-  {id:'n4',nombre:'Miguel Soto',rol:'Colaborador',parentId:'n0',x:490,y:190},
-  {id:'n5',nombre:'Roberto Sinai',rol:'Colaborador',parentId:'n0',x:645,y:190},
-  {id:'n6',nombre:'Eunice Moran',rol:'Colaboradora',parentId:'n0',x:100,y:340},
-  {id:'n7',nombre:'Mar de Baldizon',rol:'Colaboradora',parentId:'n0',x:540,y:340},
+  {id:'n0',nombre:'Dirección',rol:'Director / Fundador',parentId:null,x:320,y:40,color:'#00E5FF'},
 ]};
 
 function orgLoad(){ try{ return JSON.parse(localStorage.getItem('avit_organigrama')||'null')||JSON.parse(JSON.stringify(ORG_DEFAULT)); }catch(e){ return JSON.parse(JSON.stringify(ORG_DEFAULT)); } }
@@ -6691,15 +6721,15 @@ tr:nth-child(even) td{background:#fafafa}
 <meta charset="UTF-8"><title>Constancia Organigrama — ${_empresaN()}</title>
 <style>${CSS}</style></head><body>
 
-<div class="watermark">AVIT</div>
+<div class="watermark">${_empresaN().slice(0,6).toUpperCase()}</div>
 
 <div class="page">
 
 <!-- Encabezado oficial -->
 <div class="doc-header">
   <div class="brand">
-    <span class="brand-estudio">Estudio</span>
-    <span class="brand-avit">AVIT</span>
+    <span class="brand-estudio">Organigrama</span>
+    <span class="brand-avit">${_empresaN().toUpperCase()}</span>
     <span class="brand-sub">Arquitectura &amp; Interiorismo</span>
   </div>
   <div class="doc-meta">
@@ -6842,7 +6872,7 @@ function aplicarPerfilUI(){
     ini.textContent = (w.length>=2 ? w[0][0]+w[w.length-1][0] : n.slice(0,2)).toUpperCase();
   }
   const greet = document.getElementById('home-greeting');
-  if(greet && p.nombre) greet.textContent = 'Hola, ' + p.nombre.split(/\s+/)[0];
+  if(greet && typeof renderHome==='function'){ try{ renderHome(); }catch(e){} }
   actualizarUserMenuTema();
 }
 function actualizarUserMenuTema(){
@@ -7064,6 +7094,19 @@ function _empLogo(){ return _perfil().logo || ''; }
 function _empWatermark(){ return _perfil().watermark || ''; }
 function _empFirma(){ return _perfil().firma || ''; }
 
+/* ── Restablecer aplicación (deja todo como recién instalado) ── */
+function empResetApp(){
+  if(!confirm('¿Borrar TODOS los datos de este navegador?\n\nSe eliminarán proyectos, cotizaciones, clientes, registros administrativos, cronograma, organigrama y la identidad de la empresa.\n\nEsta acción no se puede deshacer.')) return;
+  if(!confirm('Última confirmación.\n\n¿Seguro que querés dejar la aplicación completamente vacía?')) return;
+  const claves = ['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias',
+                  'avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil',
+                  'avit_calc_draft','avit_calc','avit_artifacts'];
+  claves.forEach(k => { try{ localStorage.removeItem(k); }catch(e){} });
+  alert('Datos borrados. La aplicación se recargará.');
+  location.reload();
+}
+window.empResetApp=empResetApp;
+
 window.renderEmpresa=renderEmpresa;
 window.empSubirImg=empSubirImg;
 window.empQuitarImg=empQuitarImg;
@@ -7132,7 +7175,7 @@ async function authSignup(){
 }
 function authLocalMode(){
   localStorage.setItem('avit_localMode','1');
-  document.getElementById('authOverlay').style.display='none';
+  if(typeof _ocultarAuthOverlay==='function'){_ocultarAuthOverlay();}else{const _ov=document.getElementById('authOverlay');if(_ov)_ov.style.display='none';}
   aplicarPerfilUI();
   if(!_perfil().onboarded) mostrarOnboarding();
 }
@@ -7165,7 +7208,7 @@ window.authLocalMode=authLocalMode; window.cerrarSesion=cerrarSesion;
 
 /* ── Post-login: perfil remoto, encuesta, sync ─────────────── */
 async function _postLogin(){
-  document.getElementById('authOverlay').style.display='none';
+  if(typeof _ocultarAuthOverlay==='function'){_ocultarAuthOverlay();}else{const _ov=document.getElementById('authOverlay');if(_ov)_ov.style.display='none';}
   const meta=_sbUser?.user_metadata||{};
   const p=_perfil();
   if(meta.empresa) p.empresa=meta.empresa;
@@ -7283,10 +7326,15 @@ function _instalarAutoSync(){
 }
 
 /* ── Arranque: ¿hay sesión activa? ─────────────────────────── */
-(async function _authBoot(){
+function _ocultarAuthOverlay(){
+  const ov=document.getElementById('authOverlay');
+  if(ov) ov.style.display='none';
+}
+function _authBootRun(){
+  (async function(){
   aplicarPerfilUI();
   if(localStorage.getItem('avit_localMode')==='1'){
-    document.getElementById('authOverlay').style.display='none';
+    _ocultarAuthOverlay();
     if(!_perfil().onboarded) mostrarOnboarding();
     return;
   }
@@ -7308,6 +7356,13 @@ function _instalarAutoSync(){
     }
   }catch(e){ console.warn('[Arkiboard] boot auth', e); }
 })();
+}
+/* El overlay de login está al final del documento: hay que esperar al DOM. */
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', _authBootRun, {once:true});
+} else {
+  _authBootRun();
+}
 
 
 function toggleMenuConfig(){
@@ -7439,10 +7494,14 @@ function toggleFactura(on){
 }
 
 function toggleIsr(){
-  const on=document.getElementById('isrOn').checked;
-  const body=document.getElementById('isrBody');
-  body.style.opacity=on?'1':'.35';
-  body.style.pointerEvents=on?'':'none';
+  const isrEl=document.getElementById('isrOn');
+  const on=isrEl?isrEl.checked:false;
+  // El cuerpo del ISR vive dentro de la tarjeta unificada "Factura"
+  const body=document.getElementById('isrBody')||document.getElementById('facturaBody');
+  if(body){
+    body.style.opacity=on?'1':'.35';
+    body.style.pointerEvents=on?'':'none';
+  }
   // Highlight active régimen option
   ['isrOpt7Label','isrOpt25Label'].forEach(id=>{
     const el=document.getElementById(id);
@@ -9124,33 +9183,39 @@ function guardarCotConfirmado(d){
   ['fc-f1','fc-f2','fc-oh','fc-colab','fc-iva','fc-antic','fc-mid'].forEach(id=>document.getElementById(id).value=0);
   document.getElementById('fc-cliente').value='';document.getElementById('fc-proyecto').value='';
   // Limpiar el Cotizador completo para nueva cotización
+  try{
   document.getElementById('clientName').value='';
   document.getElementById('projTitle').value='';
   document.getElementById('projDesc').value='';
-  document.getElementById('m2S').value=150;
-  document.getElementById('m2Rate').value=80;
+  document.getElementById('m2S').value='';
+  document.getElementById('m2Rate').value='';
   document.getElementById('p1Extra').value=0;
   document.getElementById('colNombre3D').value='';
   document.getElementById('colNombreRend').value='';
   document.getElementById('colNombrePlanos').value='';
-  document.getElementById('col3D').value=25;
+  document.getElementById('col3D').value=0;
   document.getElementById('colRend').value=0;
   document.getElementById('colPlanos').value=0;
-  ['cRevit','cD5','cCanva','cElec','cGas','cViat'].forEach(id=>document.getElementById(id).value=25);
+  ['cRevit','cD5','cCanva','cElec','cGas','cViat'].forEach(id=>document.getElementById(id).value=0);
   document.getElementById('ivaOn').checked=false;
   document.getElementById('isrOn').checked=false;
-  if(typeof toggleIsr==='function') toggleIsr();
+  if(typeof toggleFactura==='function') toggleFactura(false);
+  document.getElementById('capOn').checked=false;
+  if(typeof toggleCap==='function') toggleCap();
   document.getElementById('pctAntic').value=30;
   document.getElementById('pctF1pay').value=40;
   document.getElementById('fase1On').checked=true;
   document.getElementById('fase2On').checked=true;
-  // Resets de planos a valores por defecto
-  [1,2,3,4,5,6,7,8,9].forEach(i=>{
-    document.getElementById('qp'+i).value=[1,1,1,2,4,1,3,0,0][i-1];
-    document.getElementById('cp'+i).value=600;
-  });
+  // Limpiar cantidades de planos (los costos unitarios vuelven al default del grupo)
+  if(typeof renderPlanosRows==='function') renderPlanosRows();
   toggleFase1();toggleFase2();syncToCalendar();calc();
-  renderIngresos();
+  } catch(e){ console.warn('[Arkiboard] limpieza del cotizador:', e); }
+  // El refresco de la lista va fuera del try: nunca debe bloquearse
+  if(typeof renderIngresos==='function') renderIngresos();
+  if(typeof renderHome==='function'){ try{ renderHome(); }catch(e){} }
+  if(document.getElementById('pg-est')?.classList.contains('active') && typeof renderEstatus==='function'){
+    try{ renderEstatus(); }catch(e){}
+  }
 }
 
 function updateEstado(id,estado){
@@ -9368,7 +9433,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;backg
   @page{size:A4;margin:15mm 12mm 18mm 12mm}
 }
 </style></head><body><button class="print-bar" onclick="window.print()">🖨 Imprimir / PDF</button><div class="page">
-<div class="lh"><img src="data:image/png;base64,${LOGO_B64}" alt="${_empresaN()}"><div class="lh-r"><div class="cn">Recibo No.</div><div class="num">${escapeHtmlBasic(numero)}</div></div></div>
+<div class="lh">${_empLogo()?`<img src="${_empLogo()}" alt="${_empresaN()}">`:`<span style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;font-weight:600;letter-spacing:2px;color:#fff;text-transform:uppercase">${escapeHtmlBasic(_empresaN())}</span>`}<div class="lh-r"><div class="cn">Recibo No.</div><div class="num">${escapeHtmlBasic(numero)}</div></div></div>
 
 <div class="titulo">
   <h1>Recibo</h1>
@@ -9453,7 +9518,11 @@ function renderHome(){
   else if(h < 19) saludo = 'Buenas tardes';
   else saludo = 'Buenas noches';
   const greetingEl = document.getElementById('home-greeting');
-  if(greetingEl) greetingEl.textContent = `${saludo}, Baldi`;
+  if(greetingEl){
+    const _nom = (typeof _usuarioN==='function' ? _usuarioN() : '').trim();
+    const _primer = _nom ? _nom.split(/\s+/)[0] : '';
+    greetingEl.textContent = _primer ? `${saludo}, ${_primer}` : saludo;
+  }
   const dateEl = document.getElementById('home-date');
   if(dateEl){
     dateEl.textContent = ahora.toLocaleDateString('es-GT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();
@@ -12223,15 +12292,8 @@ const fmtCalc = n => new Intl.NumberFormat("es-GT",{minimumFractionDigits:2,maxi
 var estadoCalc = {  /* var = window property, cross-script accessible */
   estimado: { area:"", cpm2:"" },
   programa: {
-    rooms: [
-      {id:1, name:"Sala",              area:20, level:1, cat:"privada"},
-      {id:2, name:"Comedor",           area:14, level:1, cat:"social"},
-      {id:3, name:"Cocina",            area:12, level:1, cat:"social"},
-      {id:4, name:"Dormitorio principal", area:18, level:2, cat:"privada"},
-      {id:5, name:"Baño principal",    area:6,  level:2, cat:"servicio"},
-      {id:6, name:"Garaje",            area:18, level:1, cat:"garaje"},
-    ],
-    obraGris: "3500",
+    rooms: [],
+    obraGris: "",
     finish: "medio",
     sec2: false,
     circOpt: "libre",
@@ -12239,8 +12301,8 @@ var estadoCalc = {  /* var = window property, cross-script accessible */
     roofT: "losa",
     slopeT: "plano",
     tcActive: false,
-    tL: "15",
-    tA: "12",
+    tL: "",
+    tA: "",
     tc: "",
     ind: { design:10, permits:2.5, supervision:4, contingency:7 },
     specials: []
@@ -12921,7 +12983,10 @@ if(typeof window !== 'undefined'){
       /* Re-sincronizar estados de UI dependientes de checkboxes */
       if(typeof toggleFase1    === 'function') toggleFase1();
       if(typeof toggleFase2    === 'function') toggleFase2();
-      if(typeof toggleIsr      === 'function') toggleIsr();
+      if(typeof toggleFactura  === 'function'){
+        const _ivaEl=$('ivaOn');
+        toggleFactura(_ivaEl?_ivaEl.checked:false);
+      }
       if(typeof toggleCap      === 'function') toggleCap();
       if(typeof toggleTimbres  === 'function') toggleTimbres();
       if(typeof syncToCalendar === 'function') syncToCalendar();
@@ -13586,7 +13651,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     <div id="obError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
     <div class="fg" style="margin-bottom:.65rem">
       <label class="lbl">¿Cómo se llama tu estudio de arquitectura?</label>
-      <input type="text" id="obEmpresa" placeholder="Estudio AVIT">
+      <input type="text" id="obEmpresa" placeholder="Nombre de tu estudio">
     </div>
     <div class="fg" style="margin-bottom:.65rem">
       <label class="lbl">¿Cuál es tu nombre?</label>
