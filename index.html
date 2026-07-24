@@ -2228,9 +2228,16 @@ code.emp-tag{font-family:var(--font-mono)}
     <!-- Identidad -->
     <div class="sc">
       <div class="emp-sec-head">🏢 Identidad</div>
-      <div class="fg" style="margin-bottom:14px">
-        <label class="lbl">Nombre del estudio de arquitectura</label>
-        <input type="text" id="empNombre" placeholder="Ej. Mi Estudio de Arquitectura" oninput="empMarkDirty()">
+      <div class="r2" style="margin-bottom:14px">
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Nombre del estudio de arquitectura</label>
+          <input type="text" id="empNombre" placeholder="Ej. Mi Estudio de Arquitectura" oninput="empMarkDirty()">
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">¿Cómo quieres que te llame?</label>
+          <input type="text" id="empUsuario" placeholder="Ej. Erick Baldizón" oninput="empMarkDirty();empPreviewSaludo()">
+          <p style="font-size:10.5px;color:var(--text-3);margin-top:5px;line-height:1.5" id="empSaludoPreview"></p>
+        </div>
       </div>
 
       <div class="emp-uploads">
@@ -4297,6 +4304,30 @@ document.addEventListener('DOMContentLoaded', ()=>{
 }, false);
 
 /* ── toggleStudioMenu ───────────────────────────────────────── */
+/* Coloca el menú anclado al botón, sin salirse de la pantalla */
+function _posStudioMenu(){
+  const menu = document.getElementById('studioMenu');
+  const btn  = document.getElementById('studioMenuBtn');
+  if(!menu || !btn || menu.style.display === 'none') return;
+  const r = btn.getBoundingClientRect();
+  menu.style.position = 'fixed';
+  menu.style.right    = 'auto';
+  menu.style.bottom   = 'auto';
+  menu.style.top      = (r.bottom + 7) + 'px';
+
+  const mw = menu.offsetWidth || 190;
+  const vw = window.innerWidth;
+  let left = r.right - mw;                 // alinear borde derecho con el botón
+  if(left + mw > vw - 8) left = vw - mw - 8;
+  if(left < 8) left = 8;
+  menu.style.left = left + 'px';
+
+  const mh = menu.offsetHeight || 200;
+  if(r.bottom + 7 + mh > window.innerHeight - 8){
+    menu.style.top = Math.max(8, r.top - mh - 7) + 'px';
+  }
+}
+
 function toggleStudioMenu(){
   const menu = document.getElementById('studioMenu');
   const btn  = document.getElementById('studioMenuBtn');
@@ -4305,30 +4336,8 @@ function toggleStudioMenu(){
   const open = menu.style.display === 'none' || !menu.style.display;
 
   if(open){
-    /* position:fixed anclado al botón — inmune al overflow de .nav-tabs
-       (que en móvil recorta cualquier hijo con position:absolute). */
-    const r = btn.getBoundingClientRect();
-    menu.style.position = 'fixed';
-    menu.style.display  = 'block';
-    menu.style.top      = (r.bottom + 7) + 'px';
-    menu.style.right    = 'auto';
-    menu.style.left     = '0px';   // temporal, se corrige tras medir
-    menu.style.bottom   = 'auto';
-
-    /* Alinear el borde derecho del menú con el del botón, sin salirse
-       de la pantalla (importante en móvil). */
-    const mw   = menu.offsetWidth || 190;
-    const vw   = window.innerWidth;
-    let left   = r.right - mw;
-    if(left + mw > vw - 8) left = vw - mw - 8;
-    if(left < 8) left = 8;
-    menu.style.left = left + 'px';
-
-    /* Si no cabe abajo, abrir hacia arriba */
-    const mh = menu.offsetHeight || 200;
-    if(r.bottom + 7 + mh > window.innerHeight - 8){
-      menu.style.top = Math.max(8, r.top - mh - 7) + 'px';
-    }
+    menu.style.display = 'block';
+    _posStudioMenu();
   } else {
     menu.style.display = 'none';
   }
@@ -4339,20 +4348,27 @@ function toggleStudioMenu(){
   btn.style.color       = open ? 'var(--accent)' : '';
 
   if(open){
-    const close = e=>{
+    const cerrar = ()=>{
+      menu.style.display='none'; menu.dataset.open='';
+      if(chev) chev.style.transform='';
+      btn.style.borderColor=''; btn.style.color='';
+      document.removeEventListener('click',onClickFuera);
+      window.removeEventListener('resize',onReflow);
+      window.removeEventListener('scroll',onReflow,true);
+    };
+    const onClickFuera = e=>{
       if(!document.getElementById('studioMenuWrap')?.contains(e.target) && !menu.contains(e.target)){
-        menu.style.display='none'; menu.dataset.open='';
-        if(chev) chev.style.transform='';
-        btn.style.borderColor=''; btn.style.color='';
-        document.removeEventListener('click',close);
-        window.removeEventListener('resize',close);
-        window.removeEventListener('scroll',close,true);
+        cerrar();
       }
     };
+    /* OJO: en móvil la barra de pestañas tiene scroll horizontal y al tocar el
+       botón el navegador la desplaza. Antes eso cerraba el menú al instante;
+       ahora sólo lo reubica. */
+    const onReflow = ()=>{ _posStudioMenu(); };
     setTimeout(()=>{
-      document.addEventListener('click',close);
-      window.addEventListener('resize',close);
-      window.addEventListener('scroll',close,true);  // reposicionar/cerrar al hacer scroll
+      document.addEventListener('click',onClickFuera);
+      window.addEventListener('resize',onReflow);
+      window.addEventListener('scroll',onReflow,true);
     },10);
   }
 }
@@ -6941,6 +6957,9 @@ function renderEmpresa(){
   const p = _perfil();
   const nm = document.getElementById('empNombre');
   if(nm) nm.value = p.empresa || '';
+  const us = document.getElementById('empUsuario');
+  if(us) us.value = p.nombre || '';
+  empPreviewSaludo();
   const sal = document.getElementById('empSaludo');
   if(sal) sal.value = (typeof p.saludo === 'string') ? p.saludo : EMP_SALUDO_DEFAULT;
   // Imágenes
@@ -7069,12 +7088,13 @@ function empResetObs(){ _empObs = EMP_OBS_DEFAULT.slice(); empMarkDirty(); empOb
 function empGuardar(){
   const p = _perfil();
   p.empresa = (document.getElementById('empNombre')?.value || '').trim();
+  p.nombre  = (document.getElementById('empUsuario')?.value || '').trim();
   const sal = (document.getElementById('empSaludo')?.value || '').trim();
   p.saludo = sal || EMP_SALUDO_DEFAULT;
   p.observaciones = _empObs.map(t => (t||'').trim()).filter(Boolean);
   _perfilSave(p);
   if(_sbConfigured() && _sbUser){
-    _sb.auth.updateUser({data:{empresa:p.empresa}}).catch(()=>{});
+    _sb.auth.updateUser({data:{empresa:p.empresa, nombre:p.nombre}}).catch(()=>{});
   }
   _empDirty = false;
   _empFlash('Cambios guardados ✓');
@@ -7093,6 +7113,20 @@ function _empObservaciones(){ const o = _perfil().observaciones; return Array.is
 function _empLogo(){ return _perfil().logo || ''; }
 function _empWatermark(){ return _perfil().watermark || ''; }
 function _empFirma(){ return _perfil().firma || ''; }
+
+/* Vista previa: el saludo de Inicio usa sólo el primer nombre */
+function empPreviewSaludo(){
+  const el = document.getElementById('empSaludoPreview');
+  if(!el) return;
+  const v = (document.getElementById('empUsuario')?.value || '').trim();
+  const primer = v ? v.split(/\s+/)[0] : '';
+  const h = new Date().getHours();
+  const saludo = h < 12 ? 'Buenos días' : (h < 19 ? 'Buenas tardes' : 'Buenas noches');
+  el.textContent = primer
+    ? `En Inicio verás: “${saludo}, ${primer}”`
+    : 'Sin nombre, el saludo aparecerá sin él.';
+}
+window.empPreviewSaludo=empPreviewSaludo;
 
 /* ── Restablecer aplicación (deja todo como recién instalado) ── */
 function empResetApp(){
