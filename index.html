@@ -918,6 +918,101 @@ input.narrow{width:88px}input.mid{width:108px}
 .kanban-col-sub{font-size:9px;color:var(--text-3);font-family:var(--font-mono);margin-top:2px;letter-spacing:.06em}
 .kanban-col.drag-over{background:var(--accent-glow);border-color:var(--border-accent)}
 .kanban-card[draggable="true"]{cursor:grab}
+
+/* ═══ ARKIWORKERS ═══ */
+.colab-pick{display:flex;gap:5px;align-items:center}
+.colab-pick select{flex:1;min-width:0}
+.colab-add{
+  flex-shrink:0;width:26px;height:26px;border-radius:var(--r-sm);
+  border:1px solid var(--border-accent);background:var(--accent-subtle);
+  color:var(--accent);cursor:pointer;font-size:13px;line-height:1;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.colab-add:hover{background:var(--accent);color:var(--text-on-accent)}
+.aw-card{
+  display:flex;align-items:center;gap:13px;padding:12px 15px;margin-bottom:8px;
+  background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r-md);
+  transition:border-color .15s;
+}
+.aw-card:hover{border-color:var(--border-accent)}
+.aw-avatar{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:13px;font-weight:600;
+  background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent);
+}
+.aw-info{flex:1;min-width:0}
+.aw-nombre{font-size:13px;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aw-email{font-size:11px;color:var(--text-3);font-family:var(--font-mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.aw-stats{display:flex;gap:18px;flex-shrink:0;text-align:center}
+.aw-stat-val{font-size:17px;font-weight:500;font-family:var(--font-mono);line-height:1.1}
+.aw-stat-val.act{color:var(--accent)}
+.aw-stat-lbl{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.aw-acts{display:flex;gap:5px;flex-shrink:0}
+.aw-btn{
+  width:28px;height:28px;border-radius:var(--r-sm);cursor:pointer;font-size:12px;
+  border:1px solid var(--border-2);background:transparent;color:var(--text-3);
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.aw-btn:hover{border-color:var(--border-accent);color:var(--accent)}
+.aw-btn.del:hover{border-color:var(--red);color:var(--red)}
+.aw-empty{
+  text-align:center;padding:34px 16px;border:1px dashed var(--border-2);
+  border-radius:var(--r-md);color:var(--text-3);font-size:12px;line-height:1.7;
+}
+@media (max-width:720px){
+  .aw-card{flex-wrap:wrap;gap:10px}
+  .aw-info{flex:1 1 100%;order:1}
+  .aw-avatar{order:0}
+  .aw-stats{order:2;gap:14px}
+  .aw-acts{order:3;margin-left:auto}
+}
+
+/* ═══ CUENTA REGRESIVA DE FASE ═══ */
+.kanban-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.kanban-card-titles{min-width:0;flex:1}
+.kanban-countdown{
+  display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+  padding:3px 8px;border-radius:999px;
+  font-family:var(--font-mono);font-size:10px;font-weight:500;line-height:1;
+  white-space:nowrap;letter-spacing:.01em;
+  border:1px solid transparent;transition:all .2s;
+}
+.kanban-countdown .cd-ico{font-size:10px;line-height:1}
+.kanban-countdown .cd-txt{line-height:1}
+/* En plazo: discreto, sólo un dato más */
+.kanban-countdown.cd-ok{
+  background:var(--tint-on-bg-soft);color:var(--text-3);
+  border-color:var(--border);
+}
+/* Por vencer: cian tenue, empieza a llamar la atención */
+.kanban-countdown.cd-pronto{
+  background:var(--accent-subtle);color:var(--accent);
+  border-color:var(--border-accent);
+}
+/* Hoy: ámbar, atención */
+.kanban-countdown.cd-hoy{
+  background:rgba(0,229,255,0.10);color:var(--accent-light);
+  border-color:var(--border-accent);
+  box-shadow:0 0 10px rgba(0,229,255,0.12);
+}
+/* Tarde: rojo, el dato importante — pulso sutil */
+.kanban-countdown.cd-tarde{
+  background:var(--red-lt);color:var(--red);
+  border-color:rgba(255,92,122,0.42);
+  font-weight:600;
+  animation:cdPulse 2.4s ease-in-out infinite;
+}
+@keyframes cdPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,92,122,0.0)}
+  50%    {box-shadow:0 0 9px 0 rgba(255,92,122,0.30)}
+}
+/* Estimada: mismo color pero en línea punteada (dato menos firme) */
+.kanban-countdown.cd-est{border-style:dashed;opacity:.9}
+[data-theme="light"] .kanban-countdown.cd-ok{color:var(--text-2)}
+@media (max-width:720px){
+  .kanban-countdown{font-size:10.5px;padding:4px 9px}
+}
 .kanban-card.dragging{opacity:0.5;cursor:grabbing}
 .kanban-card{padding:.75rem .8rem;margin-bottom:8px}
 .pay-badges{display:flex;gap:4px;margin:8px 0;flex-wrap:wrap}
@@ -1899,6 +1994,175 @@ input.narrow{width:88px}input.mid{width:108px}
   box-shadow:0 0 0 3.5px rgba(103,213,243,0.18),0 6px 20px rgba(41,58,64,0.08);
 }
 
+/* El fondo de los campos del login lo pinta el contenedor.
+   Una regla genérica del tema claro les metía un gris que los hacía ver
+   más oscuros que su marco. */
+[data-theme="light"] .auth-input-wrap input[type=text],
+[data-theme="light"] .auth-input-wrap input[type=email],
+[data-theme="light"] .auth-input-wrap input[type=password],
+.auth-input-wrap input[type=text],
+.auth-input-wrap input[type=email],
+.auth-input-wrap input[type=password]{
+  background:transparent!important;
+}
+
+/* ═══ INICIO CON GOOGLE ═══ */
+.oauth-sep{display:flex;align-items:center;gap:12px;margin:16px 0;
+  color:var(--text-3);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--font-mono)}
+.oauth-sep::before,.oauth-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.google-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:11px;font-size:12.5px;font-weight:500;cursor:pointer;
+  font-family:var(--font-display);letter-spacing:.02em;
+  border-radius:999px;border:1px solid var(--border-2);
+  background:#fff;color:#3c4043;
+  transition:box-shadow .15s var(--ease-out),transform .1s;
+}
+.google-btn:hover{box-shadow:0 2px 14px rgba(0,0,0,0.18)}
+.google-btn:active{transform:scale(.985)}
+.google-btn:disabled{opacity:.6;cursor:default}
+.google-ico{width:18px;height:18px;flex-shrink:0}
+/* En oscuro el botón mantiene el blanco de marca de Google (guía de branding) */
+
+/* ═══ FLUJO DEL DINERO (embudo horizontal) ═══ */
+.flow-card{margin-bottom:18px}
+.flow-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.flow-title{font-size:11px;font-weight:600;color:var(--accent);font-family:var(--font-display);
+  letter-spacing:0.18em;text-transform:uppercase}
+.flow-sub{font-size:11px;color:var(--text-3);margin-bottom:16px;line-height:1.5}
+.flow-diag{display:inline-flex;align-items:center;gap:8px;padding:8px 15px;border-radius:999px;
+  font-size:12px;font-weight:500;line-height:1.35;max-width:100%}
+.flow-diag b{font-weight:600}
+.flow-diag.ok  {background:var(--green-lt); border:1px solid rgba(61,232,176,0.35); color:var(--green)}
+.flow-diag.warn{background:var(--accent-subtle); border:1px solid var(--border-accent); color:var(--accent)}
+.flow-diag.bad {background:var(--red-lt); border:1px solid rgba(255,92,122,0.38); color:var(--red)}
+.flow-diag-ico{font-size:14px;flex-shrink:0}
+
+.flow-row{display:grid;grid-template-columns:120px 1fr 210px;gap:16px;align-items:center;padding:5px 0}
+.flow-name{font-size:12.5px;font-weight:500;color:var(--text);font-family:var(--font-display);letter-spacing:.03em}
+.flow-count{font-size:10px;color:var(--text-3);font-family:var(--font-mono);margin-top:2px}
+.flow-track{height:36px;border-radius:9px;position:relative;
+  background:var(--tint-on-bg-soft);border:1px solid var(--border);overflow:hidden}
+.flow-fill{position:absolute;left:0;top:0;bottom:0;border-radius:8px;
+  transition:width .65s var(--ease-out);min-width:3px}
+.flow-fill.s1{background:linear-gradient(90deg,rgba(122,147,168,0.55),rgba(122,147,168,0.32))}
+.flow-fill.s2{background:linear-gradient(90deg,var(--accent),rgba(0,229,255,0.45));
+  box-shadow:0 0 18px rgba(0,229,255,0.20)}
+.flow-fill.s3{background:linear-gradient(90deg,var(--green),rgba(61,232,176,0.45));
+  box-shadow:0 0 18px rgba(61,232,176,0.18)}
+.flow-pct{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;
+  font-family:var(--font-mono);font-weight:500;color:var(--text);white-space:nowrap;pointer-events:none}
+.flow-val{text-align:right}
+.flow-amount{font-size:15px;font-weight:500;color:var(--text);font-family:var(--font-mono);white-space:nowrap}
+.flow-amount.g{color:var(--green)}
+.flow-amount.a{color:var(--accent)}
+.flow-note{font-size:10px;color:var(--text-3);font-family:var(--font-mono);margin-top:2px;white-space:nowrap}
+
+/* Fuga entre etapas */
+.flow-leak{display:grid;grid-template-columns:120px 1fr 210px;gap:16px;align-items:center;padding:1px 0 3px}
+.flow-leak-body{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--text-3);
+  padding-left:2px;line-height:1.4}
+.flow-leak-arrow{color:var(--red);font-size:13px;line-height:1;flex-shrink:0}
+.flow-leak-amount{font-family:var(--font-mono);color:var(--red);font-weight:500;white-space:nowrap}
+.flow-leak.mild .flow-leak-arrow,.flow-leak.mild .flow-leak-amount{color:var(--text-3)}
+
+/* Alertas de antigüedad */
+.flow-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:13px;
+  border-top:1px solid var(--border)}
+.flow-chip{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:var(--r-md);
+  font-size:11px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text-2);
+  cursor:pointer;transition:all .15s}
+.flow-chip:hover{border-color:var(--border-accent);color:var(--accent)}
+.flow-chip b{font-family:var(--font-mono);font-weight:600;color:var(--text)}
+.flow-chip.alert{background:var(--red-lt);border-color:rgba(255,92,122,0.30)}
+.flow-chip.alert b{color:var(--red)}
+.flow-empty{text-align:center;padding:26px 10px;font-size:12px;color:var(--text-3);font-style:italic}
+
+@media (max-width:820px){
+  .flow-row,.flow-leak{grid-template-columns:1fr;gap:5px}
+  .flow-val{text-align:left;display:flex;align-items:baseline;gap:10px}
+  .flow-note{margin-top:0}
+  .flow-track{height:30px}
+  .flow-leak-body{padding-left:0}
+  .flow-row{padding:7px 0 3px}
+}
+
+/* ═══ DESHACER / REHACER ═══ */
+.undo-group{display:flex;gap:3px;align-items:center}
+.undo-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;padding:0;flex-shrink:0;
+  border-radius:var(--r-md);cursor:pointer;
+  border:1px solid var(--border-2);background:transparent;color:var(--text-2);
+  transition:all .15s var(--ease-out);
+}
+.undo-btn svg{width:15px;height:15px}
+.undo-btn:hover:not(:disabled){
+  border-color:var(--border-accent);color:var(--accent);
+  box-shadow:0 0 12px rgba(0,229,255,0.15);
+}
+.undo-btn:active:not(:disabled){transform:scale(.92)}
+.undo-btn:disabled{opacity:.28;cursor:default}
+[data-theme="light"] .undo-btn:hover:not(:disabled){box-shadow:0 2px 10px rgba(41,58,64,0.10)}
+@media (max-width:720px){
+  .undo-btn{width:28px;height:28px}
+  .undo-btn svg{width:14px;height:14px}
+}
+
+/* ═══ AUTOCOMPLETADO DEL NAVEGADOR ═══
+   Chrome/Safari fuerzan un fondo blanco al autocompletar y no se puede quitar
+   con `background`. El truco es taparlo con una sombra interior sólida.
+   Los colores están muestreados del render real para que calce exacto. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+select:-webkit-autofill{
+  -webkit-text-fill-color:var(--text)!important;
+  -webkit-box-shadow:0 0 0 1000px #121D32 inset!important;
+          box-shadow:0 0 0 1000px #121D32 inset!important;
+  caret-color:var(--text);
+  border-radius:inherit;
+  /* Evita el destello blanco del primer frame */
+  transition:background-color 600000s 0s, color 600000s 0s!important;
+}
+[data-theme="light"] input:-webkit-autofill,
+[data-theme="light"] input:-webkit-autofill:hover,
+[data-theme="light"] input:-webkit-autofill:focus,
+[data-theme="light"] input:-webkit-autofill:active,
+[data-theme="light"] textarea:-webkit-autofill,
+[data-theme="light"] select:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px #F5F5F2 inset!important;
+          box-shadow:0 0 0 1000px #F5F5F2 inset!important;
+}
+/* Campos del login: el fondo lo pinta el contenedor, no el input */
+.auth-input-wrap input:-webkit-autofill,
+.auth-input-wrap input:-webkit-autofill:hover,
+.auth-input-wrap input:-webkit-autofill:focus,
+.auth-input-wrap input:-webkit-autofill:active{
+  -webkit-box-shadow:0 0 0 1000px #121A2D inset!important;
+          box-shadow:0 0 0 1000px #121A2D inset!important;
+}
+[data-theme="light"] .auth-input-wrap input:-webkit-autofill,
+[data-theme="light"] .auth-input-wrap input:-webkit-autofill:hover,
+[data-theme="light"] .auth-input-wrap input:-webkit-autofill:focus,
+[data-theme="light"] .auth-input-wrap input:-webkit-autofill:active{
+  -webkit-box-shadow:0 0 0 1000px #F8F8F7 inset!important;
+          box-shadow:0 0 0 1000px #F8F8F7 inset!important;
+}
+/* Si el navegador lo soporta, el contenedor se vuelve del mismo tono sólido
+   para que no se note el corte junto al ícono, ni al enfocar el campo. */
+.auth-input-wrap:has(input:-webkit-autofill){
+  background:#121A2D!important;
+}
+[data-theme="light"] .auth-input-wrap:has(input:-webkit-autofill){
+  background:#F8F8F7!important;
+}
+/* El ícono sigue el estado del campo, no el del autocompletado */
+.auth-input-wrap:has(input:-webkit-autofill) svg.auth-ico{color:var(--text-3)}
+.auth-input-wrap:focus-within:has(input:-webkit-autofill) svg.auth-ico{color:var(--accent)}
+
 /* ═══ PANEL DE LA EMPRESA ═══ */
 .emp-sec-head{
   font-family:var(--font-display);font-size:13px;font-weight:500;
@@ -2213,7 +2477,21 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
   <div class="topbar-actions" style="min-width:auto;gap:6px;align-items:center">
-    <!-- +Nueva movido al home-hero -->
+    <!-- Deshacer / Rehacer -->
+    <div class="undo-group">
+      <button id="btnUndo" class="undo-btn" onclick="deshacer()" disabled
+        title="Deshacer" aria-label="Deshacer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>
+        </svg>
+      </button>
+      <button id="btnRedo" class="undo-btn" onclick="rehacer()" disabled
+        title="Rehacer" aria-label="Rehacer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/>
+        </svg>
+      </button>
+    </div>
     <!-- Burbuja de usuario -->
     <div style="position:relative" id="userBubbleWrap">
       <button onclick="toggleUserMenu()" id="userBubbleBtn" title="Mi cuenta"
@@ -2677,7 +2955,7 @@ code.emp-tag{font-family:var(--font-mono)}
     <div class="colab-row">
       <div style="flex:1">
         <div style="font-size:12px;color:var(--text-2);margin-bottom:3px">Modelado 3D</div>
-        <input type="text" id="colNombre3D" placeholder="Nombre del colaborador" style="font-size:11px;padding:4px 7px;margin-bottom:0" oninput="calc()">
+        <div class="colab-pick"><select id="colNombre3D" onchange="calc()" style="font-size:11px;padding:4px 7px;margin-bottom:0"></select><button type="button" class="colab-add" onclick="awAbrirModal(null,'colNombre3D')" title="Agregar colaborador">＋</button></div>
       </div>
       <div class="colab-r">
         <input class="colab-pct" type="number" id="col3D" value="0" min="0" max="100" oninput="calc()">
@@ -2689,7 +2967,7 @@ code.emp-tag{font-family:var(--font-mono)}
     <div class="colab-row">
       <div style="flex:1">
         <div style="font-size:12px;color:var(--text-2);margin-bottom:3px">Renderización</div>
-        <input type="text" id="colNombreRend" placeholder="Nombre del colaborador" style="font-size:11px;padding:4px 7px;margin-bottom:0" oninput="calc()">
+        <div class="colab-pick"><select id="colNombreRend" onchange="calc()" style="font-size:11px;padding:4px 7px;margin-bottom:0"></select><button type="button" class="colab-add" onclick="awAbrirModal(null,'colNombreRend')" title="Agregar colaborador">＋</button></div>
       </div>
       <div class="colab-r">
         <input class="colab-pct" type="number" id="colRend" value="0" min="0" max="100" oninput="calc()">
@@ -2703,7 +2981,7 @@ code.emp-tag{font-family:var(--font-mono)}
   <div class="colab-row" id="colPlanosRow" style="margin-top:8px;padding-top:10px;border-top:0.5px solid var(--border)">
     <div style="flex:1">
       <div style="font-size:12px;color:var(--text-2);margin-bottom:3px">Planos constructivos (F2)</div>
-      <input type="text" id="colNombrePlanos" placeholder="Nombre del colaborador" style="font-size:11px;padding:4px 7px;margin-bottom:0" oninput="calc()">
+      <div class="colab-pick"><select id="colNombrePlanos" onchange="calc()" style="font-size:11px;padding:4px 7px;margin-bottom:0"></select><button type="button" class="colab-add" onclick="awAbrirModal(null,'colNombrePlanos')" title="Agregar colaborador">＋</button></div>
     </div>
     <div class="colab-r">
       <input class="colab-pct" type="number" id="colPlanos" value="0" min="0" max="100" oninput="calc()">
@@ -3119,7 +3397,7 @@ code.emp-tag{font-family:var(--font-mono)}
   <!-- Tabs internos -->
   <div style="display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:0">
     <button onclick="adminShowTab('ingresos')" class="admin-tab active" id="atab-ingresos">📥 Ingresos</button>
-    <button onclick="adminShowTab('colab')" class="admin-tab" id="atab-colab">👥 Colaboradores</button>
+    <button onclick="adminShowTab('colab')" class="admin-tab" id="atab-colab">👷 Arkiworkers</button>
     <button onclick="adminShowTab('marketing')" class="admin-tab" id="atab-marketing">📲 Marketing</button>
     <button onclick="adminShowTab('varios')" class="admin-tab" id="atab-varios">📦 Costos varios</button>
     <button onclick="adminShowTab('analisis')" class="admin-tab" id="atab-analisis">📊 Análisis</button>
@@ -3151,27 +3429,71 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
 
-  <!-- Tab: Colaboradores -->
+  <!-- Tab: Arkiworkers -->
   <div id="atab-body-colab" class="admin-tab-body" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <span style="font-size:11px;color:var(--text-3)">Costos de colaboradores · Derivados del Cotizador</span>
-      <span style="font-size:13px;font-weight:500;color:var(--red)" id="admin-col-total">GTQ 0</span>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:13px;font-weight:500;color:var(--text);font-family:var(--font-display)">Equipo de trabajo</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px">Registrá a tu equipo para asignarles sprints y tareas en los proyectos.</div>
+      </div>
+      <button class="emp-btn primary" onclick="awAbrirModal()" style="flex-shrink:0">＋ Agregar colaborador</button>
     </div>
-    <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;font-size:11px" id="admin-col-table">
-        <thead>
-          <tr style="border-bottom:1px solid var(--border)">
-            <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Colaborador</th>
-            <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Proyecto</th>
-            <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Tarea</th>
-            <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">% Asig.</th>
-            <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Monto</th>
-          </tr>
-        </thead>
-        <tbody id="admin-col-body">
-          <tr><td colspan="5" style="padding:24px;text-align:center;color:var(--text-3)">No hay colaboradores registrados en este período.</td></tr>
-        </tbody>
-      </table>
+
+    <!-- KPIs del equipo -->
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px" id="aw-kpis"></div>
+
+    <!-- Lista de colaboradores registrados -->
+    <div id="aw-lista"></div>
+
+    <!-- Costos derivados del cotizador (histórico) -->
+    <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <span style="font-size:11px;color:var(--text-3)">Costos por proyecto · Derivados del Cotizador</span>
+        <span style="font-size:13px;font-weight:500;color:var(--red)" id="admin-col-total">GTQ 0</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:11px" id="admin-col-table">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border)">
+              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Colaborador</th>
+              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Proyecto</th>
+              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Tarea</th>
+              <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">% Asig.</th>
+              <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Monto</th>
+            </tr>
+          </thead>
+          <tbody id="admin-col-body">
+            <tr><td colspan="5" style="padding:24px;text-align:center;color:var(--text-3)">No hay colaboradores registrados en este período.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: registrar / editar Arkiworker -->
+  <div id="awModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9990;align-items:center;justify-content:center;padding:20px">
+    <div class="sc" style="width:100%;max-width:400px;position:relative;padding:1.8rem 1.7rem" onclick="event.stopPropagation()">
+      <button onclick="awCerrarModal()" title="Cerrar"
+        style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--border-2);background:transparent;color:var(--text-2);cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+      <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px" id="awModalKicker">Nuevo colaborador</div>
+      <div style="font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--text);margin-bottom:16px" id="awModalTitle">Agregar al equipo</div>
+
+      <div id="awError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(255,92,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
+      <input type="hidden" id="aw-id">
+
+      <div class="fg" style="margin-bottom:.8rem">
+        <label class="lbl">Nombre completo *</label>
+        <input type="text" id="aw-nombre" placeholder="Ej. Ana Sofía Morales" onkeydown="if(event.key==='Enter')document.getElementById('aw-email').focus()">
+      </div>
+      <div class="fg" style="margin-bottom:1.2rem">
+        <label class="lbl">Correo electrónico *</label>
+        <input type="email" id="aw-email" placeholder="ana@correo.com" spellcheck="false" onkeydown="if(event.key==='Enter')awGuardar()">
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button onclick="awCerrarModal()" class="emp-btn ghost">Cancelar</button>
+        <button onclick="awGuardar()" class="emp-btn primary" id="awGuardarBtn">Guardar</button>
+      </div>
     </div>
   </div>
 
@@ -3491,6 +3813,9 @@ code.emp-tag{font-family:var(--font-mono)}
 
 <!-- KPIs grandes -->
 <div class="home-kpis" id="home-kpis"></div>
+
+<!-- Flujo del dinero: cotizado → aprobado → cobrado -->
+<div class="sc flow-card" id="home-flow"></div>
 
 <!-- Cards de info: Pendientes / Próximas entregas / Alertas -->
 <div class="home-summary-grid">
@@ -4528,6 +4853,224 @@ function adminGetIngresos(){
 }
 
 /* ── Construir filas de colaboradores desde avit_cots ──────── */
+/* ════════════════════════════════════════════════════════════
+   ARKIWORKERS — equipo de trabajo del estudio
+   Estructura organizacional para asignar sprints a colaboradores.
+   localStorage['avit_arkiworkers'] = [{id, nombre, email, creadoEn}]
+   ════════════════════════════════════════════════════════════ */
+function awLoad(){ try{ return JSON.parse(localStorage.getItem('avit_arkiworkers')||'[]'); }catch(e){ return []; } }
+function awSave(arr){ localStorage.setItem('avit_arkiworkers', JSON.stringify(arr)); }
+
+/* Trabajos de un colaborador: totales e "en proceso" (proyectos activos).
+   Cuenta tanto los roles del cotizador como las tareas asignadas en el Kanban. */
+function awTrabajos(nombre){
+  const n = (nombre||'').trim().toLowerCase();
+  if(!n) return {total:0, activos:0};
+  const cots = (typeof loadCots==='function') ? loadCots() : [];
+  const tracker = (()=>{ try{ return JSON.parse(localStorage.getItem('avit_sprint_tracker')||'{}'); }catch(e){ return {}; } })();
+  const cerrado = c => ['cobrado_total','completada'].includes(c.estado||'');
+
+  let total=0, activos=0;
+  cots.forEach(c=>{
+    let cuenta = 0;
+    // Roles asignados en el Cotizador
+    [c.colNombre3D, c.colNombreRend, c.colNombrePlanos].forEach(x=>{
+      if((x||'').trim().toLowerCase() === n) cuenta++;
+    });
+    // Tareas asignadas en el Kanban
+    const sps = (tracker[c.id] && tracker[c.id].sprints) || [];
+    sps.forEach(sp=>(sp.items||[]).forEach(it=>{
+      if((it.colab||'').trim().toLowerCase() === n) cuenta++;
+    }));
+    if(cuenta>0){
+      total += cuenta;
+      if(!cerrado(c)) activos += cuenta;
+    }
+  });
+  return {total, activos};
+}
+
+function awIniciales(nombre){
+  const w=(nombre||'?').trim().split(/\s+/).filter(Boolean);
+  return (w.length>=2 ? w[0][0]+w[w.length-1][0] : (w[0]||'?').slice(0,2)).toUpperCase();
+}
+
+/* ── Render de la pestaña ── */
+function awRender(){
+  const cont = document.getElementById('aw-lista');
+  const kpis = document.getElementById('aw-kpis');
+  if(!cont) return;
+  const lista = awLoad();
+
+  if(kpis){
+    let totalT=0, totalA=0;
+    lista.forEach(w=>{ const t=awTrabajos(w.nombre); totalT+=t.total; totalA+=t.activos; });
+    const box=(v,l,c)=>`<div class="admin-metrica"><div class="admin-metrica-val" style="color:${c}">${v}</div><div class="admin-metrica-lbl">${l}</div></div>`;
+    kpis.innerHTML = box(lista.length,'Colaboradores','var(--text)')
+                   + box(totalA,'Trabajos en proceso','var(--accent)')
+                   + box(totalT,'Trabajos asignados','var(--text)');
+  }
+
+  if(!lista.length){
+    cont.innerHTML = `<div class="aw-empty">
+      Todavía no registraste a nadie.<br>
+      Agregá a tu equipo para poder asignarles sprints en los proyectos.
+    </div>`;
+    return;
+  }
+
+  cont.innerHTML = lista.map(w=>{
+    const t = awTrabajos(w.nombre);
+    return `<div class="aw-card">
+      <div class="aw-avatar">${awIniciales(w.nombre)}</div>
+      <div class="aw-info">
+        <div class="aw-nombre">${escapeHtmlK(w.nombre)}</div>
+        <div class="aw-email">${escapeHtmlK(w.email||'—')}</div>
+      </div>
+      <div class="aw-stats">
+        <div>
+          <div class="aw-stat-val act">${t.activos}</div>
+          <div class="aw-stat-lbl">En proceso</div>
+        </div>
+        <div>
+          <div class="aw-stat-val">${t.total}</div>
+          <div class="aw-stat-lbl">Asignados</div>
+        </div>
+      </div>
+      <div class="aw-acts">
+        <button class="aw-btn" title="Editar" onclick="awAbrirModal('${w.id}')">✎</button>
+        <button class="aw-btn del" title="Eliminar" onclick="awEliminar('${w.id}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Modal de registro / edición ── */
+let _awDestino = null;   // id del <select> que disparó el alta desde el Cotizador
+
+function awAbrirModal(id, destino){
+  _awDestino = destino || null;
+  const ov = document.getElementById('awModal');
+  if(!ov) return;
+  const w = id ? awLoad().find(x=>x.id===id) : null;
+  document.getElementById('aw-id').value    = w ? w.id : '';
+  document.getElementById('aw-nombre').value= w ? w.nombre : '';
+  document.getElementById('aw-email').value = w ? (w.email||'') : '';
+  document.getElementById('awModalKicker').textContent = w ? 'Editar colaborador' : 'Nuevo colaborador';
+  document.getElementById('awModalTitle').textContent  = w ? w.nombre : 'Agregar al equipo';
+  _awErr('');
+  ov.style.display='flex';
+  ov.onclick = e=>{ if(e.target===ov) awCerrarModal(); };
+  document.addEventListener('keydown', _awEsc);
+  setTimeout(()=>document.getElementById('aw-nombre').focus(), 60);
+}
+function awCerrarModal(){
+  const ov=document.getElementById('awModal');
+  if(ov) ov.style.display='none';
+  document.removeEventListener('keydown', _awEsc);
+  _awDestino=null;
+}
+function _awEsc(e){ if(e.key==='Escape') awCerrarModal(); }
+function _awErr(m){
+  const e=document.getElementById('awError');
+  if(e){ e.textContent=m||''; e.style.display=m?'block':'none'; }
+}
+
+function awGuardar(){
+  const id     = document.getElementById('aw-id').value;
+  const nombre = (document.getElementById('aw-nombre').value||'').trim();
+  const email  = (document.getElementById('aw-email').value||'').trim();
+
+  if(!nombre){ _awErr('Escribí el nombre del colaborador.'); return; }
+  if(!email){ _awErr('Escribí el correo electrónico.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ _awErr('El correo no parece válido.'); return; }
+
+  const lista = awLoad();
+  // No repetir correos entre colaboradores distintos
+  const dup = lista.find(w => (w.email||'').toLowerCase()===email.toLowerCase() && w.id!==id);
+  if(dup){ _awErr('Ese correo ya está registrado para '+dup.nombre+'.'); return; }
+
+  let nombreAnterior = null;
+  if(id){
+    const w = lista.find(x=>x.id===id);
+    if(w){ nombreAnterior = w.nombre; w.nombre=nombre; w.email=email; }
+  } else {
+    lista.push({ id:'aw_'+Date.now(), nombre, email, creadoEn:Date.now() });
+  }
+  awSave(lista);
+
+  // Si le cambiaron el nombre, actualizarlo donde ya estaba asignado
+  if(nombreAnterior && nombreAnterior!==nombre) awRenombrarEnTodo(nombreAnterior, nombre);
+
+  awCerrarModal();
+  awRender();
+  awLlenarSelects(_awDestino ? {[_awDestino]:nombre} : null);
+  if(typeof calc==='function') try{ calc(); }catch(e){}
+  const ss=document.getElementById('syncStatus');
+  if(ss){ ss.textContent='✦ Colaborador guardado'; setTimeout(()=>{ if(ss.textContent==='✦ Colaborador guardado') ss.textContent=''; },2000); }
+}
+
+/* Propaga el cambio de nombre a cotizaciones y tareas ya asignadas */
+function awRenombrarEnTodo(antes, ahora){
+  try{
+    const cots=loadCots(); let tocado=false;
+    cots.forEach(c=>{
+      ['colNombre3D','colNombreRend','colNombrePlanos'].forEach(k=>{
+        if((c[k]||'').trim()===antes){ c[k]=ahora; tocado=true; }
+      });
+    });
+    if(tocado) saveCots(cots);
+    const tr=JSON.parse(localStorage.getItem('avit_sprint_tracker')||'{}'); let t2=false;
+    Object.values(tr).forEach(p=>(p.sprints||[]).forEach(sp=>(sp.items||[]).forEach(it=>{
+      if((it.colab||'').trim()===antes){ it.colab=ahora; t2=true; }
+    })));
+    if(t2) localStorage.setItem('avit_sprint_tracker', JSON.stringify(tr));
+  }catch(e){ console.warn('[Arkiboard] renombrar colaborador', e); }
+}
+
+function awEliminar(id){
+  const lista=awLoad();
+  const w=lista.find(x=>x.id===id);
+  if(!w) return;
+  const t=awTrabajos(w.nombre);
+  let msg='¿Eliminar a '+w.nombre+' del equipo?';
+  if(t.activos>0) msg+='\n\nTiene '+t.activos+' trabajo'+(t.activos===1?'':'s')+' en proceso. Las asignaciones que ya hiciste en los proyectos NO se borran, pero dejará de aparecer en la lista para asignar.';
+  if(!confirm(msg)) return;
+  awSave(lista.filter(x=>x.id!==id));
+  awRender();
+  awLlenarSelects();
+}
+
+/* ── Selectores del Cotizador ──
+   Rellena los <select> con los colaboradores registrados, conservando
+   la selección actual (y el valor guardado de cotizaciones viejas). */
+function awLlenarSelects(forzar){
+  const lista = awLoad();
+  ['colNombre3D','colNombreRend','colNombrePlanos'].forEach(id=>{
+    const sel = document.getElementById(id);
+    if(!sel || sel.tagName!=='SELECT') return;
+    const actual = (forzar && forzar[id]) ? forzar[id] : (sel.value||'');
+    let html = '<option value="">— Sin asignar —</option>';
+    lista.forEach(w=>{
+      html += `<option value="${escapeHtmlK(w.nombre)}">${escapeHtmlK(w.nombre)}</option>`;
+    });
+    // Nombre heredado de una cotización previa que ya no está registrado
+    if(actual && !lista.some(w=>w.nombre===actual)){
+      html += `<option value="${escapeHtmlK(actual)}">${escapeHtmlK(actual)} (no registrado)</option>`;
+    }
+    if(!lista.length && !actual){
+      html = '<option value="">— Registrá colaboradores con ＋ —</option>';
+    }
+    sel.innerHTML = html;
+    sel.value = actual;
+  });
+}
+
+window.awAbrirModal=awAbrirModal; window.awCerrarModal=awCerrarModal;
+window.awGuardar=awGuardar; window.awEliminar=awEliminar;
+window.awRender=awRender; window.awLlenarSelects=awLlenarSelects;
+window.awLoad=awLoad;
+
 function adminGetColaboradores(){
   const cots = loadCots ? loadCots() : [];
   const rows = [];
@@ -4730,7 +5273,7 @@ function adminShowTab(tab){
     if(btn){ btn.classList.toggle('active',t===tab); }
   });
   if(tab==='ingresos')  adminRenderIngresos();
-  if(tab==='colab')     adminRenderColab();
+  if(tab==='colab'){    adminRenderColab(); if(typeof awRender==='function') awRender(); }
   if(tab==='marketing') adminRenderManual('marketing');
   if(tab==='varios')    adminRenderManual('varios');
   if(tab==='analisis')  adminRenderAnalisis();
@@ -7501,6 +8044,43 @@ async function authLogin(){
   }catch(err){ _authErr('Error de conexión: '+(err.message||err)); }
   finally{ if(btn){btn.textContent='Iniciar sesión';btn.disabled=false;} }
 }
+
+/* ── Iniciar / registrarse con Google (OAuth) ──────────────────
+   Sirve para las dos pantallas: si es cuenta nueva, Supabase la crea;
+   si ya existe, inicia sesión. El onboarding se muestra igual la
+   primera vez porque el perfil todavía no está completo. */
+async function authGoogle(){
+  if(!_sbConfigured()){
+    const nc=document.getElementById('authNoConfig');
+    if(nc) nc.style.display='block';
+    _authErr('Google requiere Supabase configurado.');
+    return;
+  }
+  // Al volver del redirect no hay checkbox: por defecto mantenemos la sesión.
+  const keepEl=document.getElementById('authKeep');
+  localStorage.setItem('avit_keepSession', (keepEl && !keepEl.checked) ? '0' : '1');
+  sessionStorage.setItem('avit_tabSession','1');
+
+  const btns=[document.getElementById('authGoogleBtn'), document.getElementById('regGoogleBtn')];
+  btns.forEach(b=>{ if(b){ b.disabled=true; b.querySelector('span').textContent='Conectando…'; }});
+  try{
+    const sb=_initSupabase();
+    const {error}=await sb.auth.signInWithOAuth({
+      provider:'google',
+      options:{ redirectTo: window.location.origin + window.location.pathname }
+    });
+    if(error){
+      _authErr('No se pudo conectar con Google: '+error.message);
+      _regErr && _regErr('No se pudo conectar con Google: '+error.message);
+      btns.forEach(b=>{ if(b){ b.disabled=false; b.querySelector('span').textContent='Continuar con Google'; }});
+    }
+    /* Si no hay error, el navegador ya está redirigiendo a Google. */
+  }catch(err){
+    _authErr('Error de conexión con Google: '+(err.message||err));
+    btns.forEach(b=>{ if(b){ b.disabled=false; b.querySelector('span').textContent='Continuar con Google'; }});
+  }
+}
+window.authGoogle=authGoogle;
 /* ── Modal de registro (nueva cuenta) ───────────────────────── */
 function abrirRegistro(){
   if(!_sbConfigured()){ document.getElementById('authNoConfig').style.display='block'; return; }
@@ -7630,7 +8210,9 @@ async function _postLogin(){
   const meta=_sbUser?.user_metadata||{};
   const p=_perfil();
   if(meta.empresa) p.empresa=meta.empresa;
+  // Nombre: primero el que ya guardó el usuario; si no, el de Google.
   if(meta.nombre)  p.nombre =meta.nombre;
+  else if(!p.nombre && (meta.full_name||meta.name)) p.nombre = meta.full_name||meta.name;
   if(meta.onboarded) p.onboarded=true;
   p.email=_sbUser?.email||'';
   _perfilSave(p);
@@ -7716,7 +8298,16 @@ async function _pullDatos(){
     const {data,error}=await _sb.from('avit_data').select('payload').eq('user_id',_sbUser.id).maybeSingle();
     if(error || !data || !data.payload) return;
     const pl=data.payload;
-    _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
+    /* Traer datos de la nube no es una acción del usuario: no debe
+       generar un paso de deshacer ni descartar el historial. */
+    const _prev=(typeof _undoBusy!=='undefined')?_undoBusy:false;
+    try{
+      if(typeof _undoBusy!=='undefined') _undoBusy=true;
+      _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
+    } finally {
+      if(typeof _undoBusy!=='undefined') _undoBusy=_prev;
+      if(typeof _undoBase!=='undefined' && typeof _undoSnap==='function') _undoBase=_undoSnap();
+    }
     console.log('[Arkiboard] Datos sincronizados desde la nube');
   }catch(e){ console.warn('[Arkiboard] pull falló', e); }
 }
@@ -7742,6 +8333,146 @@ function _instalarAutoSync(){
     }
   };
 }
+
+/* ════════════════════════════════════════════════════════════
+   DESHACER / REHACER
+   Guarda instantáneas de los datos antes de cada cambio.
+   No incluye el borrador del cotizador: se guarda con cada tecla
+   y llenaría el historial de pasos sin sentido (además, dentro de
+   un campo de texto el navegador ya ofrece su propio deshacer).
+   ════════════════════════════════════════════════════════════ */
+const UNDO_KEYS = ['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias',
+                   'avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil',
+                   'avit_calc','avit_artifacts'];
+const UNDO_LABELS = {
+  avit_cots:'Proyectos', avit_clients:'Clientes', avit_admin:'Administrador',
+  avit_sched:'Cronograma', avit_estrategias:'Marketing', avit_organigrama:'Organigrama',
+  avit_recibos:'Recibos', avit_sprint_tracker:'Kanban', avit_perfil:'Panel de la empresa',
+  avit_calc:'Programa arquitectónico', avit_artifacts:'Mis herramientas'
+};
+const UNDO_MAX = 40;
+let _undoStack=[], _redoStack=[], _undoTimer=null, _undoBusy=false, _undoBase=null;
+
+function _undoSnap(){
+  const s={};
+  UNDO_KEYS.forEach(k=>{ try{ s[k]=localStorage.getItem(k); }catch(e){ s[k]=null; } });
+  return s;
+}
+function _undoDiff(a,b){
+  if(!a||!b) return [];
+  return UNDO_KEYS.filter(k=> a[k] !== b[k]);
+}
+function _undoEtiqueta(keys){
+  const n=(keys||[]).map(k=>UNDO_LABELS[k]).filter(Boolean);
+  if(!n.length) return 'cambio';
+  return n.length===1 ? n[0] : n.slice(0,2).join(' y ')+(n.length>2?'…':'');
+}
+function _undoAplicar(snap){
+  _undoBusy=true;
+  try{
+    UNDO_KEYS.forEach(k=>{
+      const v=snap[k];
+      if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,v);
+    });
+  } finally { _undoBusy=false; }
+  _undoBase=_undoSnap();
+}
+/* Registra el cambio agrupando ráfagas (escribir, arrastrar) en un solo paso */
+function _undoMarcar(k){
+  if(_undoBusy || !UNDO_KEYS.includes(k)) return;
+  clearTimeout(_undoTimer);
+  _undoTimer=setTimeout(()=>{
+    const ahora=_undoSnap();
+    const cambios=_undoDiff(_undoBase, ahora);
+    if(!cambios.length) return;
+    _undoStack.push({snap:_undoBase, keys:cambios});
+    if(_undoStack.length>UNDO_MAX) _undoStack.shift();
+    _redoStack.length=0;                 // una acción nueva corta la rama de rehacer
+    _undoBase=ahora;
+    _undoBotones();
+  }, 900);
+}
+function _undoInstalar(){
+  if(window._undoInstalled) return;
+  window._undoInstalled=true;
+  _undoBase=_undoSnap();
+  const oSet=localStorage.setItem.bind(localStorage);
+  const oDel=localStorage.removeItem.bind(localStorage);
+  localStorage.setItem=function(k,v){ oSet(k,v); _undoMarcar(k); };
+  localStorage.removeItem=function(k){ oDel(k); _undoMarcar(k); };
+  _undoBotones();
+}
+function _undoBotones(){
+  const u=document.getElementById('btnUndo'), r=document.getElementById('btnRedo');
+  if(u){
+    u.disabled=!_undoStack.length;
+    u.title=_undoStack.length
+      ? 'Deshacer cambio en '+_undoEtiqueta(_undoStack[_undoStack.length-1].keys)+'  (Ctrl+Z)'
+      : 'Nada que deshacer';
+  }
+  if(r){
+    r.disabled=!_redoStack.length;
+    r.title=_redoStack.length
+      ? 'Rehacer cambio en '+_undoEtiqueta(_redoStack[_redoStack.length-1].keys)+'  (Ctrl+Y)'
+      : 'Nada que rehacer';
+  }
+}
+function _undoAviso(txt){
+  const ss=document.getElementById('syncStatus');
+  if(!ss) return;
+  ss.style.color=''; ss.textContent='↩ '+txt;
+  clearTimeout(ss._undoFade);
+  ss._undoFade=setTimeout(()=>{ if(ss.textContent==='↩ '+txt) ss.textContent=''; },2200);
+}
+/* Repinta la pantalla visible con los datos restaurados */
+function _undoRefrescar(){
+  const R=f=>{ try{ if(typeof window[f]==='function') window[f](); }catch(e){} };
+  R('aplicarPerfilUI');
+  R('cargarCalc');
+  ['pg-estimado','pg-calc'].forEach(id=>{ const el=document.getElementById(id); if(el) delete el.dataset.hydrated; });
+  const act=(document.querySelector('.page.active')||{}).id||'';
+  if(act==='pg-home')           R('renderHome');
+  else if(act==='pg-ing'){      R('renderIngresos'); R('renderArtefactos'); }
+  else if(act==='pg-est'){      R('renderEstatus');  R('schedRender'); }
+  else if(act==='pg-clientes')  R('cliRenderList');
+  else if(act==='pg-admin')     R('adminRender');
+  else if(act==='pg-empresa')   R('renderEmpresa');
+  else if(act==='pg-pm')        R('pmRenderAll');
+  else if(act==='pg-calc'){     R('renderPrograma'); R('calc'); }
+  else if(act==='pg-estimado')  R('renderEstimado');
+}
+function deshacer(){
+  if(!_undoStack.length) return;
+  const paso=_undoStack.pop();
+  _redoStack.push({snap:_undoSnap(), keys:paso.keys});
+  if(_redoStack.length>UNDO_MAX) _redoStack.shift();
+  _undoAplicar(paso.snap);
+  _undoRefrescar(); _undoBotones();
+  _undoAviso('Deshecho: '+_undoEtiqueta(paso.keys));
+}
+function rehacer(){
+  if(!_redoStack.length) return;
+  const paso=_redoStack.pop();
+  _undoStack.push({snap:_undoSnap(), keys:paso.keys});
+  if(_undoStack.length>UNDO_MAX) _undoStack.shift();
+  _undoAplicar(paso.snap);
+  _undoRefrescar(); _undoBotones();
+  _undoAviso('Rehecho: '+_undoEtiqueta(paso.keys));
+}
+window.deshacer=deshacer; window.rehacer=rehacer;
+
+/* Atajos. Dentro de un campo de texto no interferimos: ahí manda el
+   deshacer nativo del navegador sobre lo que estás escribiendo. */
+document.addEventListener('keydown', e=>{
+  if(!(e.ctrlKey||e.metaKey)) return;
+  const t=e.target, tag=(t.tagName||'').toLowerCase();
+  if(tag==='input'||tag==='textarea'||tag==='select'||t.isContentEditable) return;
+  const k=(e.key||'').toLowerCase();
+  if(k==='z' && !e.shiftKey){ e.preventDefault(); deshacer(); }
+  else if((k==='z' && e.shiftKey) || k==='y'){ e.preventDefault(); rehacer(); }
+});
+document.addEventListener('DOMContentLoaded', _undoInstalar, {once:true});
+if(document.readyState!=='loading') _undoInstalar();
 
 /* ── Arranque: ¿hay sesión activa? ─────────────────────────── */
 function _ocultarAuthOverlay(){
@@ -7770,6 +8501,11 @@ function _authBootRun(){
       if(!keep && !tab){ await sb.auth.signOut(); return; }   // no mantener → pedir login de nuevo
       _sbUser=data.session.user;
       sessionStorage.setItem('avit_tabSession','1');
+      /* Volvimos de Google: el token viene en el hash/query de la URL.
+         Ya lo capturó Supabase, así que lo limpiamos para que no quede a la vista. */
+      if(/[#?&](access_token|code)=/.test(window.location.href)){
+        try{ history.replaceState(null,'',window.location.origin+window.location.pathname); }catch(e){}
+      }
       await _postLogin();
     }
   }catch(e){ console.warn('[Arkiboard] boot auth', e); }
@@ -9375,6 +10111,125 @@ const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov'
 const MESES_FULL = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function loadCots(){try{return JSON.parse(localStorage.getItem('avit_cots')||'[]')}catch{return[]}}
+
+/* ════════════════════════════════════════════════════════════
+   FLUJO DEL DINERO — embudo cotizado → aprobado → cobrado
+   Muestra de un vistazo dónde se traba el dinero.
+   ════════════════════════════════════════════════════════════ */
+function renderFlujo(cots){
+  const el = document.getElementById('home-flow');
+  if(!el) return;
+  const Q = n => 'GTQ ' + Math.round(n).toLocaleString('es-GT');
+
+  cots = Array.isArray(cots) ? cots : loadCots();
+
+  // "Aprobada" = dejó de ser sólo una cotización emitida y entró en producción/cobro.
+  const esAprobada = c => c.estado && c.estado !== 'emitida';
+
+  const cotizado = cots.reduce((a,c)=>a+(c.tot||0),0);
+  const aprobado = cots.filter(esAprobada).reduce((a,c)=>a+(c.tot||0),0);
+  const cobrado  = cots.reduce((a,c)=>a+(c.cobrado||0),0);
+
+  const nCot = cots.length;
+  const nApr = cots.filter(esAprobada).length;
+  const nCobrando = cots.filter(c=>(c.cobrado||0)>0).length;
+
+  if(!nCot || cotizado<=0){
+    el.innerHTML = `
+      <div class="flow-head"><span class="flow-title">Flujo del dinero</span></div>
+      <div class="flow-empty">Cuando tengas cotizaciones, acá vas a ver cómo avanza el dinero desde lo cotizado hasta lo cobrado — y dónde se traba.</div>`;
+    return;
+  }
+
+  // Anchos relativos al total cotizado (la etapa más grande = 100%)
+  const wApr = cotizado>0 ? Math.round(aprobado/cotizado*100) : 0;
+  const wCob = cotizado>0 ? Math.round(cobrado /cotizado*100) : 0;
+
+  // Fugas entre etapas
+  const noAprobado   = cotizado - aprobado;     // cotizado que el cliente no aceptó / sigue en el aire
+  const porCobrarApr = aprobado - cobrado;      // aprobado que aún no entra en caja
+  const pctPerdido   = cotizado>0 ? Math.round(noAprobado/cotizado*100) : 0;
+  const pctPorCobrar = aprobado>0 ? Math.round(porCobrarApr/aprobado*100) : 0;
+
+  // ── Diagnóstico: ¿dónde está el atasco? ──
+  let diag;
+  if(cotizado>0 && aprobado===0){
+    diag = {cls:'bad', ico:'🔴', txt:`Tenés <b>${Q(cotizado)}</b> cotizado y <b>nada aprobado</b> todavía. El embudo está frenado en la puerta de entrada — conviene dar seguimiento a las cotizaciones.`};
+  } else if(pctPerdido>=55 && noAprobado>0){
+    diag = {cls:'bad', ico:'🔴', txt:`Se está trabando en <b>aprobación</b>: el <b>${pctPerdido}%</b> de lo cotizado (${Q(noAprobado)}) aún no lo aprueba el cliente.`};
+  } else if(porCobrarApr>0 && pctPorCobrar>=55){
+    diag = {cls:'bad', ico:'🔴', txt:`Se está trabando en <b>cobro</b>: aprobaste ${Q(aprobado)} pero sólo cobraste ${Q(cobrado)}. Faltan <b>${Q(porCobrarApr)}</b> por entrar.`};
+  } else if(porCobrarApr>0 && pctPorCobrar>=30){
+    diag = {cls:'warn', ico:'🟡', txt:`Vas bien, pero hay <b>${Q(porCobrarApr)}</b> aprobados que todavía no cobrás (${pctPorCobrar}% de lo aprobado). Buen momento para pasar los cobros.`};
+  } else if(pctPerdido>=30 && noAprobado>0){
+    diag = {cls:'warn', ico:'🟡', txt:`Hay <b>${Q(noAprobado)}</b> cotizados sin aprobar (${pctPerdido}%). Un empujón de seguimiento podría destrabarlos.`};
+  } else {
+    diag = {cls:'ok', ico:'🟢', txt:`El flujo va sano: de lo aprobado ya cobraste el <b>${aprobado>0?Math.round(cobrado/aprobado*100):0}%</b>. Sin atascos importantes.`};
+  }
+
+  // ── Fila del embudo ──
+  const fila = (name, count, cls, w, amount, amtCls, note) => `
+    <div class="flow-row">
+      <div><div class="flow-name">${name}</div><div class="flow-count">${count}</div></div>
+      <div class="flow-track">
+        <div class="flow-fill ${cls}" style="width:${Math.max(w,2)}%"></div>
+        <div class="flow-pct" style="${w>=52?'right:10px':'left:calc('+w+'% + 10px)'};${w>=52?'color:var(--text-on-accent)':''}">${w}%</div>
+      </div>
+      <div class="flow-val">
+        <div class="flow-amount ${amtCls}">${amount}</div>
+        ${note?`<div class="flow-note">${note}</div>`:''}
+      </div>
+    </div>`;
+
+  const fuga = (label, amount, pct, fuerte) => `
+    <div class="flow-leak ${fuerte?'':'mild'}">
+      <div></div>
+      <div class="flow-leak-body">
+        <span class="flow-leak-arrow">${fuerte?'▼':'▽'}</span>
+        <span>${label} <span class="flow-leak-amount">${amount}</span> <span style="opacity:.7">(${pct}%)</span></span>
+      </div>
+      <div></div>
+    </div>`;
+
+  // ── Alertas de antigüedad: cotizaciones sin aprobar hace mucho ──
+  const hoy = Date.now();
+  const dias = c => Math.floor((hoy - new Date((c.fecha||'')+'T12:00:00').getTime())/86400000);
+  const viejasSinAprobar = cots.filter(c=>c.estado==='emitida' && dias(c)>=15)
+    .sort((a,b)=>dias(b)-dias(a));
+  const aprobSinCobrar = cots.filter(c=>esAprobada(c) && (c.cobrado||0)===0 && dias(c)>=20)
+    .sort((a,b)=>dias(b)-dias(a));
+
+  let chips = '';
+  if(viejasSinAprobar.length || aprobSinCobrar.length){
+    chips = '<div class="flow-chips">';
+    if(viejasSinAprobar.length){
+      const c0=viejasSinAprobar[0];
+      chips += `<div class="flow-chip alert" onclick="showPage('ing')" title="Ver proyectos">
+        ⏳ <span><b>${viejasSinAprobar.length}</b> sin aprobar +15 días</span></div>`;
+    }
+    if(aprobSinCobrar.length){
+      chips += `<div class="flow-chip alert" onclick="showPage('ing')" title="Ver proyectos">
+        💸 <span><b>${aprobSinCobrar.length}</b> aprobados sin cobrar +20 días</span></div>`;
+    }
+    chips += '</div>';
+  }
+
+  el.innerHTML = `
+    <div class="flow-head">
+      <span class="flow-title">Flujo del dinero</span>
+      <div class="flow-diag ${diag.cls}"><span class="flow-diag-ico">${diag.ico}</span><span>${diag.txt}</span></div>
+    </div>
+    <div class="flow-sub">Cómo avanza cada quetzal desde que lo cotizás hasta que entra en caja.</div>
+
+    ${fila('Cotizado', nCot+' cotización'+(nCot===1?'':'es'), 's1', 100, Q(cotizado), '', 'lo que ofreciste')}
+    ${noAprobado>0 ? fuga('No aprobado aún', Q(noAprobado), pctPerdido, pctPerdido>=30) : ''}
+    ${fila('Aprobado', nApr+' proyecto'+(nApr===1?'':'s'), 's2', wApr, Q(aprobado), 'a', 'clientes que dijeron sí')}
+    ${porCobrarApr>0 ? fuga('Falta cobrar', Q(porCobrarApr), pctPorCobrar, pctPorCobrar>=30) : ''}
+    ${fila('Cobrado', nCobrando+' con pagos', 's3', wCob, Q(cobrado), 'g', 'ya está en tu caja')}
+    ${chips}
+  `;
+}
+
 function saveCots(arr){localStorage.setItem('avit_cots',JSON.stringify(arr));if(typeof triggerAutoSync==='function')triggerAutoSync();}
 
 function fmtCur(n,c){return(c||'GTQ')+' '+Math.round(n).toLocaleString()}
@@ -9640,13 +10495,29 @@ function updateEstado(id,estado){
   const cots=loadCots();
   const c=cots.find(x=>x.id===id);
   if(!c)return;
+  const estadoAnterior=c.estado;
   c.estado=estado; c.updatedAt=Date.now();
-  // El cobrado NO se modifica automáticamente al cambiar de columna o estado.
-  // Los cobros se registran solo cuando el usuario marca explícitamente
-  // los checks de milestones en el Kanban (anticipo, entrega F2, cobrado).
-  // Excepción: si el estado pasa a 'cobrado_total', sí marcamos como cobrado al 100%
+
+  /* Cuenta regresiva del Kanban: registramos QUÉ DÍA entró el proyecto
+     a cada columna. La cuenta arranca al salir de "cotización emitida".
+     Sólo se sella la primera vez que entra a esa columna (no se pisa al
+     volver atrás y readelantar, para no falsear el atraso acumulado). */
+  const colDestino = _colDeEstado(estado);
+  if(estado!=='emitida' && colDestino){
+    c.faseInicio = c.faseInicio || {};
+    if(!c.faseInicio[colDestino]){
+      c.faseInicio[colDestino] = new Date().toISOString().split('T')[0];
+    }
+  }
+
   if(estado==='cobrado_total'||estado==='completada') c.cobrado=c.tot;
   saveCots(cots);renderIngresos();if(document.getElementById('pg-est').classList.contains('active'))renderEstatus();
+}
+/* Devuelve el id de columna del Kanban para un estado dado */
+function _colDeEstado(estado){
+  const norm = (estado==='aprobada')?'emitida':estado;
+  const col = KANBAN_COLS.find(k=>k.estados.includes(norm));
+  return col ? col.id : null;
 }
 
 // Recibo del anticipo: genera un comprobante imprimible con LOGO_B64
@@ -9983,6 +10854,9 @@ function renderHome(){
   `;
   const kpisEl = document.getElementById('home-kpis');
   if(kpisEl) kpisEl.innerHTML = kpisHTML;
+
+  // ═══ FLUJO DEL DINERO: cotizado → aprobado → cobrado ═══
+  renderFlujo(cots);
 
   // ═══ Cobros pendientes ═══
   const cotsConSaldo = cotsActuales
@@ -10843,6 +11717,111 @@ function renderEstatus(){
   document.getElementById('est-colab').innerHTML=colabHTML;
 }
 
+/* ════════════════════════════════════════════════════════════
+   CUENTA REGRESIVA DE FASE — días para que el proyecto avance
+   de columna según el cronograma cotizado.
+   Arranca el día que el proyecto entró a la columna actual
+   (registrado en c.faseInicio) y dura lo que suman los sprints
+   de esa fase en la cotización.
+   ════════════════════════════════════════════════════════════ */
+
+// Mapa columna Kanban → tipo de fase en el cronograma guardado
+const _FASE_TIPO = { anteproyecto:'f1', pre_entrega:'pe', planos:'f2' };
+
+/* Duración REAL de una fase, respetando el paralelismo de los sprints.
+   Replica la aritmética del motor de cronograma (computeAll):
+   - En cadena (automáticos): un sprint de N días ocupa [cur .. cur+N-1];
+     el siguiente arranca en cur+N.
+   - Con posición fija (startDay, arrastrados): offset ABSOLUTO desde el
+     inicio de la fase; pueden correr en paralelo, sin empujar la cadena.
+   La duración de la fase = span desde el primer día ocupado hasta el
+   último (respetando traslapes y simultaneidad).                        */
+function _diasDeFase(c, columnId){
+  const tipo = _FASE_TIPO[columnId];
+  if(!tipo) return null;
+  const sps = (Array.isArray(c.sprints) ? c.sprints : []).filter(s => s.type === tipo);
+  if(!sps.length) return null;
+
+  const durDe = s => Math.max(1, parseInt(s.days) || Math.round((parseFloat(s.weeks)||2)*7));
+
+  let cur    = 0;          // primer día libre en la cadena (índice, base 0 = inicio de fase)
+  let minIni = Infinity;   // primer día ocupado
+  let maxFin = -Infinity;  // último día ocupado
+
+  sps.forEach(s=>{
+    const days = durDe(s);
+    let start, end;
+    if(s.startDay != null && !isNaN(parseInt(s.startDay))){
+      // Fija/paralela: startDay es absoluto desde el inicio de la fase.
+      // (En f1 el inicio de fase = projStart = día 0; en pe/f2 el motor
+      //  arranca cada fase tras la anterior, pero para medir la DURACIÓN
+      //  sólo importa el span relativo, que startDay ya expresa.)
+      start = Math.max(0, parseInt(s.startDay));
+      end   = start + days - 1;
+      // Los sprints fijos NO empujan la cadena.
+    } else {
+      start = cur;
+      end   = start + days - 1;
+      cur   = end + 1;
+    }
+    if(start < minIni) minIni = start;
+    if(end   > maxFin) maxFin = end;
+  });
+
+  return Math.max(1, maxFin - minIni + 1);   // span real de la fase, en días
+}
+
+// Calcula el estado de la cuenta regresiva para un proyecto en su columna
+function _countdownFase(c, columnId){
+  // Sólo columnas de trabajo con plazo (no Cotizado ni Entrega final)
+  if(!_FASE_TIPO[columnId]) return null;
+  const dias = _diasDeFase(c, columnId);
+  if(!dias) return null;
+
+  // Fecha en que entró a esta fase; si falta (proyectos previos), usar updatedAt o projStart
+  const fi = c.faseInicio && c.faseInicio[columnId];
+  let inicio = fi
+    ? new Date(fi+'T12:00:00')
+    : (c.updatedAt ? new Date(c.updatedAt) : (c.projStart ? new Date(c.projStart+'T12:00:00') : null));
+  if(!inicio || isNaN(inicio)) return null;
+
+  const hoy = new Date(); hoy.setHours(12,0,0,0);
+  const limite = new Date(inicio); limite.setHours(12,0,0,0);
+  limite.setDate(limite.getDate() + dias);
+
+  const MS = 86400000;
+  const restantes = Math.round((limite - hoy) / MS);
+  const estimado  = !fi;   // el inicio no era fiable (proyecto viejo)
+
+  let nivel;                     // ok | pronto | hoy | tarde
+  if(restantes < 0)       nivel = 'tarde';
+  else if(restantes === 0) nivel = 'hoy';
+  else if(restantes <= Math.max(2, Math.ceil(dias*0.25))) nivel = 'pronto';
+  else                     nivel = 'ok';
+
+  return { dias, restantes, nivel, estimado };
+}
+
+// HTML de la píldora de cuenta regresiva
+function _countdownHTML(cd){
+  if(!cd) return '';
+  const n = Math.abs(cd.restantes);
+  let ico, txt;
+  if(cd.nivel === 'tarde'){
+    ico = '⚠';
+    txt = `${n} día${n===1?'':'s'} tarde`;
+  } else if(cd.nivel === 'hoy'){
+    ico = '⏰';
+    txt = 'Vence hoy';
+  } else {
+    ico = '⏳';
+    txt = `${cd.restantes} día${cd.restantes===1?'':'s'}`;
+  }
+  const est = cd.estimado ? ' title="Fecha estimada: este proyecto no registró cuándo entró a esta fase"' : ` title="Faltan ${cd.restantes} de ${cd.dias} días de la fase"`;
+  return `<span class="kanban-countdown cd-${cd.nivel}${cd.estimado?' cd-est':''}"${est}>
+    <span class="cd-ico">${ico}</span><span class="cd-txt">${txt}</span></span>`;
+}
+
 function renderProjectCard(c, columnId){
   const sprints = ensureDefaultSprints(c);
   // Filtrar sprints que corresponden a la columna actual
@@ -10853,8 +11832,13 @@ function renderProjectCard(c, columnId){
   return `<div class="kanban-card" draggable="true"
       ondragstart="kanbanDragStart(event,${c.id})"
       ondragend="kanbanDragEnd(event)">
-    <div class="kanban-card-client">${escapeHtmlK(c.cliente)}</div>
-    <div class="kanban-card-proj">${escapeHtmlK(c.proyecto)}</div>
+    <div class="kanban-card-top">
+      <div class="kanban-card-titles">
+        <div class="kanban-card-client">${escapeHtmlK(c.cliente)}</div>
+        <div class="kanban-card-proj">${escapeHtmlK(c.proyecto)}</div>
+      </div>
+      ${_countdownHTML(_countdownFase(c, columnId))}
+    </div>
 
     ${colSprints.length ? `
       <div class="proj-progress" style="border:none;padding:10px 0 4px 0;margin:0">
@@ -10934,7 +11918,12 @@ function openColabPopover(ev, cotId, spId, itemId){
 
   // Obtener lista de colaboradores usados en la cotización (para sugerencias)
   const cot = loadCots().find(c=>c.id===cotId) || {};
-  const sugeridos = [cot.colNombre3D, cot.colNombreRend, cot.colNombrePlanos]
+  /* Sugerencias: primero el equipo registrado (Arkiworkers), luego los
+     roles asignados en la cotización de este proyecto. */
+  const registrados = (typeof awLoad==='function') ? awLoad().map(w=>w.nombre) : [];
+  const delProyecto = [cot.colNombre3D, cot.colNombreRend, cot.colNombrePlanos]
+    .filter(n => n && n.trim());
+  const sugeridos = [...registrados, ...delProyecto]
     .filter(n => n && n.trim())
     .filter((n,i,arr) => arr.indexOf(n) === i); // únicos
 
@@ -10944,7 +11933,7 @@ function openColabPopover(ev, cotId, spId, itemId){
   pop.innerHTML = `
     <div class="colab-pop-title">Colaborador</div>
     <input type="text" class="colab-pop-input" placeholder="Nombre completo…" value="${escapeHtmlK(it.colab||'')}" id="colabPopInput">
-    ${sugeridos.length ? `<div class="colab-pop-sug-lbl">Sugeridos del proyecto:</div>
+    ${sugeridos.length ? `<div class="colab-pop-sug-lbl">Tu equipo:</div>
       <div class="colab-pop-sug">
         ${sugeridos.map(n => `<button class="colab-pop-chip" onclick="colabPopPick('${escapeHtmlK(n)}')">${escapeHtmlK(n)}</button>`).join('')}
       </div>` : ''}
@@ -11570,6 +12559,7 @@ function closeModal(){
 // ═══════ INIT ═══════
 document.addEventListener('DOMContentLoaded',()=>{
   renderPlanosRows();
+  if(typeof awLlenarSelects==='function') awLlenarSelects();
   const t=new Date(),n=new Date(t),dy=t.getDay(),df=dy===1?7:(8-dy)%7||7;
   n.setDate(t.getDate()+df);
   document.getElementById('projStart').value=fmtFechaGT(n.toISOString().split('T')[0]);
@@ -13338,6 +14328,9 @@ if(typeof window !== 'undefined'){
       const d = JSON.parse(raw);
       if(!d || !d._v) return false;
 
+      /* Los selects de colaborador deben tener sus opciones antes de
+         asignarles el valor guardado en el borrador. */
+      if(typeof awLlenarSelects === 'function') awLlenarSelects();
       TEXT_FIELDS.forEach( id => { if(d[id]!=null) sv(id, d[id]); });
       NUM_FIELDS.forEach(  id => { if(d[id]!=null) sv(id, d[id]); });
       CHECK_FIELDS.forEach(id => { if(d[id]!=null) sc(id, d[id]); });
@@ -14023,6 +15016,18 @@ document.addEventListener('DOMContentLoaded',()=>{
       background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">
       Crear cuenta nueva
     </button>
+
+    <div class="oauth-sep"><span>o</span></div>
+
+    <button onclick="authGoogle()" id="authGoogleBtn" class="google-btn" type="button">
+      <svg class="google-ico" viewBox="0 0 18 18" aria-hidden="true">
+        <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/>
+        <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/>
+        <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.9 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+      </svg>
+      <span>Continuar con Google</span>
+    </button>
   </div>
 </div>
 
@@ -14098,6 +15103,18 @@ document.addEventListener('DOMContentLoaded',()=>{
         Crear mi cuenta
       </button>
     </div>
+
+    <div class="oauth-sep" id="regOauthSep"><span>o</span></div>
+
+    <button onclick="authGoogle()" id="regGoogleBtn" class="google-btn" type="button">
+      <svg class="google-ico" viewBox="0 0 18 18" aria-hidden="true">
+        <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/>
+        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/>
+        <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/>
+        <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.9 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+      </svg>
+      <span>Continuar con Google</span>
+    </button>
 
     <div style="text-align:center;margin-top:14px;font-size:11px;color:var(--text-3)">
       ¿Ya tenés cuenta?
