@@ -339,7 +339,7 @@ body::after{
 [data-theme="light"] .home-kpi.kpi-accent .kpi-value{text-shadow:none}
 
 .home-summary-grid{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:18px;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px;
 }
 .home-summary-card{
   background:rgba(12,22,44,0.70);
@@ -606,6 +606,67 @@ input.narrow{width:88px}input.mid{width:108px}
 
 /* ── COLAB ── */
 .colab-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px}
+/* ═══ COLABORADORES MÚLTIPLES (por ruta) ═══ */
+.ruta-colab{margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid rgba(255,255,255,0.07)}
+.ruta-colab:last-of-type{border-bottom:none;margin-bottom:6px}
+.ruta-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
+.ruta-titulo{font-size:12px;color:var(--text);font-weight:500}
+.ruta-sub{font-size:10px;color:var(--text-3);font-family:var(--font-mono)}
+.btn-add-colab{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;font-size:10.5px;
+  border:1px solid var(--border-accent);border-radius:999px;background:transparent;color:var(--accent);
+  cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase;
+  transition:all .15s;white-space:nowrap;flex-shrink:0}
+.btn-add-colab:hover{background:var(--accent-subtle);box-shadow:var(--shadow-accent)}
+.budget-bar{height:4px;border-radius:2px;background:rgba(255,255,255,0.06);margin-bottom:10px;overflow:hidden}
+.budget-fill{height:100%;border-radius:2px;background:var(--accent);width:0%;transition:width .25s,background .25s}
+.colab-warn{display:none;margin-bottom:8px;padding:7px 11px;background:var(--red-lt);
+  border:1px solid rgba(255,92,122,0.30);border-radius:var(--r-md);font-size:11px;color:var(--red);line-height:1.5}
+.colab-card{background:var(--tint-on-bg-soft,rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.07);
+  border-radius:var(--r-md);padding:10px 12px;margin-bottom:8px}
+.colab-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.colab-top select{flex:1;min-width:0;font-size:11px;padding:4px 7px;margin-bottom:0}
+.btn-colab-del{background:transparent;border:none;color:var(--text-3);font-size:17px;cursor:pointer;
+  padding:0 4px;line-height:1;transition:color .15s;flex-shrink:0}
+.btn-colab-del:hover{color:var(--red)}
+.modo-tabs{display:flex;border:1px solid rgba(255,255,255,0.10);border-radius:var(--r-sm);overflow:hidden;flex-shrink:0}
+.modo-tab{font-family:var(--font-mono);font-size:10px;padding:5px 9px;border:none;cursor:pointer;
+  background:transparent;color:var(--text-3);transition:all .15s}
+.modo-tab.active{background:var(--accent);color:var(--text-on-accent);font-weight:500}
+.colab-pago{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.colab-pago input{width:78px;text-align:right;font-family:var(--font-mono);font-size:12px;padding:5px 8px;margin-bottom:0}
+.pago-unit{font-size:10.5px;color:var(--text-3);font-family:var(--font-mono)}
+.colab-monto{margin-left:auto;font-family:var(--font-mono);font-size:12.5px;color:var(--accent);font-weight:500}
+/* Checklist de planos */
+.planos-toggle{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding:6px 9px;
+  background:var(--tint-on-bg-medium,rgba(255,255,255,0.04));border:1px solid var(--border-accent);
+  border-radius:var(--r-sm);cursor:pointer;font-size:11px;color:var(--text-2);transition:all .15s}
+.planos-toggle:hover{border-color:var(--border-focus)}
+.planos-count{font-family:var(--font-mono);font-size:11px;color:var(--accent)}
+.planos-panel{display:none;margin-top:8px;max-height:280px;overflow-y:auto;background:rgba(0,0,0,0.22);
+  border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md);padding:9px 11px}
+.planos-panel.open{display:block}
+.pgrupo-head{display:flex;align-items:center;justify-content:space-between;font-size:10px;text-transform:uppercase;
+  letter-spacing:.10em;color:var(--accent);font-family:var(--font-display);margin:9px 0 5px;padding-bottom:3px;
+  border-bottom:0.5px solid var(--border-accent)}
+.pgrupo-head:first-child{margin-top:0}
+.btn-todos{background:transparent;border:none;color:var(--text-3);font-size:9.5px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:.06em;font-family:var(--font-display);transition:color .15s}
+.btn-todos:hover{color:var(--accent)}
+.plano-check{display:flex;align-items:center;gap:8px;padding:3.5px 0;font-size:11px;color:var(--text-2);cursor:pointer}
+.plano-check input[type=checkbox]{width:13px;height:13px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;margin:0}
+.plano-check.taken{opacity:.42;cursor:not-allowed}
+.plano-check .taken-by{font-size:9px;color:var(--purple-dk);font-style:italic;margin-left:auto;flex-shrink:0}
+.plano-check .qty{font-family:var(--font-mono);font-size:9.5px;color:var(--text-3);margin-left:auto;flex-shrink:0}
+.precio-plano-row{display:flex;align-items:center;gap:8px;margin-top:9px;padding-top:9px;
+  border-top:0.5px solid rgba(255,255,255,0.07);font-size:11px;color:var(--text-2)}
+.precio-plano-row input{width:86px;text-align:right;font-family:var(--font-mono);font-size:12px;padding:5px 8px;margin-bottom:0}
+.colab-empty-hint{font-size:11px;color:var(--text-3);font-style:italic;padding:7px 0}
+@media(max-width:640px){
+  .colab-top{flex-wrap:wrap}
+  .colab-top select{flex:1 1 100%;order:1}
+  .modo-tabs{order:2}
+  .btn-colab-del{order:3;margin-left:auto}
+}
 .colab-row:last-child{border-bottom:none}
 .colab-r{display:flex;align-items:center;gap:7px}
 .colab-pct{border:1px solid rgba(255,255,255,0.10);border-radius:var(--r-md);padding:3px 6px;font-size:12px;width:60px;background:rgba(255,255,255,0.04);color:var(--text);text-align:center;font-family:var(--font-mono)}
@@ -652,6 +713,44 @@ input.narrow{width:88px}input.mid{width:108px}
 
 /* ── CUR BTNS ── */
 .cur-row{display:flex;gap:5px;margin-bottom:.85rem}
+.cur-fixed-row{display:flex;align-items:center;gap:10px;margin-bottom:.85rem;padding:8px 12px;background:var(--tint-on-bg-soft,rgba(255,255,255,0.03));border:1px solid var(--border-2);border-radius:var(--r-md)}
+.cur-fixed-label{font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--text-3);font-family:var(--font-display)}
+.cur-fixed-value{font-size:14px;font-weight:600;color:var(--accent);font-family:var(--font-mono);letter-spacing:.05em}
+.cur-fixed-hint{font-size:10px;color:var(--text-3);margin-left:auto;font-style:italic}
+
+/* ═══════════════ CONFIGURACIÓN INICIAL (setup wizard) ═══════════════ */
+.setup-dot{flex:1;height:4px;border-radius:999px;background:var(--tint-on-bg-strong,rgba(255,255,255,0.10));transition:background .3s}
+.setup-dot.active{background:var(--accent)}
+.setup-dot.done{background:var(--accent-dim,var(--accent));opacity:.55}
+.setup-q{font-size:16px;font-weight:600;color:var(--text);margin-bottom:5px;font-family:var(--font-display)}
+.setup-help{font-size:11.5px;color:var(--text-2);line-height:1.6;margin-bottom:1.1rem}
+.setup-warn{font-size:10.5px;color:var(--amber,#D4A843);margin-top:12px;line-height:1.5}
+.setup-grid{display:grid;gap:10px}
+.setup-grid-2{grid-template-columns:1fr 1fr}
+.setup-opt{display:flex;flex-direction:column;align-items:center;gap:3px;padding:16px 12px;
+  background:var(--tint-on-bg-soft,rgba(255,255,255,0.03));border:1.5px solid var(--border-2);
+  border-radius:var(--r-lg,14px);cursor:pointer;transition:all .18s;text-align:center;position:relative}
+.setup-opt:hover{border-color:var(--border-accent,rgba(0,229,255,0.45));transform:translateY(-1px)}
+.setup-opt.selected{border-color:var(--accent);background:var(--accent-subtle,rgba(0,229,255,0.10));box-shadow:0 0 0 1px var(--accent) inset}
+.setup-opt-emoji{font-size:26px;line-height:1;font-family:var(--font-mono);font-weight:600;color:var(--accent)}
+.setup-opt-title{font-size:13px;font-weight:600;color:var(--text);font-family:var(--font-display)}
+.setup-opt-sub{font-size:10px;color:var(--text-3);letter-spacing:.02em}
+.setup-opt-soon{opacity:.62}
+.setup-opt-soon .setup-opt-sub{color:var(--amber,#D4A843)}
+/* Muestras de color por tema */
+.setup-swatch{width:38px;height:38px;border-radius:10px;display:block;margin-bottom:2px;border:1px solid rgba(255,255,255,0.12)}
+.swatch-neon{background:linear-gradient(135deg,#05070D 0%,#0A1420 55%,#00E5FF 100%)}
+.swatch-claro{background:linear-gradient(135deg,#E0EDF2 0%,#B8E4F0 55%,#35B4DC 100%)}
+.swatch-girly{background:linear-gradient(135deg,#2B1524 0%,#5A2942 55%,#FF6FB5 100%)}
+.swatch-boho{background:linear-gradient(135deg,#2A2018 0%,#6B4E32 55%,#D9A566 100%)}
+/* Chips de tema en el menú de Ajustes */
+.tema-chip{display:flex;align-items:center;gap:7px;padding:7px 9px;font-size:11px;
+  border:1.5px solid var(--border-2);border-radius:var(--r-md);background:var(--tint-on-bg-soft,rgba(255,255,255,0.03));
+  color:var(--text-2);cursor:pointer;transition:all .16s;font-family:var(--font-body);text-align:left}
+.tema-chip:hover{border-color:var(--border-accent,rgba(0,229,255,0.45));color:var(--text)}
+.tema-chip.active{border-color:var(--accent);color:var(--text);background:var(--accent-subtle,rgba(0,229,255,0.10))}
+.tema-chip-sw{width:18px;height:18px;border-radius:5px;flex-shrink:0;border:1px solid rgba(255,255,255,0.14)}
+
 .cur-btn{
   padding:5px 14px;font-size:10px;
   border:1px solid rgba(255,255,255,0.10);border-radius:var(--r-md);
@@ -2513,8 +2612,30 @@ code.emp-tag{font-family:var(--font-mono)}
           <div id="userMenuNombre" style="font-size:10.5px;color:var(--text-3);margin-top:2px"></div>
         </div>
         <!-- Empresa: ahora se edita en Estudio → Panel de la empresa -->
-        <!-- Tema -->
-        <button onclick="toggleTheme();actualizarUserMenuTema()" class="menu-config-item" id="userMenuTema">🌙 Modo oscuro</button>
+        <!-- Diseño de interfaz -->
+        <div style="padding:6px 10px 8px">
+          <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px">Diseño de interfaz</div>
+          <div id="userMenuTemaGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+            <button type="button" class="tema-chip" data-tema="neon"  onclick="cambiarTema('neon')"><span class="tema-chip-sw swatch-neon"></span>Neón</button>
+            <button type="button" class="tema-chip" data-tema="claro" onclick="cambiarTema('claro')"><span class="tema-chip-sw swatch-claro"></span>Claro</button>
+            <button type="button" class="tema-chip" data-tema="girly" onclick="cambiarTema('girly')"><span class="tema-chip-sw swatch-girly"></span>Girly</button>
+            <button type="button" class="tema-chip" data-tema="boho"  onclick="cambiarTema('boho')"><span class="tema-chip-sw swatch-boho"></span>Boho</button>
+          </div>
+        </div>
+        <!-- Moneda del estudio -->
+        <div style="padding:4px 10px 8px">
+          <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px">Moneda del estudio</div>
+          <div style="display:flex;gap:5px">
+            <select id="userMenuMoneda" style="flex:1;padding:6px 9px;font-size:11.5px;min-height:auto">
+              <option value="GTQ">GTQ · Quetzales</option>
+              <option value="USD">USD · Dólares</option>
+            </select>
+            <button onclick="cambiarMonedaEstudio()" title="Cambiar moneda"
+              style="padding:6px 10px;font-size:11px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer">✓</button>
+          </div>
+          <div style="font-size:9.5px;color:var(--text-3);margin-top:5px;line-height:1.5">Sin conversión de divisas: cambiarla re-etiqueta los montos existentes.</div>
+        </div>
+        <div style="height:1px;background:rgba(128,128,128,0.12);margin:4px 0"></div>
         <!-- Atajos -->
         <button onclick="mostrarAtajos();toggleUserMenu()" class="menu-config-item">⌨ Atajos de teclado</button>
         <!-- Excel -->
@@ -2868,9 +2989,10 @@ code.emp-tag{font-family:var(--font-mono)}
     <div class="fg"><label class="lbl">Metros cuadrados</label><div class="fr"><input type="number" id="m2S" min="1" max="99999" step="1" value="" placeholder="0" oninput="syncM2(this.value)" style="width:110px;font-size:15px;font-weight:500"><span class="fv" style="margin-left:6px">m²</span></div></div>
     <div class="fg"><label class="lbl">Tarifa por m²</label><div class="fr"><input type="number" id="m2Rate" value="" placeholder="0" min="1" class="mid" oninput="calc()"><span class="fv" id="cSym">GTQ/m²</span></div></div>
   </div>
-  <div class="cur-row">
-    <button class="cur-btn active" onclick="setCur('GTQ')">GTQ</button>
-    <button class="cur-btn" onclick="setCur('USD')">USD</button>
+  <div class="cur-fixed-row" id="curFixedRow">
+    <span class="cur-fixed-label">Moneda del estudio</span>
+    <span class="cur-fixed-value" id="curFixedValue">GTQ</span>
+    <span class="cur-fixed-hint">Se define en Ajustes</span>
   </div>
 </div>
 
@@ -2934,69 +3056,65 @@ code.emp-tag{font-family:var(--font-mono)}
 </div>
 
 <div class="sc">
-  <span class="pl p3" style="margin-bottom:.75rem;display:inline-block">Colaborador / dibujante</span>
-  <p class="nt" style="margin:.2rem 0 .75rem">Asigná nombre y % del honorario para cada tarea</p>
+  <span class="pl p3" style="margin-bottom:.75rem;display:inline-block">Colaboradores</span>
+  <p class="nt" style="margin:.2rem 0 .9rem">Asigná uno o varios colaboradores por ruta. Cada uno puede cobrarse por porcentaje del honorario, monto fijo, o por planos asignados.</p>
 
-  <!-- ─── Anteproyecto (F1) budget bar ─── -->
-  <div id="colF1Row">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-      <span style="font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3);font-weight:500">Anteproyecto F1 — presupuesto colaboradores</span>
-      <span id="colF1BudgetPct" style="font-size:10px;font-family:var(--font-mono);color:var(--text-3)">0%</span>
-    </div>
-    <!-- budget bar -->
-    <div style="height:4px;border-radius:2px;background:rgba(255,255,255,0.06);margin-bottom:10px;overflow:hidden">
-      <div id="colF1BudgetBar" style="height:100%;border-radius:2px;background:var(--accent);width:0%;transition:width .2s,background .2s"></div>
-    </div>
-    <!-- warning -->
-    <div id="colF1Warn" style="display:none;margin-bottom:8px;padding:7px 11px;background:rgba(224,90,90,0.08);border:1px solid rgba(224,90,90,0.25);border-radius:var(--r-md);font-size:11px;color:var(--red)">
-      ⚠ Los porcentajes de Modelado 3D + Renderización suman más del 100% del honorario de Anteproyecto. Estarías pagando más de lo que cobrás.
-    </div>
-
-    <div class="colab-row">
-      <div style="flex:1">
-        <div style="font-size:12px;color:var(--text-2);margin-bottom:3px">Modelado 3D</div>
-        <div class="colab-pick"><select id="colNombre3D" onchange="calc()" style="font-size:11px;padding:4px 7px;margin-bottom:0"></select><button type="button" class="colab-add" onclick="awAbrirModal(null,'colNombre3D')" title="Agregar colaborador">＋</button></div>
+  <!-- ═══ MODELADO 3D (F1) ═══ -->
+  <div class="ruta-colab" data-ruta="m3d">
+    <div class="ruta-head">
+      <div>
+        <div class="ruta-titulo">Modelado 3D</div>
+        <div class="ruta-sub">Honorario Anteproyecto: <span id="honFase-m3d">—</span></div>
       </div>
-      <div class="colab-r">
-        <input class="colab-pct" type="number" id="col3D" value="0" min="0" max="100" oninput="calc()">
-        <span style="font-size:11px;color:var(--text-3)">% de F1</span>
-        <span class="colab-amt" id="colAmt3D">—</span>
-      </div>
+      <button type="button" class="btn-add-colab" onclick="colabAdd('m3d')">＋ Colaborador</button>
     </div>
-
-    <div class="colab-row">
-      <div style="flex:1">
-        <div style="font-size:12px;color:var(--text-2);margin-bottom:3px">Renderización</div>
-        <div class="colab-pick"><select id="colNombreRend" onchange="calc()" style="font-size:11px;padding:4px 7px;margin-bottom:0"></select><button type="button" class="colab-add" onclick="awAbrirModal(null,'colNombreRend')" title="Agregar colaborador">＋</button></div>
-      </div>
-      <div class="colab-r">
-        <input class="colab-pct" type="number" id="colRend" value="0" min="0" max="100" oninput="calc()">
-        <span style="font-size:11px;color:var(--text-3)">% de F1</span>
-        <span class="colab-amt" id="colAmtRend">—</span>
-      </div>
-    </div>
+    <div class="budget-bar"><div class="budget-fill" id="bar-m3d"></div></div>
+    <div class="colab-warn" id="warn-m3d">⚠ Los pagos de Modelado 3D superan el honorario de Anteproyecto. Estarías pagando más de lo que cobrás.</div>
+    <div id="list-m3d"></div>
   </div>
 
-  <!-- ─── Planimetrías (F2) ─── -->
-  <div class="colab-row" id="colPlanosRow" style="margin-top:8px;padding-top:10px;border-top:0.5px solid var(--border)">
-    <div style="flex:1">
-      <div style="font-size:12px;color:var(--text-2);margin-bottom:3px">Planos constructivos (F2)</div>
-      <div class="colab-pick"><select id="colNombrePlanos" onchange="calc()" style="font-size:11px;padding:4px 7px;margin-bottom:0"></select><button type="button" class="colab-add" onclick="awAbrirModal(null,'colNombrePlanos')" title="Agregar colaborador">＋</button></div>
+  <!-- ═══ RENDERIZACIÓN (F1) ═══ -->
+  <div class="ruta-colab" data-ruta="rend">
+    <div class="ruta-head">
+      <div>
+        <div class="ruta-titulo">Renderización</div>
+        <div class="ruta-sub">Honorario Anteproyecto: <span id="honFase-rend">—</span></div>
+      </div>
+      <button type="button" class="btn-add-colab" onclick="colabAdd('rend')">＋ Colaborador</button>
     </div>
-    <div class="colab-r">
-      <input class="colab-pct" type="number" id="colPlanos" value="0" min="0" max="100" oninput="calc()">
-      <span style="font-size:11px;color:var(--text-3)">% de F2</span>
-      <span class="colab-amt" id="colAmtPlanos">—</span>
-    </div>
-  </div>
-  <!-- F2 individual >100% warning -->
-  <div id="colF2Warn" style="display:none;margin-top:6px;padding:7px 11px;background:rgba(224,90,90,0.08);border:1px solid rgba(224,90,90,0.25);border-radius:var(--r-md);font-size:11px;color:var(--red)">
-    ⚠ El porcentaje de Planos constructivos supera el 100% del honorario de Planimetrías.
+    <div class="budget-bar"><div class="budget-fill" id="bar-rend"></div></div>
+    <div class="colab-warn" id="warn-rend">⚠ Los pagos de Renderización superan el honorario de Anteproyecto. Estarías pagando más de lo que cobrás.</div>
+    <div id="list-rend"></div>
   </div>
 
-  <div style="display:flex;justify-content:space-between;padding-top:8px;margin-top:6px;border-top:0.5px solid var(--border)">
-    <span style="font-size:11px;color:var(--text-2)">Total colaboradores</span>
-    <span style="font-size:12px;font-weight:500" id="colTotal">—</span>
+  <!-- ═══ PLANIMETRÍA (F2) ═══ -->
+  <div class="ruta-colab" data-ruta="plan">
+    <div class="ruta-head">
+      <div>
+        <div class="ruta-titulo">Planimetría</div>
+        <div class="ruta-sub">Honorario Planimetrías: <span id="honFase-plan">—</span></div>
+      </div>
+      <button type="button" class="btn-add-colab" onclick="colabAdd('plan')">＋ Colaborador</button>
+    </div>
+    <div class="budget-bar"><div class="budget-fill" id="bar-plan"></div></div>
+    <div class="colab-warn" id="warn-plan">⚠ Los pagos de Planimetría superan el honorario de Planimetrías. Estarías pagando más de lo que cobrás.</div>
+    <div id="list-plan"></div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:8px;border-top:0.5px solid var(--border)">
+    <span style="font-size:11.5px;color:var(--text-2)">Total colaboradores</span>
+    <span style="font-size:13.5px;font-weight:500;font-family:var(--font-mono);color:var(--accent)" id="colTotal">—</span>
+  </div>
+
+  <!-- ── Campos legados (ocultos): derivados del modelo nuevo.
+       Los mantiene sincronizados _colabSyncLegacy() para que el Kanban,
+       recibos, Excel y Arkiworkers sigan funcionando sin cambios. ── -->
+  <div style="display:none" aria-hidden="true">
+    <input type="number" id="col3D" value="0"><input type="number" id="colRend" value="0"><input type="number" id="colPlanos" value="0">
+    <select id="colNombre3D"></select><select id="colNombreRend"></select><select id="colNombrePlanos"></select>
+    <span id="colAmt3D"></span><span id="colAmtRend"></span><span id="colAmtPlanos"></span>
+    <div id="colF1Row"><span id="colF1BudgetPct"></span><div id="colF1BudgetBar"></div><div id="colF1Warn"></div></div>
+    <div id="colPlanosRow"></div><div id="colF2Warn"></div>
   </div>
 </div>
 
@@ -3840,6 +3958,13 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
     <div class="home-summary-body" id="home-alerts"></div>
   </div>
+  <div class="home-summary-card">
+    <div class="home-summary-head">
+      <span class="home-summary-icon">👥</span>
+      <span class="home-summary-title">Avances de colaboradores</span>
+    </div>
+    <div class="home-summary-body" id="home-colabs"></div>
+  </div>
 </div>
 
 <!-- Reportes con métricas y gráficos -->
@@ -3887,8 +4012,8 @@ code.emp-tag{font-family:var(--font-mono)}
   </div>
   <div class="r2" style="margin-bottom:.75rem">
     <div><label class="lbl">IVA (si aplica)</label><input type="number" id="fc-iva" value="0" min="0" oninput="calcFormTotals()"></div>
-    <div><label class="lbl">Moneda</label>
-      <select id="fc-cur">
+    <div><label class="lbl">Moneda del estudio</label>
+      <select id="fc-cur" disabled title="La moneda es única por estudio. Se cambia en Ajustes." style="opacity:.85;cursor:not-allowed">
         <option value="GTQ">GTQ</option>
         <option value="USD">USD</option>
       </select>
@@ -4026,6 +4151,17 @@ code.emp-tag{font-family:var(--font-mono)}
 // ═══════ ESTADO GLOBAL ═══════
 var cur = 'GTQ';  // var = window property, accessible cross-script
 
+// ═══════ MONEDA ÚNICA DEL ESTUDIO ═══════
+// Se elige una sola vez en la configuración inicial y rige TODA la app.
+// (Cambiable luego en Ajustes, con advertencia — no hay conversión de divisas.)
+function monedaEstudio(){
+  try{
+    const p = JSON.parse(localStorage.getItem('avit_perfil')||'{}');
+    return (p.moneda === 'USD' || p.moneda === 'GTQ') ? p.moneda : 'GTQ';
+  }catch(e){ return 'GTQ'; }
+}
+cur = monedaEstudio();
+
 // ═══════ NUEVA ESTRUCTURA DE PLANIMETRÍAS (32 planos en 4 grupos) ═══════
 // Cada grupo tiene un costo unitario por default que el usuario puede ajustar
 const PLANO_GROUPS = [
@@ -4101,6 +4237,292 @@ const PLANOS_HIDRAULICOS   = PLANO_GROUPS[2].planos;
 const PLANOS_ELECTRICOS    = PLANO_GROUPS[3].planos;
 const PLANOS_GENERALES     = PLANO_GROUPS[0].planos;
 const PLANO_NAMES = PLANO_GROUPS.flatMap(g => g.planos);
+
+/* ═══════════════════════════════════════════════════════════════════
+   COLABORADORES MÚLTIPLES — motor
+   ───────────────────────────────────────────────────────────────────
+   Modelo: _COLABS = { m3d:[], rend:[], plan:[] }
+   Cada colaborador: { id, nombre, modo:'pct'|'fijo'|'planos',
+                       pct, fijo, planos:[nombre], precioPlano, panelOpen }
+   · 'planos' sólo aplica a la ruta 'plan' (Planimetría).
+   · Cada plano se asigna a UN solo colaborador (los tomados se bloquean).
+   · Los campos legados (colNombre3D/col3D/…) se derivan de este modelo
+     para no romper Kanban, recibos, Excel ni Arkiworkers.
+   =================================================================== */
+var _COLABS = { m3d:[], rend:[], plan:[] };
+var _colabUid = 1;
+const COLAB_RUTAS = ['m3d','rend','plan'];
+const COLAB_META = {
+  m3d : { titulo:'Modelado 3D',    legacyNombre:'colNombre3D',     legacyPct:'col3D',     tarea:'Modelado 3D' },
+  rend: { titulo:'Renderización',  legacyNombre:'colNombreRend',   legacyPct:'colRend',   tarea:'Renderización' },
+  plan: { titulo:'Planimetría',    legacyNombre:'colNombrePlanos', legacyPct:'colPlanos', tarea:'Planos constructivos' }
+};
+
+function _colabNuevo(ruta){
+  return { id:'c'+(_colabUid++), nombre:'', modo:(ruta==='plan'?'planos':'pct'),
+           pct:0, fijo:0, planos:[], precioPlano:0, panelOpen:false };
+}
+function colabAdd(ruta){
+  if(!_COLABS[ruta]) _COLABS[ruta]=[];
+  _COLABS[ruta].push(_colabNuevo(ruta));
+  colabRender(); if(typeof calc==='function') calc();
+}
+function colabDel(ruta,id){
+  _COLABS[ruta] = (_COLABS[ruta]||[]).filter(c=>c.id!==id);
+  colabRender(); if(typeof calc==='function') calc();
+}
+function colabSetModo(ruta,id,modo){
+  const c=(_COLABS[ruta]||[]).find(x=>x.id===id); if(!c) return;
+  c.modo=modo; if(modo==='planos') c.panelOpen=true;
+  colabRender(); if(typeof calc==='function') calc();
+}
+function colabSetCampo(ruta,id,campo,val){
+  const c=(_COLABS[ruta]||[]).find(x=>x.id===id); if(!c) return;
+  c[campo] = (campo==='nombre') ? val : (parseFloat(val)||0);
+  if(campo==='nombre'){ colabRender(); }
+  if(typeof calc==='function') calc();
+}
+function colabTogglePanel(ruta,id){
+  const c=(_COLABS[ruta]||[]).find(x=>x.id===id); if(!c) return;
+  c.panelOpen=!c.panelOpen; colabRender();
+}
+function colabTogglePlano(ruta,id,plano,checked){
+  const c=(_COLABS[ruta]||[]).find(x=>x.id===id); if(!c) return;
+  if(checked){ if(!c.planos.includes(plano)) c.planos.push(plano); }
+  else c.planos = c.planos.filter(p=>p!==plano);
+  colabRender(); if(typeof calc==='function') calc();
+}
+function colabToggleGrupo(ruta,id,gkey){
+  const c=(_COLABS[ruta]||[]).find(x=>x.id===id); if(!c) return;
+  const g=PLANO_GROUPS.find(x=>x.key===gkey); if(!g) return;
+  const disp = g.planos.filter(p=>_colabPlanoQty(p)>0 && (!_colabPlanoDueno(ruta,p) || c.planos.includes(p)));
+  const todos = disp.length && disp.every(p=>c.planos.includes(p));
+  if(todos) c.planos = c.planos.filter(p=>!disp.includes(p));
+  else disp.forEach(p=>{ if(!c.planos.includes(p)) c.planos.push(p); });
+  colabRender(); if(typeof calc==='function') calc();
+}
+/* Cantidad cotizada del plano (qp{i+1} según el índice en PLANO_NAMES) */
+function _colabPlanoQty(nombre){
+  const idx = PLANO_NAMES.indexOf(nombre);
+  if(idx < 0) return 0;
+  const el = document.getElementById('qp'+(idx+1));
+  return el ? (parseFloat(el.value)||0) : 0;
+}
+/* ¿Qué colaborador ya tomó este plano? */
+function _colabPlanoDueno(ruta,plano){
+  for(const c of (_COLABS[ruta]||[])) if(c.planos.includes(plano)) return c;
+  return null;
+}
+function _colabNombreDe(c){ return (c && c.nombre) ? c.nombre : 'Sin asignar'; }
+
+/* ── Monto de un colaborador según su modo ── */
+function _colabMonto(ruta,c,honorario){
+  if(!c) return 0;
+  if(c.modo==='fijo')  return Math.max(0, c.fijo||0);
+  if(c.modo==='planos'){
+    let laminas=0; (c.planos||[]).forEach(p=> laminas += _colabPlanoQty(p));
+    return laminas * (c.precioPlano||0);
+  }
+  return Math.max(0,honorario||0) * ((c.pct||0)/100);   // 'pct'
+}
+/* ── Totales por ruta. honF1 = honorario Anteproyecto, honF2 = Planimetrías ── */
+function colabTotales(honF1, honF2){
+  const hon = { m3d:honF1, rend:honF1, plan:honF2 };
+  const out = { m3d:0, rend:0, plan:0, total:0 };
+  COLAB_RUTAS.forEach(r=>{
+    let t=0; (_COLABS[r]||[]).forEach(c=> t += _colabMonto(r,c,hon[r]));
+    out[r]=t; out.total+=t;
+  });
+  out.honF1=honF1; out.honF2=honF2;
+  return out;
+}
+
+/* ── Sincronizar campos legados (derivados) ──
+   Kanban, recibos, Excel y Arkiworkers leen estos campos. */
+function _colabSyncLegacy(res){
+  COLAB_RUTAS.forEach(r=>{
+    const meta=COLAB_META[r];
+    const lista=_COLABS[r]||[];
+    // Nombre: el primer colaborador con nombre de esa ruta
+    const primero = lista.find(c=>(c.nombre||'').trim());
+    const selN = document.getElementById(meta.legacyNombre);
+    if(selN){
+      const val = primero ? primero.nombre : '';
+      if(val && !Array.from(selN.options).some(o=>o.value===val)){
+        const op=document.createElement('option'); op.value=val; op.textContent=val; selN.appendChild(op);
+      }
+      selN.value = val;
+    }
+    // % derivado: monto total de la ruta expresado como % de su honorario
+    const hon = (r==='plan') ? (res?res.honF2:0) : (res?res.honF1:0);
+    const monto = res ? (res[r]||0) : 0;
+    const pct = hon>0 ? (monto/hon*100) : 0;
+    const inpP = document.getElementById(meta.legacyPct);
+    if(inpP) inpP.value = Math.round(pct*100)/100;
+  });
+}
+
+/* ── Pintar la UI ── */
+function _colabEsc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+function _colabOpcionesNombre(sel){
+  // Reutiliza el registro de Arkiworkers (mismo origen que los selects legados)
+  let nombres=[];
+  try{
+    if(typeof awLoad==='function'){ nombres=(awLoad()||[]).map(w=>w.nombre||w).filter(Boolean); }
+  }catch(e){}
+  if(!nombres.length){
+    const ref=document.getElementById('colNombre3D');
+    if(ref) nombres=Array.from(ref.options).map(o=>o.value).filter(Boolean);
+  }
+  nombres=[...new Set(nombres)];
+  if(sel && !nombres.includes(sel)) nombres.unshift(sel);
+  return ['<option value="">— Elegí colaborador —</option>']
+    .concat(nombres.map(n=>`<option value="${_colabEsc(n)}" ${n===sel?'selected':''}>${_colabEsc(n)}</option>`)).join('');
+}
+
+function colabRender(){
+  COLAB_RUTAS.forEach(ruta=>{
+    const cont=document.getElementById('list-'+ruta);
+    if(!cont) return;
+    const lista=_COLABS[ruta]||[];
+    if(!lista.length){
+      cont.innerHTML='<div class="colab-empty-hint">Sin colaboradores asignados en esta ruta.</div>';
+      return;
+    }
+    cont.innerHTML = lista.map(c=>{
+      const opts=_colabOpcionesNombre(c.nombre);
+      const modos = (ruta==='plan') ? [['planos','Planos'],['pct','%'],['fijo','Q']] : [['pct','%'],['fijo','Q']];
+      const tabs = modos.map(([k,l])=>
+        `<button type="button" class="modo-tab ${c.modo===k?'active':''}" onclick="colabSetModo('${ruta}','${c.id}','${k}')">${l}</button>`).join('');
+
+      let pagoUI='';
+      if(c.modo==='pct'){
+        pagoUI=`<input type="number" min="0" max="100" step="0.5" value="${c.pct||0}" oninput="colabSetCampo('${ruta}','${c.id}','pct',this.value)">
+                <span class="pago-unit">% del honorario</span>`;
+      } else if(c.modo==='fijo'){
+        pagoUI=`<input type="number" min="0" value="${c.fijo||0}" oninput="colabSetCampo('${ruta}','${c.id}','fijo',this.value)">
+                <span class="pago-unit">${(typeof cur!=='undefined'?cur:'GTQ')} fijo</span>`;
+      } else {
+        let lam=0; (c.planos||[]).forEach(p=> lam+=_colabPlanoQty(p));
+        pagoUI=`<span class="pago-unit">${c.planos.length} plano${c.planos.length===1?'':'s'} · ${lam} lámina${lam===1?'':'s'}</span>`;
+      }
+
+      let panel='';
+      if(c.modo==='planos'){
+        const grupos=PLANO_GROUPS.map(g=>{
+          const disp=g.planos.filter(p=>_colabPlanoQty(p)>0);
+          if(!disp.length) return '';
+          const filas=disp.map(p=>{
+            const dueno=_colabPlanoDueno(ruta,p);
+            const mio=c.planos.includes(p);
+            const bloq = dueno && !mio;
+            const pj = _colabEsc(p).replace(/'/g,"\\'");
+            return `<label class="plano-check ${bloq?'taken':''}">
+              <input type="checkbox" ${mio?'checked':''} ${bloq?'disabled':''}
+                onchange="colabTogglePlano('${ruta}','${c.id}','${pj}',this.checked)">
+              <span>${_colabEsc(p)}</span>
+              ${bloq?`<span class="taken-by">→ ${_colabEsc(_colabNombreDe(dueno))}</span>`
+                    :`<span class="qty">×${_colabPlanoQty(p)}</span>`}
+            </label>`;
+          }).join('');
+          return `<div class="pgrupo-head"><span>${g.icon||''} ${_colabEsc(g.label)}</span>
+            <button type="button" class="btn-todos" onclick="colabToggleGrupo('${ruta}','${c.id}','${g.key}')">Todos</button></div>${filas}`;
+        }).join('');
+        panel=`
+          <div class="planos-toggle" onclick="colabTogglePanel('${ruta}','${c.id}')">
+            <span>📋 Planos asignados</span>
+            <span class="planos-count">${c.planos.length} seleccionado${c.planos.length===1?'':'s'} ${c.panelOpen?'▲':'▼'}</span>
+          </div>
+          <div class="planos-panel ${c.panelOpen?'open':''}">
+            ${grupos||'<div class="colab-empty-hint">No hay planos cotizados con cantidad mayor a 0.</div>'}
+            <div class="precio-plano-row">
+              <span>Precio por plano</span>
+              <input type="number" min="0" value="${c.precioPlano||0}" oninput="colabSetCampo('${ruta}','${c.id}','precioPlano',this.value)">
+              <span class="pago-unit">${(typeof cur!=='undefined'?cur:'GTQ')} c/u</span>
+            </div>
+          </div>`;
+      }
+
+      return `<div class="colab-card">
+        <div class="colab-top">
+          <select onchange="colabSetCampo('${ruta}','${c.id}','nombre',this.value)">${opts}</select>
+          <div class="modo-tabs">${tabs}</div>
+          <button type="button" class="btn-colab-del" onclick="colabDel('${ruta}','${c.id}')" title="Quitar colaborador">×</button>
+        </div>
+        <div class="colab-pago">${pagoUI}<span class="colab-monto" id="cmonto-${c.id}">—</span></div>
+        ${panel}
+      </div>`;
+    }).join('');
+  });
+}
+
+/* ── Pintar montos/barras tras calcular (lo llama calc()) ── */
+function colabPintarTotales(res){
+  COLAB_RUTAS.forEach(r=>{
+    const hon = (r==='plan') ? res.honF2 : res.honF1;
+    const monto = res[r]||0;
+    const pct = hon>0 ? (monto/hon*100) : 0;
+    const bar=document.getElementById('bar-'+r);
+    if(bar){
+      bar.style.width=Math.min(pct,100)+'%';
+      bar.style.background = pct>100?'var(--red)' : pct>80?'var(--amber)' : 'var(--accent)';
+    }
+    const w=document.getElementById('warn-'+r);
+    if(w) w.style.display = (pct>100 && monto>0) ? 'block' : 'none';
+    const hf=document.getElementById('honFase-'+r);
+    if(hf) hf.textContent = (typeof fmt==='function') ? fmt(hon||0) : String(hon||0);
+    (_COLABS[r]||[]).forEach(c=>{
+      const el=document.getElementById('cmonto-'+c.id);
+      if(el) el.textContent = (typeof fmt==='function') ? fmt(_colabMonto(r,c,hon)) : String(_colabMonto(r,c,hon));
+    });
+  });
+}
+
+/* ── Migración: cotización/borrador con el modelo viejo → modelo nuevo ── */
+function colabDesdeLegacy(src){
+  const out={ m3d:[], rend:[], plan:[] };
+  if(!src) return out;
+  const map=[['m3d','colNombre3D','p3D'],['rend','colNombreRend','pRd'],['plan','colNombrePlanos','pPl']];
+  map.forEach(([r,kn,kp])=>{
+    const nombre=(src[kn]||'').trim();
+    const pct=parseFloat(src[kp])||0;
+    if(nombre || pct>0){
+      out[r].push({ id:'c'+(_colabUid++), nombre:nombre, modo:'pct', pct:pct,
+                    fijo:0, planos:[], precioPlano:0, panelOpen:false });
+    }
+  });
+  return out;
+}
+/* Normaliza cualquier estructura entrante al modelo actual */
+function colabNormalizar(raw, legacySrc){
+  if(raw && typeof raw==='object' && (Array.isArray(raw.m3d)||Array.isArray(raw.rend)||Array.isArray(raw.plan))){
+    const out={m3d:[],rend:[],plan:[]};
+    COLAB_RUTAS.forEach(r=>{
+      out[r]=(raw[r]||[]).map(c=>({
+        id: c.id || ('c'+(_colabUid++)),
+        nombre: c.nombre||'', modo: ['pct','fijo','planos'].includes(c.modo)?c.modo:'pct',
+        pct: parseFloat(c.pct)||0, fijo: parseFloat(c.fijo)||0,
+        planos: Array.isArray(c.planos)?c.planos.slice():[],
+        precioPlano: parseFloat(c.precioPlano)||0, panelOpen:false
+      }));
+    });
+    return out;
+  }
+  return colabDesdeLegacy(legacySrc);
+}
+function colabCargar(raw, legacySrc){
+  _COLABS = colabNormalizar(raw, legacySrc);
+  colabRender();
+  if(typeof calc==='function') calc();
+}
+function colabReset(){ _COLABS={m3d:[],rend:[],plan:[]}; colabRender(); }
+
+window.colabAdd=colabAdd; window.colabDel=colabDel; window.colabSetModo=colabSetModo;
+window.colabSetCampo=colabSetCampo; window.colabTogglePanel=colabTogglePanel;
+window.colabTogglePlano=colabTogglePlano; window.colabToggleGrupo=colabToggleGrupo;
+window.colabRender=colabRender; window.colabCargar=colabCargar; window.colabReset=colabReset;
+window.colabTotales=colabTotales;
+
 
 // Helper: dado un nombre de plano, devolver su grupo
 function grupoDePlano(nombre){
@@ -4198,37 +4620,72 @@ function actualizarContadoresPlanos(){
 // ═══════════════════════════════════════════════
 // MODO CLARO / OSCURO
 // ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════
+   SISTEMA DE TEMAS — 4 diseños de interfaz
+   ───────────────────────────────────────────────────────────
+   Temas semánticos expuestos al usuario:
+     · neon   → "Cyber Neon" (oscuro) — mapea a data-theme="dark"
+     · claro  → "Mis Finanzas" (claro) — mapea a data-theme="light"
+     · girly  → (pendiente: prompt de diseño por integrar)
+     · boho   → (pendiente: prompt de diseño por integrar)
+   Cada tema nuevo se agrega como bloque CSS [data-theme="girly"]{…}
+   sin tocar esta lógica.
+   =========================================================== */
+const AVIT_TEMAS = ['neon','claro','girly','boho'];
+const AVIT_TEMAS_LISTOS = ['neon','claro'];
+function _temaADataTheme(t){
+  if(t === 'claro') return 'light';
+  if(t === 'neon')  return 'dark';
+  if(AVIT_TEMAS_LISTOS.includes(t)) return (t === 'claro' ? 'light' : 'dark');
+  return t;
+}
+
 function getActiveTheme(){
-  return document.documentElement.getAttribute('data-theme') || 'dark';
+  return localStorage.getItem('avit_tema') || 'neon';
 }
 
 function setTheme(theme){
-  if(theme !== 'light' && theme !== 'dark') theme = 'dark';
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('avit_theme', theme);
-  // Actualizar icono del botón
+  if(theme === 'dark')  theme = 'neon';
+  if(theme === 'light') theme = 'claro';
+  if(!AVIT_TEMAS.includes(theme)) theme = 'neon';
+
+  localStorage.setItem('avit_tema', theme);
+  const dt = _temaADataTheme(theme);
+  document.documentElement.setAttribute('data-theme', dt);
+  localStorage.setItem('avit_theme', dt === 'light' ? 'light' : 'dark');
+
+  try{
+    if(typeof _perfil === 'function' && typeof _perfilSave === 'function'){
+      const p = _perfil();
+      if(p.tema !== theme){ p.tema = theme; _perfilSave(p); }
+    }
+  }catch(e){}
+
   const btn = document.getElementById('themeToggle');
   if(btn){
-    btn.textContent = theme === 'dark' ? '🌙' : '☀️';
-    btn.title = theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    const esOscuro = (dt !== 'light');
+    btn.textContent = esOscuro ? '🌙' : '☀️';
+    btn.title = 'Cambiar tema de interfaz';
   }
+  if(typeof actualizarUserMenuTema === 'function') try{ actualizarUserMenuTema(); }catch(e){}
 }
 
 function toggleTheme(){
   const current = getActiveTheme();
-  setTheme(current === 'dark' ? 'light' : 'dark');
+  const listos = AVIT_TEMAS_LISTOS;
+  const idx = listos.indexOf(current);
+  const next = listos[(idx + 1) % listos.length] || 'neon';
+  setTheme(next);
 }
 
 // Inicializar tema al cargar (antes de que renderice cualquier cosa)
 (function initTheme(){
-  const stored = localStorage.getItem('avit_theme');
-  if(stored === 'light' || stored === 'dark'){
-    setTheme(stored);
-  } else {
-    // Detectar preferencia del sistema la primera vez
-    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    setTheme(prefersLight ? 'light' : 'dark');
-  }
+  const stored = localStorage.getItem('avit_tema');
+  if(stored && AVIT_TEMAS.includes(stored)){ setTheme(stored); return; }
+  const legacy = localStorage.getItem('avit_theme');
+  if(legacy === 'light'){ setTheme('claro'); return; }
+  if(legacy === 'dark'){  setTheme('neon');  return; }
+  setTheme('neon');
 })();
 
 // ═══════════════════════════════════════════════
@@ -4643,6 +5100,9 @@ const _guardarCotOrig = typeof guardarCotConfirmado !== 'undefined' ? guardarCot
 
 /* ── Inicialización ─────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', ()=>{
+
+  // Aplicar moneda única del estudio a toda la UI del cotizador
+  try{ if(typeof aplicarMonedaEstudio==='function') aplicarMonedaEstudio(); }catch(e){}
 
   // Patch showPage para Clientes
   const _spCliOrig = window.showPage;
@@ -5071,17 +5531,55 @@ window.awGuardar=awGuardar; window.awEliminar=awEliminar;
 window.awRender=awRender; window.awLlenarSelects=awLlenarSelects;
 window.awLoad=awLoad;
 
+/* Desglose de colaboradores de una cotización.
+   Usa el modelo nuevo (c.colabs) si existe; si no, cae al modelo viejo
+   de un colaborador por ruta. Devuelve [{nombre,tarea,fase,pct,monto,detalle}] */
+function _cotColaboradoresDesglose(c){
+  const out=[];
+  if(!c) return out;
+  const META={ m3d:{tarea:'Modelado 3D',fase:'F1'}, rend:{tarea:'Renderización',fase:'F1'},
+               plan:{tarea:'Planos constructivos',fase:'F2'} };
+  const tieneNuevo = c.colabs && ['m3d','rend','plan'].some(r=>Array.isArray(c.colabs[r]) && c.colabs[r].length);
+  if(tieneNuevo){
+    const honF1 = c.f1||0, honF2 = c.f2||0;
+    ['m3d','rend','plan'].forEach(r=>{
+      const hon = (r==='plan') ? honF2 : honF1;
+      (c.colabs[r]||[]).forEach(cl=>{
+        let monto=0, detalle='';
+        if(cl.modo==='fijo'){ monto=cl.fijo||0; detalle='Monto fijo'; }
+        else if(cl.modo==='planos'){
+          const qty=(c.planosQty&&typeof c.planosQty==='object')?c.planosQty:null;
+          let laminas=0;
+          (cl.planos||[]).forEach(p=>{ laminas += qty ? (parseFloat(qty[p])||0) : 1; });
+          monto = laminas*(cl.precioPlano||0);
+          detalle = (cl.planos||[]).length+' plano(s) · '+laminas+' lámina(s)';
+        } else { monto = hon*((cl.pct||0)/100); detalle=(cl.pct||0)+'% del honorario'; }
+        const pct = hon>0 ? (monto/hon*100) : 0;
+        out.push({ nombre:cl.nombre||'', tarea:META[r].tarea, fase:META[r].fase,
+                   pct:Math.round(pct*10)/10, monto:monto, detalle:detalle, planos:(cl.planos||[]).slice() });
+      });
+    });
+    return out;
+  }
+  // Modelo viejo
+  [['colNombre3D','p3D','c3D','m3d'],['colNombreRend','pRd','cRd','rend'],['colNombrePlanos','pPl','cPl','plan']]
+    .forEach(([kn,kp,km,r])=>{
+      if(!c[kn]) return;
+      out.push({ nombre:c[kn], tarea:META[r].tarea, fase:META[r].fase,
+                 pct:c[kp]||0, monto:c[km]||0, detalle:(c[kp]||0)+'% del honorario', planos:[] });
+    });
+  return out;
+}
+window._cotColaboradoresDesglose=_cotColaboradoresDesglose;
+
 function adminGetColaboradores(){
   const cots = loadCots ? loadCots() : [];
   const rows = [];
   cots.forEach(c=>{
     if(!c.cobrado) return;
     if(!adminFechaEnRango(c.fecha)) return;
-    const colores=[
-      {nombre:c.colNombre3D, pct:c.p3D||0, monto:c.c3D||0, tarea:'Modelado 3D', fase:'F1'},
-      {nombre:c.colNombreRend,pct:c.pRd||0, monto:c.cRd||0, tarea:'Renderización',fase:'F1'},
-      {nombre:c.colNombrePlanos,pct:c.pPl||0,monto:c.cPl||0,tarea:'Planos constructivos',fase:'F2'},
-    ];
+    // Modelo nuevo (varios colaboradores por ruta) con fallback al viejo
+    const colores = _cotColaboradoresDesglose(c);
     colores.forEach(co=>{
       if(!co.nombre||!co.monto) return;
       rows.push({ colaborador:co.nombre, proyecto:c.proyecto||'—', tarea:co.tarea, pct:co.pct, monto:co.monto });
@@ -7486,11 +7984,53 @@ function aplicarPerfilUI(){
   actualizarUserMenuTema();
 }
 function actualizarUserMenuTema(){
-  const b = document.getElementById('userMenuTema');
-  if(!b) return;
-  const light = document.documentElement.getAttribute('data-theme')==='light';
-  b.textContent = light ? '🌙 Cambiar a modo oscuro' : '☀️ Cambiar a modo claro';
+  // Refleja el tema activo en la grilla de chips y el select de moneda de Ajustes
+  const activo = (typeof getActiveTheme==='function') ? getActiveTheme() : 'neon';
+  document.querySelectorAll('#userMenuTemaGrid .tema-chip').forEach(ch=>{
+    ch.classList.toggle('active', ch.dataset.tema === activo);
+  });
+  const selMon = document.getElementById('userMenuMoneda');
+  if(selMon){ selMon.value = (typeof monedaEstudio==='function') ? monedaEstudio() : 'GTQ'; }
 }
+/* Cambiar el diseño de interfaz desde Ajustes */
+function cambiarTema(t){
+  const listos = (typeof AVIT_TEMAS_LISTOS!=='undefined') ? AVIT_TEMAS_LISTOS : ['neon','claro'];
+  setTheme(t);
+  const ss = document.getElementById('syncStatus');
+  if(!listos.includes(t)){
+    if(ss){ ss.textContent='✦ «'+(t==='girly'?'Girly':'Boho')+'» llega pronto — preferencia guardada'; setTimeout(()=>{ss.textContent='';},2600); }
+  } else {
+    if(ss){ ss.textContent='✦ Diseño actualizado'; setTimeout(()=>{if(ss.textContent==='✦ Diseño actualizado')ss.textContent='';},1600); }
+  }
+  actualizarUserMenuTema();
+}
+window.cambiarTema = cambiarTema;
+/* Cambiar la moneda del estudio (con confirmación — no hay conversión) */
+function cambiarMonedaEstudio(){
+  const sel = document.getElementById('userMenuMoneda');
+  if(!sel) return;
+  const nueva = (sel.value==='USD') ? 'USD' : 'GTQ';
+  const actual = (typeof monedaEstudio==='function') ? monedaEstudio() : 'GTQ';
+  if(nueva === actual){
+    const ss=document.getElementById('syncStatus');
+    if(ss){ ss.textContent='✦ Ya usás '+actual; setTimeout(()=>{if(ss.textContent==='✦ Ya usás '+actual)ss.textContent='';},1600); }
+    return;
+  }
+  const ok = confirm(
+    'Vas a cambiar la moneda del estudio de '+actual+' a '+nueva+'.\n\n'+
+    'Arkiboard NO convierte divisas: los montos ya guardados NO se recalculan, '+
+    'sólo cambiará la etiqueta de moneda. Esto puede volver engañosas tus métricas históricas.\n\n'+
+    '¿Querés continuar?'
+  );
+  if(!ok){ sel.value = actual; return; }
+  const p = _perfil(); p.moneda = nueva; _perfilSave(p);
+  if(_sbConfigured() && _sbUser) _sb.auth.updateUser({data:{moneda:nueva}}).catch(()=>{});
+  if(typeof aplicarMonedaEstudio==='function') aplicarMonedaEstudio();
+  actualizarUserMenuTema();
+  const ss=document.getElementById('syncStatus');
+  if(ss){ ss.textContent='✦ Moneda: '+nueva; setTimeout(()=>{if(ss.textContent==='✦ Moneda: '+nueva)ss.textContent='';},1800); }
+}
+window.cambiarMonedaEstudio = cambiarMonedaEstudio;
 function guardarEmpresaNombre(){
   const v = (document.getElementById('userMenuEmpresa')?.value||'').trim();
   const p = _perfil(); p.empresa = v; _perfilSave(p);
@@ -8172,7 +8712,7 @@ function authLocalMode(){
   localStorage.setItem('avit_localMode','1');
   if(typeof _ocultarAuthOverlay==='function'){_ocultarAuthOverlay();}else{const _ov=document.getElementById('authOverlay');if(_ov)_ov.style.display='none';}
   aplicarPerfilUI();
-  if(!_perfil().onboarded) mostrarOnboarding();
+  _flujoInicial();
 }
 async function cerrarSesion(){
   if(_sbConfigured() && _sb){ try{ await _sb.auth.signOut(); }catch(e){} }
@@ -8220,10 +8760,19 @@ async function _postLogin(){
   _instalarAutoSync();
   aplicarPerfilUI();
   if(typeof renderHome==='function') try{renderHome();}catch(e){}
-  if(!p.onboarded) mostrarOnboarding();
+  _flujoInicial();
 }
 
 /* ── Onboarding (encuesta) ─────────────────────────────────── */
+/* Decide qué mostrar al entrar: encuesta (que encadena setup) o setup directo.
+   Cubre cuentas existentes que ya hicieron onboarding pero no la config inicial. */
+function _flujoInicial(){
+  const p = _perfil();
+  if(!p.onboarded){ mostrarOnboarding(); return; }
+  if(!p.setupDone && typeof mostrarSetup==='function'){ mostrarSetup(); }
+}
+window._flujoInicial = _flujoInicial;
+
 function mostrarOnboarding(){
   const ov=document.getElementById('onboardOverlay');
   if(!ov) return;
@@ -8275,6 +8824,8 @@ function guardarOnboarding(){
       }).catch(()=>{});
     }
     if(typeof renderHome==='function') try{renderHome();}catch(e){}
+    // Encadenar la configuración inicial (idioma / moneda / tema)
+    if(!_perfil().setupDone && typeof mostrarSetup==='function'){ mostrarSetup(); }
   }catch(err){
     console.error('[Arkiboard] guardarOnboarding', err);
     _obError('Ocurrió un error: '+(err.message||err)+'. Podés omitir la encuesta abajo.');
@@ -8285,10 +8836,136 @@ function omitirOnboarding(){
   try{ _perfilSave(p); }catch(e){}
   const ov=document.getElementById('onboardOverlay');
   if(ov) ov.style.display='none';
+  // La config inicial no se omite: es necesaria para moneda/idioma/tema
+  if(!_perfil().setupDone && typeof mostrarSetup==='function'){ mostrarSetup(); }
 }
 window.omitirOnboarding=omitirOnboarding;
 window.mostrarOnboarding=mostrarOnboarding;
 window.guardarOnboarding=guardarOnboarding;
+
+/* ═══════════════ CONFIGURACIÓN INICIAL (setup wizard) ═══════════════ */
+let _setupStep = 1;
+const _setupSel = { idioma:null, moneda:null, tema:null };
+
+function mostrarSetup(){
+  const ov = document.getElementById('setupOverlay');
+  if(!ov) return;
+  _setupStep = 1;
+  // Precargar defaults sensatos
+  const p = _perfil();
+  _setupSel.idioma = p.idioma || 'es';
+  _setupSel.moneda = (p.moneda === 'USD' || p.moneda === 'GTQ') ? p.moneda : 'GTQ';
+  _setupSel.tema   = (typeof AVIT_TEMAS !== 'undefined' && AVIT_TEMAS.includes(p.tema)) ? p.tema : 'neon';
+  _setupRenderStep();
+  ov.style.display = 'flex';
+}
+
+function _setupError(msg){
+  const e = document.getElementById('setupError');
+  if(e){ e.textContent = msg || ''; e.style.display = msg ? 'block' : 'none'; }
+}
+
+function _setupRenderStep(){
+  // Mostrar sólo el paso activo
+  document.querySelectorAll('#setupOverlay .setup-step').forEach(el=>{
+    el.style.display = (parseInt(el.dataset.step,10) === _setupStep) ? 'block' : 'none';
+  });
+  // Progreso
+  document.querySelectorAll('#setupProgress .setup-dot').forEach(d=>{
+    const n = parseInt(d.dataset.step,10);
+    d.classList.toggle('active', n === _setupStep);
+    d.classList.toggle('done', n < _setupStep);
+  });
+  // Reflejar selección guardada del paso
+  const grupo = ({1:'idioma',2:'moneda',3:'tema'})[_setupStep];
+  const val = _setupSel[grupo];
+  document.querySelectorAll('#setupOverlay .setup-opt[data-group="'+grupo+'"]').forEach(b=>{
+    b.classList.toggle('selected', b.dataset.value === val);
+  });
+  // Botones
+  const back = document.getElementById('setupBackBtn');
+  if(back) back.style.display = (_setupStep > 1) ? 'inline-block' : 'none';
+  const next = document.getElementById('setupNextBtn');
+  if(next) next.innerHTML = (_setupStep === 3) ? 'Empezar a usar Arkiboard ✓' : 'Siguiente →';
+  _setupError('');
+
+  // Vista previa en vivo del tema al llegar al paso 3
+  if(_setupStep === 3 && typeof setTheme === 'function'){
+    // aplica el tema seleccionado como preview inmediato
+    const listos = (typeof AVIT_TEMAS_LISTOS !== 'undefined') ? AVIT_TEMAS_LISTOS : ['neon','claro'];
+    if(listos.includes(_setupSel.tema)) setTheme(_setupSel.tema);
+  }
+}
+
+function setupPick(btn){
+  const grupo = btn.dataset.group;
+  const val = btn.dataset.value;
+  _setupSel[grupo] = val;
+  document.querySelectorAll('#setupOverlay .setup-opt[data-group="'+grupo+'"]').forEach(b=>{
+    b.classList.toggle('selected', b === btn);
+  });
+  _setupError('');
+  // Preview inmediato del tema (sólo temas ya implementados)
+  if(grupo === 'tema' && typeof setTheme === 'function'){
+    const listos = (typeof AVIT_TEMAS_LISTOS !== 'undefined') ? AVIT_TEMAS_LISTOS : ['neon','claro'];
+    if(listos.includes(val)){
+      setTheme(val);
+    } else {
+      // girly/boho aún sin CSS: avisar y mostrar sobre base neón
+      setTheme('neon');
+      _setupError('El diseño «'+ (val==='girly'?'Girly':'Boho') +'» estará disponible muy pronto. Por ahora se guardará tu preferencia y verás el tema Neón.');
+    }
+  }
+}
+
+function setupBack(){
+  if(_setupStep > 1){ _setupStep--; _setupRenderStep(); }
+}
+
+function setupNext(){
+  const grupo = ({1:'idioma',2:'moneda',3:'tema'})[_setupStep];
+  if(!_setupSel[grupo]){
+    _setupError('Elegí una opción para continuar.');
+    return;
+  }
+  if(_setupStep < 3){ _setupStep++; _setupRenderStep(); return; }
+  _guardarSetup();
+}
+
+function _guardarSetup(){
+  try{
+    const p = _perfil();
+    Object.assign(p, {
+      idioma:  _setupSel.idioma || 'es',
+      moneda:  (_setupSel.moneda === 'USD') ? 'USD' : 'GTQ',
+      tema:    _setupSel.tema || 'neon',
+      setupDone: true
+    });
+    _perfilSave(p);
+
+    // Aplicar de inmediato
+    if(typeof setTheme === 'function') setTheme(p.tema);
+    if(typeof aplicarMonedaEstudio === 'function') aplicarMonedaEstudio();
+
+    // Persistir en Supabase metadata (viaja también en el blob de sync vía avit_perfil)
+    if(typeof _sbConfigured === 'function' && _sbConfigured() && _sbUser){
+      _sb.auth.updateUser({ data:{ idioma:p.idioma, moneda:p.moneda, tema:p.tema, setupDone:true } }).catch(()=>{});
+    }
+
+    const ov = document.getElementById('setupOverlay');
+    if(ov) ov.style.display = 'none';
+    if(typeof renderHome === 'function') try{ renderHome(); }catch(e){}
+  }catch(err){
+    console.error('[Arkiboard] guardarSetup', err);
+    _setupError('Ocurrió un error al guardar: ' + (err.message || err));
+  }
+}
+
+window.mostrarSetup = mostrarSetup;
+window.setupPick = setupPick;
+window.setupBack = setupBack;
+window.setupNext = setupNext;
+
 
 /* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
 const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
@@ -8484,7 +9161,7 @@ function _authBootRun(){
   aplicarPerfilUI();
   if(localStorage.getItem('avit_localMode')==='1'){
     _ocultarAuthOverlay();
-    if(!_perfil().onboarded) mostrarOnboarding();
+    _flujoInicial();
     return;
   }
   if(!_sbConfigured()){
@@ -8615,12 +9292,25 @@ function syncToCalendar() {
 
 // ═══════ CALCULADORA ═══════
 function setCur(c) {
-  cur=c;
-  document.querySelectorAll('.cur-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));
-  document.getElementById('cSym').textContent=c+'/m²';
-  if(document.getElementById('p1ExtraCur')) document.getElementById('p1ExtraCur').textContent=c;
-  calc();
+  // Moneda única por estudio: ignoramos cualquier valor entrante distinto
+  // al configurado. Evita métricas engañosas (no hay conversión de divisas).
+  cur = monedaEstudio();
+  const fixed = document.getElementById('curFixedValue');
+  if(fixed) fixed.textContent = cur;
+  document.querySelectorAll('.cur-btn').forEach(b=>b.classList.toggle('active',b.textContent===cur));
+  const sym = document.getElementById('cSym'); if(sym) sym.textContent = cur+'/m²';
+  if(document.getElementById('p1ExtraCur')) document.getElementById('p1ExtraCur').textContent=cur;
+  if(typeof calc === 'function') calc();
 }
+// Refresca toda la UI dependiente de moneda tras un cambio en Ajustes
+function aplicarMonedaEstudio(){
+  cur = monedaEstudio();
+  setCur(cur);
+  const fc = document.getElementById('fc-cur'); if(fc) fc.value = cur;
+  const ed = document.getElementById('ed-cur'); if(ed) ed.value = cur;
+  if(typeof renderHome === 'function') try{ renderHome(); }catch(e){}
+}
+window.aplicarMonedaEstudio = aplicarMonedaEstudio;
 function syncM2(v){calc()}
 function fmt(n){return cur+' '+Math.round(n).toLocaleString()}
 function gv(id){return parseFloat(document.getElementById(id).value)||0}
@@ -8726,11 +9416,8 @@ function calc(){
     }
   }
   const sub=fee1+fee2;
-  const p3D=gv('col3D'), pRd=gv('colRend'), pPl=gv('colPlanos');
-  const c3D=f1?fee1*(p3D/100):0;
-  const cRd=f1?fee1*(pRd/100):0;
-  // Timbres son un costo separado — el colaborador de planos solo
-  // gana % sobre el honorario de planos, NO sobre los timbres
+  // Timbres son un costo separado — los colaboradores de planos sólo
+  // ganan sobre el honorario de planos, NO sobre los timbres
   let fee2_sinTimbres = fee2;
   if(f2 && document.getElementById('timbresOn')?.checked){
     const N=PLANO_NAMES.length;
@@ -8738,28 +9425,22 @@ function calc(){
     for(let i=1;i<=N;i++) totalPlanos+=gv('qp'+i);
     fee2_sinTimbres = fee2 - (gv('timbreCosto')*totalPlanos);
   }
-  const cPl=f2?Math.max(0,fee2_sinTimbres)*(pPl/100):0;
-  const cTot=c3D+cRd+cPl;
-  document.getElementById('colAmt3D').textContent=fmt(c3D);
-  document.getElementById('colAmtRend').textContent=fmt(cRd);
-  document.getElementById('colAmtPlanos').textContent=fmt(cPl);
-  document.getElementById('colTotal').textContent=fmt(cTot);
-  // ── F1 budget bar (3D + Render combined) ──
-  const f1Combined=p3D+pRd;
-  const barEl=document.getElementById('colF1BudgetBar');
-  const pctEl=document.getElementById('colF1BudgetPct');
-  const warnF1=document.getElementById('colF1Warn');
-  if(barEl){
-    const pct=Math.min(f1Combined,120);
-    barEl.style.width=Math.min(pct,100)+'%';
-    barEl.style.background=f1Combined>100?'var(--red)':f1Combined>80?'var(--amber)':'var(--accent)';
-  }
-  if(pctEl) pctEl.textContent=f1Combined+'%';
-  if(pctEl) pctEl.style.color=f1Combined>100?'var(--red)':f1Combined>80?'var(--amber)':'var(--text-3)';
-  if(warnF1) warnF1.style.display=f1Combined>100?'block':'none';
-  // ── F2 individual warning ──
-  const warnF2=document.getElementById('colF2Warn');
-  if(warnF2) warnF2.style.display=pPl>100?'block':'none';
+  // ── Colaboradores múltiples (modelo nuevo) ──
+  const _honF1 = f1 ? fee1 : 0;
+  const _honF2 = f2 ? Math.max(0,fee2_sinTimbres) : 0;
+  const _colRes = colabTotales(_honF1, _honF2);
+  const c3D=_colRes.m3d, cRd=_colRes.rend, cPl=_colRes.plan;
+  const cTot=_colRes.total;
+  colabPintarTotales(_colRes);
+  _colabSyncLegacy(_colRes);           // mantiene campos legados al día
+  // % derivados (para _st y compatibilidad con el resto del código)
+  const p3D=_honF1>0?(c3D/_honF1*100):0;
+  const pRd=_honF1>0?(cRd/_honF1*100):0;
+  const pPl=_honF2>0?(cPl/_honF2*100):0;
+  const _elAmt3D=document.getElementById('colAmt3D'); if(_elAmt3D)_elAmt3D.textContent=fmt(c3D);
+  const _elAmtRd=document.getElementById('colAmtRend'); if(_elAmtRd)_elAmtRd.textContent=fmt(cRd);
+  const _elAmtPl=document.getElementById('colAmtPlanos'); if(_elAmtPl)_elAmtPl.textContent=fmt(cPl);
+  const _elTot=document.getElementById('colTotal'); if(_elTot)_elTot.textContent=fmt(cTot);
   const cm=['cRevit','cD5','cCanva','cElec','cGas','cViat'].reduce((a,id)=>a+gv(id),0);
   const oh=cm; // costos fijos directos, sin porcentaje
   document.getElementById('ohAmt').textContent=fmt(oh);
@@ -8861,6 +9542,7 @@ function calc(){
     colNombre3D:(document.getElementById('colNombre3D')||{}).value||'',
     colNombreRend:(document.getElementById('colNombreRend')||{}).value||'',
     colNombrePlanos:(document.getElementById('colNombrePlanos')||{}).value||'',
+    colabs:JSON.parse(JSON.stringify(_COLABS)),
     timbresOn:document.getElementById('timbresOn').checked,
     planosQty};
 }
@@ -10438,6 +11120,7 @@ function guardarCotConfirmado(d){
     if(estado==='f1_entregada'||estado==='f2_entregada'||estado==='en_progreso'||estado==='parcial') return antic;
     return 0;
   })();
+  const colabs=(window._st&&window._st.colabs)?window._st.colabs:{m3d:[],rend:[],plan:[]};
   const colNombre3D=(window._st?window._st.colNombre3D:'')||'';
   const colNombreRend=(window._st?window._st.colNombreRend:'')||'';
   const colNombrePlanos=(window._st?window._st.colNombrePlanos:'')||'';
@@ -10449,7 +11132,7 @@ function guardarCotConfirmado(d){
   const projStartSaved=((document.getElementById('projStart')||{}).value||'').trim()||fecha;
   const sprintsSaved=JSON.parse(JSON.stringify(typeof sprints!=='undefined'?sprints:[]));
   const nowTs=Date.now();
-  cots.push({id:nowTs,cliente:clienteRaw,proyecto:proyectoRaw,f1,f2,oh,colab,iva,sub,tot,util,antic,mid,saldo,cobrado,cur,fecha,estado,colNombre3D,colNombreRend,colNombrePlanos,planosQty,m2:m2Saved,desc:descSaved,projStart:projStartSaved,sprints:sprintsSaved,updatedAt:nowTs});
+  cots.push({id:nowTs,cliente:clienteRaw,proyecto:proyectoRaw,f1,f2,oh,colab,iva,sub,tot,util,antic,mid,saldo,cobrado,cur,fecha,estado,colNombre3D,colNombreRend,colNombrePlanos,colabs,planosQty,m2:m2Saved,desc:descSaved,projStart:projStartSaved,sprints:sprintsSaved,updatedAt:nowTs});
   saveCots(cots);
   hideFormCot();
   // reset form mini
@@ -10463,6 +11146,7 @@ function guardarCotConfirmado(d){
   document.getElementById('m2S').value='';
   document.getElementById('m2Rate').value='';
   document.getElementById('p1Extra').value=0;
+  if(typeof colabReset==='function') colabReset();
   document.getElementById('colNombre3D').value='';
   document.getElementById('colNombreRend').value='';
   document.getElementById('colNombrePlanos').value='';
@@ -10489,6 +11173,21 @@ function guardarCotConfirmado(d){
   if(document.getElementById('pg-est')?.classList.contains('active') && typeof renderEstatus==='function'){
     try{ renderEstatus(); }catch(e){}
   }
+  // Volver al inicio de la pantalla de Proyectos (el formulario está abajo;
+  // sin esto el usuario queda posicionado al final tras guardar).
+  // Se hace tras el re-render y en modo instantáneo (el <html> usa scroll
+  // suave, que dejaría el scroll a medio camino al cambiar la altura del DOM).
+  const _volverArriba = ()=>{
+    try{
+      const prev = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      document.documentElement.style.scrollBehavior = prev || '';
+    }catch(e){ try{ window.scrollTo(0,0); }catch(_){} }
+  };
+  requestAnimationFrame(()=>{ _volverArriba(); requestAnimationFrame(_volverArriba); });
 }
 
 function updateEstado(id,estado){
@@ -10821,9 +11520,16 @@ function renderHome(){
   const yearActual = ahora.getFullYear();
   const cotsActuales = cots.filter(c => c.estado !== 'cobrado_total' && c.estado !== 'completada');
   const cotsAnyo = cots.filter(c => new Date(c.fecha+'T12:00:00').getFullYear() === yearActual);
-  const facturadoAnyo = cotsAnyo.reduce((a,c)=>a+(c.tot||0),0);
+  // "Aprobada" = dejó de ser sólo una cotización emitida (entró en producción/cobro).
+  // El estado legado 'aprobada' se trata como 'emitida' (no aprobado aún).
+  const _esAprobada = c => c.estado && c.estado !== 'emitida' && c.estado !== 'aprobada';
+  const cotsAnyoAprob = cotsAnyo.filter(_esAprobada);
+  // Facturado = sólo lo que el cliente aprobó (no las cotizaciones sin aceptar)
+  const facturadoAnyo = cotsAnyoAprob.reduce((a,c)=>a+(c.tot||0),0);
   const cobradoAnyo = cotsAnyo.reduce((a,c)=>a+(c.cobrado||0),0);
-  const porCobrarAnyo = facturadoAnyo - cobradoAnyo;
+  const porCobrarAnyo = Math.max(0, facturadoAnyo - cobradoAnyo);
+  // Cotizado no aprobado del año (para el subtexto informativo)
+  const cotizadoPendienteAnyo = cotsAnyo.filter(c=>!_esAprobada(c)).reduce((a,c)=>a+(c.tot||0),0);
   const cotizadasTotal = cots.filter(c => c.estado === 'emitida' || c.estado === 'aprobada').length;
   const enProcesoTotal = cots.filter(c => ['en_progreso','pre_entrega','f1_entregada','cobrado_f1','f2_entregada'].includes(c.estado)).length;
   const terminadosTotal = cots.filter(c => c.estado === 'cobrado_total' || c.estado === 'completada').length;
@@ -10834,17 +11540,17 @@ function renderHome(){
     <div class="home-kpi">
       <div class="kpi-label">Facturado ${yearActual}</div>
       <div class="kpi-value">GTQ ${facturadoAnyo.toLocaleString('es-GT')}</div>
-      <div class="kpi-sub">${cotsAnyo.length} cotización${cotsAnyo.length===1?'':'es'}</div>
+      <div class="kpi-sub">${cotsAnyoAprob.length} aprobada${cotsAnyoAprob.length===1?'':'s'}${cotizadoPendienteAnyo>0?` · GTQ ${cotizadoPendienteAnyo.toLocaleString('es-GT')} sin aprobar`:''}</div>
     </div>
     <div class="home-kpi kpi-green">
       <div class="kpi-label">Cobrado ${yearActual}</div>
       <div class="kpi-value">GTQ ${cobradoAnyo.toLocaleString('es-GT')}</div>
-      <div class="kpi-sub">${facturadoAnyo>0?Math.round(cobradoAnyo/facturadoAnyo*100):0}% del total</div>
+      <div class="kpi-sub">${facturadoAnyo>0?Math.round(cobradoAnyo/facturadoAnyo*100):0}% de lo aprobado</div>
     </div>
     <div class="home-kpi kpi-blue">
       <div class="kpi-label">Por cobrar</div>
       <div class="kpi-value">GTQ ${porCobrarAnyo.toLocaleString('es-GT')}</div>
-      <div class="kpi-sub">${cotsActuales.length} proyecto${cotsActuales.length===1?'':'s'} activo${cotsActuales.length===1?'':'s'}</div>
+      <div class="kpi-sub">de proyectos aprobados</div>
     </div>
     <div class="home-kpi kpi-accent">
       <div class="kpi-label">Tasa conversión</div>
@@ -10987,6 +11693,77 @@ function renderHome(){
     }
   }
 
+  // ═══ Avances de colaboradores ═══
+  // Recorre los ítems del tracker con colaborador asignado y los muestra
+  // ordenados por urgencia de entrega. Un renglón por asignación.
+  const asignaciones = [];
+  cotsActuales.forEach(c => {
+    const sps = (tracker[c.id]?.sprints) || [];
+    sps.forEach(sp => {
+      (sp.items||[]).forEach(it => {
+        const quien = (it.colab||'').trim();
+        if(!quien || it.done) return;          // sólo trabajo pendiente y asignado
+        let due = null;
+        if(it.dueDate){
+          const d = new Date(it.dueDate+'T12:00:00');
+          if(!isNaN(d)) due = d;
+        }
+        asignaciones.push({
+          colab: quien,
+          trabajo: it.name || 'Sin nombre',
+          proyecto: c.proyecto || c.cliente || '—',
+          cliente: c.cliente || '',
+          due, blocked: !!it.blocked, cotId: c.id,
+          fase: sp.type || '', sprint: sp.title || ''
+        });
+      });
+    });
+  });
+  // Orden: bloqueados primero, luego por fecha más próxima (sin fecha al final)
+  asignaciones.sort((a,b)=>{
+    if(a.blocked !== b.blocked) return a.blocked ? -1 : 1;
+    if(a.due && b.due) return a.due - b.due;
+    if(a.due) return -1;
+    if(b.due) return 1;
+    return 0;
+  });
+  const topColabs = asignaciones.slice(0,6);
+
+  const colabsEl = document.getElementById('home-colabs');
+  if(colabsEl){
+    if(topColabs.length === 0){
+      colabsEl.innerHTML = '<div class="home-summary-empty">Sin trabajo asignado a colaboradores</div>';
+    } else {
+      // Resumen: cuántos colaboradores distintos y cuántas tareas
+      const distintos = new Set(asignaciones.map(a=>a.colab)).size;
+      const resumen = `<div style="font-size:9.5px;color:var(--text-3);padding:2px 0 6px;border-bottom:0.5px solid rgba(255,255,255,0.06);margin-bottom:5px">
+          ${distintos} colaborador${distintos===1?'':'es'} · ${asignaciones.length} tarea${asignaciones.length===1?'':'s'} pendiente${asignaciones.length===1?'':'s'}
+        </div>`;
+      colabsEl.innerHTML = resumen + topColabs.map(a => {
+        let etiqueta = 'Sin fecha', color = 'var(--text-3)';
+        if(a.due){
+          const dias = Math.ceil((a.due - hoy0)/(1000*60*60*24));
+          if(dias < 0){ etiqueta = `${Math.abs(dias)}d tarde`; color = 'var(--red)'; }
+          else if(dias === 0){ etiqueta = 'Hoy'; color = 'var(--red)'; }
+          else if(dias === 1){ etiqueta = 'Mañana'; color = 'var(--accent)'; }
+          else { etiqueta = `En ${dias} días`; color = dias <= 7 ? 'var(--accent)' : 'var(--text-2)'; }
+        }
+        if(a.blocked){ etiqueta = 'Bloqueado'; color = 'var(--red)'; }
+        const dot = a.blocked ? 'var(--red)' : a.fase==='f2' ? '#4CAF72' : 'var(--accent)';
+        return `
+          <div class="home-summary-item" onclick="showPage('est')" title="${escapeHtmlK(a.trabajo)} — ${escapeHtmlK(a.proyecto)}">
+            <div style="width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:2px;background:${dot}"></div>
+            <div style="flex:1;min-width:0">
+              <div class="home-summary-item-main" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtmlK(a.colab)}</div>
+              <div class="home-summary-item-sub" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.blocked?'🚧 ':''}${escapeHtmlK(a.trabajo)} · ${escapeHtmlK(a.proyecto)}</div>
+            </div>
+            <div class="home-summary-item-value" style="color:${color};white-space:nowrap">${etiqueta}</div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
   // ═══ Métricas de Reportes ═══
   const totalCotizado = cots.reduce((a,c)=>a+(c.tot||0),0);
   const totalCobrado = cots.reduce((a,c)=>a+(c.cobrado||0),0);
@@ -11009,6 +11786,67 @@ function renderHome(){
     }
   } catch(e){}
 
+  // ── Costo de colaboradores vs ingreso ──
+  const _colabTotalPagado = cots.reduce((a,c)=>a+(c.colab||0),0);
+  const _costoColabPct = totalCobrado > 0 ? Math.round((_colabTotalPagado / totalCobrado) * 100) : 0;
+  const _costoColabColor = _costoColabPct > 60 ? 'var(--red)' : _costoColabPct > 40 ? 'var(--accent)' : 'var(--green)';
+
+  // ── Días promedio de ciclo (cotización → cobro completo) ──
+  let _cicloDias = 0, _cicloN = 0;
+  proyectosCerrados.forEach(c => {
+    if(!c.fecha) return;
+    const inicio = new Date(c.fecha+'T12:00:00');
+    const fin = c.updatedAt ? new Date(c.updatedAt) : null;
+    if(!fin || isNaN(inicio) || isNaN(fin)) return;
+    const dias = Math.max(0, Math.round((fin - inicio) / (1000*60*60*24)));
+    if(dias < 730){ _cicloDias += dias; _cicloN++; }  // filtrar outliers > 2 años
+  });
+  const cicloPromedio = _cicloN > 0 ? Math.round(_cicloDias / _cicloN) : 0;
+  const _cicloColor = cicloPromedio > 120 ? 'var(--red)' : cicloPromedio > 60 ? 'var(--accent)' : 'var(--green)';
+
+  // ── Velocidad de cobro (días hasta primer pago) ──
+  // Proxy: proyectos con cobrado>0; días entre c.fecha y cuando pasó de "emitida"
+  // Como no hay timestamp de primer pago, usamos la diferencia entre fecha de cotización
+  // y projStart (inicio real del trabajo = implica aprobación con anticipo).
+  let _cobroDias = 0, _cobroN = 0;
+  cots.forEach(c => {
+    if(!c.fecha || !c.cobrado || c.cobrado <= 0) return;
+    const fCot = new Date(c.fecha+'T12:00:00');
+    // projStart o updatedAt como proxy de cuando empezó a trabajarse (= anticipo pagado)
+    const fInicio = c.projStart ? new Date(c.projStart+'T12:00:00')
+                  : c.updatedAt ? new Date(c.updatedAt) : null;
+    if(!fInicio || isNaN(fCot) || isNaN(fInicio)) return;
+    const dias = Math.max(0, Math.round((fInicio - fCot) / (1000*60*60*24)));
+    if(dias < 365){ _cobroDias += dias; _cobroN++; }
+  });
+  const cobroPromedio = _cobroN > 0 ? Math.round(_cobroDias / _cobroN) : 0;
+  const _cobroColor = cobroPromedio > 30 ? 'var(--red)' : cobroPromedio > 14 ? 'var(--accent)' : 'var(--green)';
+
+  // ── Cumplimiento de fechas (% de ítems entregados a tiempo) ──
+  let _atiempo = 0, _conFecha = 0;
+  Object.values(tracker).forEach(t => {
+    (t.sprints||[]).forEach(sp => {
+      (sp.items||[]).forEach(it => {
+        if(!it.dueDate) return;
+        if(it.done){
+          _conFecha++;
+          // Sin completedAt: si done y hoy ≤ dueDate+1 día, cuenta como a tiempo.
+          // Si done y hoy > dueDate+1, fue tarde (heurística conservadora).
+          const due = new Date(it.dueDate+'T23:59:59');
+          if(!isNaN(due)){ if(hoy0 <= new Date(due.getTime()+86400000)) _atiempo++; }
+        } else {
+          // Pendiente con fecha: se contará al completarse
+          _conFecha++;
+          const due = new Date(it.dueDate+'T23:59:59');
+          if(!isNaN(due) && hoy0 > due){ /* atrasado, no suma a _atiempo */ }
+          else { _atiempo++; }  // aún dentro de plazo
+        }
+      });
+    });
+  });
+  const cumplimiento = _conFecha > 0 ? Math.round((_atiempo / _conFecha) * 100) : 0;
+  const _cumplColor = cumplimiento < 60 ? 'var(--red)' : cumplimiento < 80 ? 'var(--accent)' : 'var(--green)';
+
   const metricsEl = document.getElementById('home-metrics');
   if(metricsEl){
     metricsEl.innerHTML = `
@@ -11021,6 +11859,26 @@ function renderHome(){
         <div class="home-metric-label">Margen promedio</div>
         <div class="home-metric-value">${margenPromedio}%</div>
         <div class="home-metric-sub">utilidad / total</div>
+      </div>
+      <div class="home-metric">
+        <div class="home-metric-label">Costo colaboradores</div>
+        <div class="home-metric-value" style="color:${_costoColabColor}">${_costoColabPct}%</div>
+        <div class="home-metric-sub">del ingreso cobrado</div>
+      </div>
+      <div class="home-metric">
+        <div class="home-metric-label">Ciclo promedio</div>
+        <div class="home-metric-value" style="color:${_cicloColor}">${_cicloN > 0 ? cicloPromedio+' días' : '—'}</div>
+        <div class="home-metric-sub">${_cicloN > 0 ? 'cotización → cobro · '+_cicloN+' proy.' : 'sin proyectos cerrados'}</div>
+      </div>
+      <div class="home-metric">
+        <div class="home-metric-label">Velocidad de cobro</div>
+        <div class="home-metric-value" style="color:${_cobroColor}">${_cobroN > 0 ? cobroPromedio+' días' : '—'}</div>
+        <div class="home-metric-sub">${_cobroN > 0 ? 'cotización → primer pago · '+_cobroN+' proy.' : 'sin datos de cobro'}</div>
+      </div>
+      <div class="home-metric">
+        <div class="home-metric-label">Cumplimiento fechas</div>
+        <div class="home-metric-value" style="color:${_cumplColor}">${_conFecha > 0 ? cumplimiento+'%' : '—'}</div>
+        <div class="home-metric-sub">${_conFecha > 0 ? _atiempo+'/'+_conFecha+' entregas a tiempo' : 'sin fechas asignadas'}</div>
       </div>
       <div class="home-metric">
         <div class="home-metric-label">Q / m² promedio</div>
@@ -11172,7 +12030,7 @@ function renderIngresos(){
           <span style="font-size:12px;font-weight:500;color:var(--text)">${MESES[m.mes]}</span>
           <div><p class="lbl" style="margin:0">Facturado</p><p style="font-size:13px;font-weight:500">${fmtCur(m.tot,cur)}</p></div>
           <div><p class="lbl" style="margin:0">Cobrado</p><p style="font-size:13px;font-weight:500;color:#0F6E56">${fmtCur(m.cobrado,cur)}</p></div>
-          <div><p class="lbl" style="margin:0">F1 / F2</p><p style="font-size:11px;color:var(--text-2)">${fmtCur(m.f1,cur)} <span style="color:var(--text-3)">/</span> ${fmtCur(m.f2,cur)}</p></div>
+          <div><p class="lbl" style="margin:0">Anteproyecto / Planimetría</p><p style="font-size:11px;color:var(--text-2)">${fmtCur(m.f1,cur)} <span style="color:var(--text-3)">/</span> ${fmtCur(m.f2,cur)}</p></div>
           <div><p class="lbl" style="margin:0">Utilidad</p><p style="font-size:12px;font-weight:500;color:#0F6E56">${fmtCur(m.util,cur)}</p></div>
         </div>
         <div class="ing-bar-track">
@@ -11251,8 +12109,8 @@ function cardCot(c, isTerminado, getEstadoOpts, estadoAOpcion, estadoLabel){
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:.6rem 0">
-      <div class="metric" style="padding:.5rem .75rem"><p class="ml">F1</p><p style="font-size:12px;font-weight:500">${fmtCur(c.f1,c.cur)}</p></div>
-      <div class="metric" style="padding:.5rem .75rem"><p class="ml">F2</p><p style="font-size:12px;font-weight:500">${fmtCur(c.f2,c.cur)}</p></div>
+      <div class="metric" style="padding:.5rem .75rem"><p class="ml">Anteproyecto</p><p style="font-size:12px;font-weight:500">${fmtCur(c.f1,c.cur)}</p></div>
+      <div class="metric" style="padding:.5rem .75rem"><p class="ml">Planimetría</p><p style="font-size:12px;font-weight:500">${fmtCur(c.f2,c.cur)}</p></div>
       <div class="metric" style="padding:.5rem .75rem"><p class="ml">Cobrado</p><p style="font-size:12px;font-weight:500;color:#0F6E56">${fmtCur(c.cobrado,c.cur)}</p></div>
       <div class="metric" style="padding:.5rem .75rem"><p class="ml">Utilidad</p><p style="font-size:12px;font-weight:500;color:#0F6E56">${fmtCur(c.util,c.cur)}</p></div>
     </div>
@@ -12393,6 +13251,50 @@ const STATUS_LABELS_MAP={
   f2_entregada:'Planimetrías entregadas',cobrado_total:'Cobrado',completada:'Cobrado'
 };
 
+/* Abre la ficha (openItemDetails) del ítem "Concepto" del proyecto,
+   la misma que aparece en el sprint del Kanban. Se invoca desde la sección
+   Colaboradores del modal de proyecto. */
+function abrirFichaConcepto(cotId){
+  const cots = loadCots();
+  const c = cots.find(x => x.id === cotId);
+  if(!c) return;
+  // Asegurar que el proyecto tenga sprints generados
+  let sprints = getProjectSprints(cotId);
+  if((!sprints || !sprints.length) && typeof ensureDefaultSprints === 'function'){
+    sprints = ensureDefaultSprints(c);
+  }
+  if(!sprints || !sprints.length){ return; }
+  // Buscar el ítem "Concepto" (por nombre exacto, luego por coincidencia parcial)
+  let found = null;
+  const norm = t => (t||'').toString().trim().toLowerCase();
+  for(const sp of sprints){
+    for(const it of (sp.items||[])){
+      if(norm(it.name) === 'concepto'){ found = {sp, it}; break; }
+    }
+    if(found) break;
+  }
+  if(!found){
+    for(const sp of sprints){
+      for(const it of (sp.items||[])){
+        if(norm(it.name).includes('concepto')){ found = {sp, it}; break; }
+      }
+      if(found) break;
+    }
+  }
+  // Fallback: primer ítem del primer sprint que tenga ítems
+  if(!found){
+    const sp = sprints.find(s => (s.items||[]).length);
+    if(sp) found = {sp, it: sp.items[0]};
+  }
+  if(!found){ return; }
+  // Cerrar el modal de proyecto y abrir la ficha del ítem
+  if(typeof closeModal === 'function') closeModal();
+  if(typeof openItemDetails === 'function'){
+    openItemDetails(cotId, found.sp.id, found.it.id);
+  }
+}
+window.abrirFichaConcepto = abrirFichaConcepto;
+
 function verCot(id){
   const cots=loadCots();
   const c=cots.find(x=>x.id===id);
@@ -12425,13 +13327,19 @@ function verCot(id){
       <div class="metric"><p class="ml">Cobrado</p><p class="mv" style="font-size:14px;color:#0F6E56">${f(c.cobrado)}</p></div>
       <div class="metric"><p class="ml">Utilidad estimada</p><p class="mv" style="font-size:14px;color:#0F6E56">${f(c.util)}</p></div>
     </div>
-    ${c.colNombre3D||c.colNombreRend||c.colNombrePlanos?`
-    <div style="background:var(--purple-lt);border-radius:var(--r-md);padding:.75rem 1rem;margin-bottom:.85rem">
-      <p class="lbl" style="margin-bottom:.4rem;font-weight:500;color:var(--purple-dk)">Colaboradores</p>
-      ${c.colNombre3D?`<p style="font-size:12px;margin-bottom:2px">👤 ${c.colNombre3D} — Modelado 3D</p>`:''}
-      ${c.colNombreRend?`<p style="font-size:12px;margin-bottom:2px">👤 ${c.colNombreRend} — Renderización</p>`:''}
-      ${c.colNombrePlanos?`<p style="font-size:12px">👤 ${c.colNombrePlanos} — Planos constructivos</p>`:''}
-    </div>`:''}
+    ${(()=>{ const _cols=(typeof _cotColaboradoresDesglose==='function'?_cotColaboradoresDesglose(c):[]).filter(x=>x.nombre);
+      if(!_cols.length) return '';
+      return `
+    <div onclick="abrirFichaConcepto(${c.id})" title="Ver la ficha de Concepto en el Kanban" style="background:var(--purple-lt);border-radius:var(--r-md);padding:.75rem 1rem;margin-bottom:.85rem;cursor:pointer;transition:filter .15s,transform .15s" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">
+        <p class="lbl" style="margin:0;font-weight:500;color:var(--purple-dk)">Colaboradores</p>
+        <span style="font-size:10px;color:var(--purple-dk);opacity:.8">Ver ficha de Concepto →</span>
+      </div>
+      ${_cols.map(x=>`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px">
+          <span style="font-size:12px">👤 ${x.nombre} — ${x.tarea}</span>
+          <span style="font-size:11px;font-family:var(--font-mono);color:var(--purple-dk);white-space:nowrap">${fmtCur(x.monto,c.cur)}</span>
+        </div>${x.detalle?`<div style="font-size:9.5px;color:var(--text-3);margin:-1px 0 4px 18px">${x.detalle}</div>`:''}`).join('')}
+    </div>`; })()}
     <button onclick="closeModal();editCot(${c.id})" style="width:100%;padding:9px;font-size:13px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text);cursor:pointer">Editar este proyecto</button>`;
   document.getElementById('cotModal').style.display='flex';
 }
@@ -12459,10 +13367,9 @@ function editCot(id){
     </div>
     <div class="r2" style="margin-bottom:.75rem">
       <div><label class="lbl">IVA</label><input type="number" id="ed-iva" value="${c.iva}" min="0" oninput="recalcEdit()"></div>
-      <div><label class="lbl">Moneda</label>
-        <select id="ed-cur">
-          <option value="GTQ" ${c.cur==='GTQ'?'selected':''}>GTQ</option>
-          <option value="USD" ${c.cur==='USD'?'selected':''}>USD</option>
+      <div><label class="lbl">Moneda del estudio</label>
+        <select id="ed-cur" disabled title="La moneda es única por estudio. Se cambia en Ajustes." style="opacity:.85;cursor:not-allowed">
+          <option value="${monedaEstudio()}" selected>${monedaEstudio()}</option>
         </select>
       </div>
     </div>
@@ -12567,6 +13474,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Snapshot inicial de cantidades (antes de calc) para que la primera llamada
   // no dispare la sincronización con un delta artificial
   if(typeof inicializarPlanoQtyPrev === 'function') inicializarPlanoQtyPrev();
+  if(typeof colabRender === 'function') colabRender();   // colaboradores múltiples
   calc();renderIngresos();renderArtefactos();renderHome();
 
   // ═══ Atajos de teclado globales ═══
@@ -14314,6 +15222,7 @@ if(typeof window !== 'undefined'){
           draft.planos.push({ q: gv('qp'+i), c: gv('cp'+i) });
         }
 
+        try{ draft.colabs = JSON.parse(JSON.stringify(_COLABS)); }catch(e){}
         localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
         _showBadge(now);
       } catch(e){ console.warn('[autosave] Error guardando borrador:', e); }
@@ -14359,6 +15268,9 @@ if(typeof window !== 'undefined'){
           sv('cp'+(idx+1), pl.c);
         });
       }
+
+      /* Colaboradores múltiples (o migración desde el modelo viejo) */
+      if(typeof colabCargar === 'function') colabCargar(d.colabs, d);
 
       /* Re-sincronizar estados de UI dependientes de checkboxes */
       if(typeof toggleFase1    === 'function') toggleFase1();
@@ -15169,5 +16081,103 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div>
 </div>
 
+<!-- ═══════════════ CONFIGURACIÓN INICIAL (setup wizard) ═══════════════ -->
+<!-- Aparece tras la encuesta de onboarding, sólo en cuentas nuevas.        -->
+<div id="setupOverlay" style="position:fixed;inset:0;z-index:8950;display:none;align-items:flex-start;justify-content:center;padding:20px;background:rgba(0,0,0,0.60);backdrop-filter:blur(7px);overflow-y:auto">
+  <div class="sc" style="width:100%;max-width:460px;padding:1.9rem 1.8rem;margin:auto 0">
+
+    <!-- Encabezado + progreso -->
+    <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px">Configuración inicial</div>
+    <p id="setupSubtitle" style="font-size:12px;color:var(--text-2);margin-bottom:1.1rem">Dejemos tu espacio de trabajo a tu gusto. Podés cambiar esto luego en Ajustes.</p>
+
+    <div style="display:flex;gap:6px;margin-bottom:1.3rem" id="setupProgress">
+      <div class="setup-dot active" data-step="1"></div>
+      <div class="setup-dot" data-step="2"></div>
+      <div class="setup-dot" data-step="3"></div>
+    </div>
+
+    <!-- ── PASO 1 · IDIOMA ── -->
+    <div class="setup-step" data-step="1">
+      <div class="setup-q">Idioma de la interfaz</div>
+      <div class="setup-help">Elegí el idioma en que querés usar Arkiboard.</div>
+      <div class="setup-grid setup-grid-2">
+        <button type="button" class="setup-opt" data-group="idioma" data-value="es" onclick="setupPick(this)">
+          <span class="setup-opt-emoji">🇬🇹</span>
+          <span class="setup-opt-title">Español</span>
+          <span class="setup-opt-sub">Recomendado</span>
+        </button>
+        <button type="button" class="setup-opt" data-group="idioma" data-value="en" onclick="setupPick(this)">
+          <span class="setup-opt-emoji">🇺🇸</span>
+          <span class="setup-opt-title">English</span>
+          <span class="setup-opt-sub">Próximamente</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── PASO 2 · MONEDA ── -->
+    <div class="setup-step" data-step="2" style="display:none">
+      <div class="setup-q">Moneda de trabajo</div>
+      <div class="setup-help">Se usará en <b>todas</b> tus cotizaciones y métricas. Arkiboard no convierte divisas, así que se trabaja con una sola moneda para mantener los números limpios.</div>
+      <div class="setup-grid setup-grid-2">
+        <button type="button" class="setup-opt" data-group="moneda" data-value="GTQ" onclick="setupPick(this)">
+          <span class="setup-opt-emoji">Q</span>
+          <span class="setup-opt-title">Quetzales</span>
+          <span class="setup-opt-sub">GTQ · Guatemala</span>
+        </button>
+        <button type="button" class="setup-opt" data-group="moneda" data-value="USD" onclick="setupPick(this)">
+          <span class="setup-opt-emoji">$</span>
+          <span class="setup-opt-title">Dólares</span>
+          <span class="setup-opt-sub">USD</span>
+        </button>
+      </div>
+      <div class="setup-warn">⚠ Elegí con cuidado: cambiarla después re-etiqueta tus montos sin convertirlos.</div>
+    </div>
+
+    <!-- ── PASO 3 · DISEÑO DE INTERFAZ ── -->
+    <div class="setup-step" data-step="3" style="display:none">
+      <div class="setup-q">Diseño de interfaz</div>
+      <div class="setup-help">Elegí la estética con la que te sentís cómodo. La podés cambiar cuando quieras.</div>
+      <div class="setup-grid setup-grid-2">
+        <button type="button" class="setup-opt setup-opt-theme" data-group="tema" data-value="neon" onclick="setupPick(this)">
+          <span class="setup-swatch swatch-neon"></span>
+          <span class="setup-opt-title">Neón</span>
+          <span class="setup-opt-sub">Cyber · oscuro</span>
+        </button>
+        <button type="button" class="setup-opt setup-opt-theme" data-group="tema" data-value="claro" onclick="setupPick(this)">
+          <span class="setup-swatch swatch-claro"></span>
+          <span class="setup-opt-title">Claro</span>
+          <span class="setup-opt-sub">Luminoso · menta</span>
+        </button>
+        <button type="button" class="setup-opt setup-opt-theme setup-opt-soon" data-group="tema" data-value="girly" onclick="setupPick(this)">
+          <span class="setup-swatch swatch-girly"></span>
+          <span class="setup-opt-title">Girly</span>
+          <span class="setup-opt-sub">Próximamente</span>
+        </button>
+        <button type="button" class="setup-opt setup-opt-theme setup-opt-soon" data-group="tema" data-value="boho" onclick="setupPick(this)">
+          <span class="setup-swatch swatch-boho"></span>
+          <span class="setup-opt-title">Boho</span>
+          <span class="setup-opt-sub">Próximamente</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="setupError" style="display:none;padding:8px 12px;margin-top:14px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
+
+    <!-- Navegación -->
+    <div style="display:flex;gap:10px;margin-top:1.5rem">
+      <button id="setupBackBtn" onclick="setupBack()" style="display:none;padding:11px 18px;font-size:11px;border:1px solid var(--border-2);border-radius:999px;background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">← Atrás</button>
+      <button id="setupNextBtn" onclick="setupNext()"
+        style="flex:1;padding:11px;font-size:12px;font-weight:600;border:none;border-radius:999px;
+        background:linear-gradient(135deg,var(--accent-light,var(--accent)),var(--accent));color:var(--text-on-accent);
+        cursor:pointer;font-family:var(--font-display);letter-spacing:.10em;text-transform:uppercase;
+        box-shadow:var(--shadow-accent,0 8px 20px rgba(0,229,255,0.3))">
+        Siguiente →
+      </button>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
+  
