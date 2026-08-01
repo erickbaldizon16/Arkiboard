@@ -2705,11 +2705,11 @@ code.emp-tag{font-family:var(--font-mono)}
    =============================================================== */
 [data-theme="boho"]{
   /* ── Fondos ── */
-  --bg-base:#F2EDDE;
-  --bg-card:rgba(255,252,244,0.72);
-  --bg-surface:rgba(255,252,244,0.46);
-  --bg-elevated:rgba(255,253,248,0.84);
-  --bg-surface-2:#FAF6EC;
+  --bg-base:#C6C9AC;
+  --bg-card:rgba(251,248,240,0.94);
+  --bg-surface:rgba(251,248,240,0.70);
+  --bg-elevated:rgba(255,253,248,0.97);
+  --bg-surface-2:#F6F2E6;
   /* ── Escala cálida (invertida) ── */
   --gray-800:#EAE1CD;--gray-750:#DFD4BB;--gray-700:#CFB586;
   --gray-600:#B29A74;--gray-500:#96805F;--gray-400:#7B664E;
@@ -2746,15 +2746,18 @@ code.emp-tag{font-family:var(--font-mono)}
   --logo-invert:1;
 }
 
-/* ── Escena: arena cálida con luz botánica ── */
+/* ── Escena: verde botánico suave (salvia), acogedor y cálido ── */
 [data-theme="boho"] body{
-  background:linear-gradient(150deg,#EFE7D3 0%,#F5F1E6 48%,#EBE3CF 100%) fixed !important;
+  background:
+    radial-gradient(circle at 82% 4%, rgba(164,98,62,0.10) 0%, transparent 44%),
+    radial-gradient(circle at 8% 96%, rgba(131,135,92,0.22) 0%, transparent 52%),
+    linear-gradient(150deg,#C6C9AC 0%,#CFD1B6 46%,#BFC3A2 100%) fixed !important;
 }
 [data-theme="boho"] body::before{
-  background:radial-gradient(circle,rgba(164,98,62,0.16) 0%,transparent 64%) !important;
+  background:radial-gradient(circle,rgba(131,135,92,0.28) 0%,transparent 64%) !important;
 }
 [data-theme="boho"] body::after{
-  background:radial-gradient(circle,rgba(131,135,92,0.15) 0%,transparent 64%) !important;
+  background:radial-gradient(circle,rgba(164,98,62,0.14) 0%,transparent 64%) !important;
 }
 
 /* ── Superficies de vidrio en tono crema ── */
@@ -2767,8 +2770,8 @@ code.emp-tag{font-family:var(--font-mono)}
 [data-theme="boho"] .modal-box,
 [data-theme="boho"] .sprint-card,
 [data-theme="boho"] #cotSticky{
-  background:rgba(255,252,244,0.72) !important;
-  border-color:rgba(90,66,48,0.14) !important;
+  background:rgba(251,248,240,0.94) !important;
+  border-color:rgba(90,66,48,0.12) !important;
 }
 [data-theme="boho"] .glass,
 [data-theme="boho"] .glass-card,
