@@ -635,6 +635,70 @@ input.narrow{width:88px}input.mid{width:108px}
 
 /* ── COLAB ── */
 .colab-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px}
+/* ═══════════════ EXPEDIENTE DE PROYECTO (modal Ver) ═══════════════ */
+.exp-salud{background:var(--tint-on-bg-medium,rgba(255,255,255,0.04));border:1px solid var(--border-2);
+  border-radius:var(--r-md);padding:.8rem .95rem;margin-bottom:.9rem}
+.exp-salud-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:10px}
+.exp-salud-lbl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-family:var(--font-display);margin-bottom:2px}
+.exp-salud-val{font-size:17px;font-weight:600;font-family:var(--font-mono);color:var(--text);line-height:1.2}
+.exp-bar{height:6px;border-radius:3px;background:rgba(128,128,128,0.18);overflow:hidden;margin-bottom:6px}
+.exp-bar-fill{height:100%;border-radius:3px;transition:width .35s var(--ease-out,ease)}
+.exp-salud-foot{display:flex;justify-content:space-between;font-size:10px;color:var(--text-3);font-family:var(--font-mono)}
+.exp-sec{border:1px solid var(--border-2);border-radius:var(--r-md);padding:.85rem .95rem;margin-bottom:.75rem;
+  background:var(--tint-on-bg-soft,rgba(255,255,255,0.02))}
+.exp-sec-acciones{background:transparent;border:none;padding:.2rem 0 0}
+.exp-sec-head{display:flex;align-items:center;gap:7px;margin-bottom:.6rem}
+.exp-sec-ico{font-size:13px;line-height:1}
+.exp-sec-title{font-family:var(--font-display);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.exp-sec-count{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;color:var(--text-3);
+  background:var(--tint-on-bg-strong,rgba(255,255,255,0.07));padding:1px 8px;border-radius:999px}
+.exp-sec-note{font-size:10.5px;color:var(--text-3);line-height:1.55;margin-bottom:.6rem}
+.exp-vacio{font-size:11px;color:var(--text-3);font-style:italic;padding:8px 0;text-align:center}
+.exp-acciones{display:flex;gap:7px;flex-wrap:wrap}
+.exp-btn{flex:1;min-width:130px;padding:8px 12px;font-size:11px;border:1px solid var(--border-2);
+  border-radius:var(--r-md);background:transparent;color:var(--text-2);cursor:pointer;
+  font-family:var(--font-display);letter-spacing:.05em;transition:all .15s;white-space:nowrap}
+.exp-btn:hover{border-color:var(--border-accent);color:var(--text)}
+.exp-btn-primary{background:var(--accent);color:var(--text-on-accent);border-color:var(--accent);font-weight:500}
+.exp-btn-primary:hover{filter:brightness(1.08);color:var(--text-on-accent)}
+.exp-btn-danger{color:var(--red);border-color:rgba(155,61,47,0.35)}
+.exp-btn-danger:hover{background:var(--red-lt);border-color:var(--red);color:var(--red)}
+/* Recibos */
+.exp-recibos{display:flex;flex-direction:column;gap:5px}
+.exp-recibo{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:var(--r-sm);
+  background:var(--tint-on-bg-medium,rgba(255,255,255,0.04));border:1px solid rgba(128,128,128,0.10)}
+.exp-recibo-num{font-family:var(--font-mono);font-size:11.5px;color:var(--text);font-weight:500}
+.exp-recibo-sub{font-size:9.5px;color:var(--text-3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.exp-recibo-monto{font-family:var(--font-mono);font-size:12px;color:var(--text);white-space:nowrap;font-weight:500}
+.exp-mini-btn{background:transparent;border:none;color:var(--text-3);font-size:13px;cursor:pointer;
+  padding:2px 4px;line-height:1;border-radius:4px;transition:all .15s;flex-shrink:0}
+.exp-mini-btn:hover{color:var(--accent);background:var(--tint-on-bg-strong,rgba(255,255,255,0.08))}
+.exp-mini-del:hover{color:var(--red)}
+.exp-recibo-total{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;
+  border-top:0.5px solid var(--border-2);font-size:11px;color:var(--text-2)}
+.exp-aviso{margin-top:7px;padding:6px 10px;background:var(--amber-lt);border:1px solid rgba(168,123,46,0.30);
+  border-radius:var(--r-sm);font-size:10px;color:var(--amber);line-height:1.5}
+/* Colaboradores */
+.exp-colab{display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:var(--r-sm);margin-bottom:5px;
+  background:var(--tint-on-bg-medium,rgba(255,255,255,0.04));border:1px solid rgba(128,128,128,0.10);
+  cursor:pointer;transition:all .15s}
+.exp-colab:hover{border-color:var(--border-accent);transform:translateX(2px)}
+.exp-colab-nom{font-size:12px;color:var(--text);font-weight:500;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.exp-colab-sub{font-size:9.5px;color:var(--text-3);margin-top:2px}
+.exp-colab-pago{font-family:var(--font-mono);font-size:12px;color:var(--accent);white-space:nowrap;font-weight:500}
+.exp-badge{display:inline-block;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:1.5px 7px;border-radius:999px;font-family:var(--font-display);
+  background:var(--tint-on-bg-strong,rgba(255,255,255,0.08));color:var(--text-3);border:1px solid rgba(128,128,128,0.18)}
+.exp-badge-green{background:var(--green-lt);color:var(--green);border-color:rgba(107,113,72,0.35)}
+.exp-badge-amber{background:var(--amber-lt);color:var(--amber);border-color:rgba(168,123,46,0.35)}
+.exp-badge-red{background:var(--red-lt);color:var(--red);border-color:rgba(155,61,47,0.35)}
+.cot-card-click{cursor:pointer;transition:border-color .16s,transform .16s,box-shadow .16s}
+.cot-card-click:hover{border-color:var(--border-accent);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.cot-card-click .cot-actions{cursor:default}
+@media(max-width:640px){
+  .exp-btn{min-width:100%;flex:1 1 100%}
+  .exp-salud-val{font-size:15px}
+}
 /* ═══ COLABORADORES MÚLTIPLES (por ruta) ═══ */
 .ruta-colab{margin-bottom:14px;padding-bottom:14px;border-bottom:0.5px solid rgba(255,255,255,0.07)}
 .ruta-colab:last-of-type{border-bottom:none;margin-bottom:6px}
@@ -2835,6 +2899,96 @@ code.emp-tag{font-family:var(--font-mono)}
 
 /* ── Muestra del tema en el selector de Ajustes / setup ── */
 .swatch-boho{background:linear-gradient(135deg,#F2EDDE 0%,#CFB586 45%,#83875C 72%,#A4623E 100%)}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOHO — Boxes verde profundo con texto blanco (estilo referencia)
+   ───────────────────────────────────────────────────────────────
+   · Tarjetas de datos: verde botánico profundo #3E4A33
+   · Título/dato principal: blanco
+   · Etiquetas superiores y detalles: café dorado #D4B58E
+   =============================================================== */
+
+/* ── Superficies de datos: MULTICOLOR (patrón de la referencia) ──
+   Paleta derivada de la imagen: verde botánico, marrón oscuro,
+   terracota, verde teal, marrón cálido — alternados por posición. */
+[data-theme="boho"] .home-kpi,
+[data-theme="boho"] .home-summary-card,
+[data-theme="boho"] .home-metric{
+  border:1px solid rgba(228,203,166,0.20) !important;
+  box-shadow:0 10px 28px rgba(46,40,30,0.26) !important;
+}
+/* Los 4 KPIs principales: verde · marrón · terracota · teal */
+[data-theme="boho"] .home-kpi:nth-child(4n+1){background:linear-gradient(158deg,#52643F 0%,#43532F 100%) !important}
+[data-theme="boho"] .home-kpi:nth-child(4n+2){background:linear-gradient(158deg,#544641 0%,#443732 100%) !important}
+[data-theme="boho"] .home-kpi:nth-child(4n+3){background:linear-gradient(158deg,#87603A 0%,#6E4E2E 100%) !important}
+[data-theme="boho"] .home-kpi:nth-child(4n+4){background:linear-gradient(158deg,#325C52 0%,#264A42 100%) !important}
+/* Las 4 cards de resumen: verde · marrón · terracota · teal */
+[data-theme="boho"] .home-summary-card:nth-child(4n+1){background:linear-gradient(158deg,#52643F 0%,#43532F 100%) !important}
+[data-theme="boho"] .home-summary-card:nth-child(4n+2){background:linear-gradient(158deg,#544641 0%,#443732 100%) !important}
+[data-theme="boho"] .home-summary-card:nth-child(4n+3){background:linear-gradient(158deg,#87603A 0%,#6E4E2E 100%) !important}
+[data-theme="boho"] .home-summary-card:nth-child(4n+4){background:linear-gradient(158deg,#325C52 0%,#264A42 100%) !important}
+/* Las métricas de reportes: rota entre los cinco tonos */
+[data-theme="boho"] .home-metric:nth-child(5n+1){background:linear-gradient(158deg,#52643F 0%,#43532F 100%) !important}
+[data-theme="boho"] .home-metric:nth-child(5n+2){background:linear-gradient(158deg,#544641 0%,#443732 100%) !important}
+[data-theme="boho"] .home-metric:nth-child(5n+3){background:linear-gradient(158deg,#87603A 0%,#6E4E2E 100%) !important}
+[data-theme="boho"] .home-metric:nth-child(5n+4){background:linear-gradient(158deg,#325C52 0%,#264A42 100%) !important}
+[data-theme="boho"] .home-metric:nth-child(5n+5){background:linear-gradient(158deg,#75584330 0%,#6E52402E 100%),linear-gradient(158deg,#6E5240 0%,#5A4234 100%) !important}
+/* Gráficos: verde teal sobrio (no compiten con las tarjetas de dato) */
+[data-theme="boho"] .home-chart-box{
+  background:linear-gradient(158deg,#325C52 0%,#264A42 100%) !important;
+  border:1px solid rgba(228,203,166,0.20) !important;
+  box-shadow:0 10px 28px rgba(46,40,30,0.26) !important;
+}
+
+/* Etiquetas superiores (café dorado, como el título del hero de la referencia) */
+[data-theme="boho"] .home-kpi .kpi-label,
+[data-theme="boho"] .home-metric-label,
+[data-theme="boho"] .home-summary-title{
+  color:#E4CBA6 !important;
+}
+[data-theme="boho"] .home-summary-head{
+  border-bottom-color:rgba(211,181,142,0.20) !important;
+}
+
+/* Dato principal grande: blanco */
+[data-theme="boho"] .home-kpi .kpi-value,
+[data-theme="boho"] .home-metric-value,
+[data-theme="boho"] .home-summary-item-main{
+  color:#FFFFFF !important;
+}
+/* Los KPI de color (verde/azul/acento) → tonos claros legibles sobre verde */
+[data-theme="boho"] .home-kpi.kpi-green .kpi-value,
+[data-theme="boho"] .home-kpi.kpi-blue .kpi-value,
+[data-theme="boho"] .home-kpi.kpi-accent .kpi-value{color:#FFFFFF !important;text-shadow:none !important}
+
+/* Subtextos y detalles: café dorado tenue / blanco atenuado */
+[data-theme="boho"] .home-kpi .kpi-sub,
+[data-theme="boho"] .home-metric-sub,
+[data-theme="boho"] .home-summary-item-sub{
+  color:rgba(211,181,142,0.85) !important;
+}
+[data-theme="boho"] .home-summary-item-main{color:#FFFFFF !important}
+[data-theme="boho"] .home-summary-item-value{color:#D4B58E !important}
+
+/* Íconos y encabezados de las cards de resumen */
+[data-theme="boho"] .home-summary-icon{opacity:.95}
+
+/* Filas internas: separadores y hover en tono claro sobre verde */
+[data-theme="boho"] .home-summary-item{
+  border-bottom-color:rgba(211,181,142,0.12) !important;
+}
+[data-theme="boho"] .home-summary-item:hover{
+  background:rgba(211,181,142,0.08) !important;
+}
+[data-theme="boho"] .home-summary-empty{
+  color:rgba(242,237,222,0.55) !important;
+}
+
+/* La barra superior y el hero se mantienen crema (no compiten con las boxes) */
+[data-theme="boho"] .home-hero{
+  background:linear-gradient(135deg,rgba(67,80,58,0.16),rgba(211,181,142,0.10)) !important;
+}
+
 
 </style>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
@@ -11539,6 +11693,72 @@ function _colDeEstado(estado){
 }
 
 // Recibo del anticipo: genera un comprobante imprimible con LOGO_B64
+
+/* ═══════════════════════════════════════════════════════════════
+   RECIBOS — historial completo por proyecto
+   ───────────────────────────────────────────────────────────────
+   Formato nuevo:  avit_recibos = { <cotId>: [ {…}, {…} ] }
+   Formato viejo:  avit_recibos = { <cotId>: {…} }   (un solo recibo)
+   _recibosLista() migra el viejo al nuevo de forma transparente.
+   =============================================================== */
+function _recibosRaw(){
+  try{ return JSON.parse(localStorage.getItem('avit_recibos')||'{}'); }catch(e){ return {}; }
+}
+/* Devuelve SIEMPRE un array de recibos para un proyecto (migra si hace falta) */
+function _recibosLista(cotId){
+  const raw = _recibosRaw();
+  const v = raw[cotId];
+  if(!v) return [];
+  if(Array.isArray(v)) return v;
+  // Formato viejo: un único objeto → convertir a array de 1
+  if(typeof v === 'object' && (v.numero || v.monto)){
+    return [Object.assign({}, v, { id: v.id || ('r'+cotId+'-0') })];
+  }
+  return [];
+}
+/* Guarda el array completo de recibos de un proyecto */
+function _recibosGuardar(cotId, lista){
+  const raw = _recibosRaw();
+  raw[cotId] = lista;
+  localStorage.setItem('avit_recibos', JSON.stringify(raw));
+  if(typeof triggerAutoSync==='function') triggerAutoSync();
+}
+/* Agrega un recibo al historial del proyecto */
+function _reciboAgregar(cotId, recibo){
+  const lista = _recibosLista(cotId);
+  recibo.id = recibo.id || ('r'+cotId+'-'+Date.now());
+  recibo.creadoEn = recibo.creadoEn || Date.now();
+  lista.push(recibo);
+  _recibosGuardar(cotId, lista);
+  return recibo;
+}
+/* Elimina un recibo del historial */
+function reciboEliminar(cotId, reciboId){
+  if(!confirm('¿Eliminar este recibo del historial? Esta acción no se puede deshacer.')) return;
+  const lista = _recibosLista(cotId).filter(r => String(r.id) !== String(reciboId));
+  _recibosGuardar(cotId, lista);
+  if(typeof verCot==='function') verCot(cotId);   // refrescar el expediente
+}
+/* Total cobrado documentado en recibos */
+function _recibosTotal(cotId){
+  return _recibosLista(cotId).reduce((a,r)=>a+(parseFloat(r.monto)||0),0);
+}
+/* Siguiente número correlativo sugerido (automático, editable) */
+function _reciboSiguienteNumero(cotId){
+  // Buscar el correlativo global más alto con patrón REC-####
+  const raw = _recibosRaw();
+  let max = 0;
+  Object.keys(raw).forEach(k=>{
+    const lista = Array.isArray(raw[k]) ? raw[k] : [raw[k]];
+    lista.forEach(r=>{
+      const m = String((r&&r.numero)||'').match(/REC-(\d+)/i);
+      if(m){ const n = parseInt(m[1],10); if(n>max) max = n; }
+    });
+  });
+  return 'REC-' + String(max+1).padStart(4,'0');
+}
+window.reciboEliminar = reciboEliminar;
+
 function verReciboAnticipo(id){
   const cots = loadCots();
   const c = cots.find(x => x.id === id);
@@ -11583,18 +11803,22 @@ function verReciboAnticipo(id){
   }
 
   // ── Datos guardados de recibos anteriores ──
-  const recibos = JSON.parse(localStorage.getItem('avit_recibos')||'{}');
-  const r = recibos[id] || {};
+  // Último recibo del historial (para heredar lugar/forma de pago)
+  const _histRec = _recibosLista(id);
+  const r = _histRec.length ? _histRec[_histRec.length-1] : {};
 
   const hoy = new Date().toISOString().split('T')[0];
-  const correlativoSugerido = r.numero || `REC-${hoy.replace(/-/g,'')}-${String(c.id).slice(-4)}`;
+  // Correlativo automático (editable): REC-0001, REC-0002, …
+  const correlativoSugerido = _reciboSiguienteNumero(id);
   const lugarSugerido = r.lugar || 'Ciudad de Guatemala';
   const formaPagoSugerida = r.formaPago || 'Transferencia bancaria';
   // Determine initial option
-  const initOpt = pagoOpts.find(o=>o.val===r.tipoPago) || pagoOpts[0];
-  const montoSugerido = r.monto || initOpt.monto;
-  const conceptoSugerido = r.concepto || initOpt.concepto;
-  const fechaSugerida = fmtFechaGT(r.fecha || hoy);
+  // Sugerir la SIGUIENTE cuota pendiente (no repetir la ya cobrada)
+  const _yaCobrados = _histRec.map(x=>x.tipoPago);
+  const initOpt = pagoOpts.find(o=>!_yaCobrados.includes(o.val)) || pagoOpts[0];
+  const montoSugerido = initOpt.monto;
+  const conceptoSugerido = initOpt.concepto;
+  const fechaSugerida = fmtFechaGT(hoy);
 
   const existing = document.getElementById('reciboConfigModal');
   if(existing) existing.remove();
@@ -11673,6 +11897,29 @@ function actualizarCamposRecibo(sel){
   if(concEl && !concEl.dataset.edited) concEl.value = opt.dataset.concepto||'';
 }
 
+/* Reimprime un recibo YA guardado en el historial.
+   Reutiliza el modal de configuración: lo abre, rellena con los datos
+   del recibo y dispara la generación (que detecta el mismo número y
+   actualiza en lugar de duplicar). */
+function reciboReimprimir(cotId, reciboId){
+  const rec = _recibosLista(cotId).find(r => String(r.id) === String(reciboId));
+  if(!rec){ alert('Recibo no encontrado.'); return; }
+  verReciboAnticipo(cotId);
+  setTimeout(()=>{
+    const set=(elId,val)=>{ const el=document.getElementById(elId); if(el && val!==undefined && val!==null) el.value=val; };
+    set('rec-numero', rec.numero);
+    set('rec-fecha', (typeof fmtFechaGT==='function') ? fmtFechaGT(rec.fecha) : rec.fecha);
+    set('rec-monto', rec.monto);
+    set('rec-formapago', rec.formaPago);
+    set('rec-concepto', rec.concepto);
+    set('rec-lugar', rec.lugar);
+    const tp=document.getElementById('rec-tipopago');
+    if(tp && rec.tipoPago){ tp.value = rec.tipoPago; }
+    if(typeof generarReciboHTML==='function') generarReciboHTML(cotId);
+  }, 90);
+}
+window.reciboReimprimir = reciboReimprimir;
+
 function generarReciboHTML(id){
   const cots = loadCots();
   const c = cots.find(x => x.id === id);
@@ -11688,11 +11935,20 @@ function generarReciboHTML(id){
 
   if(!numero || !fecha || !monto){ alert('Completá número, fecha y monto.'); return; }
 
-  // Guardar para próxima vez
-  const recibos = JSON.parse(localStorage.getItem('avit_recibos')||'{}');
-  recibos[id] = { numero, fecha, monto, concepto, lugar, formaPago, tipoPago };
-  localStorage.setItem('avit_recibos', JSON.stringify(recibos));
-  if(typeof triggerAutoSync==='function') triggerAutoSync();
+  // Guardar en el HISTORIAL de recibos del proyecto (no sobrescribe)
+  const _yaExiste = _recibosLista(id).find(r => String(r.numero).trim() === numero);
+  if(_yaExiste){
+    // Mismo número: actualizar ese recibo en lugar de duplicarlo
+    Object.assign(_yaExiste, { fecha, monto, concepto, lugar, formaPago, tipoPago });
+    _recibosGuardar(id, _recibosLista(id));
+  } else {
+    _reciboAgregar(id, { numero, fecha, monto, concepto, lugar, formaPago, tipoPago });
+  }
+  // Refrescar el expediente si está abierto
+  try{
+    const _mc=document.getElementById('cotModal');
+    if(_mc && _mc.style.display!=='none' && typeof verCot==='function'){ setTimeout(()=>verCot(id), 60); }
+  }catch(e){}
 
   // Cerrar modal de config
   document.getElementById('reciboConfigModal').remove();
@@ -12415,7 +12671,7 @@ function renderIngresos(){
 
 // Render de tarjeta de cotización (compartido entre activos y terminados)
 function cardCot(c, isTerminado, getEstadoOpts, estadoAOpcion, estadoLabel){
-  return `<div class="cot-card" ${isTerminado?'style="opacity:.85"':''}>
+  return `<div class="cot-card cot-card-click" ${isTerminado?'style="opacity:.85"':''} onclick="cotCardClick(event,${c.id})" title="Ver el expediente del proyecto">
     <div class="cot-card-head">
       <div>
         <div style="font-size:13px;font-weight:500">${c.cliente}${isTerminado?' <span style="color:var(--green);font-size:10px;font-family:var(--font-mono);margin-left:6px">✓ TERMINADO</span>':''}</div>
@@ -12438,15 +12694,13 @@ function cardCot(c, isTerminado, getEstadoOpts, estadoAOpcion, estadoLabel){
         ? `<button class="btn-editar" onclick="reactivarCot(${c.id})" style="border-color:rgba(76,175,114,0.30);color:var(--green)">↺ Reactivar</button>
            <button class="btn-ver" onclick="verCot(${c.id})">Ver</button>
            <button class="btn-recibo" onclick="genCotizacionDesde(${c.id})" title="Ver cotización PDF">📄 PDF</button>
-           <button class="btn-recibo" onclick="verReciboAnticipo(${c.id})" title="Ver recibo del anticipo">🧾 Recibo</button>
-           <button onclick="deleteCot(${c.id})" style="padding:4px 10px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--red);cursor:pointer">Eliminar</button>`
+           <button class="btn-recibo" onclick="verReciboAnticipo(${c.id})" title="Ver recibo del anticipo">🧾 Recibo</button>`
         : `<select onchange="updateEstado(${c.id},this.value)" style="flex:1;padding:4px 7px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--text)">
              ${getEstadoOpts(c).map(o=>`<option value="${o.v}" ${estadoAOpcion(c)===o.v?'selected':''}>${o.l}</option>`).join('')}
            </select>
            <button class="btn-ver" onclick="verCot(${c.id})">Ver</button>
            <button class="btn-recibo" onclick="genCotizacionDesde(${c.id})" title="Ver cotización PDF">📄 PDF</button>
-           <button class="btn-recibo" onclick="verReciboAnticipo(${c.id})" title="Ver recibo del anticipo">🧾 Recibo</button>
-           <button onclick="deleteCot(${c.id})" style="padding:4px 10px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--red);cursor:pointer">Eliminar</button>`}
+           <button class="btn-recibo" onclick="verReciboAnticipo(${c.id})" title="Ver recibo del anticipo">🧾 Recibo</button>`}
     </div>
   </div>`;
 }
@@ -13614,54 +13868,297 @@ function abrirFichaConcepto(cotId){
 }
 window.abrirFichaConcepto = abrirFichaConcepto;
 
+
+/* ═══════════════════════════════════════════════════════════════
+   EXPEDIENTE DE PROYECTO — helpers
+   =============================================================== */
+
+/* ── Duplicar un proyecto ──
+   Copia la cotización con un id nuevo, estado "emitida", cobros en cero
+   y sin recibos ni avances del Kanban (es un proyecto nuevo). */
+function duplicarCot(id){
+  const cots = loadCots();
+  const c = cots.find(x => x.id === id);
+  if(!c) return;
+  const nombre = prompt('Nombre del proyecto duplicado:', (c.proyecto||'Proyecto') + ' (copia)');
+  if(nombre === null) return;                       // canceló
+  const nuevo = JSON.parse(JSON.stringify(c));
+  const ts = Date.now();
+  nuevo.id = ts;
+  nuevo.proyecto = (nombre||'').trim() || ((c.proyecto||'Proyecto')+' (copia)');
+  nuevo.fecha = new Date().toISOString().split('T')[0];
+  nuevo.estado = 'emitida';
+  nuevo.cobrado = 0;
+  nuevo.updatedAt = ts;
+  delete nuevo.projStart;
+  delete nuevo.sprints;                              // el Kanban arranca limpio
+  cots.push(nuevo);
+  saveCots(cots);
+  if(typeof closeModal==='function') closeModal();
+  if(typeof renderIngresos==='function') renderIngresos();
+  if(typeof renderHome==='function'){ try{ renderHome(); }catch(e){} }
+  const ss=document.getElementById('syncStatus');
+  if(ss){ ss.textContent='✦ Proyecto duplicado'; setTimeout(()=>{ if(ss.textContent==='✦ Proyecto duplicado') ss.textContent=''; },1800); }
+  setTimeout(()=>{ if(typeof verCot==='function') verCot(nuevo.id); }, 120);
+}
+window.duplicarCot = duplicarCot;
+
+/* ── Estado real de cada colaborador leído del Kanban ──
+   Devuelve un mapa { "nombre|tarea": {done, dueDate, blocked, itemName} }
+   y también un resumen por nombre de colaborador. */
+function _colabEstadoDesdeKanban(cotId){
+  const out = { porNombre:{}, items:[] };
+  let sprints = [];
+  try{ sprints = (typeof getProjectSprints==='function') ? (getProjectSprints(cotId)||[]) : []; }catch(e){}
+  sprints.forEach(sp=>{
+    (sp.items||[]).forEach(it=>{
+      const quien = (it.colab||'').trim();
+      if(!quien) return;
+      const reg = { colab:quien, item:it.name||'', done:!!it.done, blocked:!!it.blocked,
+                    dueDate:it.dueDate||'', sprint:sp.title||'', fase:sp.type||'' };
+      out.items.push(reg);
+      if(!out.porNombre[quien]) out.porNombre[quien] = { total:0, hechos:0, pendientes:0, bloqueados:0, proximaEntrega:null, items:[] };
+      const n = out.porNombre[quien];
+      n.total++; n.items.push(reg);
+      if(it.done) n.hechos++; else n.pendientes++;
+      if(it.blocked) n.bloqueados++;
+      if(!it.done && it.dueDate){
+        if(!n.proximaEntrega || it.dueDate < n.proximaEntrega) n.proximaEntrega = it.dueDate;
+      }
+    });
+  });
+  return out;
+}
+
+/* ── Etiqueta de urgencia para una fecha ── */
+function _fechaEtiqueta(iso){
+  if(!iso) return { txt:'Sin fecha', color:'var(--text-3)' };
+  const d = new Date(iso+'T12:00:00');
+  if(isNaN(d)) return { txt:'Sin fecha', color:'var(--text-3)' };
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const dias = Math.ceil((d - hoy)/(1000*60*60*24));
+  if(dias < 0)  return { txt:Math.abs(dias)+'d tarde', color:'var(--red)' };
+  if(dias === 0) return { txt:'Hoy', color:'var(--red)' };
+  if(dias === 1) return { txt:'Mañana', color:'var(--accent)' };
+  return { txt:'En '+dias+' días', color: dias<=7 ? 'var(--accent)' : 'var(--text-2)' };
+}
+
+/* ── Enviar la cotización oficial por WhatsApp ── */
+function enviarCotWhatsApp(id){
+  const c = loadCots().find(x=>x.id===id);
+  if(!c) return;
+  const emp = (typeof _empresaN==='function') ? _empresaN() : 'Estudio Avit';
+  const monto = (typeof fmtCur==='function') ? fmtCur(c.tot||0, c.cur) : ((c.cur||'GTQ')+' '+(c.tot||0));
+  const msg =
+    `Hola! Te comparto la cotización de *${emp}* para el proyecto *${c.proyecto||''}*.\n\n` +
+    `Total: ${monto}\n` +
+    (c.antic>0 ? `Anticipo: ${(typeof fmtCur==='function')?fmtCur(c.antic,c.cur):c.antic}\n` : '') +
+    `\nQuedo atento a cualquier consulta.`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg), '_blank');
+}
+window.enviarCotWhatsApp = enviarCotWhatsApp;
+
+/* Clic en la tarjeta del proyecto = abrir su expediente.
+   Ignora clics sobre botones, selects u otros controles interactivos. */
+function cotCardClick(ev, id){
+  const t = ev.target;
+  if(t.closest('button, select, input, a, label, .cot-actions')) return;
+  if(typeof verCot==='function') verCot(id);
+}
+window.cotCardClick = cotCardClick;
+
 function verCot(id){
   const cots=loadCots();
   const c=cots.find(x=>x.id===id);
   if(!c)return;
-  const f=v=>c.cur+' '+Math.round(v).toLocaleString();
+  const f=v=>c.cur+' '+Math.round(v||0).toLocaleString();
   const fecha=new Date(c.fecha+'T12:00:00').toLocaleDateString('es-GT',{day:'2-digit',month:'long',year:'numeric'});
+
+  /* ── Salud del proyecto ── */
+  const tot=c.tot||0, cobrado=c.cobrado||0;
+  const pctCobro = tot>0 ? Math.round(cobrado/tot*100) : 0;
+  const saldoPend = Math.max(0, tot-cobrado);
+  let diasTrans = 0;
+  try{
+    const ini=new Date(c.fecha+'T12:00:00'); const hoy=new Date();
+    diasTrans = Math.max(0, Math.round((hoy-ini)/(1000*60*60*24)));
+  }catch(e){}
+  const colorCobro = pctCobro>=100 ? 'var(--green)' : pctCobro>=50 ? 'var(--accent)' : 'var(--amber)';
+
+  /* ── Recibos ── */
+  const recibos = _recibosLista(id).slice().sort((a,b)=>String(a.fecha||'').localeCompare(String(b.fecha||'')));
+  const totalRecibos = _recibosTotal(id);
+
+  /* ── Colaboradores + estado del Kanban ── */
+  const colsDesglose = (typeof _cotColaboradoresDesglose==='function' ? _cotColaboradoresDesglose(c) : []).filter(x=>x.nombre);
+  const kanban = _colabEstadoDesdeKanban(id);
+
   document.getElementById('modalContent').innerHTML=`
     <div class="modal-title">
       <span>${c.cliente} — ${c.proyecto}</span>
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
-    <div style="font-size:10px;color:var(--text-3);margin-bottom:1rem">${fecha} · <span class="estado-badge est-${c.estado}">${STATUS_LABELS_MAP[c.estado]||c.estado}</span></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.85rem">
-      <div class="metric"><p class="ml">Anteproyecto</p><p class="mv" style="font-size:14px">${f(c.f1)}</p></div>
-      <div class="metric"><p class="ml">Planimetrías</p><p class="mv" style="font-size:14px">${f(c.f2)}</p></div>
-      <div class="metric"><p class="ml">Overhead / costos</p><p class="mv" style="font-size:14px">${f(c.oh)}</p></div>
-      <div class="metric"><p class="ml">Colaborador</p><p class="mv" style="font-size:14px">${f(c.colab)}</p></div>
-      <div class="metric"><p class="ml">IVA</p><p class="mv" style="font-size:14px">${f(c.iva)}</p></div>
-      <div class="metric"><p class="ml">Total cotización</p><p class="mv" style="font-size:14px;color:var(--blue-dk)">${f(c.tot)}</p></div>
-    </div>
-    <div style="background:rgba(255,255,255,0.03);border-radius:var(--r-md);padding:.85rem 1rem;margin-bottom:.85rem">
-      <p class="lbl" style="margin-bottom:.5rem;font-weight:500">Cuotas de cobro</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-        <div class="metric"><p class="ml">Anticipo</p><p style="font-size:12px;font-weight:500">${f(c.antic)}</p></div>
-        <div class="metric"><p class="ml">Entrega F1</p><p style="font-size:12px;font-weight:500">${f(c.mid)}</p></div>
-        <div class="metric"><p class="ml">Saldo final</p><p style="font-size:12px;font-weight:500">${f(c.saldo)}</p></div>
+    <div style="font-size:10px;color:var(--text-3);margin-bottom:.9rem">${fecha} · <span class="estado-badge est-${c.estado}">${STATUS_LABELS_MAP[c.estado]||c.estado}</span></div>
+
+    <!-- ═══ SALUD DEL PROYECTO ═══ -->
+    <div class="exp-salud">
+      <div class="exp-salud-top">
+        <div>
+          <div class="exp-salud-lbl">Cobrado</div>
+          <div class="exp-salud-val" style="color:${colorCobro}">${f(cobrado)} <span style="font-size:11px;color:var(--text-3)">de ${f(tot)}</span></div>
+        </div>
+        <div style="text-align:right">
+          <div class="exp-salud-lbl">Saldo pendiente</div>
+          <div class="exp-salud-val" style="font-size:14px">${f(saldoPend)}</div>
+        </div>
+      </div>
+      <div class="exp-bar"><div class="exp-bar-fill" style="width:${Math.min(pctCobro,100)}%;background:${colorCobro}"></div></div>
+      <div class="exp-salud-foot">
+        <span>${pctCobro}% cobrado</span>
+        <span>${diasTrans} día${diasTrans===1?'':'s'} desde la cotización</span>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.85rem">
-      <div class="metric"><p class="ml">Cobrado</p><p class="mv" style="font-size:14px;color:#0F6E56">${f(c.cobrado)}</p></div>
-      <div class="metric"><p class="ml">Utilidad estimada</p><p class="mv" style="font-size:14px;color:#0F6E56">${f(c.util)}</p></div>
-    </div>
-    ${(()=>{ const _cols=(typeof _cotColaboradoresDesglose==='function'?_cotColaboradoresDesglose(c):[]).filter(x=>x.nombre);
-      if(!_cols.length) return '';
-      return `
-    <div onclick="abrirFichaConcepto(${c.id})" title="Ver la ficha de Concepto en el Kanban" style="background:var(--purple-lt);border-radius:var(--r-md);padding:.75rem 1rem;margin-bottom:.85rem;cursor:pointer;transition:filter .15s,transform .15s" onmouseover="this.style.filter='brightness(1.08)'" onmouseout="this.style.filter=''">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">
-        <p class="lbl" style="margin:0;font-weight:500;color:var(--purple-dk)">Colaboradores</p>
-        <span style="font-size:10px;color:var(--purple-dk);opacity:.8">Ver ficha de Concepto →</span>
+
+    <!-- ═══ RESUMEN FINANCIERO ═══ -->
+    <div class="exp-sec">
+      <div class="exp-sec-head"><span class="exp-sec-ico">💰</span><span class="exp-sec-title">Resumen financiero</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="metric"><p class="ml">Anteproyecto</p><p class="mv" style="font-size:14px">${f(c.f1)}</p></div>
+        <div class="metric"><p class="ml">Planimetrías</p><p class="mv" style="font-size:14px">${f(c.f2)}</p></div>
+        <div class="metric"><p class="ml">Overhead / costos</p><p class="mv" style="font-size:14px">${f(c.oh)}</p></div>
+        <div class="metric"><p class="ml">Colaboradores</p><p class="mv" style="font-size:14px">${f(c.colab)}</p></div>
+        <div class="metric"><p class="ml">IVA</p><p class="mv" style="font-size:14px">${f(c.iva)}</p></div>
+        <div class="metric"><p class="ml">Total cotización</p><p class="mv" style="font-size:14px;color:var(--accent)">${f(c.tot)}</p></div>
       </div>
-      ${_cols.map(x=>`<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px">
-          <span style="font-size:12px">👤 ${x.nombre} — ${x.tarea}</span>
-          <span style="font-size:11px;font-family:var(--font-mono);color:var(--purple-dk);white-space:nowrap">${fmtCur(x.monto,c.cur)}</span>
-        </div>${x.detalle?`<div style="font-size:9.5px;color:var(--text-3);margin:-1px 0 4px 18px">${x.detalle}</div>`:''}`).join('')}
-    </div>`; })()}
-    <button onclick="closeModal();editCot(${c.id})" style="width:100%;padding:9px;font-size:13px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text);cursor:pointer">Editar este proyecto</button>`;
+      <div style="margin-top:8px;padding:.7rem .9rem;background:var(--tint-on-bg-soft,rgba(255,255,255,0.03));border-radius:var(--r-md)">
+        <p class="lbl" style="margin-bottom:.45rem;font-weight:500">Cuotas de cobro</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div class="metric"><p class="ml">Anticipo</p><p style="font-size:12px;font-weight:500">${f(c.antic)}</p></div>
+          <div class="metric"><p class="ml">Entrega F1</p><p style="font-size:12px;font-weight:500">${f(c.mid)}</p></div>
+          <div class="metric"><p class="ml">Saldo final</p><p style="font-size:12px;font-weight:500">${f(c.saldo)}</p></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div class="metric"><p class="ml">Utilidad estimada</p><p class="mv" style="font-size:14px;color:var(--green)">${f(c.util)}</p></div>
+        <div class="metric"><p class="ml">Margen</p><p class="mv" style="font-size:14px">${tot>0?Math.round((c.util||0)/tot*100):0}%</p></div>
+      </div>
+    </div>
+
+    <!-- ═══ COTIZACIÓN OFICIAL ═══ -->
+    <div class="exp-sec">
+      <div class="exp-sec-head"><span class="exp-sec-ico">📄</span><span class="exp-sec-title">Cotización oficial</span></div>
+      <p class="exp-sec-note">La propuesta formal que se le envía al cliente, con el desglose de honorarios y planos.</p>
+      <div class="exp-acciones">
+        <button class="exp-btn exp-btn-primary" onclick="genCotizacionDesde(${c.id})">📄 Ver / Descargar PDF</button>
+        <button class="exp-btn" onclick="enviarCotWhatsApp(${c.id})">💬 Enviar por WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- ═══ RECIBOS EMITIDOS ═══ -->
+    <div class="exp-sec">
+      <div class="exp-sec-head">
+        <span class="exp-sec-ico">🧾</span><span class="exp-sec-title">Recibos emitidos</span>
+        <span class="exp-sec-count">${recibos.length}</span>
+      </div>
+      ${recibos.length ? `
+        <div class="exp-recibos">
+          ${recibos.map(r=>{
+            const fr = r.fecha ? new Date(r.fecha+'T12:00:00').toLocaleDateString('es-GT',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+            return `<div class="exp-recibo">
+              <div style="flex:1;min-width:0">
+                <div class="exp-recibo-num">${escapeHtmlK(r.numero||'—')}</div>
+                <div class="exp-recibo-sub">${fr}${r.concepto?' · '+escapeHtmlK(String(r.concepto).slice(0,46)):''}</div>
+              </div>
+              <div class="exp-recibo-monto">${f(r.monto)}</div>
+              <button class="exp-mini-btn" title="Ver / reimprimir" onclick="reciboReimprimir(${c.id},'${r.id}')">🖨</button>
+              <button class="exp-mini-btn exp-mini-del" title="Eliminar del historial" onclick="reciboEliminar(${c.id},'${r.id}')">×</button>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="exp-recibo-total">
+          <span>Total documentado en recibos</span>
+          <span style="font-family:var(--font-mono);font-weight:600;color:var(--accent)">${f(totalRecibos)}</span>
+        </div>
+        ${Math.abs(totalRecibos-cobrado)>1 ? `<div class="exp-aviso">⚠ Los recibos suman ${f(totalRecibos)} pero el proyecto tiene ${f(cobrado)} registrado como cobrado.</div>`:''}
+      ` : `<div class="exp-vacio">Todavía no se ha emitido ningún recibo para este proyecto.</div>`}
+      <div class="exp-acciones" style="margin-top:8px">
+        <button class="exp-btn exp-btn-primary" onclick="verReciboAnticipo(${c.id})">＋ Nuevo recibo</button>
+      </div>
+    </div>
+
+    <!-- ═══ ACTIVIDADES DE COLABORADORES ═══ -->
+    <div class="exp-sec">
+      <div class="exp-sec-head">
+        <span class="exp-sec-ico">👥</span><span class="exp-sec-title">Actividades de colaboradores</span>
+        ${colsDesglose.length?`<span class="exp-sec-count">${colsDesglose.length}</span>`:''}
+      </div>
+      ${colsDesglose.length ? colsDesglose.map(x=>{
+        const est = kanban.porNombre[x.nombre];
+        let badge='', sub='';
+        if(est){
+          const entregado = est.pendientes===0 && est.total>0;
+          if(est.bloqueados>0){ badge='<span class="exp-badge exp-badge-red">Bloqueado</span>'; }
+          else if(entregado){ badge='<span class="exp-badge exp-badge-green">Entregado</span>'; }
+          else { badge='<span class="exp-badge exp-badge-amber">Pendiente</span>'; }
+          const et=_fechaEtiqueta(est.proximaEntrega);
+          sub = `${est.hechos}/${est.total} tarea${est.total===1?'':'s'}` + (est.proximaEntrega?` · <span style="color:${et.color}">${et.txt}</span>`:'');
+        } else {
+          badge='<span class="exp-badge">Sin tareas</span>';
+          sub='Sin actividades asignadas en el Kanban';
+        }
+        return `<div class="exp-colab" onclick="abrirFichaConcepto(${c.id})" title="Ver en el Kanban">
+          <div style="flex:1;min-width:0">
+            <div class="exp-colab-nom">${escapeHtmlK(x.nombre)} ${badge}</div>
+            <div class="exp-colab-sub">${escapeHtmlK(x.tarea)}${x.detalle?' · '+escapeHtmlK(x.detalle):''}</div>
+            <div class="exp-colab-sub" style="margin-top:1px">${sub}</div>
+          </div>
+          <div class="exp-colab-pago">${fmtCur(x.monto,c.cur)}</div>
+        </div>`;
+      }).join('') : `<div class="exp-vacio">Sin colaboradores asignados a este proyecto.</div>`}
+      ${colsDesglose.length?`<div class="exp-recibo-total">
+        <span>Total a colaboradores</span>
+        <span style="font-family:var(--font-mono);font-weight:600">${f(c.colab)}</span>
+      </div>`:''}
+    </div>
+
+    <!-- ═══ ACCIONES ═══ -->
+    <div class="exp-sec exp-sec-acciones">
+      <div class="exp-acciones">
+        <button class="exp-btn exp-btn-primary" onclick="closeModal();editCot(${c.id})">✎ Editar</button>
+        <button class="exp-btn" onclick="duplicarCot(${c.id})">⧉ Duplicar</button>
+        <button class="exp-btn exp-btn-danger" onclick="eliminarDesdeExpediente(${c.id})">🗑 Eliminar</button>
+      </div>
+    </div>`;
   document.getElementById('cotModal').style.display='flex';
 }
+
+/* Eliminar desde el expediente: borra también los recibos del proyecto */
+function eliminarDesdeExpediente(id){
+  const c = loadCots().find(x=>x.id===id);
+  const nom = c ? (c.proyecto||c.cliente||'este proyecto') : 'este proyecto';
+  const nRec = _recibosLista(id).length;
+  const aviso = '¿Eliminar «'+nom+'»?\n\nSe borrarán también:\n· Los avances del Kanban' +
+                (nRec? '\n· '+nRec+' recibo'+(nRec===1?'':'s')+' del historial' : '') +
+                '\n\nEsta acción no se puede deshacer.';
+  if(!confirm(aviso)) return;
+  // Borrar recibos asociados
+  try{
+    const raw=_recibosRaw();
+    if(raw[id]){ delete raw[id]; localStorage.setItem('avit_recibos', JSON.stringify(raw)); }
+  }catch(e){}
+  // Borrar cotización + tracker (misma lógica que deleteCot, sin su confirm)
+  saveCots(loadCots().filter(x=>x.id!==id));
+  try{
+    const tracker=JSON.parse(localStorage.getItem('avit_sprint_tracker')||'{}');
+    if(tracker[id]){ delete tracker[id]; localStorage.setItem('avit_sprint_tracker', JSON.stringify(tracker)); }
+  }catch(e){}
+  if(typeof closeModal==='function') closeModal();
+  if(typeof renderIngresos==='function') renderIngresos();
+  if(typeof renderHome==='function'){ try{ renderHome(); }catch(e){} }
+  const pe=document.getElementById('pg-est');
+  if(pe && pe.classList.contains('active') && typeof renderEstatus==='function') renderEstatus();
+}
+window.eliminarDesdeExpediente = eliminarDesdeExpediente;
 
 function editCot(id){
   const cots=loadCots();
