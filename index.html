@@ -9004,6 +9004,20 @@ var SUPABASE_URL      = 'https://gqzfwbvmjbpvazzoohmt.supabase.co';
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxemZ3YnZtamJwdmF6em9vaG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNjU2MjMsImV4cCI6MjA5OTY0MTYyM30.4h81sp225UnsOqsW-8idrUybWxC3OF-uXXLrG7YzvPk';
 /* ▲▲ Dejar vacío = modo local (desarrollo) ▲▲ */
 
+/* URL pública de la app en producción. A esta dirección redirige el enlace
+   de confirmación de correo de Supabase. Si abrís la app desde un dominio
+   real (no localhost/file), se usa ese origin; si estás en local, cae aquí. */
+var ARKIBOARD_URL = 'https://app.arkiboard.com/';
+function _redirectURL(){
+  try{
+    const o = window.location.origin || '';
+    if(/^https?:\/\//i.test(o) && !/localhost|127\.0\.0\.1|0\.0\.0\.0/i.test(o)){
+      return o + window.location.pathname;
+    }
+  }catch(e){}
+  return ARKIBOARD_URL;
+}
+
 var _sb = null;          // cliente supabase
 var _sbUser = null;      // usuario actual
 var _syncTimer = null;
@@ -9613,7 +9627,23 @@ window.actualizarUserMenuTema=actualizarUserMenuTema;
 /* ── AUTH: login / signup / logout ─────────────────────────── */
 function _authErr(msg){
   const e=document.getElementById('authError');
-  if(e){ e.textContent=msg; e.style.display=msg?'block':'none'; }
+  if(e){
+    e.textContent=msg;
+    e.style.display=msg?'block':'none';
+    e.style.background='var(--red-lt)';
+    e.style.borderColor='rgba(224,122,122,0.35)';
+    e.style.color='var(--red)';
+  }
+}
+function _authOk(msg){
+  const e=document.getElementById('authError');
+  if(e){
+    e.textContent=msg;
+    e.style.display=msg?'block':'none';
+    e.style.background='rgba(76,175,114,0.10)';
+    e.style.borderColor='rgba(76,175,114,0.35)';
+    e.style.color='var(--green)';
+  }
 }
 function _initSupabase(){
   if(!_sbConfigured()) return null;
@@ -9621,7 +9651,9 @@ function _initSupabase(){
   /* "Mantener sesión": si el usuario NO marcó el checkbox al entrar,
      guardamos un marcador en sessionStorage; al recargar en una pestaña
      nueva sin marcador → cerrar sesión. */
-  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, flowType: 'implicit' }
+  });
   return _sb;
 }
 async function authLogin(){
@@ -9666,7 +9698,7 @@ async function authGoogle(){
     const sb=_initSupabase();
     const {error}=await sb.auth.signInWithOAuth({
       provider:'google',
-      options:{ redirectTo: window.location.origin + window.location.pathname }
+      options:{ redirectTo: _redirectURL() }
     });
     if(error){
       _authErr('No se pudo conectar con Google: '+error.message);
@@ -9744,7 +9776,11 @@ async function authRegistrar(){
   if(btn){ btn.textContent='Creando…'; btn.disabled=true; }
   try{
     const sb=_initSupabase();
-    const {data,error}=await sb.auth.signUp({email,password:p1});
+    const {data,error}=await sb.auth.signUp({
+      email,
+      password:p1,
+      options:{ emailRedirectTo: _redirectURL() }
+    });
     if(error){
       const m=/already registered|already exists|User already/i.test(error.message||'')
         ? 'Ese correo ya tiene una cuenta. Iniciá sesión.' : error.message;
@@ -9753,7 +9789,7 @@ async function authRegistrar(){
     /* Confirmación por correo activada: no hay sesión inmediata */
     if(data.user && !data.session){
       document.getElementById('regForm').style.display='none';
-      _regOk('✓ Cuenta creada. Te enviamos un correo de confirmación a <strong>'+email+'</strong>. Confirmala y volvé para iniciar sesión.');
+      _regOk('✓ Cuenta creada. Te enviamos un correo de confirmación a <strong>'+email+'</strong>. Abrilo y tocá el enlace para entrar directo a tu estudio.');
       // dejar el correo listo en la pantalla de login
       const ae=document.getElementById('authEmail'); if(ae) ae.value=email;
       return;
@@ -10218,6 +10254,12 @@ function _ocultarAuthOverlay(){
 function _authBootRun(){
   (async function(){
   aplicarPerfilUI();
+  /* ¿Llegamos desde el enlace de confirmación de correo?
+     Supabase añade type=signup (o recovery/invite) y el access_token en el hash. */
+  const _href = window.location.href;
+  const _esConfirmacion = /[#?&]type=(signup|magiclink|invite|email_change)/.test(_href)
+                       || (/[#&]access_token=/.test(_href) && /[#?&]type=/.test(_href));
+  if(_esConfirmacion){ _mostrarBienvenidaConfirmacion(); }
   if(localStorage.getItem('avit_localMode')==='1'){
     _ocultarAuthOverlay();
     _flujoInicial();
@@ -10234,19 +10276,73 @@ function _authBootRun(){
     if(data && data.session){
       const keep=localStorage.getItem('avit_keepSession')!=='0';
       const tab =sessionStorage.getItem('avit_tabSession')==='1';
-      if(!keep && !tab){ await sb.auth.signOut(); return; }   // no mantener → pedir login de nuevo
+      /* Si venimos de confirmar el correo, SIEMPRE mantenemos la sesión:
+         el usuario acaba de validar su cuenta, no tiene sentido pedirle login. */
+      if(!keep && !tab && !_esConfirmacion){ await sb.auth.signOut(); return; }
       _sbUser=data.session.user;
+      localStorage.setItem('avit_keepSession','1');
       sessionStorage.setItem('avit_tabSession','1');
-      /* Volvimos de Google: el token viene en el hash/query de la URL.
+      /* Volvimos de Google o de confirmar el correo: el token viene en el hash/query.
          Ya lo capturó Supabase, así que lo limpiamos para que no quede a la vista. */
       if(/[#?&](access_token|code)=/.test(window.location.href)){
         try{ history.replaceState(null,'',window.location.origin+window.location.pathname); }catch(e){}
       }
       await _postLogin();
+      if(_esConfirmacion) _cerrarBienvenidaConfirmacion();
+    } else if(_esConfirmacion){
+      /* El enlace llegó pero no se creó sesión (p.ej. enlace ya usado o expirado).
+         Mostramos el login con un aviso claro en vez de una pantalla en blanco. */
+      _cerrarBienvenidaConfirmacion();
+      if(typeof _authOk==='function'){
+        _authOk('Tu correo ya fue confirmado. Iniciá sesión para entrar.');
+      }
     }
-  }catch(e){ console.warn('[Arkiboard] boot auth', e); }
+  }catch(e){
+    console.warn('[Arkiboard] boot auth', e);
+    if(_esConfirmacion) _cerrarBienvenidaConfirmacion();
+  }
 })();
 }
+
+/* Overlay breve de "cuenta confirmada" mientras se restaura la sesión. */
+function _mostrarBienvenidaConfirmacion(){
+  if(document.getElementById('confirmWelcome')) return;
+  const d=document.createElement('div');
+  d.id='confirmWelcome';
+  d.style.cssText='position:fixed;inset:0;z-index:100000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#111214;text-align:center;padding:32px;font-family:\'DM Sans\',system-ui,sans-serif';
+  d.innerHTML=''
+    +'<div style="width:72px;height:72px;border-radius:50%;background:rgba(76,175,114,0.12);border:1px solid rgba(76,175,114,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:22px">'
+    +  '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#4CAF72" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+    +'</div>'
+    +'<div style="font-family:\'Outfit\',sans-serif;font-size:22px;font-weight:600;color:#E0E0E0;letter-spacing:-0.02em;margin-bottom:8px">¡Cuenta confirmada!</div>'
+    +'<div style="font-size:13.5px;color:#9A9A9A;max-width:300px;line-height:1.5;margin-bottom:26px">Tu correo fue validado correctamente. Estamos entrando a tu estudio…</div>'
+    +'<div id="confirmWelcomeSpin" style="width:26px;height:26px;border:2.5px solid rgba(212,168,67,0.25);border-top-color:#D4A843;border-radius:50%;animation:cwspin 0.8s linear infinite"></div>'
+    +'<button id="confirmWelcomeBtn" onclick="_entrarDesdeConfirmacion()" style="display:none;margin-top:8px;padding:11px 26px;font-family:\'Outfit\',sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#1C1C1C;background:#D4A843;border:none;border-radius:11px;cursor:pointer">Entrar a Arkiboard</button>'
+    +'<style>@keyframes cwspin{to{transform:rotate(360deg)}}</style>';
+  document.body.appendChild(d);
+  /* Fallback: si en 6s no entró solo (red lenta / sesión no creada),
+     mostramos un botón para que el usuario no quede atascado. */
+  _confirmWelcomeTimer=setTimeout(()=>{
+    const sp=document.getElementById('confirmWelcomeSpin');
+    const bt=document.getElementById('confirmWelcomeBtn');
+    const ms=document.querySelector('#confirmWelcome div:nth-child(3)');
+    if(sp) sp.style.display='none';
+    if(bt) bt.style.display='inline-block';
+    if(ms) ms.textContent='Ya casi. Tocá el botón para entrar a tu estudio.';
+  },6000);
+}
+var _confirmWelcomeTimer=null;
+function _cerrarBienvenidaConfirmacion(){
+  if(_confirmWelcomeTimer){ clearTimeout(_confirmWelcomeTimer); _confirmWelcomeTimer=null; }
+  const d=document.getElementById('confirmWelcome');
+  if(d){ d.style.transition='opacity .3s'; d.style.opacity='0'; setTimeout(()=>d.remove(),300); }
+}
+function _entrarDesdeConfirmacion(){
+  /* Botón de rescate: limpia la URL y recarga en la app ya con sesión. */
+  try{ history.replaceState(null,'',window.location.origin+window.location.pathname); }catch(e){}
+  window.location.reload();
+}
+window._entrarDesdeConfirmacion=_entrarDesdeConfirmacion;
 /* El overlay de login está al final del documento: hay que esperar al DOM. */
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', _authBootRun, {once:true});
