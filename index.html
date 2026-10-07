@@ -580,10 +580,21 @@ input.narrow{width:88px}input.mid{width:108px}
 .metric .ms{font-size:9px;color:var(--text-3);margin-top:3px;font-family:var(--font-mono)}
 
 /* ── PLANOS ── */
-.plano-hdr{display:grid;grid-template-columns:minmax(0,1fr) 58px 100px;gap:8px;font-size:9px;color:var(--text-3);padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:2px;font-family:var(--font-display);letter-spacing:0.12em;text-transform:uppercase}
-.plano-row{display:grid;grid-template-columns:minmax(0,1fr) 58px 100px;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;color:var(--text-2);font-family:var(--font-body)}
+.plano-hdr{display:grid;grid-template-columns:minmax(0,1fr) 92px 100px;gap:8px;font-size:9px;color:var(--text-3);padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:2px;font-family:var(--font-display);letter-spacing:0.12em;text-transform:uppercase}
+.plano-row{display:grid;grid-template-columns:minmax(0,1fr) 92px 100px;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;color:var(--text-2);font-family:var(--font-body);transition:opacity .18s ease}
 .plano-row:last-child{border-bottom:none}
 .plano-row input{text-align:center}
+/* Fila de plano sin cantidad: atenuada (nombre, cantidad y costo/plano) */
+.plano-row.plano-off{opacity:.42}
+.plano-row.plano-on span{color:var(--text)}
+.plano-row.plano-on{opacity:1}
+/* Stepper de cantidad de planos (− valor +) */
+.plano-qty{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;background:var(--bg-surface)}
+.plano-qty input{width:100%;min-width:0;text-align:center;border:none;background:transparent;padding:4px 2px;-moz-appearance:textfield;appearance:textfield}
+.plano-qty input::-webkit-outer-spin-button,.plano-qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.plano-qty button{flex:0 0 auto;width:20px;height:28px;border:none;background:rgba(255,255,255,0.04);color:var(--text-2);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s,color .12s;user-select:none;padding:0}
+.plano-qty button:hover{background:var(--accent);color:var(--text-on-accent)}
+.plano-qty button:active{transform:scale(.92)}
 
 /* ── Grupos de planos ── */
 .plano-grupo{
@@ -1446,27 +1457,6 @@ input.narrow{width:88px}input.mid{width:108px}
 .btn-recibo:hover{background:var(--accent-subtle);border-color:var(--border-focus)}
 
 /* ═══ Calculadora (Estimado + Programa) ═══ */
-.fin-btn{
-  background:var(--bg-surface);
-  border:1px solid var(--border);
-  border-radius:var(--r-md);
-  padding:12px 8px;
-  color:var(--text-2);
-  cursor:pointer;
-  transition:all .18s var(--ease-out);
-  text-align:center;
-}
-.fin-btn:hover{
-  border-color:var(--border-accent);
-  color:var(--text);
-}
-.fin-btn.active{
-  background:var(--accent);
-  border-color:var(--accent);
-  color:var(--text-on-accent);
-  box-shadow:var(--shadow-accent);
-}
-.fin-btn.active > div{color:var(--text-on-accent) !important}
 .ind-amt{
   font-family:var(--font-mono);font-size:9.5px;color:var(--accent);
   text-align:right;padding:0 2px;letter-spacing:.02em;margin-bottom:6px;opacity:.85;
@@ -3341,7 +3331,7 @@ code.emp-tag{font-family:var(--font-mono)}
         <div class="sc-title" style="margin:0">Detalles de terreno</div>
         <label class="tog" style="margin:0"><input type="checkbox" id="p2_tcActive" onchange="renderPrograma()"><span class="tog-sl"></span></label>
       </div>
-      <div class="r2">
+      <div class="r2" id="p2_terr_dims">
         <div>
           <label class="lbl">Largo (m)</label>
           <div class="fg"><input type="number" id="p2_tL" value="" placeholder="0" oninput="renderPrograma()" step="0.01"></div>
@@ -3355,16 +3345,24 @@ code.emp-tag{font-family:var(--font-mono)}
         <label class="lbl">Costo total del terreno (Q)</label>
         <div class="fg"><input type="number" id="p2_tc" placeholder="0" oninput="renderPrograma()" step="0.01"></div>
       </div>
+      <div id="p2_terr_aviso" style="display:none;margin-top:10px;background:var(--accent-subtle);border:1px solid var(--border-accent);border-radius:var(--r-md);padding:9px 12px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="flex-shrink:0;color:var(--accent);font-size:13px;line-height:1.3">ⓘ</span>
+          <p style="font-family:var(--font-body);font-size:11px;color:var(--text-2);line-height:1.5;margin:0">Las medidas del terreno (largo, ancho y costo) <b>no se tomarán en cuenta</b> en la cotización. Activá el interruptor para incluirlas.</p>
+        </div>
+      </div>
       </div>
 
 <div class="sc">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.5rem;gap:10px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;gap:10px;flex-wrap:wrap">
     <div class="sc-title" style="margin:0">Programa arquitectónico</div>
-    <div style="display:flex;gap:6px;flex-shrink:0">
+    <div style="display:flex;gap:6px;flex-shrink:0;align-items:center">
       <button onclick="exportarProgramaJSON()" style="padding:5px 12px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📤 Exportar JSON</button>
       <button onclick="genPDFPrograma()" style="padding:5px 12px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📄 PDF Resumen</button>
+      <label class="tog" style="margin:0" title="Mostrar / ocultar esta sección"><input type="checkbox" id="col_prog" data-colapso="prog" checked onchange="toggleColapso('prog')"><span class="tog-sl"></span></label>
     </div>
   </div>
+  <div id="colbody_prog">
   <p class="nt" style="margin-bottom:1rem">Presupuesto integral por ambientes, nivel y categoría. Arrastrá las filas ⠿ para reordenar los ambientes.</p>
 
   <!-- Tabla de ambientes -->
@@ -3377,7 +3375,7 @@ code.emp-tag{font-family:var(--font-mono)}
           <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Nivel</th>
           <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">Categoría</th>
           <th style="padding:7px 10px;text-align:left;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-600);border-bottom:1px solid var(--border)">m²</th>
-          <th style="padding:7px 10px;border-bottom:1px solid var(--border);width:30px"></th>
+          <th style="padding:7px 10px;border-bottom:1px solid var(--border);width:62px"></th>
         </tr>
       </thead>
       <tbody id="p2_roomsBody"></tbody>
@@ -3418,38 +3416,43 @@ code.emp-tag{font-family:var(--font-mono)}
 
   <!-- Resumen de áreas por nivel -->
   <div id="p2_areaSums" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px"></div>
+  </div>
 </div>
 
-<!-- Costo base -->
+<!-- Costo estimado de construcción -->
     <div class="sc">
-      <div class="sc-title">Costo base</div>
-
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+        <div class="sc-title" style="margin:0">Costo estimado de construcción</div>
+        <label class="tog" style="margin:0" title="Mostrar / ocultar esta sección"><input type="checkbox" id="col_costobase" data-colapso="costobase" checked onchange="toggleColapso('costobase')"><span class="tog-sl"></span></label>
+      </div>
+      <div id="colbody_costobase">
       <label class="lbl">Obra gris (Q/m²)</label>
       <div class="fg" style="position:relative;margin-bottom:14px">
         <input type="number" id="p2_obraGris" value="" placeholder="0" oninput="renderPrograma()" step="0.01">
         <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">Q/m²</span>
       </div>
 
-      <label class="lbl">Nivel de acabados</label>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
-        <button class="fin-btn active" data-fin="economico" onclick="setFinish('economico')">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Económico</div>
-          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+10%</div>
-        </button>
-        <button class="fin-btn" data-fin="medio" onclick="setFinish('medio')">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Medio</div>
-          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+20%</div>
-        </button>
-        <button class="fin-btn" data-fin="premium" onclick="setFinish('premium')">
-          <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase">Premium</div>
-          <div style="font-family:var(--font-body);font-size:9px;color:var(--text-3);margin-top:2px">+50%</div>
-        </button>
+      <label class="lbl">Acabados (Q/m²)</label>
+      <div class="fg" style="position:relative;margin-bottom:4px">
+        <input type="number" id="p2_finishVal" value="" placeholder="0" oninput="renderPrograma()" step="0.01" min="0">
+        <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--text-3);pointer-events:none">Q/m²</span>
+      </div>
+      <p class="nt" style="margin:.4rem 0 0">Monto por m² que se suma a la obra gris. Costo total por m² = obra gris + acabados.</p>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:11px;margin-top:12px;border-top:0.5px solid var(--border)">
+        <span style="font-size:11.5px;color:var(--text-2)">Costo estimado por m²</span>
+        <span style="font-size:14px;font-weight:500;font-family:var(--font-mono);color:var(--accent)" id="p2_costoBaseTotal">Q 0.00<span style="font-size:10px;color:var(--text-3);font-weight:400">/m²</span></span>
+      </div>
       </div>
     </div>
 
 <!-- Indirectos -->
     <div class="sc">
-      <div class="sc-title">Costos indirectos (%)</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+        <div class="sc-title" style="margin:0">Costos indirectos (%)</div>
+        <label class="tog" style="margin:0" title="Mostrar / ocultar esta sección"><input type="checkbox" id="col_ind" data-colapso="ind" checked onchange="toggleColapso('ind')"><span class="tog-sl"></span></label>
+      </div>
+      <div id="colbody_ind">
       <div class="r2">
         <div>
           <label class="lbl">Diseño</label>
@@ -3474,6 +3477,7 @@ code.emp-tag{font-family:var(--font-mono)}
           <div class="ind-amt" id="p2_ind_contingency_amt">Q 0.00</div>
         </div>
       </div>
+      </div>
     </div>
 
 <!-- Resumen del presupuesto -->
@@ -3490,23 +3494,25 @@ code.emp-tag{font-family:var(--font-mono)}
 
 
 <div class="sc">
-  <div class="sc-title">Configuración general</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem">
+    <div>
+      <span class="pl p1">Anteproyecto</span>
+      <p class="nt" style="margin:.3rem 0 0">Honorarios de diseño</p>
+    </div>
+    <label class="tog"><input type="checkbox" id="fase1On" checked onchange="toggleFase1()"><span class="tog-sl"></span></label>
+  </div>
+
+  <!-- Configuración general (fusionada): m² / tarifa / moneda — siempre visible -->
   <div class="r2">
     <div class="fg"><label class="lbl">Metros cuadrados</label><div class="fr"><input type="number" id="m2S" min="1" max="99999" step="1" value="" placeholder="0" oninput="syncM2(this.value)" style="width:110px;font-size:15px;font-weight:500"><span class="fv" style="margin-left:6px">m²</span></div></div>
     <div class="fg"><label class="lbl">Tarifa por m²</label><div class="fr"><input type="number" id="m2Rate" value="" placeholder="0" min="1" class="mid" oninput="calc()"><span class="fv" id="cSym">GTQ/m²</span></div></div>
   </div>
-  <div class="cur-fixed-row" id="curFixedRow">
+  <div class="cur-fixed-row" id="curFixedRow" style="margin-bottom:14px">
     <span class="cur-fixed-label">Moneda del estudio</span>
     <span class="cur-fixed-value" id="curFixedValue">GTQ</span>
     <span class="cur-fixed-hint">Se define en Ajustes</span>
   </div>
-</div>
 
-<div class="sc">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem">
-    <span class="pl p1">Anteproyecto</span>
-    <label class="tog"><input type="checkbox" id="fase1On" checked onchange="toggleFase1()"><span class="tog-sl"></span></label>
-  </div>
   <div id="fase1Body">
     <div class="r2">
       <div>
@@ -3562,7 +3568,11 @@ code.emp-tag{font-family:var(--font-mono)}
 </div>
 
 <div class="sc">
-  <span class="pl p3" style="margin-bottom:.75rem;display:inline-block">Colaboradores</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+    <span class="pl p3" style="display:inline-block">Colaboradores</span>
+    <label class="tog" style="margin:0" title="Mostrar / ocultar esta sección"><input type="checkbox" id="col_colab" data-colapso="colab" checked onchange="toggleColapso('colab')"><span class="tog-sl"></span></label>
+  </div>
+  <div id="colbody_colab">
   <p class="nt" style="margin:.2rem 0 .9rem">Asigná uno o varios colaboradores por ruta. Cada uno puede cobrarse por porcentaje del honorario, monto fijo, o por planos asignados.</p>
 
   <!-- ═══ MODELADO 3D (F1) ═══ -->
@@ -3622,10 +3632,96 @@ code.emp-tag{font-family:var(--font-mono)}
     <div id="colF1Row"><span id="colF1BudgetPct"></span><div id="colF1BudgetBar"></div><div id="colF1Warn"></div></div>
     <div id="colPlanosRow"></div><div id="colF2Warn"></div>
   </div>
+  </div>
+</div>
+
+<!-- Botón de acceso a Tiempos al final del Cotizador -->
+<button id="btnVerTiempos" onclick="toggleTiempos()" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 18px;font-size:14px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-lg);background:var(--surface);color:var(--text);cursor:pointer;margin-top:.75rem;margin-bottom:1.25rem">
+  <span style="display:flex;align-items:center;gap:9px">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Configurar tiempos del proyecto
+  </span>
+  <svg id="btnTiemposChevron" width="14" height="14" viewBox="0 0 14 14" fill="none" style="transition:transform .2s"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<!-- Sección Tiempos — embebida en el Cotizador -->
+<div id="secTiempos" style="display:none;margin-top:.75rem">
+
+<!-- Inputs ocultos de compatibilidad JS -->
+<input type="hidden" id="calProjName">
+<input type="hidden" id="calClientName">
+<input type="hidden" id="sprintDur" value="2">
+<span id="sprintDurV" style="display:none">2 sem</span>
+
+<div class="sc">
+  <!-- Header: título + indicadores de fase (F1/F2) -->
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:.75rem">
+    <div class="sc-title" style="margin:0">Editor de sprints</div>
+    <div style="display:flex;gap:6px;flex-shrink:0">
+      <div id="calFaseF1Indicator"><span class="pl p1" style="font-size:9px" id="calF1Badge">F1 ON</span></div>
+      <div id="calFaseF2Indicator"><span class="pl p2" style="font-size:9px" id="calF2Badge">F2 ON</span></div>
+    </div>
+  </div>
+
+  <!-- Fechas del proyecto -->
+  <div class="r2" style="margin-bottom:1rem">
+    <div>
+      <label class="lbl">Fecha de inicio del proyecto</label>
+      <input type="text" id="projStart" placeholder="DD/MM/AAAA" maxlength="10"
+        oninput="onProjStartChange();if(typeof saveDraft==='function')saveDraft()"
+        style="font-family:var(--font-mono)">
+    </div>
+    <div>
+      <label class="lbl" style="display:flex;align-items:center;gap:6px">
+        Fecha de entrega final
+        <button onclick="recalcProjEnd()" title="Recalcular desde duración de sprints"
+          style="font-size:9px;padding:1px 7px;border:0.5px solid var(--border-2);border-radius:var(--r-sm);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">↺ recalc</button>
+      </label>
+      <input type="text" id="projEnd" placeholder="DD/MM/AAAA" maxlength="10"
+        oninput="_projEndManual=true;renderAll()"
+        style="font-family:var(--font-mono)">
+    </div>
+  </div>
+
+  <!-- Botones de agregar sprint -->
+  <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem">
+    <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('f1')">+ Sprint F1</button>
+    <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('f2')">+ Sprint F2</button>
+    <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px;border-color:rgba(224,123,46,0.35);color:#E07B2E" onclick="addSprint('pe')">+ Pre entrega</button>
+    <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('hito')">+ Hito</button>
+  </div>
+  <p class="nt" style="margin-bottom:.75rem">Nombrá cada sprint, seleccioná sus entregables y marcá si requiere aprobación del cliente.</p>
+  <div id="sprintEditor"></div>
 </div>
 
 <div class="sc">
-  <span class="pl p3" style="margin-bottom:.75rem;display:inline-block">Costos internos</span>
+  <div class="view-tabs">
+    <button class="vtab active" id="tab-tl" onclick="switchView('tl')">Línea de tiempo</button>
+    <button class="vtab" id="tab-cv" onclick="switchView('cv')">Vista cliente</button>
+  </div>
+  <div id="view-tl">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+    <span style="font-size:11px;color:var(--text-3)">Línea de tiempo</span>
+    <div style="display:flex;gap:3px">
+      <button onclick="tlSetZoom('day')"     id="tlz-day"     style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Día</button>
+      <button onclick="tlSetZoom('week')"    id="tlz-week"    style="padding:3px 8px;font-size:10px;border:0.5px solid var(--accent);border-radius:var(--r-md);background:rgba(212,168,67,0.08);color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Sem</button>
+      <button onclick="tlSetZoom('month')"   id="tlz-month"   style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Mes</button>
+      <button onclick="tlSetZoom('quarter')" id="tlz-quarter" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Trim</button>
+    </div>
+  </div>
+  <div id="timelineContent"></div>
+</div>
+  <div id="view-cv" style="display:none"><div id="clienteContent"></div></div>
+</div>
+
+</div><!-- /secTiempos -->
+
+<div class="sc">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+    <span class="pl p3" style="display:inline-block">Costos internos</span>
+    <label class="tog" style="margin:0" title="Mostrar / ocultar esta sección"><input type="checkbox" id="col_cint" data-colapso="cint" checked onchange="toggleColapso('cint')"><span class="tog-sl"></span></label>
+  </div>
+  <div id="colbody_cint">
   <p class="nt" style="margin:.4rem 0 .75rem">Costos fijos del proyecto — se descuentan de tu utilidad</p>
   <div class="cost-row"><span style="color:var(--text-2)">Revit</span><div class="fr" style="gap:6px"><input type="number" id="cRevit" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
   <div class="cost-row"><span style="color:var(--text-2)">D5 Render</span><div class="fr" style="gap:6px"><input type="number" id="cD5" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
@@ -3635,6 +3731,7 @@ code.emp-tag{font-family:var(--font-mono)}
   <div class="cost-row"><span style="color:var(--text-2)">Viáticos / otros</span><div class="fr" style="gap:6px"><input type="number" id="cViat" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
   <div class="sep"></div>
   <div class="metric"><p class="ml">Total costos internos</p><p class="mv" id="ohAmt">—</p></div>
+  </div>
 </div>
 
 <div class="sc">
@@ -3651,7 +3748,7 @@ code.emp-tag{font-family:var(--font-mono)}
   </div>
 
   <!-- Cuerpo colapsable -->
-  <div id="facturaBody" style="opacity:.35;pointer-events:none">
+  <div id="facturaBody" style="display:none">
 
     <!-- IVA -->
     <div style="padding:10px 14px;background:rgba(255,255,255,0.03);border:0.5px solid var(--border);border-radius:var(--r-md);margin-bottom:10px">
@@ -3700,7 +3797,7 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
     <label class="tog"><input type="checkbox" id="capOn" onchange="toggleCap();if(typeof saveDraft==='function')saveDraft()"><span class="tog-sl"></span></label>
   </div>
-  <div id="capBody" style="opacity:.35;pointer-events:none">
+  <div id="capBody" style="display:none">
     <div class="fr" style="margin-bottom:.6rem">
       <input type="range" id="capRate" min="0" max="50" step="1" value="12" oninput="calc()">
       <span class="fv" id="capRateV">12%</span>
@@ -3722,10 +3819,10 @@ code.emp-tag{font-family:var(--font-mono)}
 
 
 <div class="sc">
-  <span class="pl p6" style="margin-bottom:.75rem;display:inline-block">Anticipo y saldo</span>
+  <span class="pl p6" style="margin-bottom:.75rem;display:inline-block">Anticipo y cobros</span>
   <div style="margin-top:.65rem">
-    <div class="fr" style="margin-bottom:.5rem"><span class="lbl" style="margin:0;min-width:170px">Anticipo al inicio</span><input type="range" id="pctAntic" min="0" max="90" step="5" value="30" oninput="calc()" style="flex:1"><span class="fv" id="pctAnticV">30%</span></div>
-    <div class="fr" style="margin-bottom:.5rem" id="rowPctF1"><span class="lbl" style="margin:0;min-width:170px">Al entregar Anteproyecto</span><input type="range" id="pctF1pay" min="0" max="90" step="5" value="40" oninput="calc()" style="flex:1"><span class="fv" id="pctF1V">40%</span></div>
+    <div class="fr" style="margin-bottom:.5rem"><span class="lbl" style="margin:0;width:195px;flex-shrink:0;white-space:nowrap">Anticipo para iniciar</span><input type="range" id="pctAntic" min="0" max="90" step="5" value="30" oninput="calc()" style="flex:1;min-width:0"><span class="fv" id="pctAnticV" style="flex-shrink:0">30%</span></div>
+    <div class="fr" style="margin-bottom:.5rem" id="rowPctF1"><span class="lbl" style="margin:0;width:195px;flex-shrink:0;white-space:nowrap">Al entregar Anteproyecto</span><input type="range" id="pctF1pay" min="0" max="90" step="5" value="40" oninput="calc()" style="flex:1;min-width:0"><span class="fv" id="pctF1V" style="flex-shrink:0">40%</span></div>
     <div class="pct-bar"><div class="pct-a" id="segA" style="width:30%"></div><div class="pct-m" id="segM" style="width:40%"></div><div class="pct-s" id="segS" style="width:30%"></div></div>
     <div class="pago-grid">
       <div class="pago-box pa"><div class="pago-lbl">Anticipo</div><div class="pago-amt" id="amtAntic">—</div><div class="pago-sub" id="subAntic"></div></div>
@@ -3759,109 +3856,17 @@ code.emp-tag{font-family:var(--font-mono)}
   <div class="sum-row" style="font-weight:500"><span>Utilidad neta</span><span class="sv-g" id="sUtil">—</span></div>
 </div>
 
-<!-- Botón de acceso a Tiempos al final del Cotizador -->
-<button id="btnVerTiempos" onclick="toggleTiempos()" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 18px;font-size:14px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-lg);background:var(--surface);color:var(--text);cursor:pointer;margin-top:.75rem">
-  <span style="display:flex;align-items:center;gap:9px">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a6 6 0 100 12A6 6 0 008 2zM8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Configurar tiempos del proyecto
-  </span>
-  <svg id="btnTiemposChevron" width="14" height="14" viewBox="0 0 14 14" fill="none" style="transition:transform .2s"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
 
-<!-- Sección Tiempos — embebida en el Cotizador -->
-<div id="secTiempos" style="display:none;margin-top:.75rem">
 
-<div class="sync-banner">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v2M7 11v2M1 7h2M11 7h2M2.93 2.93l1.41 1.41M9.66 9.66l1.41 1.41M2.93 11.07l1.41-1.41M9.66 4.34l1.41-1.41" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-  <span>Los datos del cliente, proyecto y fases se toman directamente del Cotizador.</span>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border);margin-bottom:1.25rem">
+  <button onclick="genCotizacion()" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;font-size:14px;font-weight:500;border:none;border-radius:var(--r-lg);background:var(--accent);color:#1C1C1C;cursor:pointer">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 6V2h8v4M4 12H3a1 1 0 01-1-1V7a1 1 0 011-1h10a1 1 0 011 1v4a1 1 0 01-1 1h-1M4 9h8v5H4V9z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Generar cotización formal
+  </button>
+  <button onclick="showPage('ing');showFormCot()" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px 16px;font-size:13px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-lg);background:var(--surface);color:var(--text);cursor:pointer">
+    + Registrar cotización aprobada en Proyectos
+  </button>
 </div>
-
-<!-- Inputs ocultos de compatibilidad JS -->
-<input type="hidden" id="calProjName">
-<input type="hidden" id="calClientName">
-<input type="hidden" id="sprintDur" value="2">
-<span id="sprintDurV" style="display:none">2 sem</span>
-
-<div class="sc">
-  <div class="sc-title">Configuración del proyecto</div>
-
-  <!-- Nombre y cliente como continuación del Cotizador -->
-  <div id="calProjClientPill" style="display:flex;align-items:center;gap:10px;padding:10px 13px;margin-bottom:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md)">
-    <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style="color:var(--accent);flex-shrink:0"><path d="M7 1v2M7 11v2M1 7h2M11 7h2M2.93 2.93l1.41 1.41M9.66 9.66l1.41 1.41M2.93 11.07l1.41-1.41M9.66 4.34l1.41-1.41" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-    <div style="flex:1;min-width:0">
-      <span id="calProjNameDisplay" style="font-size:13px;font-weight:500;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">—</span>
-      <span id="calClientNameDisplay" style="font-size:11px;color:var(--text-3)">—</span>
-    </div>
-    <div style="display:flex;gap:6px;flex-shrink:0">
-      <div id="calFaseF1Indicator"><span class="pl p1" style="font-size:9px" id="calF1Badge">F1 ON</span></div>
-      <div id="calFaseF2Indicator"><span class="pl p2" style="font-size:9px" id="calF2Badge">F2 ON</span></div>
-    </div>
-  </div>
-
-  <!-- Fechas -->
-  <div class="r2">
-    <div>
-      <label class="lbl">Fecha de inicio del proyecto</label>
-      <input type="text" id="projStart" placeholder="DD/MM/AAAA" maxlength="10"
-        oninput="onProjStartChange();if(typeof saveDraft==='function')saveDraft()"
-        style="font-family:var(--font-mono)">
-    </div>
-    <div>
-      <label class="lbl" style="display:flex;align-items:center;gap:6px">
-        Fecha de entrega final
-        <button onclick="recalcProjEnd()" title="Recalcular desde duración de sprints"
-          style="font-size:9px;padding:1px 7px;border:0.5px solid var(--border-2);border-radius:var(--r-sm);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">↺ recalc</button>
-      </label>
-      <input type="text" id="projEnd" placeholder="DD/MM/AAAA" maxlength="10"
-        oninput="_projEndManual=true;renderAll()"
-        style="font-family:var(--font-mono)">
-    </div>
-  </div>
-</div>
-
-<div class="sc">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
-    <div class="sc-title" style="margin:0">Editor de sprints</div>
-    <div style="display:flex;gap:5px">
-      <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('f1')">+ Sprint F1</button>
-      <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('f2')">+ Sprint F2</button>
-      <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px;border-color:rgba(224,123,46,0.35);color:#E07B2E" onclick="addSprint('pe')">+ Pre entrega</button>
-      <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('hito')">+ Hito</button>
-    </div>
-  </div>
-  <p class="nt" style="margin-bottom:.75rem">Nombrá cada sprint, seleccioná sus entregables y marcá si requiere aprobación del cliente.</p>
-  <div id="sprintEditor"></div>
-</div>
-
-<div class="sc">
-  <div class="view-tabs">
-    <button class="vtab active" id="tab-tl" onclick="switchView('tl')">Línea de tiempo</button>
-    <button class="vtab" id="tab-cv" onclick="switchView('cv')">Vista cliente</button>
-  </div>
-  <div id="view-tl">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
-    <span style="font-size:11px;color:var(--text-3)">Línea de tiempo</span>
-    <div style="display:flex;gap:3px">
-      <button onclick="tlSetZoom('day')"     id="tlz-day"     style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Día</button>
-      <button onclick="tlSetZoom('week')"    id="tlz-week"    style="padding:3px 8px;font-size:10px;border:0.5px solid var(--accent);border-radius:var(--r-md);background:rgba(212,168,67,0.08);color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Sem</button>
-      <button onclick="tlSetZoom('month')"   id="tlz-month"   style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Mes</button>
-      <button onclick="tlSetZoom('quarter')" id="tlz-quarter" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Trim</button>
-    </div>
-  </div>
-  <div id="timelineContent"></div>
-</div>
-  <div id="view-cv" style="display:none"><div id="clienteContent"></div></div>
-</div>
-
-<button onclick="genCotizacion()" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;font-size:14px;font-weight:500;border:none;border-radius:var(--r-lg);background:var(--accent);color:#1C1C1C;cursor:pointer;margin-top:.5rem">
-  <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 6V2h8v4M4 12H3a1 1 0 01-1-1V7a1 1 0 011-1h10a1 1 0 011 1v4a1 1 0 01-1 1h-1M4 9h8v5H4V9z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  Generar cotización formal
-</button>
-<button onclick="showPage('ing');showFormCot()" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px 16px;font-size:13px;font-weight:500;border:0.5px solid var(--border-2);border-radius:var(--r-lg);background:var(--surface);color:var(--text);cursor:pointer;margin-top:.5rem">
-  + Registrar cotización aprobada en Proyectos
-</button>
-
-</div><!-- /secTiempos -->
 
 </div><!-- /pg-calc -->
 
@@ -4021,12 +4026,70 @@ code.emp-tag{font-family:var(--font-mono)}
   <!-- Tabs internos -->
   <div style="display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:0">
     <button onclick="adminShowTab('finanzas')" class="admin-tab active" id="atab-finanzas">💰 Finanzas</button>
+    <button onclick="adminShowTab('contaduria')" class="admin-tab" id="atab-contaduria">📘 Contaduría</button>
     <button onclick="adminShowTab('colab')" class="admin-tab" id="atab-colab">👷 Arkiworkers</button>
         <button onclick="adminShowTab('organigrama')" class="admin-tab" id="atab-organigrama">🏛 Organigrama</button>
   </div>
 
   <!-- Tab: Ingresos -->
   <div id="atab-body-finanzas" class="admin-tab-body"></div>
+
+  <!-- Tab: Contaduría (referencia del cálculo) -->
+  <div id="atab-body-contaduria" class="admin-tab-body" style="display:none">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:13px;font-weight:500;color:var(--text);font-family:var(--font-display)">Cómo se calcula la utilidad neta</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px;max-width:560px">Referencia del motor de cálculo del Cotizador. Para vos y tu contador: define qué entra, qué resta y en qué orden.</div>
+      </div>
+      <button onclick="genPDFContaduria()" style="flex-shrink:0;padding:6px 13px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">📄 Exportar PDF</button>
+    </div>
+
+    <!-- Fórmula -->
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Fórmula</div>
+      <div style="background:var(--accent-subtle);border:1px solid var(--border-accent);border-radius:var(--r-md);padding:14px 16px;font-family:var(--font-mono);font-size:13px;color:var(--text);line-height:1.6;text-align:center">
+        Utilidad neta = Subtotal − Colaboradores − Costos internos − ISR − Capitalización
+      </div>
+      <p class="nt" style="margin:.75rem 0 0">El <b style="color:var(--text-2)">Subtotal</b> son tus honorarios sin IVA (Anteproyecto + Planimetrías). Cada término posterior se le resta en ese orden.</p>
+    </div>
+
+    <!-- Paso a paso -->
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Paso a paso</div>
+      <div id="conta-steps"></div>
+    </div>
+
+    <!-- Ejemplo -->
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Ejemplo</div>
+      <p class="nt" style="margin:0 0 10px">100 m² · tarifa Q500/m² · monto adicional Q2,000 · 2 planos (3×Q400 y 2×Q500) · ISR 7% · Capitalización 12%.</p>
+      <div id="conta-ejemplo"></div>
+    </div>
+
+    <!-- Aclaraciones clave -->
+    <div class="sc">
+      <div class="sc-title">Lo que NO entra en la utilidad</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:9px;align-items:flex-start">
+          <span style="flex-shrink:0;color:var(--accent);font-size:13px;line-height:1.4">•</span>
+          <p style="font-family:var(--font-body);font-size:12px;color:var(--text-2);line-height:1.55;margin:0"><b style="color:var(--text)">El IVA no es utilidad.</b> Se le cobra al cliente y se traslada al fisco (débito − crédito). La utilidad siempre se calcula sobre el Subtotal sin IVA, aunque el total que paga el cliente sí lo incluya.</p>
+        </div>
+        <div style="display:flex;gap:9px;align-items:flex-start">
+          <span style="flex-shrink:0;color:var(--accent);font-size:13px;line-height:1.4">•</span>
+          <p style="font-family:var(--font-body);font-size:12px;color:var(--text-2);line-height:1.55;margin:0"><b style="color:var(--text)">"Anticipo y cobros" reparte el total, no la utilidad.</b> Los porcentajes (anticipo / entrega F1 / saldo) definen <i>cuándo</i> entra el dinero; su suma es el total a cobrar (con IVA), no cambian cuánta utilidad hacés.</p>
+        </div>
+        <div style="display:flex;gap:9px;align-items:flex-start">
+          <span style="flex-shrink:0;color:var(--accent);font-size:13px;line-height:1.4">•</span>
+          <p style="font-family:var(--font-body);font-size:12px;color:var(--text-2);line-height:1.55;margin:0"><b style="color:var(--text)">La capitalización es una reserva, no un gasto deducible.</b> Por eso el ISR se calcula antes de restar la capitalización. El ISR 7% grava los ingresos (Subtotal); el ISR 25% grava la utilidad operativa (Subtotal − colaboradores − costos internos).</p>
+        </div>
+        <div style="display:flex;gap:9px;align-items:flex-start">
+          <span style="flex-shrink:0;color:var(--accent);font-size:13px;line-height:1.4">•</span>
+          <p style="font-family:var(--font-body);font-size:12px;color:var(--text-2);line-height:1.55;margin:0">La utilidad pre-capitalización nunca baja de cero (si los costos superan los ingresos, se muestra 0).</p>
+        </div>
+      </div>
+      <p class="nt" style="margin:14px 0 0;padding-top:12px;border-top:0.5px solid var(--border);font-size:10px">Régimen fiscal Guatemala · IVA 12% · ISR simplificado (7% s/ingresos) o sobre utilidad (25%). Esta sección es una guía del cálculo, no asesoría contable. Validá los criterios con tu contador.</p>
+    </div>
+  </div>
 
   <!-- Tab: Arkiworkers -->
   <div id="atab-body-colab" class="admin-tab-body" style="display:none">
@@ -4645,6 +4708,14 @@ code.emp-tag{font-family:var(--font-mono)}
   <div id="ing-term-body" style="display:none;margin-top:12px"></div>
 </div>
 
+<div class="sc" id="sc-archivados" style="display:none;opacity:.9">
+  <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleArchivados()">
+    <div class="sc-title" style="margin:0">🗄 Proyectos Archivados <span id="ing-arch-count" style="color:var(--text-3);font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--font-body);font-size:11px;margin-left:8px"></span></div>
+    <span id="ing-arch-chev" style="font-size:11px;color:var(--text-3);transition:transform .2s">▶</span>
+  </div>
+  <div id="ing-arch-body" style="display:none;margin-top:12px"></div>
+</div>
+
 </div><!-- /pg-ing -->
 
 
@@ -5109,9 +5180,13 @@ function renderPlanosRows(){
     const filas = grupo.planos.map((name, idxLocal) => {
       // Calcular el índice global (1..32) para mantener compat con los IDs qp1, cp1, etc.
       const globalIdx = PLANO_NAMES.indexOf(name) + 1;
-      return `<div class="plano-row" data-grupo="${grupo.key}">
+      return `<div class="plano-row plano-off" data-grupo="${grupo.key}" data-plano-idx="${globalIdx}">
         <span>${escapeHtmlK(name)}</span>
-        <input type="number" id="qp${globalIdx}" value="" placeholder="0" min="0" oninput="calc()" title="Cantidad">
+        <div class="plano-qty">
+          <button type="button" onclick="stepPlano(${globalIdx},-1)" title="Restar" aria-label="Restar">−</button>
+          <input type="number" id="qp${globalIdx}" value="" placeholder="0" min="0" oninput="calc()" title="Cantidad">
+          <button type="button" onclick="stepPlano(${globalIdx},1)" title="Sumar" aria-label="Sumar">+</button>
+        </div>
         <input type="number" id="cp${globalIdx}" value="${grupo.defaultCost}" min="0" oninput="calc()" title="Costo unitario (Q)">
       </div>`;
     }).join('');
@@ -5130,6 +5205,51 @@ function renderPlanosRows(){
   setTimeout(actualizarContadoresPlanos, 50);
 }
 
+// ─── Colapso independiente de secciones del cotizador ───
+// Cada sección tiene un checkbox col_<key> y un cuerpo colbody_<key>.
+// Al apagar el toggle, el cuerpo se contrae (display:none) y queda solo el título.
+// El estado se guarda en localStorage (avit_colapsos).
+function _colapsosLoad(){
+  try { return JSON.parse(localStorage.getItem('avit_colapsos') || '{}') || {}; }
+  catch(e){ return {}; }
+}
+function _colapsosSave(st){
+  try { localStorage.setItem('avit_colapsos', JSON.stringify(st)); } catch(e){}
+}
+function toggleColapso(key){
+  const chk  = document.getElementById('col_'+key);
+  const body = document.getElementById('colbody_'+key);
+  if(!chk || !body) return;
+  const open = chk.checked;
+  body.style.display = open ? '' : 'none';
+  const st = _colapsosLoad(); st[key] = open; _colapsosSave(st);
+}
+// Restaura el estado guardado de todas las secciones colapsables. Default: abierto.
+function restaurarColapsos(){
+  const st = _colapsosLoad();
+  document.querySelectorAll('[data-colapso]').forEach(chk=>{
+    const key = chk.getAttribute('data-colapso');
+    const body = document.getElementById('colbody_'+key);
+    if(!body) return;
+    const open = (key in st) ? !!st[key] : true;   // por default, expandido
+    chk.checked = open;
+    body.style.display = open ? '' : 'none';
+  });
+}
+window.toggleColapso = toggleColapso;
+window.restaurarColapsos = restaurarColapsos;
+
+// Sube o baja la cantidad de un plano desde las flechitas (+/−). No baja de 0.
+function stepPlano(idx, delta){
+  const el = document.getElementById('qp'+idx);
+  if(!el) return;
+  const cur = parseInt(el.value) || 0;
+  const next = Math.max(0, cur + delta);
+  el.value = next;
+  if(typeof calc === 'function') calc();
+}
+window.stepPlano = stepPlano;
+
 // Actualiza el contador de planos seleccionados por grupo
 function actualizarContadoresPlanos(){
   PLANO_GROUPS.forEach(grupo => {
@@ -5143,6 +5263,13 @@ function actualizarContadoresPlanos(){
       const c = parseFloat((document.getElementById('cp'+globalIdx)||{}).value) || 0;
       totalQ += q;
       totalCost += q * c;
+      // Activar/atenuar la fila del plano según su cantidad
+      const row = document.querySelector('.plano-row[data-plano-idx="'+globalIdx+'"]');
+      if(row){
+        const on = q > 0;
+        row.classList.toggle('plano-on', on);
+        row.classList.toggle('plano-off', !on);
+      }
     });
     if(totalQ > 0){
       el.textContent = `${totalQ} planos · Q${totalCost.toLocaleString('es-GT')}`;
@@ -5844,7 +5971,7 @@ function adminFechaEnRango(fecha){
 
 /* ── Construir filas de ingresos desde avit_cots ─────────── */
 function adminGetIngresos(){
-  const cots = loadCots ? loadCots() : [];
+  const cots = (loadCots ? loadCots() : []).filter(c=>!c.archivado);
   const rows = [];
   cots.forEach(c=>{
     // Solo cotizaciones con algún cobro
@@ -6127,7 +6254,7 @@ function _cotColaboradoresDesglose(c){
 window._cotColaboradoresDesglose=_cotColaboradoresDesglose;
 
 function adminGetColaboradores(){
-  const cots = loadCots ? loadCots() : [];
+  const cots = (loadCots ? loadCots() : []).filter(c=>!c.archivado);
   const rows = [];
   cots.forEach(c=>{
     if(!c.cobrado) return;
@@ -6573,16 +6700,131 @@ window.finSocioEdit=finSocioEdit;
 
 /* ── Tab navigation ───────────────────────────────────────── */
 function adminShowTab(tab){
-  ['finanzas','colab','organigrama'].forEach(t=>{
+  ['finanzas','contaduria','colab','organigrama'].forEach(t=>{
     const body=document.getElementById('atab-body-'+t);
     const btn =document.getElementById('atab-'+t);
     if(body) body.style.display=t===tab?'block':'none';
     if(btn){ btn.classList.toggle('active',t===tab); }
   });
   if(tab==='finanzas')  adminRenderFinanzas();
+  if(tab==='contaduria') adminRenderContaduria();
   if(tab==='colab'){    adminRenderColab(); if(typeof awRender==='function') awRender(); }
 }
 window.adminShowTab=adminShowTab;
+
+/* ── Contaduría: referencia del cálculo de utilidad neta ── */
+function adminRenderContaduria(){
+  const steps = [
+    ['1','Honorario Anteproyecto', 'm² × tarifa/m² + monto adicional', 'Tus ingresos por la fase de diseño.'],
+    ['2','Honorario Planimetrías', 'Σ (cantidad de planos × costo por plano) + timbres', 'Ingresos por la fase de planos constructivos.'],
+    ['3','Subtotal (ingresos)', 'Anteproyecto + Planimetrías', 'Base de todo el cálculo, sin IVA.'],
+    ['4','− Colaboradores', 'por % del honorario, monto fijo o por láminas', 'Lo que les pagás a quienes trabajan el proyecto.'],
+    ['5','− Costos internos', 'Revit, D5, Canva, luz, gasolina, viáticos…', 'Costos fijos directos del proyecto (suma directa).'],
+    ['6','− ISR', '7% del Subtotal · ó · 25% de (Subtotal − colaboradores − costos internos)', 'Solo si emitís factura.'],
+    ['7','= Utilidad pre-capitalización', 'con piso en 0 (nunca negativa)', 'Lo que queda antes de reservar capital.'],
+    ['8','− Capitalización', '% sobre la utilidad pre-capitalización', 'Reserva interna para el estudio (opcional).'],
+    ['9','= Utilidad neta', 'resultado final', 'Lo que realmente te queda.'],
+  ];
+  const stepHtml = steps.map(([n,t,f,d])=>{
+    const isResult = t.startsWith('=');
+    return `<div style="display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--border)">
+      <div style="flex-shrink:0;width:22px;height:22px;border-radius:50%;background:${isResult?'var(--accent)':'var(--bg-surface)'};border:1px solid ${isResult?'var(--accent)':'var(--border)'};color:${isResult?'var(--text-on-accent)':'var(--text-3)'};display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;font-weight:600">${n}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12.5px;font-weight:500;color:var(--text);font-family:var(--font-display)">${t}</div>
+        <div style="font-size:11px;color:var(--accent);font-family:var(--font-mono);margin:2px 0">${f}</div>
+        <div style="font-size:11px;color:var(--text-3)">${d}</div>
+      </div>
+    </div>`;
+  }).join('');
+  const stepsEl = document.getElementById('conta-steps');
+  if(stepsEl) stepsEl.innerHTML = stepHtml;
+
+  // Ejemplo numérico (coincide con la auditoría)
+  const ej = [
+    ['Honorario Anteproyecto', '100 × 500 + 2,000', 'Q 52,000'],
+    ['Honorario Planimetrías', '3×400 + 2×500', 'Q 2,200'],
+    ['Subtotal', '52,000 + 2,200', 'Q 54,200'],
+    ['− ISR (7% del Subtotal)', '54,200 × 7%', '− Q 3,794'],
+    ['= Utilidad pre-capitalización', '54,200 − 3,794', 'Q 50,406'],
+    ['− Capitalización (12%)', '50,406 × 12%', '− Q 6,049'],
+    ['= Utilidad neta', '50,406 − 6,049', 'Q 44,357'],
+  ];
+  const ejHtml = ej.map(([l,c,v])=>{
+    const isResult = l.startsWith('=');
+    return `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-bottom:0.5px solid var(--border)">
+      <span style="font-size:12px;color:${isResult?'var(--text)':'var(--text-2)'};font-weight:${isResult?'600':'400'}">${l}</span>
+      <span style="font-size:10.5px;color:var(--text-3);font-family:var(--font-mono);flex:1;text-align:right;padding-right:8px">${c}</span>
+      <span style="font-size:12.5px;font-family:var(--font-mono);font-weight:${isResult?'600':'400'};color:${isResult?'var(--accent)':'var(--text-2)'};min-width:88px;text-align:right">${v}</span>
+    </div>`;
+  }).join('');
+  const ejEl = document.getElementById('conta-ejemplo');
+  if(ejEl) ejEl.innerHTML = ejHtml;
+}
+window.adminRenderContaduria = adminRenderContaduria;
+
+/* Exporta la referencia de Contaduría como PDF imprimible */
+function genPDFContaduria(){
+  const empresa = (typeof _empresaN==='function') ? _empresaN() : 'Estudio Avit';
+  const fecha = new Date().toLocaleDateString('es-GT',{day:'2-digit',month:'long',year:'numeric'});
+  const steps = [
+    ['1','Honorario Anteproyecto','m² × tarifa/m² + monto adicional'],
+    ['2','Honorario Planimetrías','Σ (cantidad × costo por plano) + timbres'],
+    ['3','Subtotal (ingresos)','Anteproyecto + Planimetrías — sin IVA'],
+    ['4','− Colaboradores','por % del honorario, monto fijo o por láminas'],
+    ['5','− Costos internos','Revit, D5, Canva, luz, gasolina, viáticos…'],
+    ['6','− ISR','7% del Subtotal · ó · 25% de (Subtotal − colab − costos internos)'],
+    ['7','= Utilidad pre-capitalización','con piso en 0'],
+    ['8','− Capitalización','% sobre la utilidad pre-capitalización'],
+    ['9','= Utilidad neta','resultado final'],
+  ];
+  const ej = [
+    ['Honorario Anteproyecto','100 × 500 + 2,000','Q 52,000'],
+    ['Honorario Planimetrías','3×400 + 2×500','Q 2,200'],
+    ['Subtotal','52,000 + 2,200','Q 54,200'],
+    ['− ISR (7% del Subtotal)','54,200 × 7%','− Q 3,794'],
+    ['= Utilidad pre-capitalización','54,200 − 3,794','Q 50,406'],
+    ['− Capitalización (12%)','50,406 × 12%','− Q 6,049'],
+    ['= Utilidad neta','50,406 − 6,049','Q 44,357'],
+  ];
+  const row = (a,b,c)=>`<tr><td style="padding:6px 8px;border-bottom:1px solid #eee">${a}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;color:#888;font-family:monospace;font-size:10px">${b}</td>${c!==undefined?`<td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;font-family:monospace;font-weight:${String(a).startsWith('=')?'700':'400'}">${c}</td>`:''}</tr>`;
+  const w = window.open('', '_blank');
+  if(!w){ alert('Permití las ventanas emergentes para exportar el PDF.'); return; }
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Contaduría — ${empresa}</title>
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-size:12px;line-height:1.6;padding:28px 32px}
+      h1{font-size:18px;font-weight:600;margin-bottom:2px}
+      .sub{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px}
+      h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#B8861A;margin:20px 0 8px;border-bottom:2px solid #1a1a18;padding-bottom:4px}
+      .formula{background:#faf6ec;border:1px solid #e6d9b8;border-radius:6px;padding:12px 14px;font-family:monospace;font-size:12px;text-align:center;margin:8px 0}
+      table{width:100%;border-collapse:collapse;margin-top:4px}
+      .note{font-size:10px;color:#777;margin-top:6px}
+      ul{margin:6px 0 0 18px}
+      li{font-size:11px;color:#444;margin-bottom:4px}
+      @media print{body{padding:0}}
+    </style></head><body>
+    <h1>Cómo se calcula la Utilidad neta</h1>
+    <div class="sub">${empresa} · Arkiboard · ${fecha}</div>
+    <h2>Fórmula</h2>
+    <div class="formula">Utilidad neta = Subtotal − Colaboradores − Costos internos − ISR − Capitalización</div>
+    <h2>Paso a paso</h2>
+    <table>${steps.map(s=>row(s[1],s[2])).join('')}</table>
+    <h2>Ejemplo</h2>
+    <p class="note">100 m² · tarifa Q500/m² · adicional Q2,000 · 2 planos (3×Q400 y 2×Q500) · ISR 7% · Capitalización 12%.</p>
+    <table>${ej.map(e=>row(e[0],e[1],e[2])).join('')}</table>
+    <h2>Lo que NO entra en la utilidad</h2>
+    <ul>
+      <li><b>El IVA no es utilidad</b> — se le cobra al cliente y se traslada al fisco (débito − crédito). La utilidad se calcula sobre el Subtotal sin IVA.</li>
+      <li><b>"Anticipo y cobros" reparte el total, no la utilidad</b> — los % definen cuándo entra el dinero; su suma es el total a cobrar (con IVA).</li>
+      <li><b>La capitalización es una reserva, no un gasto deducible</b> — por eso el ISR se calcula antes de restarla.</li>
+      <li>La utilidad pre-capitalización nunca baja de cero.</li>
+    </ul>
+    <p class="note" style="margin-top:16px">Régimen fiscal Guatemala · IVA 12% · ISR simplificado (7% s/ingresos) o sobre utilidad (25%). Guía del cálculo, no asesoría contable.</p>
+    </body></html>`);
+  w.document.close();
+  setTimeout(()=>{ try{ w.focus(); w.print(); }catch(e){} }, 300);
+}
+window.genPDFContaduria = genPDFContaduria;
 
 /* ── Formulario costos manuales ───────────────────────────── */
 function adminShowFormCosto(tipo, id){
@@ -8114,8 +8356,9 @@ function genPDFPrograma(){
     byCat[cat]=(byCat[cat]||0)+(parseFloat(r.area)||0);
   });
   const totalNet   = Object.values(byLevel).reduce((s,v)=>s+v,0);
-  const tL         = parseFloat(prog.tL)||0;
-  const tA         = parseFloat(prog.tA)||0;
+  const terrOn     = !!prog.tcActive;
+  const tL         = terrOn ? (parseFloat(prog.tL)||0) : 0;
+  const tA         = terrOn ? (parseFloat(prog.tA)||0) : 0;
   const terrArea   = tL*tA;
   const n1Area     = rooms.filter(r=>(r.level||1)===1).reduce((s,r)=>s+(parseFloat(r.area)||0),0);
   const fos        = terrArea>0 ? Math.round(n1Area/terrArea*100) : 0;
@@ -9652,7 +9895,7 @@ function _initSupabase(){
      guardamos un marcador en sessionStorage; al recargar en una pestaña
      nueva sin marcador → cerrar sesión. */
   _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true, flowType: 'implicit' }
+    auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
   });
   return _sb;
 }
@@ -10210,7 +10453,7 @@ function _undoRefrescar(){
   else if(act==='pg-admin')     R('adminRender');
   else if(act==='pg-empresa')   R('renderEmpresa');
   else if(act==='pg-pm')        R('pmRenderAll');
-  else if(act==='pg-calc'){     R('renderPrograma'); R('calc'); }
+  else if(act==='pg-calc'){     R('renderPrograma'); R('calc'); R('restaurarColapsos'); }
   else if(act==='pg-estimado')  R('renderEstimado');
 }
 function deshacer(){
@@ -10257,7 +10500,7 @@ function _authBootRun(){
   /* ¿Llegamos desde el enlace de confirmación de correo?
      Supabase añade type=signup (o recovery/invite) y el access_token en el hash. */
   const _href = window.location.href;
-  const _esConfirmacion = /[#?&]type=(signup|magiclink|invite|email_change)/.test(_href)
+  const _esConfirmacion = /[#?&]type=(signup|magiclink|invite|email_change|recovery)/.test(_href)
                        || (/[#&]access_token=/.test(_href) && /[#?&]type=/.test(_href));
   if(_esConfirmacion){ _mostrarBienvenidaConfirmacion(); }
   if(localStorage.getItem('avit_localMode')==='1'){
@@ -10272,7 +10515,15 @@ function _authBootRun(){
   }
   try{
     const sb=_initSupabase();
-    const {data}=await sb.auth.getSession();
+    let {data}=await sb.auth.getSession();
+    /* PKCE: si volvimos con ?code= pero la sesión aún no está lista,
+       intercambiamos el código explícitamente (Google y correo). */
+    if((!data || !data.session) && /[?&]code=/.test(window.location.href)){
+      try{
+        const r=await sb.auth.exchangeCodeForSession(window.location.href);
+        if(r && r.data && r.data.session){ data={session:r.data.session}; }
+      }catch(ex){ console.warn('[Arkiboard] exchangeCode', ex); }
+    }
     if(data && data.session){
       const keep=localStorage.getItem('avit_keepSession')!=='0';
       const tab =sessionStorage.getItem('avit_tabSession')==='1';
@@ -10475,8 +10726,7 @@ function setVis(id,on){const el=document.getElementById(id);if(!el)return;el.sty
 function toggleCap(){
   const on=document.getElementById('capOn').checked;
   const body=document.getElementById('capBody');
-  body.style.opacity=on?'1':'.35';
-  body.style.pointerEvents=on?'':'none';
+  body.style.display=on?'':'none';
   calc();
 }
 
@@ -10486,7 +10736,7 @@ function toggleFactura(on){
   if(ivaEl) ivaEl.checked = on;
   if(isrEl){ isrEl.checked = on; isrEl.value = on?'1':'0'; }
   const body = document.getElementById('facturaBody');
-  if(body){ body.style.opacity = on?'1':'.35'; body.style.pointerEvents = on?'':'none'; }
+  if(body){ body.style.display = on?'':'none'; }
   if(typeof toggleIsr === 'function') toggleIsr();
   if(typeof calc === 'function') calc();
   if(typeof saveDraft === 'function') saveDraft();
@@ -10498,8 +10748,7 @@ function toggleIsr(){
   // El cuerpo del ISR vive dentro de la tarjeta unificada "Factura"
   const body=document.getElementById('isrBody')||document.getElementById('facturaBody');
   if(body){
-    body.style.opacity=on?'1':'.35';
-    body.style.pointerEvents=on?'':'none';
+    body.style.display=on?'':'none';
   }
   // Highlight active régimen option
   ['isrOpt7Label','isrOpt25Label'].forEach(id=>{
@@ -10511,7 +10760,8 @@ function toggleIsr(){
 
 function toggleFase1(){
   const on=document.getElementById('fase1On').checked;
-  setVis('fase1Body',on);setVis('colF1Row',on);setVis('colRendRow',on);
+  const fb=document.getElementById('fase1Body'); if(fb) fb.style.display=on?'':'none';
+  setVis('colF1Row',on);setVis('colRendRow',on);
   document.getElementById('rowF1r').style.display=on?'flex':'none';
   const rf=document.getElementById('rowPctF1');rf.style.opacity=on?'1':'0.35';rf.style.pointerEvents=on?'':'none';
   document.getElementById('boxF1pay').style.opacity=on?'1':'0.35';
@@ -10520,7 +10770,8 @@ function toggleFase1(){
 }
 function toggleFase2(){
   const on=document.getElementById('fase2On').checked;
-  setVis('fase2Body',on);setVis('colPlanosRow',on);
+  const fb=document.getElementById('fase2Body'); if(fb) fb.style.display=on?'':'none';
+  setVis('colPlanosRow',on);
   document.getElementById('rowF2r').style.display=on?'flex':'none';
   syncToCalendar();calc();
 }
@@ -10564,8 +10815,11 @@ function calc(){
     // Sincronizar sprints F2 con los planos cotizados
     if(typeof sincronizarSprintsF2 === 'function'){
       const cambios = sincronizarSprintsF2();
-      if(cambios && typeof renderAll === 'function'){
-        // Re-render solo si hubo cambios para evitar loop
+      const secT = document.getElementById('secTiempos');
+      const tiemposVisible = secT && secT.style.display !== 'none';
+      // Re-render si hubo cambios de membresía, o si el editor de sprints está
+      // visible (para refrescar en vivo el conteo "X planos" al variar cantidades).
+      if((cambios || tiemposVisible) && typeof renderAll === 'function'){
         setTimeout(renderAll, 10);
       }
     }
@@ -10785,6 +11039,23 @@ function planosCotizados(){
     if(q > 0) out.push(name);
   });
   return out;
+}
+
+// Suma la CANTIDAD total de planos cotizados (valores qp) de un sprint F2,
+// según el grupo al que pertenece. Devuelve el total de planos, no cuántos
+// tipos distintos están seleccionados.
+function cantidadPlanosSprint(sprint){
+  if(!sprint || sprint.type !== 'f2') return 0;
+  const groupKey = grupoDeSprint(sprint.title);
+  const grupo = groupKey ? PLANO_GROUPS.find(g => g.key === groupKey) : null;
+  const nombres = grupo ? grupo.planos : PLANO_NAMES;
+  let total = 0;
+  nombres.forEach(name => {
+    const i = PLANO_NAMES.indexOf(name) + 1;
+    const inp = document.getElementById('qp'+i);
+    total += inp ? (parseFloat(inp.value) || 0) : 0;
+  });
+  return total;
 }
 
 // Snapshot anterior de cantidades por plano. Lo usamos para detectar cambios:
@@ -11042,11 +11313,17 @@ function renderEditor(){
     const isOpen = s._open === true;
     const activeCount = s.entregables.length;
     const totalCount = opts.length;
+    // Para sprints de planos (F2) mostramos la CANTIDAD TOTAL de planos cotizados;
+    // para el resto, el conteo de entregables activos.
+    const totalPlanos = s.type === 'f2' ? cantidadPlanosSprint(s) : 0;
+    const contadorLbl = s.type === 'f2'
+      ? `${totalPlanos} ${totalPlanos === 1 ? 'plano' : 'planos'}`
+      : `${activeCount}/${totalCount} activos`;
     const entSection = !opts.length ? '' :
       isCollapsible
         ? `<div class="ent-wrap">
              <div class="sprint-accordion-head" onclick="toggleSprintAccordion(${s.id})">
-               <span class="nt">Entregables <span style="color:var(--accent)">(${activeCount}/${totalCount} activos)</span></span>
+               <span class="nt">Entregables <span style="color:var(--accent)">(${contadorLbl})</span></span>
                <span class="sprint-accordion-chev ${isOpen?'open':''}">▶</span>
              </div>
              <div class="sprint-accordion-body" style="display:${isOpen?'block':'none'}">
@@ -12352,6 +12629,12 @@ function updateEstado(id,estado){
   const estadoAnterior=c.estado;
   c.estado=estado; c.updatedAt=Date.now();
 
+  /* Al marcar el proyecto como Anteproyecto / en proceso, sellar la fecha de
+     inicio real (una sola vez). Desde ahí se recalcula la Línea de Tiempo. */
+  if(estado==='en_progreso' || estado==='parcial'){
+    sellarInicioReal(c);
+  }
+
   /* Cuenta regresiva del Kanban: registramos QUÉ DÍA entró el proyecto
      a cada columna. La cuenta arranca al salir de "cotización emitida".
      Sólo se sella la primera vez que entra a esa columna (no se pisa al
@@ -12753,7 +13036,7 @@ function deleteCot(id){
 // HOME DASHBOARD — Pestaña Inicio
 // ═══════════════════════════════════════════════
 function renderHome(){
-  const cots = loadCots();
+  const cots = loadCots().filter(c=>!c.archivado);  // archivados no cuentan en el panel
 
   // Saludo según hora
   const ahora = new Date();
@@ -13245,7 +13528,9 @@ function renderHome(){
 }
 
 function renderIngresos(){
-  const cots=loadCots();
+  const _cotsAll=loadCots();
+  const cotsArchivadas=_cotsAll.filter(c=>c.archivado);
+  const cots=_cotsAll.filter(c=>!c.archivado);   // los archivados no cuentan ni se listan aquí
   const yearSel=document.getElementById('ing-year');
   // populate years
   const years=[...new Set(cots.map(c=>new Date(c.fecha).getFullYear()))];
@@ -13349,6 +13634,39 @@ function renderIngresos(){
       scTerm.style.display = 'none';
     }
   }
+
+  // Sección de archivados (desestimados) — baja prioridad, desplegable
+  const scArch = document.getElementById('sc-archivados');
+  if(scArch){
+    if(cotsArchivadas.length > 0){
+      scArch.style.display = 'block';
+      const cntEl = document.getElementById('ing-arch-count');
+      if(cntEl) cntEl.textContent = `(${cotsArchivadas.length})`;
+      const bodyEl = document.getElementById('ing-arch-body');
+      if(bodyEl) bodyEl.innerHTML = [...cotsArchivadas].reverse().map(c => cardCotArchivada(c)).join('');
+    } else {
+      scArch.style.display = 'none';
+    }
+  }
+}
+
+// Tarjeta compacta para proyectos archivados — solo info + botón Restaurar
+function cardCotArchivada(c){
+  const curc = c.cur || 'GTQ';
+  const nom = escapeHtmlK(c.proyecto || '(sin título)');
+  const cli = escapeHtmlK(c.cliente || '—');
+  const arch = c.archivadoEn ? ` · archivado ${c.archivadoEn}` : '';
+  return `<div class="cot-card" style="opacity:.72">
+    <div class="cot-card-head">
+      <div style="min-width:0">
+        <div style="font-size:13px;font-weight:500;color:var(--text);font-family:var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${nom}</div>
+        <div style="font-size:11px;color:var(--text-3)">${cli} · ${fmtCur(c.tot,curc)}${arch}</div>
+      </div>
+      <div class="cot-actions">
+        <button class="btn-editar" onclick="restaurarCotArchivada(${c.id})" style="border-color:rgba(76,175,114,0.30);color:var(--green)">↺ Restaurar</button>
+      </div>
+    </div>
+  </div>`;
 }
 
 // Render de tarjeta de cotización (compartido entre activos y terminados)
@@ -13396,6 +13714,16 @@ function toggleTerminados(){
   chev.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
 }
 
+function toggleArchivados(){
+  const body = document.getElementById('ing-arch-body');
+  const chev = document.getElementById('ing-arch-chev');
+  if(!body) return;
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  if(chev) chev.style.transform = open ? 'rotate(90deg)' : 'rotate(0deg)';
+}
+window.toggleArchivados = toggleArchivados;
+
 // Reactivar proyecto terminado: vuelve a "f2_entregada" (columna Entrega del Kanban)
 function reactivarCot(id){
   if(!confirm('¿Reactivar este proyecto? Volverá a la columna Entrega del Kanban.')) return;
@@ -13417,6 +13745,40 @@ function reactivarCot(id){
   renderIngresos();
   if(document.getElementById('pg-est').classList.contains('active')) renderEstatus();
 }
+
+/* Archivar (desestimar) un proyecto: sale de métricas, del Kanban/PM y de la
+   lista de Cotizaciones registradas; pasa a la sección Proyectos Archivados.
+   No se borra: puede restaurarse si el cliente regresa. */
+function archivarCot(id){
+  const c = loadCots().find(x=>x.id===id);
+  const nom = c ? (c.proyecto||c.cliente||'este proyecto') : 'este proyecto';
+  if(!confirm('¿Seguro que querés desestimar «'+nom+'»?\n\nEl proyecto dejará de contar en las métricas y saldrá de Cotizaciones registradas. Pasará a Proyectos Archivados, desde donde podés restaurarlo.')) return;
+  const cots = loadCots();
+  const cot = cots.find(x=>x.id===id);
+  if(!cot) return;
+  cot.archivado = true;
+  cot.archivadoEn = new Date().toISOString().split('T')[0];
+  saveCots(cots);
+  if(typeof closeModal==='function') closeModal();
+  renderIngresos();
+  if(document.getElementById('pg-est')?.classList.contains('active') && typeof renderEstatus==='function') renderEstatus();
+  if(typeof pmRenderAll==='function' && document.getElementById('pg-pm')?.classList.contains('active')) pmRenderAll();
+}
+window.archivarCot = archivarCot;
+
+/* Restaurar un proyecto archivado: vuelve a aparecer en las listas y métricas
+   con el mismo estado que tenía. */
+function restaurarCotArchivada(id){
+  const cots = loadCots();
+  const c = cots.find(x=>x.id===id);
+  if(!c) return;
+  delete c.archivado;
+  delete c.archivadoEn;
+  saveCots(cots);
+  renderIngresos();
+  if(document.getElementById('pg-est')?.classList.contains('active') && typeof renderEstatus==='function') renderEstatus();
+}
+window.restaurarCotArchivada = restaurarCotArchivada;
 
 // ═══════ ARTEFACTOS VINCULADOS (linkeo con otros tools de Claude) ═══════
 function loadArtefactos(){
@@ -13745,7 +14107,7 @@ function progressColor(p){
 }
 
 function renderEstatus(){
-  const cots = loadCots();
+  const cots = loadCots().filter(c=>!c.archivado);  // archivados fuera del Kanban
 
   // Opciones de estado dinámicas según fases cotizadas
   function getEstadoOpts(c){
@@ -14445,6 +14807,19 @@ function deleteItemComment(cotId, spId, itemId, ts){
 }
 
 // ═══ Milestones que mueven la cotización de columna y actualizan cobros ═══
+/* Sella la fecha de inicio REAL del proyecto (día en que arranca el trabajo:
+   anticipo cobrado o se marca Anteproyecto). Desde esta fecha se recalcula la
+   Línea de Tiempo, SIN tocar la duración de cada sprint. Se sella una sola vez
+   (la primera); volver atrás y readelantar no la cambia. Devuelve true si selló. */
+function sellarInicioReal(c){
+  if(!c) return false;
+  if(c.fechaInicioReal) return false;           // ya sellada: no resellar
+  const hoyIso = new Date().toISOString().split('T')[0];
+  c.fechaInicioReal = hoyIso;
+  c.projStart = hoyIso;                          // la Línea de Tiempo arranca aquí
+  return true;
+}
+
 function procesarMilestone(cotId, milestone){
   const cots = loadCots();
   const c = cots.find(x => x.id === cotId);
@@ -14456,6 +14831,7 @@ function procesarMilestone(cotId, milestone){
   if(milestone === 'anticipo'){
     // Sumar anticipo al cobrado y mover a siguiente columna
     c.cobrado = (c.cobrado||0) + (c.antic||0);
+    sellarInicioReal(c);                          // ← arranca el cronómetro del proyecto
     if(hasF1) c.estado = 'en_progreso';     // → Anteproyecto
     else if(hasF2) c.estado = 'f1_entregada'; // → Planos (solo F2 contratada)
     else c.estado = 'cobrado_total';          // sin fases
@@ -14808,6 +15184,7 @@ function verCot(id){
       <div class="exp-acciones">
         <button class="exp-btn exp-btn-primary" onclick="closeModal();editCot(${c.id})">✎ Editar</button>
         <button class="exp-btn" onclick="duplicarCot(${c.id})">⧉ Duplicar</button>
+        <button class="exp-btn" onclick="archivarCot(${c.id})">🗄 Archivar</button>
         <button class="exp-btn exp-btn-danger" onclick="eliminarDesdeExpediente(${c.id})">🗑 Eliminar</button>
       </div>
     </div>`;
@@ -16079,6 +16456,7 @@ var estadoCalc = {  /* var = window property, cross-script accessible */
     rooms: [],
     obraGris: "",
     finish: "medio",
+    finishVal: "",
     sec2: false,
     circOpt: "libre",
     levels: 2,
@@ -16102,6 +16480,14 @@ function cargarCalc(){
       const parsed = JSON.parse(raw);
       if(parsed.estimado) estadoCalc.estimado = parsed.estimado;
       if(parsed.programa) estadoCalc.programa = {...estadoCalc.programa, ...parsed.programa};
+      // Migración: estados antiguos usaban un % de acabado (finish). Si no hay un
+      // valor Q/m² directo (finishVal), lo derivamos del % para no perder el dato.
+      const _pg = estadoCalc.programa;
+      if((_pg.finishVal === "" || _pg.finishVal === undefined || _pg.finishVal === null)){
+        const _og = parseFloat(_pg.obraGris) || 0;
+        const _ff = (typeof CALC_FIN_F !== 'undefined' && CALC_FIN_F[_pg.finish] != null) ? CALC_FIN_F[_pg.finish] : 0;
+        if(_og > 0 && _ff > 0) _pg.finishVal = Math.round(_og * _ff * 100) / 100;
+      }
       // Recalcular uids
       if(estadoCalc.programa.rooms.length){
         _calcRoomUid = Math.max(_calcRoomUid, ...estadoCalc.programa.rooms.map(r=>r.id||0)) + 1;
@@ -16181,8 +16567,9 @@ function renderEstimado(){
 function calcularPrograma(){
   const p = estadoCalc.programa;
   const og = parseFloat(p.obraGris) || 0;
-  const ff = CALC_FIN_F[p.finish] || 0;
-  let cpm2 = og * (1 + ff);
+  const finishVal = parseFloat(p.finishVal) || 0;   // acabado en Q/m² (valor directo)
+  const ff = og > 0 ? finishVal / og : 0;           // factor equivalente (compat/reportes)
+  let cpm2 = og + finishVal;
 
   const netA = p.rooms.reduce((s,r)=>s + (parseFloat(r.area)||0), 0);
   let grossA = netA;
@@ -16205,7 +16592,7 @@ function calcularPrograma(){
   const tCost = p.tcActive ? (parseFloat(p.tc)||0) : 0;
 
   return {
-    netA, grossA, cpm2, og, ff, directC, totInd, indC, spC, tCost,
+    netA, grossA, cpm2, og, ff, finishVal, directC, totInd, indC, spC, tCost,
     total: directC + indC + spC + tCost,
     lvlPct, circPct
   };
@@ -16217,6 +16604,7 @@ function leerProgramaDelDOM(){
   const c = id => { const el = document.getElementById(id); return el ? el.checked : null; };
 
   const og = g('p2_obraGris'); if(og !== null) p.obraGris = og;
+  const fv = g('p2_finishVal'); if(fv !== null) p.finishVal = fv;
   const sec2 = c('p2_sec2'); if(sec2 !== null) p.sec2 = sec2;
   const co = g('p2_circOpt'); if(co !== null) p.circOpt = co;
   const lv = g('p2_levels'); if(lv !== null) p.levels = parseInt(lv);
@@ -16239,6 +16627,7 @@ function hidratarProgramaDOM(){
   const sc = (id,v) => { const el = document.getElementById(id); if(el) el.checked = !!v; };
 
   sv('p2_obraGris', p.obraGris);
+  sv('p2_finishVal', p.finishVal);
   sc('p2_sec2', p.sec2);
   sv('p2_circOpt', p.circOpt);
   sv('p2_levels', p.levels);
@@ -16252,11 +16641,6 @@ function hidratarProgramaDOM(){
   sv('p2_ind_permits', p.ind.permits);
   sv('p2_ind_supervision', p.ind.supervision);
   sv('p2_ind_contingency', p.ind.contingency);
-
-  // Finish buttons activos
-  document.querySelectorAll('.fin-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.fin === p.finish);
-  });
 }
 
 
@@ -16280,6 +16664,24 @@ function roomDragEnd(e){ e.currentTarget.style.opacity='';
 window.roomDragStart=roomDragStart; window.roomDragOver=roomDragOver;
 window.roomDrop=roomDrop; window.roomDragEnd=roomDragEnd;
 
+// Activa/desactiva los campos del terreno (largo, ancho y costo) según el toggle.
+// Cuando está desactivado, la sección se contrae (quedan ocultos los campos) y se
+// muestra un aviso de que el terreno no se contabiliza en la cotización.
+function aplicarEstadoTerreno(){
+  const active = estadoCalc.programa.tcActive;
+  const dims  = document.getElementById('p2_terr_dims');
+  const cwrap = document.getElementById('p2_tc_wrap');
+  const aviso = document.getElementById('p2_terr_aviso');
+  ['p2_tL','p2_tA','p2_tc'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.disabled = !active;
+  });
+  [dims, cwrap].forEach(w=>{
+    if(w) w.style.display = active ? '' : 'none';
+  });
+  if(aviso) aviso.style.display = active ? 'none' : 'block';
+}
+
 function renderPrograma(){
   // Si la página no está visible aún, salir silenciosamente
   const pg = document.getElementById('pg-calc');
@@ -16294,10 +16696,16 @@ function renderPrograma(){
   }
   guardarCalc();
 
-  // Sincronizar siempre los botones de acabados con el estado
-  document.querySelectorAll('.fin-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.fin === estadoCalc.programa.finish);
-  });
+  // Activar/desactivar los campos de terreno según el toggle p2_tcActive
+  aplicarEstadoTerreno();
+
+  // Total del Costo base (obra gris + acabado) por m²
+  const _cbEl = document.getElementById('p2_costoBaseTotal');
+  if(_cbEl){
+    const _og = parseFloat(estadoCalc.programa.obraGris) || 0;
+    const _fv = parseFloat(estadoCalc.programa.finishVal) || 0;
+    _cbEl.innerHTML = `Q ${fmtCalc(_og + _fv)}<span style="font-size:10px;color:var(--text-3);font-weight:400">/m²</span>`;
+  }
 
   // Tabla de ambientes
   const body = document.getElementById('p2_roomsBody');
@@ -16324,8 +16732,9 @@ function renderPrograma(){
         <td style="padding:6px 10px">
           <input type="number" value="${r.area}" step="0.01" onchange="updateRoomCalc(${r.id},'area',parseFloat(this.value)||0)" style="background:var(--bg-surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px;color:var(--accent);font-family:var(--font-mono);font-size:12px;width:75px;outline:none;text-align:right">
         </td>
-        <td style="padding:6px 4px;text-align:center">
-          <button onclick="removeRoomCalc(${r.id})" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:17px;line-height:1;opacity:.7;padding:2px 4px" title="Eliminar">×</button>
+        <td style="padding:6px 4px;text-align:center;white-space:nowrap">
+          <button onclick="duplicateRoomCalc(${r.id})" style="background:none;border:none;cursor:pointer;color:var(--text-3);font-size:13px;line-height:1;opacity:.7;padding:2px 4px" title="Duplicar ambiente" onmouseover="this.style.opacity='1';this.style.color='var(--accent)'" onmouseout="this.style.opacity='.7';this.style.color='var(--text-3)'">⧉</button>
+          <button onclick="removeRoomCalc(${r.id})" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:17px;line-height:1;opacity:.7;padding:2px 4px" title="Eliminar" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.7'">×</button>
         </td>
       </tr>`).join('');
   }
@@ -16496,7 +16905,7 @@ function renderPrograma(){
     ${RRow('Área neta del programa', `${fmtCalc(r.netA)} m²`)}
     ${estadoCalc.programa.sec2 ? RRow(`Área bruta (+${r.circPct}% circ.)`, `${fmtCalc(r.grossA)} m²`) : ''}
     ${RRow('Obra gris', `Q ${fmtCalc(r.og)}/m²`, {sub:true})}
-    ${RRow(`Acabados (×${CALC_FIN_F[estadoCalc.programa.finish]})`, `+Q ${fmtCalc(r.og * CALC_FIN_F[estadoCalc.programa.finish])}/m²`, {sub:true})}
+    ${RRow('Acabados', `+Q ${fmtCalc(r.finishVal)}/m²`, {sub:true})}
     ${RRow('Costo total por m²', `Q ${fmtCalc(r.cpm2)}`, {acc:true})}
     <div style="border-top:1px solid var(--border);margin:10px 0"></div>
     ${RRow('Costo directo de obra', `Q ${fmtCalc(r.directC)}`, {bold:true})}
@@ -16506,15 +16915,7 @@ function renderPrograma(){
     <div style="background:var(--bg-surface);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:18px;margin-top:14px;text-align:center;animation:resultIn .38s var(--ease-out) both">
       <div style="font-family:var(--font-body);font-size:10px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px">Costo total del proyecto</div>
       <div style="font-family:var(--font-mono);font-size:26px;font-weight:400;color:var(--accent);line-height:1;letter-spacing:-0.01em">Q ${fmtCalc(r.total)}</div>
-    </div>
-    <button onclick="copiarProgramaACotizador()" style="width:100%;margin-top:10px;padding:10px 14px;background:var(--bg-surface);border:1px solid var(--border);color:var(--text);border-radius:var(--r-md);font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
-      → Usar en Cotizador
-    </button>`;
-}
-
-function setFinish(f){
-  estadoCalc.programa.finish = f;
-  renderPrograma();
+    </div>`;
 }
 
 function addRoomCalc(){
@@ -16533,6 +16934,18 @@ function removeRoomCalc(id){
   estadoCalc.programa.rooms = estadoCalc.programa.rooms.filter(r=>r.id !== id);
   renderPrograma();
 }
+
+// Duplica un ambiente conservando sus datos; la copia se inserta justo debajo del original.
+function duplicateRoomCalc(id){
+  const rooms = estadoCalc.programa.rooms;
+  const idx = rooms.findIndex(r=>r.id === id);
+  if(idx === -1) return;
+  const orig = rooms[idx];
+  const copia = { id: _calcRoomUid++, name: orig.name, area: orig.area, level: orig.level, cat: orig.cat };
+  rooms.splice(idx + 1, 0, copia);
+  renderPrograma();
+}
+window.duplicateRoomCalc = duplicateRoomCalc;
 
 function updateRoomCalc(id, field, val){
   const r = estadoCalc.programa.rooms.find(r=>r.id === id);
@@ -16556,28 +16969,6 @@ function removeSpecialCalc(id){
   renderPrograma();
 }
 
-// Puente opcional con el cotizador: copiar m² + costo total al formulario de cotización
-function copiarProgramaACotizador(){
-  const r = calcularPrograma();
-  const netA = estadoCalc.programa.rooms.reduce((s,r)=>s+(parseFloat(r.area)||0), 0);
-  if(!netA || !r.total){
-    alert('Agregá ambientes y obra gris antes de usar este total.');
-    return;
-  }
-  showPage('calc');
-  // Rellenar campo m²S del cotizador (si existe)
-  const m2 = document.getElementById('m2S');
-  if(m2){
-    m2.value = Math.round(netA);
-    if(typeof syncM2==='function') syncM2(m2.value);
-    if(typeof calc==='function') calc();
-  }
-  // Info al usuario
-  setTimeout(()=>{
-    const sync = document.getElementById('syncStatus');
-    if(sync){ sync.textContent = `✓ ${Math.round(netA)} m² copiados al Cotizador`; setTimeout(()=>sync.textContent='',4000); }
-  }, 100);
-}
 
 // Puente Estimado rápido → Cotizador (abre modal o lleva a la sección si existe)
 function cotizarDesdeEstimado(){
@@ -16632,9 +17023,9 @@ if(typeof window !== 'undefined'){
   cargarCalc();
   // Render inicial tras DOM listo
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', ()=>{ renderEstimado(); renderPrograma(); });
+    document.addEventListener('DOMContentLoaded', ()=>{ renderEstimado(); renderPrograma(); if(typeof restaurarColapsos==='function') restaurarColapsos(); });
   } else {
-    renderEstimado(); renderPrograma();
+    renderEstimado(); renderPrograma(); if(typeof restaurarColapsos==='function') restaurarColapsos();
   }
 }
 </script>
@@ -16955,12 +17346,14 @@ function pmParseDate(s){
 
 function pmGetActive(){
   const cots = loadCots ? loadCots() : JSON.parse(localStorage.getItem('avit_cots')||'[]');
-  return cots.filter(c => !['cobrado_total','completada'].includes(c.estado||''));
+  return cots.filter(c => !c.archivado && !['cobrado_total','completada'].includes(c.estado||''));
 }
 
 function pmCalcBlocks(proj){
   const sps = proj.sprints || [];
-  const start = pmParseDate(proj.projStart) || pmParseDate(proj.fecha) || pmToday;
+  // Prioridad del arranque: fecha de inicio REAL (anticipo cobrado / Anteproyecto)
+  // → projStart configurado → fecha de la cotización → hoy.
+  const start = pmParseDate(proj.fechaInicioReal) || pmParseDate(proj.projStart) || pmParseDate(proj.fecha) || pmToday;
   const blocks = [];
   let cur = new Date(start);
 
@@ -16996,7 +17389,13 @@ function pmSaveBlocks(proj, blocks){
   });
   // Save projStart from first non-hito block
   const first = blocks.find(b=>b.sprint.type!=='hito');
-  if(first) proj.projStart = first.start.toISOString().split('T')[0];
+  if(first){
+    const iso = first.start.toISOString().split('T')[0];
+    proj.projStart = iso;
+    // Si ya hay inicio real sellado, el arrastre manual en el PM también lo mueve,
+    // para que la Línea de Tiempo (que prioriza fechaInicioReal) quede consistente.
+    if(proj.fechaInicioReal) proj.fechaInicioReal = iso;
+  }
 
   // Persist to localStorage
   clearTimeout(pmAutoSaveTimer);
@@ -17344,6 +17743,10 @@ function pmRenderAll(){
   pmRenderRuler(); pmRenderBody(); pmKPIs(pmGetActive());
 }
 window.pmRenderAll = pmRenderAll;
+window.pmCalcBlocks = pmCalcBlocks;
+window.pmSaveBlocks = pmSaveBlocks;
+window.pmAddDays = pmAddDays;
+window.pmGetActive = pmGetActive;
 
 window.pmSetZoom = pmSetZoom;
 
