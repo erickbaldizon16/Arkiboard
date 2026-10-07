@@ -2521,6 +2521,24 @@ select:-webkit-autofill{
 .auth-input-wrap:focus-within:has(input:-webkit-autofill) svg.auth-ico{color:var(--accent)}
 
 /* ═══ PANEL DE LA EMPRESA ═══ */
+/* ── Layout del Panel de empresa: sidebar vertical + contenido ── */
+.emp-layout{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}
+.emp-nav{display:flex;flex-direction:column;gap:3px;position:sticky;top:12px}
+.emp-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-md);background:transparent;border:1px solid transparent;color:var(--text-2);font-size:12.5px;font-family:var(--font-body);cursor:pointer;text-align:left;width:100%;transition:background .15s,color .15s,border-color .15s}
+.emp-nav-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.emp-nav-item.active{background:var(--accent-subtle);border-color:var(--border-accent);color:var(--accent)}
+.emp-nav-item .emp-nav-ico{font-size:15px;flex-shrink:0;width:18px;text-align:center}
+.emp-nav-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-family:var(--font-display);padding:10px 12px 4px}
+.emp-content{min-width:0}
+.emp-pane{display:none}
+.emp-pane.active{display:block;animation:fadeUp .25s var(--ease-out) both}
+@media (max-width:720px){
+  .emp-layout{grid-template-columns:1fr;gap:12px}
+  .emp-nav{flex-direction:row;overflow-x:auto;position:static;gap:4px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .emp-nav-label{display:none}
+  .emp-nav-item{flex-direction:column;gap:4px;padding:8px 10px;min-width:62px;font-size:9.5px;text-align:center;flex-shrink:0}
+  .emp-nav-item .emp-nav-ico{font-size:17px}
+}
 .emp-sec-head{
   font-family:var(--font-display);font-size:13px;font-weight:500;
   color:var(--accent);letter-spacing:.02em;margin-bottom:14px;
@@ -2634,7 +2652,7 @@ code.emp-tag{font-family:var(--font-mono)}
 
 /* Páginas de formulario: ancho cómodo de lectura (no full-width) */
 #pg-calc, #pg-estimado{max-width:1240px}
-#pg-empresa > div{max-width:920px!important}
+#pg-empresa > div{max-width:980px!important}
 
 /* ── Escritorio ≥1200px: tipografía y densidad de dashboard ── */
 @media (min-width:1200px){
@@ -3147,12 +3165,34 @@ code.emp-tag{font-family:var(--font-mono)}
 
 <!-- ═══════════════════════════════════════════════ PÁGINA: PANEL DE LA EMPRESA -->
 <div class="page" id="pg-empresa">
-  <div style="max-width:720px;margin:0 auto">
-    <div style="margin-bottom:20px">
-      <h1 style="font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--text);letter-spacing:-0.01em;margin:0">Panel de la empresa</h1>
-      <p style="font-size:12px;color:var(--text-3);margin-top:4px;font-family:var(--font-mono);letter-spacing:.03em">Identidad y ajustes que se aplican a las cotizaciones en PDF.</p>
+  <div style="max-width:980px;margin:0 auto">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+      <div>
+        <h1 style="font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--text);letter-spacing:-0.01em;margin:0">Panel de la empresa</h1>
+        <p style="font-size:12px;color:var(--text-3);margin-top:4px;font-family:var(--font-mono);letter-spacing:.03em">Identidad y ajustes que se aplican a las cotizaciones en PDF.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <span id="empSaveMsg" style="font-size:11px;color:var(--green);font-family:var(--font-mono)"></span>
+        <button class="emp-btn primary" onclick="empGuardar()">Guardar cambios</button>
+      </div>
     </div>
 
+    <div class="emp-layout">
+      <!-- Menú lateral -->
+      <nav class="emp-nav">
+        <div class="emp-nav-label">Configuración</div>
+        <button class="emp-nav-item active" data-emp-sec="identidad" onclick="empShowSection('identidad')"><span class="emp-nav-ico">🏢</span><span>Identidad</span></button>
+        <button class="emp-nav-item" data-emp-sec="textos" onclick="empShowSection('textos')"><span class="emp-nav-ico">✍️</span><span>Textos</span></button>
+        <button class="emp-nav-item" data-emp-sec="proceso" onclick="empShowSection('proceso')"><span class="emp-nav-ico">🗂</span><span>Proceso</span></button>
+        <button class="emp-nav-item" data-emp-sec="equipo" onclick="empShowSection('equipo')"><span class="emp-nav-ico">👥</span><span>Equipo y roles</span></button>
+        <button class="emp-nav-item" data-emp-sec="avanzado" onclick="empShowSection('avanzado')"><span class="emp-nav-ico">⚙️</span><span>Avanzado</span></button>
+      </nav>
+
+      <!-- Contenido -->
+      <div class="emp-content">
+
+    <!-- ══ PANE: IDENTIDAD ══ -->
+    <div class="emp-pane active" data-emp-pane="identidad">
     <!-- Identidad -->
     <div class="sc">
       <div class="emp-sec-head">🏢 Identidad</div>
@@ -3219,6 +3259,10 @@ code.emp-tag{font-family:var(--font-mono)}
       </div>
     </div>
 
+    </div><!-- /pane identidad -->
+
+    <!-- ══ PANE: TEXTOS ══ -->
+    <div class="emp-pane" data-emp-pane="textos">
     <!-- Saludo del cotizador -->
     <div class="sc">
       <div class="emp-sec-head">✍️ Saludo inicial del cotizador</div>
@@ -3244,6 +3288,10 @@ code.emp-tag{font-family:var(--font-mono)}
       </div>
     </div>
 
+    </div><!-- /pane textos -->
+
+    <!-- ══ PANE: PROCESO ══ -->
+    <div class="emp-pane" data-emp-pane="proceso">
     <!-- Sprints del Kanban -->
     <div class="sc">
       <div class="emp-sec-head">🗂 Sprints del Kanban</div>
@@ -3261,14 +3309,39 @@ code.emp-tag{font-family:var(--font-mono)}
       <div id="empTplList"></div>
       <button class="emp-btn ghost" onclick="empTplReset()" style="margin-top:12px">↺ Restaurar proceso por defecto</button>
     </div>
+    </div><!-- /pane proceso -->
 
-    <div style="display:flex;gap:10px;align-items:center;margin:4px 0 24px">
-      <button class="emp-btn primary" onclick="empGuardar()">Guardar cambios</button>
-      <span id="empSaveMsg" style="font-size:11px;color:var(--green);font-family:var(--font-mono)"></span>
+    <!-- ══ PANE: EQUIPO Y ROLES ══ -->
+    <div class="emp-pane" data-emp-pane="equipo">
+    <div class="sc">
+      <div class="emp-sec-head">👥 Roles de colaboradores</div>
+      <p style="font-size:11px;color:var(--text-3);line-height:1.6;margin-bottom:14px">
+        Estos son los grupos que aparecen en la sección <strong>Colaboradores</strong> del Cotizador.
+        Podés renombrarlos para que coincidan con cómo trabaja tu estudio. El nombre es solo una etiqueta:
+        cada grupo sigue cobrando sobre el mismo honorario (Anteproyecto o Planimetrías).
+      </p>
+      <div class="r2" style="margin-bottom:12px">
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Grupo 1 · cobra sobre Anteproyecto</label>
+          <input type="text" id="empRuta_m3d" placeholder="Modelado 3D" oninput="empMarkDirty()">
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Grupo 2 · cobra sobre Anteproyecto</label>
+          <input type="text" id="empRuta_rend" placeholder="Renderización" oninput="empMarkDirty()">
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label class="lbl">Grupo 3 · cobra sobre Planimetrías</label>
+        <input type="text" id="empRuta_plan" placeholder="Planimetría" oninput="empMarkDirty()">
+      </div>
+      <button class="emp-btn ghost" onclick="empRutasReset()" style="margin-top:14px">↺ Restaurar nombres por defecto</button>
     </div>
+    </div><!-- /pane equipo -->
 
+    <!-- ══ PANE: AVANZADO ══ -->
+    <div class="emp-pane" data-emp-pane="avanzado">
     <!-- Restablecer -->
-    <div class="sc" style="border-color:rgba(255,92,122,0.30);margin-bottom:40px">
+    <div class="sc" style="border-color:rgba(255,92,122,0.30);margin-bottom:20px">
       <div class="emp-sec-head" style="color:var(--red);text-shadow:none">⚠️ Restablecer aplicación</div>
       <p style="font-size:11.5px;color:var(--text-2);line-height:1.7;margin-bottom:12px">
         Borra <strong>todos</strong> los datos guardados en este navegador: proyectos, cotizaciones, clientes,
@@ -3283,6 +3356,12 @@ code.emp-tag{font-family:var(--font-mono)}
         Borrar todos los datos
       </button>
     </div>
+    </div><!-- /pane avanzado -->
+
+
+    <!-- Restablecer -->
+      </div><!-- /emp-content -->
+    </div><!-- /emp-layout -->
   </div>
 </div>
 
@@ -4970,6 +5049,33 @@ function _colabSyncLegacy(res){
   });
 }
 
+/* ── Nombres visibles de los 3 grupos de colaboradores ──
+   Editables desde el Panel de empresa. El cableado interno (ruta → honorario
+   F1/F2, campos legados, auto-asignación del Kanban) NO cambia: solo la etiqueta. */
+function _rutaLabel(ruta){
+  let custom = {};
+  try { custom = (JSON.parse(localStorage.getItem('avit_perfil')||'{}').rutaLabels)||{}; } catch(e){}
+  const def = (typeof COLAB_META!=='undefined' && COLAB_META[ruta]) ? COLAB_META[ruta].titulo : ruta;
+  const v = (custom[ruta]||'').trim();
+  return v || def;
+}
+// Aplica los nombres personalizados a los títulos y avisos de cada grupo en el cotizador.
+function aplicarRutaLabels(){
+  COLAB_RUTAS.forEach(ruta=>{
+    const label = _rutaLabel(ruta);
+    const cont = document.querySelector('.ruta-colab[data-ruta="'+ruta+'"]');
+    if(!cont) return;
+    const tit = cont.querySelector('.ruta-titulo');
+    if(tit) tit.textContent = label;
+    const warn = document.getElementById('warn-'+ruta);
+    if(warn){
+      const honFase = (ruta==='plan') ? 'Planimetrías' : 'Anteproyecto';
+      warn.textContent = '⚠ Los pagos de '+label+' superan el honorario de '+honFase+'. Estarías pagando más de lo que cobrás.';
+    }
+  });
+}
+window.aplicarRutaLabels = aplicarRutaLabels;
+
 /* ── Pintar la UI ── */
 function _colabEsc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
 function _colabOpcionesNombre(sel){
@@ -4989,6 +5095,7 @@ function _colabOpcionesNombre(sel){
 }
 
 function colabRender(){
+  aplicarRutaLabels();   // nombres personalizados de los grupos
   COLAB_RUTAS.forEach(ruta=>{
     const cont=document.getElementById('list-'+ruta);
     if(!cont) return;
@@ -9498,9 +9605,33 @@ function renderEmpresa(){
   // Plantilla de sprints
   _empTpl = _sprintTpl();
   empTplRender();
+  // Nombres de los grupos de colaboradores
+  const rl = p.rutaLabels || {};
+  ['m3d','rend','plan'].forEach(r=>{
+    const el = document.getElementById('empRuta_'+r);
+    if(el) el.value = rl[r] || '';
+  });
   _empDirty = false;
   const msg = document.getElementById('empSaveMsg'); if(msg) msg.textContent='';
 }
+
+/* Navegación entre secciones del Panel (sidebar vertical) */
+function empShowSection(key){
+  document.querySelectorAll('#pg-empresa .emp-pane').forEach(p=>{
+    p.classList.toggle('active', p.getAttribute('data-emp-pane')===key);
+  });
+  document.querySelectorAll('#pg-empresa .emp-nav-item').forEach(b=>{
+    b.classList.toggle('active', b.getAttribute('data-emp-sec')===key);
+  });
+}
+window.empShowSection = empShowSection;
+
+/* Restaurar los nombres de grupos de colaboradores a los de por defecto */
+function empRutasReset(){
+  ['m3d','rend','plan'].forEach(r=>{ const el=document.getElementById('empRuta_'+r); if(el) el.value=''; });
+  empMarkDirty();
+}
+window.empRutasReset = empRutasReset;
 
 /* ── Imágenes (logo / watermark / firma) ── */
 const _EMP_IMG_IDS = {logo:'empLogoPreview', watermark:'empWatermarkPreview', firma:'empFirmaPreview'};
@@ -9807,7 +9938,15 @@ function empGuardar(){
   p.saludo = sal || EMP_SALUDO_DEFAULT;
   p.observaciones = _empObs.map(t => (t||'').trim()).filter(Boolean);
   if(_empTpl) p.sprintTpl = _empTplSanear(JSON.parse(JSON.stringify(_empTpl)));
+  // Nombres personalizados de los grupos de colaboradores (solo etiqueta; vacío = por defecto)
+  const rl = {};
+  ['m3d','rend','plan'].forEach(r=>{
+    const v = (document.getElementById('empRuta_'+r)?.value || '').trim();
+    if(v) rl[r] = v;
+  });
+  p.rutaLabels = rl;
   _perfilSave(p);
+  if(typeof aplicarRutaLabels==='function') aplicarRutaLabels();
   if(_empTpl){ _empTpl = _sprintTpl(); empTplRender(); }
   if(_sbConfigured() && _sbUser){
     _sb.auth.updateUser({data:{empresa:p.empresa, nombre:p.nombre}}).catch(()=>{});
