@@ -1962,6 +1962,38 @@ en claro debe ser oscuro (filter invert) */
 .mkt-eval-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin-top:2px}
 
 /* ═══ ORGANIGRAMA ══════════════════════════════════════════════ */
+/* ── Editor de grupos y roles (lienzo) ── */
+.rol-grupo{position:absolute;z-index:10;width:210px;background:var(--bg-base);border:1px solid var(--border-2);border-radius:var(--r-lg);box-shadow:0 6px 20px rgba(0,0,0,0.18);user-select:none;animation:fadeUp .22s var(--ease-out) both;overflow:hidden}
+.rol-grupo.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--border-accent),0 6px 20px rgba(0,0,0,0.22)}
+.rol-grupo.conn-target{outline:2px dashed var(--accent);outline-offset:2px;cursor:pointer}
+.rol-grupo-head{display:flex;align-items:center;gap:7px;padding:9px 11px;cursor:grab;background:linear-gradient(135deg,rgba(212,168,67,0.14),rgba(212,168,67,0.04));border-bottom:1px solid var(--border)}
+.rol-grupo-head:active{cursor:grabbing}
+.rol-grupo-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.rol-grupo-nom{flex:1;min-width:0;font-family:var(--font-display);font-size:12.5px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rol-grupo-menu{flex-shrink:0;width:20px;height:20px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:4px;font-size:13px;line-height:1}
+.rol-grupo-menu:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.rol-grupo-hon{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;font-family:var(--font-display);padding:1px 6px;border-radius:20px;flex-shrink:0}
+.rol-grupo-hon.f1{background:rgba(90,158,212,0.16);color:#82BAE0}
+.rol-grupo-hon.f2{background:rgba(76,175,114,0.16);color:#6FD49A}
+.rol-grupo-hon.none{background:rgba(255,255,255,0.06);color:var(--text-3)}
+.rol-grupo-body{padding:6px}
+.rol-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:var(--r-sm);font-size:12px;color:var(--text-2);cursor:grab;transition:background .12s}
+.rol-item:hover{background:rgba(255,255,255,0.05)}
+.rol-item.dragging{opacity:.4}
+.rol-item-nom{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rol-item-menu{flex-shrink:0;width:18px;height:18px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-radius:4px;font-size:12px;opacity:0;transition:opacity .12s}
+.rol-item:hover .rol-item-menu{opacity:1}
+.rol-item-menu:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.rol-grupo-body.drop-on{outline:2px dashed var(--border-accent);outline-offset:-3px;border-radius:var(--r-md)}
+.rol-add-item{width:100%;margin-top:3px;padding:6px;border:1px dashed var(--border-2);border-radius:var(--r-sm);background:transparent;color:var(--text-3);font-size:11px;cursor:pointer;font-family:var(--font-body)}
+.rol-add-item:hover{border-color:var(--border-accent);color:var(--accent)}
+.rol-ctx{position:fixed;z-index:9500;background:var(--bg-base);border:1px solid var(--border-2);border-radius:var(--r-md);box-shadow:0 10px 30px rgba(0,0,0,0.3);padding:5px;min-width:170px}
+.rol-ctx button{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:8px 11px;border:none;background:transparent;color:var(--text-2);font-size:12px;cursor:pointer;border-radius:var(--r-sm);font-family:var(--font-body)}
+.rol-ctx button:hover{background:rgba(255,255,255,0.06);color:var(--text)}
+.rol-ctx button.danger:hover{background:rgba(255,92,122,0.12);color:var(--red)}
+.rol-ctx .rol-ctx-sep{height:1px;background:var(--border);margin:4px 2px}
+.rol-ctx .rol-ctx-lbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);padding:6px 11px 3px;font-family:var(--font-display)}
+
 .org-node{position:absolute;z-index:10;cursor:grab;user-select:none;
   animation:fadeUp .25s var(--ease-out) both}
 .org-node:active{cursor:grabbing}
@@ -3184,7 +3216,7 @@ code.emp-tag{font-family:var(--font-mono)}
         <button class="emp-nav-item active" data-emp-sec="identidad" onclick="empShowSection('identidad')"><span class="emp-nav-ico">🏢</span><span>Identidad</span></button>
         <button class="emp-nav-item" data-emp-sec="textos" onclick="empShowSection('textos')"><span class="emp-nav-ico">✍️</span><span>Textos</span></button>
         <button class="emp-nav-item" data-emp-sec="proceso" onclick="empShowSection('proceso')"><span class="emp-nav-ico">🗂</span><span>Proceso</span></button>
-        <button class="emp-nav-item" data-emp-sec="equipo" onclick="empShowSection('equipo')"><span class="emp-nav-ico">👥</span><span>Equipo y roles</span></button>
+        <button class="emp-nav-item" data-emp-sec="equipo" onclick="empShowSection('equipo')"><span class="emp-nav-ico">👥</span><span>Roles de colaboradores</span></button>
         <button class="emp-nav-item" data-emp-sec="avanzado" onclick="empShowSection('avanzado')"><span class="emp-nav-ico">⚙️</span><span>Avanzado</span></button>
       </nav>
 
@@ -3311,30 +3343,26 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
     </div><!-- /pane proceso -->
 
-    <!-- ══ PANE: EQUIPO Y ROLES ══ -->
+    <!-- ══ PANE: ROLES DE COLABORADORES ══ -->
     <div class="emp-pane" data-emp-pane="equipo">
     <div class="sc">
       <div class="emp-sec-head">👥 Roles de colaboradores</div>
-      <p style="font-size:11px;color:var(--text-3);line-height:1.6;margin-bottom:14px">
-        Estos son los grupos que aparecen en la sección <strong>Colaboradores</strong> del Cotizador.
-        Podés renombrarlos para que coincidan con cómo trabaja tu estudio. El nombre es solo una etiqueta:
-        cada grupo sigue cobrando sobre el mismo honorario (Anteproyecto o Planimetrías).
+      <p style="font-size:11px;color:var(--text-3);line-height:1.6;margin-bottom:16px">
+        Organizá tu equipo en <strong>grupos</strong> y los <strong>roles</strong> dentro de cada uno.
+        Podés crear, renombrar, duplicar y borrar grupos y roles, mover roles de un grupo a otro, y conectar
+        los grupos con flechas para representar el flujo de tu proceso. Cada grupo puede cobrar sobre
+        Anteproyecto, Planimetrías, o ser solo organizativo.
       </p>
-      <div class="r2" style="margin-bottom:12px">
-        <div class="fg" style="margin-bottom:0">
-          <label class="lbl">Grupo 1 · cobra sobre Anteproyecto</label>
-          <input type="text" id="empRuta_m3d" placeholder="Modelado 3D" oninput="empMarkDirty()">
-        </div>
-        <div class="fg" style="margin-bottom:0">
-          <label class="lbl">Grupo 2 · cobra sobre Anteproyecto</label>
-          <input type="text" id="empRuta_rend" placeholder="Renderización" oninput="empMarkDirty()">
-        </div>
+      <button class="emp-btn primary" onclick="rolesAbrirLienzo()" style="display:inline-flex;align-items:center;gap:8px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><path d="M10 6.5h4M17.5 10v4M6.5 10v2a2 2 0 0 0 2 2H14"/></svg>
+        Abrir el editor de grupos y roles
+      </button>
+      <p class="nt" style="margin:12px 0 0">Se abre a pantalla completa, como el Organigrama.</p>
+
+      <!-- Inputs legados (ocultos): mantienen la compatibilidad con el renombrado anterior -->
+      <div style="display:none" aria-hidden="true">
+        <input type="text" id="empRuta_m3d"><input type="text" id="empRuta_rend"><input type="text" id="empRuta_plan">
       </div>
-      <div class="fg" style="margin-bottom:0">
-        <label class="lbl">Grupo 3 · cobra sobre Planimetrías</label>
-        <input type="text" id="empRuta_plan" placeholder="Planimetría" oninput="empMarkDirty()">
-      </div>
-      <button class="emp-btn ghost" onclick="empRutasReset()" style="margin-top:14px">↺ Restaurar nombres por defecto</button>
     </div>
     </div><!-- /pane equipo -->
 
@@ -3362,6 +3390,37 @@ code.emp-tag{font-family:var(--font-mono)}
     <!-- Restablecer -->
       </div><!-- /emp-content -->
     </div><!-- /emp-layout -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ PÁGINA: ROLES DE COLABORADORES (lienzo) -->
+<div class="page" id="pg-roles">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <button onclick="showPage('empresa')" style="padding:6px 13px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;display:inline-flex;align-items:center;gap:6px">← Volver al Panel</button>
+      <div>
+        <div style="font-family:var(--font-display);font-size:16px;font-weight:500;color:var(--text)">Grupos y roles de colaboradores</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px">Arrastrá los grupos · ⋮ para opciones · "＋ Conectar" para enlazar el flujo entre grupos</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <button class="emp-btn" onclick="rolesAddGrupo()">＋ Nuevo grupo</button>
+      <button class="emp-btn ghost" onclick="rolesAutoLayout()">⤢ Ordenar</button>
+      <button class="emp-btn ghost" onclick="rolesReset()" title="Restaurar a los 3 grupos por defecto">↺ Restaurar</button>
+      <span id="rolesSaveMsg" style="font-size:11px;color:var(--green);font-family:var(--font-mono)"></span>
+    </div>
+  </div>
+
+  <div id="rolesConnectHint" style="display:none;margin-bottom:10px;padding:8px 13px;background:var(--accent-subtle);border:1px solid var(--border-accent);border-radius:var(--r-md);font-size:11px;color:var(--text-2)">
+    🔗 Modo conexión: tocá el grupo <b>destino</b> para enlazar el flujo. <button onclick="rolesConnectCancel()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:11px;text-decoration:underline;padding:0 4px">cancelar</button>
+  </div>
+
+  <div id="rolesCanvasWrap" style="position:relative;width:100%;height:calc(100vh - 170px);min-height:460px;overflow:auto;border:1px solid var(--border);border-radius:var(--r-lg);background:
+      radial-gradient(circle at 1px 1px, rgba(128,128,128,0.10) 1px, transparent 0) 0 0 / 22px 22px,
+      var(--bg-surface)">
+    <div id="rolesCanvas" style="position:relative;width:2400px;height:1600px">
+      <svg id="rolesSvg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible"></svg>
+    </div>
   </div>
 </div>
 
@@ -9333,6 +9392,381 @@ tr:nth-child(even) td{background:#fafafa}
 }
 window.orgGenPDF=orgGenPDF;
 
+/* ═══════════════════════════════════════════════════════════════
+   EDITOR DE GRUPOS Y ROLES DE COLABORADORES (lienzo de flujo)
+   ───────────────────────────────────────────────────────────────
+   Modelo (localStorage avit_roles):
+     grupos: [{id, nombre, honorario:'f1'|'f2'|'', x, y, roles:[{id, nombre}]}]
+     conexiones: [{from, to}]   // flujo dirigido A → B
+   Los 3 grupos por defecto corresponden a las rutas del Cotizador (m3d/rend/plan).
+   ═══════════════════════════════════════════════════════════════ */
+const ROLES_DEFAULT = {
+  grupos: [
+    { id:'m3d',  nombre:'Modelado 3D',   honorario:'f1', x:120, y:90,  roles:[{id:'r1',nombre:'Modelador 3D'}] },
+    { id:'rend', nombre:'Renderización', honorario:'f1', x:430, y:90,  roles:[{id:'r2',nombre:'Renderista'}] },
+    { id:'plan', nombre:'Planimetría',   honorario:'f2', x:740, y:90,  roles:[{id:'r3',nombre:'Dibujante técnico'}] },
+  ],
+  conexiones: [ {from:'m3d',to:'rend'}, {from:'rend',to:'plan'} ]
+};
+var _rolesData = null;
+var _rolesSel = null;
+var _rolesConnFrom = null;   // id del grupo origen cuando estamos en modo conexión
+var _rolesUid = 1;
+
+function _rolesNewId(p){ return (p||'g')+'_'+Date.now().toString(36)+'_'+(_rolesUid++); }
+
+function rolesLoad(){
+  try{
+    const raw = JSON.parse(localStorage.getItem('avit_roles')||'null');
+    if(raw && Array.isArray(raw.grupos)){ _rolesData = raw; }
+    else { _rolesData = JSON.parse(JSON.stringify(ROLES_DEFAULT)); }
+  }catch(e){ _rolesData = JSON.parse(JSON.stringify(ROLES_DEFAULT)); }
+  if(!Array.isArray(_rolesData.conexiones)) _rolesData.conexiones = [];
+  // Migración: si hay nombres personalizados viejos en el perfil, aplicarlos a los grupos base
+  try{
+    const rl = (JSON.parse(localStorage.getItem('avit_perfil')||'{}').rutaLabels)||{};
+    ['m3d','rend','plan'].forEach(k=>{
+      if(rl[k]){ const g=_rolesData.grupos.find(g=>g.id===k); if(g && g.nombre===ROLES_DEFAULT.grupos.find(d=>d.id===k).nombre) g.nombre=rl[k]; }
+    });
+  }catch(e){}
+}
+function rolesSave(){
+  try{ localStorage.setItem('avit_roles', JSON.stringify(_rolesData)); }catch(e){}
+  if(typeof triggerAutoSync==='function') triggerAutoSync();
+  // Reflejar nombres de los grupos base en el Cotizador (compatibilidad)
+  _rolesSyncRutaLabels();
+  const msg=document.getElementById('rolesSaveMsg');
+  if(msg){ msg.textContent='Guardado ✓'; setTimeout(()=>{ if(msg.textContent==='Guardado ✓') msg.textContent=''; },1600); }
+}
+/* Sincroniza el nombre de los grupos base (m3d/rend/plan) hacia el renombrado del Cotizador */
+function _rolesSyncRutaLabels(){
+  try{
+    const p = JSON.parse(localStorage.getItem('avit_perfil')||'{}');
+    p.rutaLabels = p.rutaLabels || {};
+    ['m3d','rend','plan'].forEach(k=>{
+      const g=_rolesData.grupos.find(g=>g.id===k);
+      if(g){ const def=ROLES_DEFAULT.grupos.find(d=>d.id===k).nombre;
+        if(g.nombre && g.nombre!==def) p.rutaLabels[k]=g.nombre; else delete p.rutaLabels[k]; }
+    });
+    localStorage.setItem('avit_perfil', JSON.stringify(p));
+    if(typeof aplicarRutaLabels==='function') aplicarRutaLabels();
+  }catch(e){}
+}
+
+function rolesAbrirLienzo(){ showPage('roles'); }
+window.rolesAbrirLienzo = rolesAbrirLienzo;
+
+function _honLabel(h){ return h==='f1'?'Anteproyecto':h==='f2'?'Planimetrías':'Organizativo'; }
+function _honCls(h){ return h==='f1'?'f1':h==='f2'?'f2':'none'; }
+
+/* ── Render del lienzo ── */
+function rolesRender(){
+  if(!_rolesData) rolesLoad();
+  const canvas = document.getElementById('rolesCanvas');
+  const svg = document.getElementById('rolesSvg');
+  if(!canvas||!svg) return;
+  // limpiar nodos
+  canvas.querySelectorAll('.rol-grupo').forEach(el=>el.remove());
+
+  // flechas (conexiones) — se dibujan tras conocer tamaños, con un pequeño delay
+  _rolesDrawEdges();
+
+  _rolesData.grupos.forEach(g=>{
+    const el=document.createElement('div');
+    el.className='rol-grupo'+(_rolesSel===g.id?' sel':'')+(_rolesConnFrom&&_rolesConnFrom!==g.id?' conn-target':'');
+    el.dataset.gid=g.id;
+    el.style.left=(g.x||0)+'px'; el.style.top=(g.y||0)+'px';
+    const rolesHtml = (g.roles||[]).map(r=>`
+      <div class="rol-item" draggable="true" data-rid="${r.id}" data-gid="${g.id}"
+           ondragstart="rolesItemDragStart(event,'${g.id}','${r.id}')" ondragend="rolesItemDragEnd(event)">
+        <span style="color:var(--text-3);font-size:10px">•</span>
+        <span class="rol-item-nom" title="${escapeHtmlK(r.nombre)}">${escapeHtmlK(r.nombre)}</span>
+        <button class="rol-item-menu" onclick="event.stopPropagation();rolesRolMenu(event,'${g.id}','${r.id}')">⋮</button>
+      </div>`).join('');
+    el.innerHTML=`
+      <div class="rol-grupo-head" data-gid="${g.id}">
+        <span class="rol-grupo-dot" style="background:${g.honorario==='f1'?'#5AABF0':g.honorario==='f2'?'#4CAF72':'var(--text-3)'}"></span>
+        <span class="rol-grupo-nom" title="${escapeHtmlK(g.nombre)}">${escapeHtmlK(g.nombre)}</span>
+        <span class="rol-grupo-hon ${_honCls(g.honorario)}">${_honLabel(g.honorario)}</span>
+        <button class="rol-grupo-menu" onclick="event.stopPropagation();rolesGrupoMenu(event,'${g.id}')">⋮</button>
+      </div>
+      <div class="rol-grupo-body" data-gid="${g.id}"
+           ondragover="rolesBodyDragOver(event,'${g.id}')" ondragleave="rolesBodyDragLeave(event)" ondrop="rolesBodyDrop(event,'${g.id}')">
+        ${rolesHtml}
+        <button class="rol-add-item" onclick="rolesAddRol('${g.id}')">＋ Rol</button>
+      </div>`;
+    // arrastre del grupo (por el header)
+    el.querySelector('.rol-grupo-head').addEventListener('mousedown', e=>rolesGrupoDragStart(e,g.id), false);
+    // clic en el grupo: si estamos en modo conexión, conectar; si no, seleccionar
+    el.addEventListener('click', e=>{
+      if(_rolesConnFrom && _rolesConnFrom!==g.id){ rolesConnectTo(g.id); return; }
+      _rolesSel=(_rolesSel===g.id?null:g.id); rolesRender();
+    });
+    canvas.appendChild(el);
+  });
+  // redibujar flechas ahora que los nodos existen (para medir alto real)
+  setTimeout(_rolesDrawEdges, 0);
+}
+
+function _rolesDrawEdges(){
+  const svg=document.getElementById('rolesSvg'); if(!svg) return;
+  const W=210;
+  svg.innerHTML=`<defs>
+    <marker id="rolArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+    </marker>
+    <linearGradient id="rolGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(212,168,67,0.5)"/><stop offset="100%" stop-color="rgba(212,168,67,0.9)"/>
+    </linearGradient>
+  </defs>`;
+  const gEl = id => document.querySelector('.rol-grupo[data-gid="'+id+'"]');
+  (_rolesData.conexiones||[]).forEach(c=>{
+    const a=_rolesData.grupos.find(g=>g.id===c.from), b=_rolesData.grupos.find(g=>g.id===c.to);
+    if(!a||!b) return;
+    const ael=gEl(c.from), bel=gEl(c.to);
+    const ah=ael?ael.offsetHeight:90, bh=bel?bel.offsetHeight:90;
+    // salida por el lado derecho de A, entrada por el izquierdo de B (flujo horizontal)
+    const ax=a.x+W, ay=a.y+ah/2, bx=b.x, by=b.y+bh/2;
+    const dx=Math.max(40,Math.abs(bx-ax)*0.5);
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M${ax},${ay} C${ax+dx},${ay} ${bx-dx},${by} ${bx},${by}`);
+    path.setAttribute('stroke','url(#rolGrad)'); path.setAttribute('stroke-width','2'); path.setAttribute('fill','none');
+    path.setAttribute('marker-end','url(#rolArrow)');
+    svg.appendChild(path);
+  });
+}
+window.rolesRender = rolesRender;
+
+/* ── Arrastre de grupos ── */
+var _rolesDrag=null;
+function rolesGrupoDragStart(e,id){
+  if(e.button!==0) return;
+  if(e.target.closest('.rol-grupo-menu')) return;
+  const g=_rolesData.grupos.find(x=>x.id===id); if(!g) return;
+  const wrap=document.getElementById('rolesCanvasWrap');
+  _rolesDrag={ id, sx:e.clientX, sy:e.clientY, ox:g.x, oy:g.y };
+  e.preventDefault();
+  document.addEventListener('mousemove', _rolesDragMove, false);
+  document.addEventListener('mouseup', _rolesDragEnd, false);
+}
+function _rolesDragMove(e){
+  if(!_rolesDrag) return;
+  const g=_rolesData.grupos.find(x=>x.id===_rolesDrag.id); if(!g) return;
+  g.x=Math.max(0,_rolesDrag.ox+(e.clientX-_rolesDrag.sx));
+  g.y=Math.max(0,_rolesDrag.oy+(e.clientY-_rolesDrag.sy));
+  const el=document.querySelector('.rol-grupo[data-gid="'+g.id+'"]');
+  if(el){ el.style.left=g.x+'px'; el.style.top=g.y+'px'; }
+  _rolesDrawEdges();
+}
+function _rolesDragEnd(){
+  document.removeEventListener('mousemove', _rolesDragMove, false);
+  document.removeEventListener('mouseup', _rolesDragEnd, false);
+  if(_rolesDrag){ _rolesDrag=null; rolesSave(); }
+}
+
+/* ── CRUD de grupos ── */
+function rolesAddGrupo(){
+  const nom=prompt('Nombre del nuevo grupo:','Nuevo grupo');
+  if(nom===null) return;
+  const n=(nom||'').trim()||'Nuevo grupo';
+  // posición: escalonada
+  const k=_rolesData.grupos.length;
+  _rolesData.grupos.push({ id:_rolesNewId('g'), nombre:n, honorario:'', x:120+(k%4)*250, y:90+Math.floor(k/4)*240, roles:[] });
+  rolesSave(); rolesRender();
+}
+window.rolesAddGrupo=rolesAddGrupo;
+
+function rolesRenameGrupo(id){
+  const g=_rolesData.grupos.find(x=>x.id===id); if(!g) return;
+  const n=prompt('Nombre del grupo:',g.nombre); if(n===null) return;
+  g.nombre=(n||'').trim()||g.nombre; rolesSave(); rolesRender();
+}
+function rolesDupGrupo(id){
+  const g=_rolesData.grupos.find(x=>x.id===id); if(!g) return;
+  const copia=JSON.parse(JSON.stringify(g));
+  copia.id=_rolesNewId('g'); copia.nombre=g.nombre+' (copia)'; copia.x=g.x+30; copia.y=g.y+30;
+  copia.roles=(g.roles||[]).map(r=>({id:_rolesNewId('r'),nombre:r.nombre}));
+  // una copia no hereda el honorario base cableado si es uno de los 3 base
+  if(['m3d','rend','plan'].includes(g.id)) copia.honorario='';
+  _rolesData.grupos.push(copia); rolesSave(); rolesRender();
+}
+function rolesDelGrupo(id){
+  const g=_rolesData.grupos.find(x=>x.id===id); if(!g) return;
+  const esBase=['m3d','rend','plan'].includes(id);
+  const extra=esBase?'\n\nOjo: es uno de los grupos conectados al cálculo del Cotizador. Si lo borrás, dejará de aparecer ahí.':'';
+  if(!confirm('¿Borrar el grupo «'+g.nombre+'» y sus roles?'+extra)) return;
+  _rolesData.grupos=_rolesData.grupos.filter(x=>x.id!==id);
+  _rolesData.conexiones=(_rolesData.conexiones||[]).filter(c=>c.from!==id&&c.to!==id);
+  if(_rolesSel===id) _rolesSel=null;
+  rolesSave(); rolesRender();
+}
+function rolesSetHon(id,h){
+  const g=_rolesData.grupos.find(x=>x.id===id); if(!g) return;
+  g.honorario=h; rolesSave(); rolesRender();
+}
+
+/* ── CRUD de roles ── */
+function rolesAddRol(gid){
+  const g=_rolesData.grupos.find(x=>x.id===gid); if(!g) return;
+  const n=prompt('Nombre del rol:','Nuevo rol'); if(n===null) return;
+  if(!Array.isArray(g.roles)) g.roles=[];
+  g.roles.push({id:_rolesNewId('r'), nombre:(n||'').trim()||'Nuevo rol'});
+  rolesSave(); rolesRender();
+}
+window.rolesAddRol=rolesAddRol;
+function rolesRenameRol(gid,rid){
+  const g=_rolesData.grupos.find(x=>x.id===gid); if(!g) return;
+  const r=(g.roles||[]).find(x=>x.id===rid); if(!r) return;
+  const n=prompt('Nombre del rol:',r.nombre); if(n===null) return;
+  r.nombre=(n||'').trim()||r.nombre; rolesSave(); rolesRender();
+}
+function rolesDupRol(gid,rid){
+  const g=_rolesData.grupos.find(x=>x.id===gid); if(!g) return;
+  const idx=(g.roles||[]).findIndex(x=>x.id===rid); if(idx===-1) return;
+  const r=g.roles[idx];
+  g.roles.splice(idx+1,0,{id:_rolesNewId('r'),nombre:r.nombre});
+  rolesSave(); rolesRender();
+}
+function rolesDelRol(gid,rid){
+  const g=_rolesData.grupos.find(x=>x.id===gid); if(!g) return;
+  g.roles=(g.roles||[]).filter(x=>x.id!==rid);
+  rolesSave(); rolesRender();
+}
+/* Mover rol a otro grupo */
+function rolesMoverRol(gidFrom,rid,gidTo){
+  if(gidFrom===gidTo) return;
+  const a=_rolesData.grupos.find(x=>x.id===gidFrom), b=_rolesData.grupos.find(x=>x.id===gidTo);
+  if(!a||!b) return;
+  const idx=(a.roles||[]).findIndex(x=>x.id===rid); if(idx===-1) return;
+  const [r]=a.roles.splice(idx,1);
+  if(!Array.isArray(b.roles)) b.roles=[];
+  b.roles.push(r);
+  rolesSave(); rolesRender();
+}
+
+/* ── Drag & drop de roles entre grupos ── */
+var _rolesItemDrag=null;
+function rolesItemDragStart(e,gid,rid){
+  _rolesItemDrag={gid,rid};
+  e.dataTransfer.effectAllowed='move';
+  try{ e.dataTransfer.setData('text/plain',rid); }catch(_){}
+  e.currentTarget.classList.add('dragging');
+}
+function rolesItemDragEnd(e){ e.currentTarget.classList.remove('dragging'); _rolesItemDrag=null;
+  document.querySelectorAll('.rol-grupo-body.drop-on').forEach(b=>b.classList.remove('drop-on')); }
+function rolesBodyDragOver(e,gid){ if(_rolesItemDrag && _rolesItemDrag.gid!==gid){ e.preventDefault(); e.currentTarget.classList.add('drop-on'); } }
+function rolesBodyDragLeave(e){ e.currentTarget.classList.remove('drop-on'); }
+function rolesBodyDrop(e,gid){
+  e.preventDefault(); e.currentTarget.classList.remove('drop-on');
+  if(_rolesItemDrag && _rolesItemDrag.gid!==gid){ rolesMoverRol(_rolesItemDrag.gid,_rolesItemDrag.rid,gid); }
+  _rolesItemDrag=null;
+}
+window.rolesItemDragStart=rolesItemDragStart; window.rolesItemDragEnd=rolesItemDragEnd;
+window.rolesBodyDragOver=rolesBodyDragOver; window.rolesBodyDragLeave=rolesBodyDragLeave; window.rolesBodyDrop=rolesBodyDrop;
+
+/* ── Conexiones (flujo A → B) ── */
+function rolesConnectStart(id){
+  _rolesConnFrom=id;
+  const hint=document.getElementById('rolesConnectHint'); if(hint) hint.style.display='block';
+  rolesRender();
+}
+function rolesConnectTo(idTo){
+  if(!_rolesConnFrom || _rolesConnFrom===idTo){ rolesConnectCancel(); return; }
+  _rolesData.conexiones=_rolesData.conexiones||[];
+  const dup=_rolesData.conexiones.some(c=>c.from===_rolesConnFrom&&c.to===idTo);
+  if(!dup) _rolesData.conexiones.push({from:_rolesConnFrom,to:idTo});
+  rolesConnectCancel(); rolesSave(); rolesRender();
+}
+function rolesConnectCancel(){
+  _rolesConnFrom=null;
+  const hint=document.getElementById('rolesConnectHint'); if(hint) hint.style.display='none';
+  rolesRender();
+}
+window.rolesConnectCancel=rolesConnectCancel;
+/* Quitar conexiones salientes/entrantes de un grupo */
+function rolesClearConns(id){
+  _rolesData.conexiones=(_rolesData.conexiones||[]).filter(c=>c.from!==id&&c.to!==id);
+  rolesSave(); rolesRender();
+}
+
+/* ── Menús contextuales ── */
+function _rolesCloseCtx(){ document.querySelectorAll('.rol-ctx').forEach(m=>m.remove()); }
+document.addEventListener('click',e=>{ if(!e.target.closest('.rol-ctx')) _rolesCloseCtx(); });
+
+function rolesGrupoMenu(e,id){
+  _rolesCloseCtx();
+  const g=_rolesData.grupos.find(x=>x.id===id); if(!g) return;
+  const m=document.createElement('div'); m.className='rol-ctx';
+  m.innerHTML=`
+    <button onclick="rolesRenameGrupo('${id}');_rolesCloseCtx()">✎ Renombrar grupo</button>
+    <button onclick="rolesAddRol('${id}');_rolesCloseCtx()">＋ Agregar rol</button>
+    <button onclick="rolesConnectStart('${id}');_rolesCloseCtx()">🔗 Conectar hacia…</button>
+    <button onclick="rolesDupGrupo('${id}');_rolesCloseCtx()">⧉ Duplicar grupo</button>
+    <div class="rol-ctx-lbl">Cobra sobre</div>
+    <button onclick="rolesSetHon('${id}','f1');_rolesCloseCtx()">${g.honorario==='f1'?'✓ ':''}Anteproyecto (F1)</button>
+    <button onclick="rolesSetHon('${id}','f2');_rolesCloseCtx()">${g.honorario==='f2'?'✓ ':''}Planimetrías (F2)</button>
+    <button onclick="rolesSetHon('${id}','');_rolesCloseCtx()">${!g.honorario?'✓ ':''}Solo organizativo</button>
+    <div class="rol-ctx-sep"></div>
+    <button onclick="rolesClearConns('${id}');_rolesCloseCtx()">✕ Quitar conexiones</button>
+    <button class="danger" onclick="rolesDelGrupo('${id}');_rolesCloseCtx()">🗑 Borrar grupo</button>`;
+  _rolesPlaceCtx(m,e);
+}
+window.rolesGrupoMenu=rolesGrupoMenu;
+function rolesRolMenu(e,gid,rid){
+  _rolesCloseCtx();
+  const g=_rolesData.grupos.find(x=>x.id===gid); if(!g) return;
+  const otros=_rolesData.grupos.filter(x=>x.id!==gid);
+  const m=document.createElement('div'); m.className='rol-ctx';
+  m.innerHTML=`
+    <button onclick="rolesRenameRol('${gid}','${rid}');_rolesCloseCtx()">✎ Renombrar rol</button>
+    <button onclick="rolesDupRol('${gid}','${rid}');_rolesCloseCtx()">⧉ Duplicar rol</button>
+    ${otros.length?`<div class="rol-ctx-lbl">Mover a</div>`+otros.map(o=>`<button onclick="rolesMoverRol('${gid}','${rid}','${o.id}');_rolesCloseCtx()">→ ${escapeHtmlK(o.nombre)}</button>`).join(''):''}
+    <div class="rol-ctx-sep"></div>
+    <button class="danger" onclick="rolesDelRol('${gid}','${rid}');_rolesCloseCtx()">🗑 Borrar rol</button>`;
+  _rolesPlaceCtx(m,e);
+}
+window.rolesRolMenu=rolesRolMenu;
+function _rolesPlaceCtx(m,e){
+  document.body.appendChild(m);
+  const x=Math.min(e.clientX, window.innerWidth-m.offsetWidth-10);
+  const y=Math.min(e.clientY, window.innerHeight-m.offsetHeight-10);
+  m.style.left=x+'px'; m.style.top=y+'px';
+}
+window._rolesCloseCtx=_rolesCloseCtx;
+window.rolesRenameGrupo=rolesRenameGrupo; window.rolesDupGrupo=rolesDupGrupo; window.rolesDelGrupo=rolesDelGrupo;
+window.rolesSetHon=rolesSetHon; window.rolesConnectStart=rolesConnectStart; window.rolesClearConns=rolesClearConns;
+window.rolesRenameRol=rolesRenameRol; window.rolesDupRol=rolesDupRol; window.rolesDelRol=rolesDelRol; window.rolesMoverRol=rolesMoverRol;
+
+/* ── Auto-layout en flujo horizontal ── */
+function rolesAutoLayout(){
+  // ordenar por conexiones (topológico simple); fallback: orden actual
+  const idx={}; _rolesData.grupos.forEach((g,i)=>idx[g.id]=i);
+  const indeg={}; _rolesData.grupos.forEach(g=>indeg[g.id]=0);
+  (_rolesData.conexiones||[]).forEach(c=>{ if(indeg[c.to]!=null) indeg[c.to]++; });
+  const col={}; let frontier=_rolesData.grupos.filter(g=>!indeg[g.id]).map(g=>g.id);
+  if(!frontier.length) frontier=_rolesData.grupos.map(g=>g.id);
+  let depth=0, seen=new Set();
+  while(frontier.length){
+    const next=[];
+    frontier.forEach(id=>{ if(seen.has(id)) return; seen.add(id); col[id]=depth;
+      (_rolesData.conexiones||[]).filter(c=>c.from===id).forEach(c=>next.push(c.to)); });
+    frontier=next; depth++;
+    if(depth>50) break;
+  }
+  _rolesData.grupos.forEach(g=>{ if(col[g.id]==null) col[g.id]=depth; });
+  const perCol={};
+  _rolesData.grupos.forEach(g=>{ const c=col[g.id]; perCol[c]=(perCol[c]||0); g.x=120+c*280; g.y=90+perCol[c]*240; perCol[c]++; });
+  rolesSave(); rolesRender();
+}
+window.rolesAutoLayout=rolesAutoLayout;
+
+function rolesReset(){
+  if(!confirm('¿Restaurar a los 3 grupos por defecto? Se perderán los grupos, roles y conexiones que hayas creado.')) return;
+  _rolesData=JSON.parse(JSON.stringify(ROLES_DEFAULT));
+  rolesSave(); rolesRender();
+}
+window.rolesReset=rolesReset;
+
 /* ── Inicializar al abrir la tab ─────────────────────────────── */
 /* El adminShowTab ya incluye 'organigrama' — orgRender se llama desde adminShowTab hook */
 const _adminOrgTabOrig = window.adminShowTab;
@@ -9988,7 +10422,7 @@ function empResetApp(){
   if(!confirm('¿Borrar TODOS los datos de este navegador?\n\nSe eliminarán proyectos, cotizaciones, clientes, registros administrativos, cronograma, organigrama y la identidad de la empresa.\n\nEsta acción no se puede deshacer.')) return;
   if(!confirm('Última confirmación.\n\n¿Seguro que querés dejar la aplicación completamente vacía?')) return;
   const claves = ['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias',
-                  'avit_catalogo','avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil',
+                  'avit_catalogo','avit_organigrama','avit_roles','avit_recibos','avit_sprint_tracker','avit_perfil',
                   'avit_calc_draft','avit_calc','avit_artifacts'];
   claves.forEach(k => { try{ localStorage.removeItem(k); }catch(e){} });
   alert('Datos borrados. La aplicación se recargará.');
@@ -10445,7 +10879,7 @@ window.setupNext = setupNext;
 
 
 /* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
-const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_organigrama','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
+const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_organigrama','avit_roles','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
 async function _pullDatos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
@@ -10591,6 +11025,7 @@ function _undoRefrescar(){
   else if(act==='pg-clientes')  R('cliRenderList');
   else if(act==='pg-admin')     R('adminRender');
   else if(act==='pg-empresa')   R('renderEmpresa');
+  else if(act==='pg-roles')     R('rolesRender');
   else if(act==='pg-pm')        R('pmRenderAll');
   else if(act==='pg-calc'){     R('renderPrograma'); R('calc'); R('restaurarColapsos'); }
   else if(act==='pg-estimado')  R('renderEstimado');
@@ -10795,6 +11230,7 @@ function showPage(id) {
   if(id==='estimado'){renderEstimado();}
   if(id==='programa'){renderPrograma();}
   if(id==='empresa'){renderEmpresa();}
+  if(id==='roles'){ if(typeof rolesRender==='function') rolesRender(); }
 }
 
 function toggleTiempos(){
@@ -17925,6 +18361,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       <div style="font-size:10px;color:var(--text-3);letter-spacing:0.22em;text-transform:uppercase;margin-top:4px;font-family:var(--font-display)">Gestión para estudios de arquitectura</div>
     </div>
     <div id="authError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(224,122,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
+    <form id="authForm" autocomplete="on" onsubmit="authLogin();return false;">
     <div class="auth-field">
       <label class="lbl" for="authEmail">Correo electrónico</label>
       <div class="auth-input-wrap">
@@ -17932,7 +18369,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           <rect x="3" y="5" width="18" height="14" rx="3"/>
           <path d="M3.5 7l7.4 5.4a2 2 0 0 0 2.2 0L20.5 7"/>
         </svg>
-        <input type="email" id="authEmail" placeholder="tu@correo.com" autocomplete="email" spellcheck="false">
+        <input type="email" id="authEmail" name="username" placeholder="tu@correo.com" autocomplete="username" autocapitalize="none" spellcheck="false" inputmode="email">
       </div>
     </div>
     <div class="auth-field" style="margin-bottom:.9rem">
@@ -17943,8 +18380,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
           <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
         </svg>
-        <input type="password" id="authPass" placeholder="••••••••" autocomplete="current-password"
-          onkeydown="if(event.key==='Enter')authLogin()">
+        <input type="password" id="authPass" name="password" placeholder="••••••••" autocomplete="current-password">
         <button type="button" class="auth-eye" onclick="togglePassVis()" title="Mostrar / ocultar contraseña" tabindex="-1">
           <svg id="authEyeIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/>
@@ -17957,14 +18393,15 @@ document.addEventListener('DOMContentLoaded',()=>{
       <input type="checkbox" id="authKeep" checked style="accent-color:var(--accent);min-height:auto">
       Mantener la sesión iniciada en este dispositivo
     </label>
-    <button onclick="authLogin()" id="authLoginBtn"
+    <button type="submit" id="authLoginBtn"
       style="width:100%;padding:11px;font-size:12px;font-weight:600;border:none;border-radius:999px;
       background:linear-gradient(135deg,var(--accent-light,var(--accent)),var(--accent));color:var(--text-on-accent);
       cursor:pointer;font-family:var(--font-display);letter-spacing:.10em;text-transform:uppercase;
       box-shadow:var(--shadow-accent,0 8px 20px rgba(212,168,67,0.3));transition:transform .15s">
       Iniciar sesión
     </button>
-    <button onclick="abrirRegistro()" id="authSignupBtn"
+    </form>
+    <button type="button" onclick="abrirRegistro()" id="authSignupBtn"
       style="width:100%;margin-top:9px;padding:10px;font-size:11px;border:1px solid var(--border-2);border-radius:999px;
       background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">
       Crear cuenta nueva
@@ -17999,7 +18436,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     <div id="regError" style="display:none;padding:8px 12px;margin-bottom:12px;background:var(--red-lt);border:1px solid rgba(255,92,122,0.35);border-radius:var(--r-md);font-size:11px;color:var(--red)"></div>
     <div id="regOk" style="display:none;padding:10px 12px;margin-bottom:12px;background:var(--green-lt);border:1px solid rgba(61,232,176,0.35);border-radius:var(--r-md);font-size:11px;color:var(--green);line-height:1.55"></div>
 
-    <div id="regForm">
+    <form id="regForm" autocomplete="on" onsubmit="authRegistrar();return false;">
       <div class="auth-field">
         <label class="lbl" for="regEmail">Correo electrónico</label>
         <div class="auth-input-wrap">
@@ -18007,7 +18444,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             <rect x="3" y="5" width="18" height="14" rx="3"/>
             <path d="M3.5 7l7.4 5.4a2 2 0 0 0 2.2 0L20.5 7"/>
           </svg>
-          <input type="email" id="regEmail" placeholder="tu@correo.com" autocomplete="email" spellcheck="false">
+          <input type="email" id="regEmail" name="username" placeholder="tu@correo.com" autocomplete="username" autocapitalize="none" spellcheck="false" inputmode="email">
         </div>
       </div>
 
@@ -18019,7 +18456,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
             <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
           </svg>
-          <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" autocomplete="new-password"
+          <input type="password" id="regPass" name="new-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password"
             oninput="regCheckMatch()">
           <button type="button" class="auth-eye" onclick="regTogglePass('regPass','regEye1')" title="Mostrar / ocultar" tabindex="-1">
             <svg id="regEye1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -18037,8 +18474,8 @@ document.addEventListener('DOMContentLoaded',()=>{
             <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
             <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
           </svg>
-          <input type="password" id="regPass2" placeholder="Repetí la contraseña" autocomplete="new-password"
-            oninput="regCheckMatch()" onkeydown="if(event.key==='Enter')authRegistrar()">
+          <input type="password" id="regPass2" name="confirm-password" placeholder="Repetí la contraseña" autocomplete="new-password"
+            oninput="regCheckMatch()">
           <button type="button" class="auth-eye" onclick="regTogglePass('regPass2','regEye2')" title="Mostrar / ocultar" tabindex="-1">
             <svg id="regEye2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>
@@ -18048,14 +18485,14 @@ document.addEventListener('DOMContentLoaded',()=>{
         <p id="regMatchMsg" style="font-size:10.5px;margin-top:6px;min-height:14px;line-height:1.4"></p>
       </div>
 
-      <button onclick="authRegistrar()" id="regSubmitBtn"
+      <button type="submit" id="regSubmitBtn"
         style="width:100%;padding:11px;font-size:12px;font-weight:600;border:none;border-radius:999px;
         background:linear-gradient(135deg,var(--accent-light,var(--accent)),var(--accent));color:var(--text-on-accent);
         cursor:pointer;font-family:var(--font-display);letter-spacing:.10em;text-transform:uppercase;
         box-shadow:var(--shadow-accent);transition:transform .15s">
         Crear mi cuenta
       </button>
-    </div>
+    </form>
 
     <div class="oauth-sep" id="regOauthSep"><span>o</span></div>
 
