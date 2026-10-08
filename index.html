@@ -1987,6 +1987,41 @@ en claro debe ser oscuro (filter invert) */
 .rol-grupo-body.drop-on{outline:2px dashed var(--border-accent);outline-offset:-3px;border-radius:var(--r-md)}
 .rol-add-item{width:100%;margin-top:3px;padding:6px;border:1px dashed var(--border-2);border-radius:var(--r-sm);background:transparent;color:var(--text-3);font-size:11px;cursor:pointer;font-family:var(--font-body)}
 .rol-add-item:hover{border-color:var(--border-accent);color:var(--accent)}
+/* ── Calendario del proyecto (Cotizador) ── */
+.tl-plan{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+@media(max-width:700px){.tl-plan{grid-template-columns:1fr 1fr}.tl-plan .tl-recalc{grid-column:1/-1}}
+.tl-chip{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px;border-radius:20px;font-family:var(--font-display)}
+.tl-chip.auto{background:rgba(76,175,114,0.14);color:#6FD49A}
+.tl-chip.fija{background:rgba(232,151,58,0.16);color:#E8973A}
+.tl-recalc{height:38px;padding:0 16px;border-radius:var(--r-md);border:1px solid var(--border-accent);background:var(--accent-subtle);color:var(--accent);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:var(--font-body);transition:all .15s}
+.tl-recalc:hover{background:rgba(212,168,67,0.18)}
+.tl-recalc.pendiente{background:var(--accent);color:var(--text-on-accent,#1a1a1a);box-shadow:0 0 0 3px var(--accent-subtle);animation:tlPulse 1.8s ease-in-out infinite}
+@keyframes tlPulse{0%,100%{box-shadow:0 0 0 0 var(--accent-subtle)}50%{box-shadow:0 0 0 5px var(--accent-subtle)}}
+.tl-dias{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tl-dias-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);font-family:var(--font-display);margin-right:2px}
+.tl-dia{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--border-2);border-radius:20px;font-size:11.5px;color:var(--text-2);cursor:pointer;user-select:none}
+.tl-dia input{accent-color:var(--accent);margin:0}
+.tl-dia.fijo{cursor:default;border-style:dashed;color:var(--text-3)}
+.tl-resumen{margin-left:auto;font-size:11px;color:var(--text-3)}
+.tl-resumen b{color:var(--text);font-family:var(--font-mono);font-weight:500}
+.tl-ed-fechas{font-size:10px;color:var(--text-3);font-family:var(--font-mono)}
+.tl-days{display:inline-flex;align-items:center;gap:3px;font-size:9.5px;color:var(--text-3)}
+#timelineContent .tl-days{white-space:nowrap}
+#timelineContent input.tl-days-inp{width:38px!important;min-width:0!important;height:19px!important;min-height:0!important;padding:0 3px!important;margin:0!important;font-size:10.5px!important;line-height:19px!important;border:0.5px solid var(--border-2)!important;border-radius:4px!important;background:var(--surface)!important;color:var(--text)!important;font-family:var(--font-mono)!important;text-align:center;box-shadow:none!important}
+#timelineContent input.tl-days-inp:focus{border-color:var(--accent)!important;outline:none}
+.tl-nolab{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,0.022) 0 3px,transparent 3px 6px);pointer-events:none}
+.tl-meta{position:absolute;top:0;bottom:0;width:0;z-index:7;pointer-events:none}
+.tl-meta-line{position:absolute;top:20px;bottom:0;left:-1px;width:2px;background:repeating-linear-gradient(to bottom,#f4f4f4 0 5px,#1a1a1a 5px 10px);box-shadow:0 0 0 1px rgba(0,0,0,0.25)}
+.tl-meta.comp .tl-meta-line{background:repeating-linear-gradient(to bottom,#E8973A 0 5px,#1a1a1a 5px 10px)}
+.tl-meta-flag{position:absolute;top:2px;left:-2px;display:flex;align-items:flex-end;gap:4px;pointer-events:auto;cursor:ew-resize;color:var(--text);touch-action:none;user-select:none}
+.tl-flag-svg{display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4));transition:transform .12s}
+.tl-meta-flag:hover .tl-flag-svg{transform:scale(1.15) translateY(-1px)}
+.tl-meta-fecha{font-size:9.5px;font-family:var(--font-mono);font-weight:600;color:var(--text);background:var(--bg-base);border:1px solid var(--border-2);border-radius:4px;padding:0 5px;line-height:15px;white-space:nowrap}
+.tl-meta.fija .tl-meta-fecha{border-color:rgba(232,151,58,0.6);color:#E8973A}
+.tl-meta.comp .tl-meta-fecha{border-color:#E8973A;color:#E8973A}
+.tl-banner-btn{padding:4px 10px;border-radius:var(--r-sm);border:1px solid rgba(232,151,58,0.6);background:rgba(232,151,58,0.14);color:#E8973A;font-size:10.5px;cursor:pointer;font-family:var(--font-body)}
+.tl-banner-btn.ghost{background:transparent;border-color:var(--border-2);color:var(--text-2)}
+.tl-holgura{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 12px;margin-bottom:10px;border-radius:var(--r-md);background:rgba(255,255,255,0.03);border:1px solid var(--border);font-size:11px;color:var(--text-2)}
 /* ── Cotizador · Otras fases ── */
 .rol-grupo-hon.f3{background:rgba(224,112,152,0.16);color:#E07098}
 .cf-base{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end;margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--border)}
@@ -3310,6 +3345,21 @@ code.emp-tag{font-family:var(--font-mono)}
           <p style="font-size:10.5px;color:var(--text-3);margin-top:5px;line-height:1.5" id="empSaludoPreview"></p>
         </div>
       </div>
+      <div class="lbl" style="margin:4px 0 8px">✍️ Datos para la firma de las propuestas</div>
+      <div class="r2" style="margin-bottom:10px">
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Nombre profesional</label>
+          <input type="text" id="empFirmaNombre" placeholder="Ej. Arq. Erick Rodrigo Baldizón García" oninput="empMarkDirty()">
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">No. de colegiado</label>
+          <input type="text" id="empColegiado" placeholder="Ej. 7251" oninput="empMarkDirty()">
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:14px">
+        <label class="lbl">Razón social</label>
+        <input type="text" id="empRazonSocial" placeholder="Ej. ESTUDIO AVIT, S.A." oninput="empMarkDirty()">
+      </div>
 
       <div class="emp-uploads">
         <!-- Logo -->
@@ -3511,7 +3561,8 @@ code.emp-tag{font-family:var(--font-mono)}
     <div class="fg"><label class="lbl">Nombre del cliente</label><input type="text" id="clientName" placeholder="Ej. Juan García" oninput="syncToCalendar();calc()"></div>
     <div class="fg"><label class="lbl">Título del proyecto</label><input type="text" id="projTitle" placeholder="Ej. Residencia Zona 15" oninput="syncToCalendar();calc()"></div>
   </div>
-  <div class="fg"><label class="lbl">Descripción</label><textarea id="projDesc" rows="2" placeholder="Describe el proyecto brevemente..."></textarea></div>
+  <div class="fg"><label class="lbl">Ubicación del proyecto</label><input type="text" id="projUbic" placeholder="Ej. Santa Catarina Pinula, Guatemala" oninput="if(typeof saveDraft==='function')saveDraft()"></div>
+  <div class="fg"><label class="lbl">Descripción <span style="text-transform:none;letter-spacing:0;color:var(--text-3)">(aparece en el alcance de la propuesta)</span></label><textarea id="projDesc" rows="2" placeholder="Describe el proyecto brevemente..."></textarea></div>
 </div>
 
 <!-- Detalles de terreno (movido arriba) -->
@@ -3855,34 +3906,60 @@ code.emp-tag{font-family:var(--font-mono)}
 
 <div class="sc">
   <!-- Header: título + indicadores de fase (F1/F2) -->
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:.75rem">
-    <div class="sc-title" style="margin:0">Editor de sprints</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:.4rem">
+    <div class="sc-title" style="margin:0">Calendario del proyecto</div>
     <div style="display:flex;gap:6px;flex-shrink:0">
       <div id="calFaseF1Indicator"><span class="pl p1" style="font-size:9px" id="calF1Badge">F1 ON</span></div>
       <div id="calFaseF2Indicator"><span class="pl p2" style="font-size:9px" id="calF2Badge">F2 ON</span></div>
     </div>
   </div>
+  <p class="nt" style="margin:0 0 .9rem">Elegí la fecha de inicio y escribí los días de cada sprint: la línea de tiempo se actualiza sola. Para fijar una fecha de entrega, arrastrá la bandera 🏁.</p>
 
-  <!-- Fechas del proyecto -->
-  <div class="r2" style="margin-bottom:1rem">
-    <div>
-      <label class="lbl">Fecha de inicio del proyecto</label>
+  <!-- Planificación: fechas + días de trabajo -->
+  <div class="tl-plan">
+    <div class="tl-plan-f">
+      <label class="lbl">Fecha de inicio</label>
       <input type="text" id="projStart" placeholder="DD/MM/AAAA" maxlength="10"
         oninput="onProjStartChange();if(typeof saveDraft==='function')saveDraft()"
         style="font-family:var(--font-mono)">
     </div>
-    <div>
-      <label class="lbl" style="display:flex;align-items:center;gap:6px">
-        Fecha de entrega final
-        <button onclick="recalcProjEnd()" title="Recalcular desde duración de sprints"
-          style="font-size:9px;padding:1px 7px;border:0.5px solid var(--border-2);border-radius:var(--r-sm);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">↺ recalc</button>
-      </label>
+    <div class="tl-plan-f">
+      <label class="lbl" style="display:flex;align-items:center;gap:6px">Fecha de entrega <span id="tlEntregaChip" class="tl-chip auto">Automática</span></label>
       <input type="text" id="projEnd" placeholder="DD/MM/AAAA" maxlength="10"
-        oninput="_projEndManual=true;renderAll()"
+        oninput="_projEndManual=true;renderAll();if(typeof saveDraft==='function')saveDraft()"
         style="font-family:var(--font-mono)">
     </div>
+    <button type="button" id="tlRecalcBtn" class="tl-recalc" onclick="recalcProjEnd();if(typeof saveDraft==='function')saveDraft()" title="Pone la fecha de entrega al final del último sprint">↺ Recalcular entrega</button>
+  </div>
+  <div class="tl-dias">
+    <span class="tl-dias-lbl">Días de trabajo</span>
+    <span class="tl-dia fijo">Lun – Vie</span>
+    <label class="tl-dia"><input type="checkbox" id="tlSab" checked onchange="tlCalChange()"> Sábados</label>
+    <label class="tl-dia"><input type="checkbox" id="tlDom" checked onchange="tlCalChange()"> Domingos</label>
+    <span id="tlResumen" class="tl-resumen"></span>
   </div>
 
+  <div class="view-tabs" style="margin-top:1rem">
+    <button class="vtab active" id="tab-tl" onclick="switchView('tl')">Línea de tiempo</button>
+    <button class="vtab" id="tab-cv" onclick="switchView('cv')">Vista cliente</button>
+  </div>
+  <div id="view-tl">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+    <span style="font-size:11px;color:var(--text-3)">Arrastrá las barras para moverlas · borde derecho para cambiar los días · 🏁 para fijar la entrega</span>
+    <div style="display:flex;gap:3px">
+      <button onclick="tlSetZoom('day')" id="tlz-day" class="tlz" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em">Día</button>
+      <button onclick="tlSetZoom('week')" id="tlz-week" class="tlz" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--accent);border-radius:var(--r-md);background:rgba(212,168,67,0.08);color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em">Semana</button>
+      <button onclick="tlSetZoom('month')" id="tlz-month" class="tlz" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em">Mes</button>
+      <button onclick="tlSetZoom('quarter')" id="tlz-quarter" class="tlz" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em">Trimestre</button>
+    </div>
+  </div>
+  <div id="timelineContent"></div>
+</div>
+  <div id="view-cv" style="display:none"><div id="clienteContent"></div></div>
+</div>
+
+<div class="sc">
+  <div class="sc-title" style="margin-bottom:.75rem">Editor de sprints</div>
   <!-- Botones de agregar sprint -->
   <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem">
     <button class="add-sp-btn" style="width:auto;padding:5px 10px;margin:0;font-size:11px" onclick="addSprint('f1')">+ Sprint F1</button>
@@ -3892,26 +3969,6 @@ code.emp-tag{font-family:var(--font-mono)}
   </div>
   <p class="nt" style="margin-bottom:.75rem">Nombrá cada sprint, seleccioná sus entregables y marcá si requiere aprobación del cliente.</p>
   <div id="sprintEditor"></div>
-</div>
-
-<div class="sc">
-  <div class="view-tabs">
-    <button class="vtab active" id="tab-tl" onclick="switchView('tl')">Línea de tiempo</button>
-    <button class="vtab" id="tab-cv" onclick="switchView('cv')">Vista cliente</button>
-  </div>
-  <div id="view-tl">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
-    <span style="font-size:11px;color:var(--text-3)">Línea de tiempo</span>
-    <div style="display:flex;gap:3px">
-      <button onclick="tlSetZoom('day')"     id="tlz-day"     style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Día</button>
-      <button onclick="tlSetZoom('week')"    id="tlz-week"    style="padding:3px 8px;font-size:10px;border:0.5px solid var(--accent);border-radius:var(--r-md);background:rgba(212,168,67,0.08);color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Sem</button>
-      <button onclick="tlSetZoom('month')"   id="tlz-month"   style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Mes</button>
-      <button onclick="tlSetZoom('quarter')" id="tlz-quarter" style="padding:3px 8px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Trim</button>
-    </div>
-  </div>
-  <div id="timelineContent"></div>
-</div>
-  <div id="view-cv" style="display:none"><div id="clienteContent"></div></div>
 </div>
 
 </div><!-- /secTiempos -->
@@ -10301,6 +10358,7 @@ function renderEmpresa(){
   if(nm) nm.value = p.empresa || '';
   const us = document.getElementById('empUsuario');
   if(us) us.value = p.nombre || '';
+  [['empFirmaNombre','firmaNombre'],['empColegiado','colegiado'],['empRazonSocial','razonSocial']].forEach(([id,k])=>{ const e=document.getElementById(id); if(e) e.value=p[k]||''; });
   empPreviewSaludo();
   const sal = document.getElementById('empSaludo');
   if(sal) sal.value = (typeof p.saludo === 'string') ? p.saludo : EMP_SALUDO_DEFAULT;
@@ -10668,6 +10726,9 @@ function empGuardar(){
   const p = _perfil();
   p.empresa = (document.getElementById('empNombre')?.value || '').trim();
   p.nombre  = (document.getElementById('empUsuario')?.value || '').trim();
+  p.firmaNombre = (document.getElementById('empFirmaNombre')?.value || '').trim();
+  p.colegiado   = (document.getElementById('empColegiado')?.value || '').trim();
+  p.razonSocial = (document.getElementById('empRazonSocial')?.value || '').trim();
   const sal = (document.getElementById('empSaludo')?.value || '').trim();
   p.saludo = sal || EMP_SALUDO_DEFAULT;
   p.observaciones = _empObs.map(t => (t||'').trim()).filter(Boolean);
@@ -11833,7 +11894,9 @@ function calc(){
     colNombreRend:(document.getElementById('colNombreRend')||{}).value||'',
     colNombrePlanos:(document.getElementById('colNombrePlanos')||{}).value||'',
     colabs:JSON.parse(JSON.stringify(_COLABS)),
+    apIncluye:['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones'].filter((_,i)=>document.getElementById('apInc'+(i+1))?.checked),
     timbresOn:document.getElementById('timbresOn').checked,
+    timbres:(()=>{ const on=!!document.getElementById('timbresOn').checked; let n=0; const N=(typeof PLANO_NAMES!=='undefined'?PLANO_NAMES.length:0); for(let i=1;i<=N;i++) n+=gv('qp'+i); const c=gv('timbreCosto'); return {on, costo:c, planos:n, total:(on&&f2)?c*n:0}; })(),
     planosQty};
 }
 
@@ -12029,7 +12092,36 @@ function fmtFechaGT(iso){
 }
 function fmtDate(v){if(!v)return null;const[y,m,d]=v.split('-');const mo=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];return`${parseInt(d)} de ${mo[parseInt(m)-1]} de ${y}`}
 
-function getSprintDates(){
+/* ═══ Calendario de trabajo del Cotizador (sábados / domingos) ═══
+   Con ambas casillas marcadas todos los días cuentan (comportamiento original).
+   Si se desmarcan, la duración de cada sprint son DÍAS HÁBILES y el
+   calendario salta los días no laborables.                              */
+function _tlCal(){
+  const sa=document.getElementById('tlSab'), dm=document.getElementById('tlDom');
+  return { sab: sa ? !!sa.checked : true, dom: dm ? !!dm.checked : true };
+}
+function _esLab(d, cal){ const w=d.getDay(); if(w===6) return cal.sab; if(w===0) return cal.dom; return true; }
+function _alinearLab(d, cal){ let r=new Date(d); for(let i=0;i<7 && !_esLab(r,cal);i++) r=addDays(r,1); return r; }
+function _finLab(start, n, cal){ let r=new Date(start), c=1; let guard=0; while(c<n && guard<5000){ r=addDays(r,1); if(_esLab(r,cal)) c++; guard++; } return r; }
+function _contarLab(a, b, cal){ let n=0, r=new Date(a), guard=0; while(r<=b && guard<5000){ if(_esLab(r,cal)) n++; r=addDays(r,1); guard++; } return n; }
+function _tlTodosLab(){ const c=_tlCal(); return c.sab && c.dom; }
+function tlCalChange(){
+  // recordar la preferencia del estudio para las próximas cotizaciones
+  try{ const p=JSON.parse(localStorage.getItem('avit_perfil')||'{}'); p.tlCal=_tlCal(); localStorage.setItem('avit_perfil',JSON.stringify(p)); }catch(e){}
+  if(!_projEndManual) recalcProjEnd(); else renderAll();
+  if(typeof saveDraft==='function') saveDraft();
+}
+function _tlCalInit(){
+  try{
+    const p=JSON.parse(localStorage.getItem('avit_perfil')||'{}');
+    if(p.tlCal){ const sa=document.getElementById('tlSab'), dm=document.getElementById('tlDom');
+      if(sa) sa.checked=p.tlCal.sab!==false; if(dm) dm.checked=p.tlCal.dom!==false; }
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded', _tlCalInit);
+window.tlCalChange=tlCalChange;
+
+function getSprintDates(sinDeadline){
   /* Cadena estrictamente secuencial por fases:
      F1 sprints → Hito F1 → PE sprints → F2 sprints → Hito F2
 
@@ -12073,6 +12165,7 @@ function getSprintDates(){
      factor <1  = todas las duraciones se escalan para caber
      en el deadline (mínimo 1 día por sprint).            */
   const projStartDate = new Date(sv+'T12:00:00');
+  const CAL = _tlCal();
   function sprintDays(s){
     return Math.max(1, parseInt(s.days) || Math.round((parseFloat(s.weeks)||2)*7));
   }
@@ -12089,15 +12182,15 @@ function getSprintDates(){
              se coloca en su offset absoluto; NO empuja la cadena.
              Permite tareas simultáneas. */
           const days  = rawDays;   // sin compresión: el usuario la fijó
-          const start = addDays(projStartDate, Math.max(0, parseInt(s.startDay)));
-          const end   = addDays(start, days-1);
+          const start = _alinearLab(addDays(projStartDate, Math.max(0, parseInt(s.startDay))), CAL);
+          const end   = _finLab(start, days, CAL);
           result[s.id] = {start, end, manual:true};
           if(end > lastEnd) lastEnd = end;
         } else {
           /* Posición AUTOMÁTICA: secuencial en la cadena */
           const days  = Math.max(1, Math.round(rawDays*factor));
-          const start = new Date(cur);
-          const end   = addDays(start, days-1);
+          const start = _alinearLab(cur, CAL);
+          const end   = _finLab(start, days, CAL);
           result[s.id] = {start, end};
           if(end > lastEnd) lastEnd = end;
           cur = addDays(end, 1);
@@ -12111,8 +12204,9 @@ function getSprintDates(){
     const afterF1 = processPhase('f1', cursor);
     const hitoF1  = hitoDePhase('f1');
     if(hitoF1){
-      result[hitoF1.id] = {start:new Date(afterF1), end:new Date(afterF1), wk:0};
-      cursor = addDays(afterF1, 1);
+      const hd1=_alinearLab(afterF1, CAL);
+      result[hitoF1.id] = {start:new Date(hd1), end:new Date(hd1), wk:0};
+      cursor = addDays(hd1, 1);
     } else {
       cursor = new Date(afterF1);
     }
@@ -12123,18 +12217,19 @@ function getSprintDates(){
     const afterF2 = processPhase('f2', cursor);
     const hitoF2  = hitoDePhase('f2');
     if(hitoF2){
-      result[hitoF2.id] = {start:new Date(afterF2), end:new Date(afterF2), wk:0};
+      const hd2=_alinearLab(afterF2, CAL);
+      result[hitoF2.id] = {start:new Date(hd2), end:new Date(hd2), wk:0};
     }
     return result;
   }
 
   /* ── Pasada 1: duraciones naturales ─────────────────────── */
   let result = computeAll(1.0);
-  window._sprintCompression = null;   // sin compresión por defecto
+  if(!sinDeadline) window._sprintCompression = null;   // sin compresión por defecto
 
   /* ── Deadline: restricción dura ─────────────────────────── */
   const projEndEl  = document.getElementById('projEnd');
-  const deadlineIso= (typeof _projEndManual!=='undefined' && _projEndManual)
+  const deadlineIso= (!sinDeadline && typeof _projEndManual!=='undefined' && _projEndManual)
                      ? parseFechaGT(projEndEl ? projEndEl.value : '')
                      : null;
   if(deadlineIso){
@@ -12231,12 +12326,14 @@ function renderEditor(){
         ${s.type!=='hito'?`<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-3);flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:4px">
             Duración:
-            <input type="number" min="1" max="365" step="1"
+            <input type="number" min="1" max="365" step="1" data-days-sid="${s.id}"
               value="${parseInt(s.days)||Math.round((parseFloat(s.weeks)||2)*7)}"
-              onchange="sprints.find(x=>x.id===${s.id}).days=Math.max(1,parseInt(this.value)||1);if(!_projEndManual){recalcProjEnd();}else{renderAll();}"
+              oninput="tlSetDays(${s.id},this.value,this)"
+              onchange="renderAll()"
               style="width:56px;padding:2px 5px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--text);font-family:var(--font-mono);text-align:center">
-            <span style="font-size:10px;color:var(--text-3)">días</span>
+            <span style="font-size:10px;color:var(--text-3)">${_tlTodosLab()?'días':'días hábiles'}</span>
           </div>
+          <span class="tl-ed-fechas" data-fechas-sid="${s.id}"></span>
           ${s.startDay!=null?`<span style="font-size:9.5px;color:#E8973A" title="Posición manual — doble clic en la barra del timeline para volver a la cadena automática">📌 manual</span>`:''}
           </div>
         </div>`:''}
@@ -12299,8 +12396,10 @@ function tlResizeDown(e, sid){
   if(e.button!==0) return;
   e.preventDefault();
   const s = sprints.find(x=>x.id===sid); if(!s) return;
+  const _d0 = getSprintDates()[sid] || {};
   _tlDrag = { sid, mode:'resize', startX:e.clientX,
-              origStartDay:_tlCurrentStartDay(sid), origDays:_tlSprintDays(s) };
+              origStartDay:_tlCurrentStartDay(sid), origDays:_tlSprintDays(s),
+              origStart:_d0.start, origEnd:_d0.end };
   document.body.style.userSelect='none';
   document.addEventListener('mousemove', tlDragMove);
   document.addEventListener('mouseup',   tlDragUp);
@@ -12315,8 +12414,16 @@ function tlDragMove(e){
   if(_tlDrag.mode==='move'){
     s.startDay = Math.max(0, _tlDrag.origStartDay + deltaDays);  // fija posición manual → simultaneidad posible
   } else {
-    s.days = Math.max(1, _tlDrag.origDays + deltaDays);
+    if(_tlDrag.origStart && _tlDrag.origEnd && !_tlTodosLab()){
+      // en días hábiles: el borde se mueve en el calendario, se cuentan los días laborables
+      const newEnd = addDays(_tlDrag.origEnd, deltaDays);
+      s.days = Math.max(1, _contarLab(_tlDrag.origStart, newEnd, _tlCal()));
+    } else {
+      s.days = Math.max(1, _tlDrag.origDays + deltaDays);
+    }
+    const inp=document.querySelector('#sprintEditor input[data-days-sid="'+s.id+'"]'); if(inp) inp.value=s.days;
   }
+  if(!_projEndManual){ const el=document.getElementById('projEnd'); if(el) el.value=fmtFechaGT(calcProjEndDate()); }
   renderTimeline();  // feedback en vivo (solo timeline, no todo)
 }
 function tlDragUp(){
@@ -12339,6 +12446,107 @@ function tlBarReset(sid){
 window.tlBarDown=tlBarDown; window.tlResizeDown=tlResizeDown;
 window.tlBarReset=tlBarReset;
 
+/* Cambiar días de un sprint en vivo (editor o línea de tiempo) sin perder el foco */
+function tlSetDays(sid, val, inputEl){
+  const s=sprints.find(x=>x.id===sid); if(!s) return;
+  const n=parseInt(val);
+  if(!(n>=1)) return;               // mientras escribe (vacío) no recalcula
+  s.days=Math.min(999,n);
+  if(!_projEndManual){ const el=document.getElementById('projEnd'); if(el) el.value=fmtFechaGT(calcProjEndDate()); }
+  // sincronizar el otro input (editor ↔ línea de tiempo)
+  document.querySelectorAll('[data-days-sid="'+sid+'"],[data-tl-days="'+sid+'"]').forEach(i=>{ if(i!==inputEl) i.value=s.days; });
+  const enTL = inputEl && inputEl.hasAttribute('data-tl-days');
+  renderTimeline();
+  if(enTL){
+    const ni=document.querySelector('[data-tl-days="'+sid+'"]');
+    if(ni){ ni.focus(); try{ const L=ni.value.length; ni.setSelectionRange(L,L); }catch(e){} }
+  }
+  if(typeof renderClienteView==='function') renderClienteView();
+  if(typeof saveDraft==='function') saveDraft();
+}
+window.tlSetDays=tlSetDays;
+
+/* Fechas de cada sprint junto a su duración en el editor */
+function _tlSyncEditorFechas(dates){
+  document.querySelectorAll('[data-fechas-sid]').forEach(el=>{
+    const d=dates[parseInt(el.getAttribute('data-fechas-sid'))];
+    el.textContent = d ? (fmtS(d.start)+' → '+fmtS(d.end)) : '';
+  });
+}
+
+/* ── Bandera de meta: arrastrar para fijar la fecha de entrega ── */
+var _tlFlag=null;
+function tlFlagDown(e){
+  e.preventDefault(); e.stopPropagation();
+  const sv=parseFechaGT(document.getElementById('projStart').value); if(!sv) return;
+  let iso=parseFechaGT(document.getElementById('projEnd').value) || calcProjEndDate();
+  _tlFlag={ startX:e.clientX, orig:new Date(iso+'T12:00:00'), ps:new Date(sv+'T12:00:00'), last:0 };
+  document.body.style.userSelect='none';
+  document.addEventListener('pointermove', tlFlagMove);
+  document.addEventListener('pointerup', tlFlagUp);
+}
+function tlFlagMove(e){
+  if(!_tlFlag) return;
+  const PX=window._tlPX||20;
+  const delta=Math.round((e.clientX-_tlFlag.startX)/PX);
+  if(delta===_tlFlag.last) return;
+  _tlFlag.last=delta;
+  let nd=addDays(_tlFlag.orig, delta);
+  if(nd<_tlFlag.ps) nd=new Date(_tlFlag.ps);
+  _projEndManual=true;
+  document.getElementById('projEnd').value=fmtFechaGT(nd.toISOString().split('T')[0]);
+  renderTimeline();
+}
+function tlFlagUp(){
+  const moved=_tlFlag && _tlFlag.last!==0;
+  _tlFlag=null;
+  document.body.style.userSelect='';
+  document.removeEventListener('pointermove', tlFlagMove);
+  document.removeEventListener('pointerup', tlFlagUp);
+  if(moved){ renderAll(); if(typeof saveDraft==='function') saveDraft(); }
+}
+window.tlFlagDown=tlFlagDown;
+
+/* La entrega fijada es antes de lo que piden los sprints:
+   escribir en cada sprint los días comprimidos para que coincida. */
+function tlAjustarSprintsAEntrega(){
+  const dates=getSprintDates(); const cal=_tlCal();
+  let n=0;
+  sprints.forEach(s=>{
+    if(s.type==='hito' || s.startDay!=null) return;
+    const d=dates[s.id]; if(!d) return;
+    const nd=Math.max(1,_contarLab(d.start,d.end,cal));
+    if(nd!==_tlSprintDays(s)){ s.days=nd; n++; }
+  });
+  renderAll();
+  if(typeof saveDraft==='function') saveDraft();
+}
+window.tlAjustarSprintsAEntrega=tlAjustarSprintsAEntrega;
+
+/* Estado del chip "Automática / Fijada" y del botón Recalcular */
+function _tlEstadoEntrega(){
+  const chip=document.getElementById('tlEntregaChip'), btn=document.getElementById('tlRecalcBtn');
+  const natural=calcProjEndDate(true);
+  const actual=parseFechaGT((document.getElementById('projEnd')||{}).value||'');
+  const difiere = _projEndManual && actual && natural && actual!==natural;
+  if(chip){
+    chip.textContent = _projEndManual ? 'Fijada' : 'Automática';
+    chip.className = 'tl-chip ' + (_projEndManual ? 'fija' : 'auto');
+    chip.title = _projEndManual ? 'Fecha fijada a mano o con la bandera. «Recalcular» la vuelve a calcular desde los sprints.' : 'Se calcula sola al final del último sprint.';
+  }
+  if(btn) btn.classList.toggle('pendiente', !!difiere);
+  const res=document.getElementById('tlResumen');
+  if(res){
+    const sv=parseFechaGT((document.getElementById('projStart')||{}).value||'');
+    if(sv && natural){
+      const a=new Date(sv+'T12:00:00'), b=new Date(natural+'T12:00:00');
+      const cal=Math.round((b-a)/86400000)+1, lab=_contarLab(_alinearLab(a,_tlCal()),b,_tlCal());
+      res.innerHTML = `Sprints: <b>${cal}</b> días de calendario${_tlTodosLab()?'':` · <b>${lab}</b> hábiles`}`;
+    } else res.textContent='';
+  }
+}
+
+const _TL_FLAG_SVG = '<svg class="tl-flag-svg" width="14" height="18" viewBox="0 0 14 18" aria-hidden="true"><rect x="0.6" y="0.5" width="1.4" height="17.5" rx="0.7" fill="currentColor"/><rect x="2" y="1" width="11" height="7.5" fill="#fff" stroke="#111" stroke-width="0.5"/><rect x="2.00" y="1.00" width="2.75" height="2.5" fill="#111"/><rect x="7.50" y="1.00" width="2.75" height="2.5" fill="#111"/><rect x="4.75" y="3.50" width="2.75" height="2.5" fill="#111"/><rect x="10.25" y="3.50" width="2.75" height="2.5" fill="#111"/><rect x="2.00" y="6.00" width="2.75" height="2.5" fill="#111"/><rect x="7.50" y="6.00" width="2.75" height="2.5" fill="#111"/></svg>';
 function renderTimeline(){
   const dates = getSprintDates();
   const sv    = parseFechaGT(document.getElementById('projStart').value);
@@ -12358,9 +12566,19 @@ function renderTimeline(){
       <span style="font-size:15px">⚠</span>
       <div style="flex:1">
         <div style="font-size:11.5px;font-weight:500;color:#E8973A">Cronograma comprimido al ${window._sprintCompression}% de su duración natural</div>
-        <div style="font-size:10px;color:var(--text-3);margin-top:1px">La suma de los sprints excede la fecha de entrega (${projEndVal}). Las duraciones se ajustaron proporcionalmente para cumplir el deadline. Ampliá la fecha de entrega o reducí las semanas de los sprints.</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:1px">Los sprints no caben antes de la entrega fijada (${projEndVal}). La gráfica los muestra comprimidos, pero tus días escritos no cambiaron.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px">
+          <button type="button" class="tl-banner-btn" onclick="tlAjustarSprintsAEntrega()">Ajustar los días de los sprints a esta fecha</button>
+          <button type="button" class="tl-banner-btn ghost" onclick="recalcProjEnd();if(typeof saveDraft==='function')saveDraft()">↺ Mover la entrega al final de los sprints</button>
+        </div>
       </div>
     </div>`;
+  } else if(_projEndManual){
+    const _nat=calcProjEndDate(true), _fij=parseFechaGT(document.getElementById('projEnd')?.value||'');
+    if(_nat && _fij && _fij>_nat){
+      const _h=Math.round((new Date(_fij+'T12:00:00')-new Date(_nat+'T12:00:00'))/86400000);
+      compressionBanner = `<div class="tl-holgura">🏁 La entrega está fijada <b>${_h} día${_h===1?'':'s'}</b> después del último sprint (holgura). <button type="button" class="tl-banner-btn ghost" onclick="recalcProjEnd();if(typeof saveDraft==='function')saveDraft()">↺ Recalcular entrega</button></div>`;
+    }
   }
 
   // ── Span total en días desde getSprintDates() ──────────────────
@@ -12439,8 +12657,16 @@ function renderTimeline(){
   }
 
   // ── Grid lines en cada fila de sprint ──────────────────────────
+  const _calTL = _tlCal(), _soloHabiles = !(_calTL.sab && _calTL.dom);
   function gridLines(){
     let html = '';
+    if(_soloHabiles && (_tlZoom==='day' || _tlZoom==='week')){
+      // sombrear los días no laborables
+      for(let d=0; d<trackDaysG; d++){
+        const dt=addDays(ps,d);
+        if(!_esLab(dt,_calTL)) html+=`<div class="tl-nolab" style="left:${d*PX}px;width:${PX}px"></div>`;
+      }
+    }
     if(_tlZoom==='day'){
       for(let d=0;d<totalDays;d++){
         const dt=addDays(ps,d);
@@ -12466,6 +12692,10 @@ function renderTimeline(){
     return html;
   }
 
+  // días visibles del track (incluye la entrega si es posterior)
+  const _peIsoG = parseFechaGT(document.getElementById('projEnd')?.value||'');
+  const trackDaysG = _peIsoG ? Math.max(totalDays, Math.round((new Date(_peIsoG+'T12:00:00')-ps)/MS_DAY)+2) : totalDays;
+
   // ── Filas de sprints ────────────────────────────────────────────
   const rows = sprints.map(s=>{
     if(s.type==='f1'&&!f1on) return '';
@@ -12489,7 +12719,7 @@ function renderTimeline(){
       <div style="flex:0 0 ${IW}px;min-width:${IW}px;padding-right:8px;overflow:hidden">
         <div class="tl-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.title}</div>
         <div class="tl-dates">${ds}</div>
-        <div style="margin-top:1px">${tags}</div>
+        <div style="margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap">${s.type!=='hito'?`<span class="tl-days"><input type="text" inputmode="numeric" class="tl-days-inp" data-tl-days="${s.id}" value="${_tlSprintDays(s)}" oninput="tlSetDays(${s.id},this.value,this)" onfocus="this.select()" title="Días ${_soloHabiles?'hábiles ':''}de este sprint">${_soloHabiles?'días háb.':'días'}</span>`:''}${tags}</div>
       </div>
       <div style="flex:1;min-width:${totalPx}px;position:relative;height:26px">
         ${gridLines()}
@@ -12508,7 +12738,7 @@ function renderTimeline(){
   // ── Fecha de entrega (fallback = último end de getSprintDates) ──
   const projEndEl = document.getElementById('projEnd');
   let projEndIso  = parseFechaGT(projEndEl ? projEndEl.value : '');
-  if(!projEndIso && keys.length){
+  if((!projEndIso || !_projEndManual) && keys.length){
     // Auto-calcular desde el último sprint si projEnd no está seteado
     let latest = ps;
     keys.forEach(k=>{ const d=dates[k]; if(d.end>latest) latest=d.end; });
@@ -12527,15 +12757,14 @@ function renderTimeline(){
   // ── Marker de fecha de entrega ─────────────────────────────────
   let endMarker = '';
   if(projEndDate){
-    const endPx = Math.min(trackPx - 2, Math.max(0, Math.round((projEndDate-ps)/MS_DAY)*PX));
+    // la línea de meta va al FINAL del día de entrega
+    const endPx = Math.min(trackPx - 1, Math.max(0, (Math.round((projEndDate-ps)/MS_DAY)+1)*PX));
     const isCompressed = !!window._sprintCompression;
-    const mkColor = isCompressed ? '#E8973A' : 'var(--accent)';
-    endMarker = `<div style="position:absolute;left:${IW+endPx}px;top:0;bottom:0;width:2px;
-      border-left:2px ${isCompressed?'solid':'dashed'} ${mkColor};z-index:4;pointer-events:none">
-      <span style="position:absolute;top:2px;left:3px;font-size:9px;color:${mkColor};
-        white-space:nowrap;font-family:var(--font-mono);font-weight:600">
-        ${isCompressed?'⚠ ':''}Entrega: ${fmtS(projEndDate)}
-      </span>
+    endMarker = `<div class="tl-meta ${isCompressed?'comp':''} ${_projEndManual?'fija':''}" style="left:${IW+endPx}px">
+      <div class="tl-meta-line"></div>
+      <div class="tl-meta-flag" onpointerdown="tlFlagDown(event)" title="Arrastrá la bandera para cambiar la fecha de entrega">
+        ${_TL_FLAG_SVG}<span class="tl-meta-fecha">${isCompressed?'⚠ ':''}${fmtS(projEndDate)}</span>
+      </div>
     </div>`;
   }
 
@@ -12582,8 +12811,8 @@ function renderTimeline(){
   //   El scroll horizontal mueve el track completo
   const hdrRow = `<div style="display:flex;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:5">
     <div style="flex:0 0 ${IW}px;min-width:${IW}px"></div>
-    <div style="flex:1;min-width:${trackPx}px;position:relative;height:22px;overflow:visible">
-      ${fullRuler}
+    <div style="flex:1;min-width:${trackPx}px;position:relative;height:42px;overflow:visible">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:22px">${fullRuler}</div>
     </div>
   </div>`;
 
@@ -12607,6 +12836,8 @@ function renderTimeline(){
     </div>
     ${leg}
     <p class="nt" style="margin-top:6px">${trackDays} días · Inicio: <strong>${fmtL(ps)}</strong>${projEndDate?(' · Entrega: <strong style="color:'+(window._sprintCompression?'#E8973A':'inherit')+'">'+fmtL(projEndDate)+'</strong>'):''}${window._sprintCompression?(' · <span style="color:#E8973A">⚠ comprimido al '+window._sprintCompression+'%</span>'):''}</p>`;
+  _tlSyncEditorFechas(dates);
+  _tlEstadoEntrega();
 }
 
 function renderClienteView(){
@@ -12654,11 +12885,11 @@ function switchView(v){
 
 window._projEndManual = false;  // cross-script accessible
 
-function calcProjEndDate(){
+function calcProjEndDate(sinDeadline){
   // Use getSprintDates() to find the real end date (respects overlap)
   const sv=parseFechaGT(document.getElementById('projStart').value);
   if(!sv) return '';
-  const dates=getSprintDates();
+  const dates=getSprintDates(sinDeadline);
   const keys=Object.keys(dates);
   if(!keys.length) return sv;
   let latest=new Date(sv+'T12:00:00');
@@ -12686,8 +12917,351 @@ function onProjStartChange(){
 function renderAll(){
   renderEditor();renderTimeline();renderClienteView();
 }
+window.renderAll=renderAll;
 
 // ═══════ COTIZACIÓN ═══════
+/* ════════════════════════════════════════════════════════════
+   PROPUESTA DE SERVICIOS PROFESIONALES — plantilla del PDF
+   Línea gráfica: portada con logo + tabla de datos, secciones
+   numeradas (01 ALCANCE…), una sección por fase incluida,
+   tabla de honorarios, cronograma, no incluidos y firmas.
+   El contenido depende de lo que esté activado en el Cotizador.
+   d = datos normalizados (ver genCotizacion / genCotizacionDesde)
+   ════════════════════════════════════════════════════════════ */
+function _pdfPropuesta(d){
+  const E = t => String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const f = d.f;
+  let n = 0;
+  const H = (t) => { n++; return `<h2 class="h"><span class="hn">${String(n).padStart(2,'0')}</span> ${t}</h2>`; };
+
+  // ── Componentes incluidos, en el orden del mapa de Procesos ──
+  const comps = [];
+  const orden = (typeof _faseOrden==='function') ? _faseOrden() : [];
+  const usados = new Set();
+  orden.forEach(fs=>{
+    if(fs.kanban==='ante' && d.f1.on){ comps.push({tipo:'f1', nombre:fs.nombre||'Anteproyecto', desc:fs.desc||''}); usados.add('f1'); }
+    else if(fs.kanban==='plan' && d.f2.on){ comps.push({tipo:'f2', nombre:fs.nombre||'Planimetría', desc:fs.desc||''}); usados.add('f2'); }
+    else { const it=(d.fases||[]).find(x=>x.id===fs.id); if(it){ comps.push(Object.assign({tipo:'fase'},it)); usados.add(it.id); } }
+  });
+  if(d.f1.on && !usados.has('f1')) comps.unshift({tipo:'f1', nombre:'Anteproyecto', desc:''});
+  if(d.f2.on && !usados.has('f2')) comps.splice(d.f1.on?1:0,0,{tipo:'f2', nombre:'Planimetría', desc:''});
+  (d.fases||[]).forEach(it=>{ if(!usados.has(it.id)) comps.push(Object.assign({tipo:'fase'},it)); });
+  comps.forEach((c,i)=>c.num=i+1);
+  const numDe = k => (comps.find(c=>(c.tipo==='fase'?c.id:c.tipo)===k)||{}).num;
+
+  const subtitulo = d.subtitulo || (
+    comps.some(c=>c.tipo==='fase') ? 'Dirección integral de proyecto'
+    : (d.f1.on && d.f2.on) ? 'Diseño arquitectónico y planimetría'
+    : d.f1.on ? 'Anteproyecto arquitectónico' : d.f2.on ? 'Planimetría constructiva' : 'Servicios profesionales');
+
+  // ── Portada: tabla de datos generales ──
+  const filas = [
+    ['Preparado para', d.cliente],
+    ['Elaborado por', [d.emp.nombre, d.emp.firmaNombre||d.emp.autor].filter(Boolean).join(' — ') + (d.emp.colegiado?`, Colegiado ${d.emp.colegiado}`:'')],
+    d.ubicacion ? ['Ubicación del proyecto', d.ubicacion] : null,
+    d.terreno && d.terreno.on ? ['Área de terreno', `${d.terreno.area.toLocaleString('es-GT',{maximumFractionDigits:2})} m² (${d.terreno.tL} × ${d.terreno.tA} m)`] : null,
+    (d.f1.on && d.m2>0) ? ['Área de diseño', `${d.m2.toLocaleString('es-GT',{maximumFractionDigits:2})} m²`] : null,
+    ['Fecha', d.fechaTxt],
+    ['Vigencia · versión', `30 días a partir de la fecha · ${d.cotNum}`]
+  ].filter(Boolean);
+
+  const logoBig = d.emp.logo ? `<img class="logo-big" src="${d.emp.logo}" alt="">` : `<div class="logo-txt">${E(d.emp.nombre)}</div>`;
+  const logoSm  = d.emp.logo ? `<img src="${d.emp.logo}" alt="">` : `<span>${E(d.emp.nombre)}</span>`;
+
+  // ── 01 Alcance ──
+  const alcance = `${H('ALCANCE DE LOS SERVICIOS')}
+    ${d.saludoHtml?`<p class="p">${d.saludoHtml}</p>`:''}
+    ${d.desc?`<p class="p">${E(d.desc)}</p>`:''}
+    <p class="p">Los alcances de esta propuesta incluyen:</p>
+    <ol class="alc">${comps.map(c=>`<li><b>${c.num}.</b> ${E(c.nombre)}</li>`).join('')}</ol>`;
+
+  // ── Programa arquitectónico (si existe) ──
+  const programa = d.programa ? `<section class="sec">${H('PROGRAMA ARQUITECTÓNICO')}
+    <p class="p">${d.programa.resumen}</p>${d.programa.tabla||''}${(d.terreno&&d.terreno.on&&d.terreno.svg)?d.terreno.svg:''}</section>` : '';
+
+  // ── Una sección por fase ──
+  const secFase = c => {
+    const tit = `FASE ${c.num} | ${E(c.nombre).toUpperCase()}`;
+    if(c.tipo==='f1'){
+      const et = (d.f1.etapas||[]);
+      return `<section class="sec">${H(tit)}
+        <p class="p">${c.desc?E(c.desc)+' ':''}Desarrollo integral del diseño arquitectónico${d.m2>0?` para un área de <b>${d.m2.toLocaleString('es-GT',{maximumFractionDigits:2})} m²</b>`:''}. El proceso avanza por etapas, cada una con su presentación y aprobación antes de pasar a la siguiente.</p>
+        ${et.map((e,i)=>`<div class="etapa"><div class="et-t">Etapa ${String.fromCharCode(65+i)} — ${E(e.titulo)}${e.aprob?' <span class="tag">Requiere aprobación</span>':''}</div>${e.nota?`<div class="et-d">${E(e.nota)}</div>`:''}</div>`).join('')}
+        ${(d.f1.incluye||[]).length?`<div class="ent"><div class="ent-t">ENTREGABLES:</div><ol class="ent-l">${d.f1.incluye.map(x=>`<li>${E(x)}</li>`).join('')}</ol></div>`:''}
+      </section>`;
+    }
+    if(c.tipo==='f2'){
+      const pg=d.f2.grupos||{grupos:[],total:0}, t=d.f2.timb;
+      return `<section class="sec">${H(tit)}
+        <p class="p">${c.desc?E(c.desc)+' ':''}Elaboración del juego de planos técnicos para la ejecución de la obra${pg.total?`: <b>${pg.total} plano${pg.total===1?'':'s'}</b> en ${pg.grupos.length} especialidad${pg.grupos.length===1?'':'es'}`:''}.</p>
+        ${pg.grupos.length?`<div class="ent"><div class="ent-t">ENTREGABLES:</div><ol class="ent-l">${pg.grupos.map(g=>`<li><b>${E(g.label)} (${g.cant}):</b> ${g.items.map(i=>E(i.n)+(i.q>1?' ×'+i.q:'')).join(', ')}.</li>`).join('')}</ol></div>`:''}
+        ${t&&t.on&&t.total>0?`<p class="nota">Incluye planos timbrados (firma y sello): ${t.planos} plano${t.planos===1?'':'s'} × ${f(t.costo)} por plano = ${f(t.total)}.</p>`:''}
+      </section>`;
+    }
+    const plazo = c.modelo==='mensual' ? `${c.meses} mes${c.meses==1?'':'es'}` : (c.semanas>0 ? `${c.semanas} semana${c.semanas==1?'':'s'}` : '');
+    const costo = c.modelo==='mensual' ? `${f(c.hon/Math.max(1,c.meses))} mensuales (${f(c.hon)} en total)` : f(c.hon);
+    return `<section class="sec">${H(tit)}
+      ${c.desc?`<p class="p">${E(c.desc)}</p>`:''}
+      ${(c.roles||[]).length?`<p class="p">Participan: ${c.roles.map(E).join(', ')}.</p>`:''}
+      <p class="nota">${plazo?`El plazo estimado de esta fase es de ${plazo}, con`:'Esta fase tiene'} un honorario de ${costo}${c.modelo==='pct_obra'&&c.base>0?`, equivalente al ${c.valor}% del costo estimado de obra (${f(c.base)})`:''}.</p>
+    </section>`;
+  };
+
+  // las secciones se numeran en el orden en que aparecen
+  const seccionesFases = comps.map(secFase).join('');
+
+  // ── Honorarios ──
+  const modalidad = c => c.tipo==='f1' ? 'Por m²' : c.tipo==='f2' ? 'Por plano'
+    : ({fijo:'Hito único', pct_obra:'% del costo de obra', mensual:'Cuota mensual', m2:'Por m²'})[c.modelo] || 'Monto fijo';
+  const filasHon = [];
+  comps.forEach(c=>{
+    if(c.tipo==='f1') filasHon.push([c.nombre, `Fase ${c.num}`, modalidad(c), d.f1.detalle||'', d.f1.hon]);
+    else if(c.tipo==='f2'){
+      filasHon.push([c.nombre, `Fase ${c.num}`, modalidad(c), (d.f2.grupos&&d.f2.grupos.total)?`${d.f2.grupos.total} planos técnicos`:'Juego de planos técnicos', d.f2.hon]);
+      const t=d.f2.timb; if(t&&t.on&&t.total>0) filasHon.push(['Planos timbrados', 'Firma y sello', 'Por plano', `${t.planos} planos × ${f(t.costo)}`, t.total]);
+    } else {
+      const det = c.modelo==='mensual' ? `${f(c.hon/Math.max(1,c.meses))}/mes × ${c.meses} mes${c.meses==1?'':'es'}`
+        : c.modelo==='pct_obra' ? `${c.valor}% de ${f(c.base||0)}` : c.modelo==='m2' ? (c.detalle||'') : 'Al concluir la fase';
+      filasHon.push([c.nombre, `Fase ${c.num}`, modalidad(c), det, c.hon]);
+    }
+  });
+  const pagos = [];
+  const pg = d.pagos||{};
+  if(pg.aA>0) pagos.push(['Anticipo para iniciar labores', `${pg.pa}%`, pg.aA]);
+  if(pg.mA>0) pagos.push(['Contra entrega del anteproyecto', `${pg.pf}%`, pg.mA]);
+  if(pg.sA>0) pagos.push(['Saldo contra entrega final', `${pg.ps}%`, pg.sA]);
+  const kIva = d.iOn ? (1+(d.ir||0)/100) : 1;
+  const pagosFases = (d.fases||[]).map(it=>{
+    const t=it.hon*kIva;
+    return [it.nombre, it.modelo==='mensual'?`${it.meses} cuota${it.meses==1?'':'s'} de ${f(t/Math.max(1,it.meses))}`:'Al concluir la fase', t];
+  });
+  const honorarios = `<section class="sec brk">${H('HONORARIOS PROFESIONALES')}
+    <table class="hon">
+      <thead><tr><th>Componente</th><th>Modalidad</th><th>Detalle</th><th class="r">Monto</th></tr></thead>
+      <tbody>${filasHon.map(r=>`<tr><td>${E(r[0])}<div class="sub">${E(r[1])}</div></td><td>${E(r[2])}</td><td>${E(r[3])}</td><td class="r">${f(r[4])}</td></tr>`).join('')}</tbody>
+    </table>
+    <div class="tot">
+      ${d.iOn?`<div class="tot-r"><span>Subtotal</span><span>${f(d.sub)}</span></div><div class="tot-r"><span>IVA (${d.ir}%)</span><span>${f(d.ia)}</span></div>`:''}
+      <div class="tot-g"><span>TOTAL DE HONORARIOS</span><span>${f(d.tot)}</span></div>
+    </div>
+    ${(pagos.length||pagosFases.length)?`<div class="pago">
+      <div class="pago-t">PROGRAMA DE PAGOS</div>
+      ${pagos.length?`<div class="pago-g">${(d.f1.on&&d.f2.on)?'Diseño (Anteproyecto + Planimetría)':d.f1.on?'Anteproyecto':'Planimetría'}</div>${pagos.map(p=>`<div class="pago-r"><span>${E(p[0])} <em>${p[1]}</em></span><span>${f(p[2])}</span></div>`).join('')}`:''}
+      ${pagosFases.length?`<div class="pago-g">Otras fases</div>${pagosFases.map(p=>`<div class="pago-r"><span>${E(p[0])} <em>${E(p[1])}</em></span><span>${f(p[2])}</span></div>`).join('')}`:''}
+      ${d.iOn?`<div class="pago-n">Montos con IVA incluido.</div>`:''}
+    </div>`:''}
+    ${d.plazoTxt?`<p class="plazo">Plazo estimado del servicio: <b>${E(d.plazoTxt)}</b></p>`:''}
+  </section>`;
+
+  // ── Cronograma (gráfica) + plan de entregas ──
+  let crono='';
+  if(d.gantt && d.gantt.rows.length){
+    const g=d.gantt, W=100;
+    const pct=x=>Math.max(0,Math.min(100,x/g.total*100));
+    const ticks=[]; const paso = g.total>140 ? 30 : g.total>56 ? 14 : 7;
+    for(let t=0;t<=g.total;t+=paso) ticks.push(t);
+    crono = `<section class="sec brk"><div style="break-inside:avoid">${H('CRONOGRAMA DEL SERVICIO')}
+      <div class="gantt">
+        <div class="g-head"><div><div class="g-k">CRONOGRAMA DEL SERVICIO</div><div class="g-t">${E(g.titulo)}</div></div><div class="g-big">~${g.big}<small>${E(g.bigLbl)}</small></div></div>
+        <div class="g-body">
+          <div class="g-axis"><div></div><div class="g-ticks">${ticks.map(t=>`<span style="left:${pct(t)}%">${t===0?'':(paso>=30?Math.round(t/30)+'m':Math.round(t/7)+'s')}</span>`).join('')}</div></div>
+          ${g.rows.map((r,i)=>`<div class="g-row"><div class="g-lbl"><div class="g-f">FASE ${numDe(r.key)||''}</div><div class="g-n">${E(r.nombre)}</div></div><div class="g-track">${ticks.map(t=>`<i style="left:${pct(t)}%"></i>`).join('')}<div class="g-bar" style="left:${pct(r.ini)}%;width:${Math.max(1.2,pct(r.fin)-pct(r.ini))}%;background:${['#E8C27A','#D4A843','#C0953A','#A97F2E','#8E6A28'][i%5]}"><span>${E(r.dur)}</span></div></div></div>`).join('')}
+          ${g.entrega!=null?`<div class="g-meta" style="left:calc(150px + (100% - 150px) * ${pct(g.entrega)/100})"><span>entrega del diseño · ${E(g.entregaTxt)}</span></div>`:''}
+        </div>
+        ${g.nota?`<div class="g-nota"><div class="g-nk">DÍAS DE TRABAJO</div><div>${E(g.nota)}</div></div>`:''}
+      </div></div>
+      ${d.calRows?`<div class="plan"><div class="pago-t" style="margin-top:22px">PLAN DE ENTREGAS</div><table style="width:100%;border-collapse:collapse">${d.calRows}</table></div>`:''}
+    </section>`;
+  }
+
+  // ── No incluidos / condiciones ──
+  const noInc = (d.obs||[]).length ? `<section class="sec">${H('SERVICIOS NO INCLUIDOS Y CONDICIONES')}
+    <p class="p">Para mantener la propuesta clara, se detallan las condiciones y los servicios que no forman parte de este alcance; pueden cotizarse de manera independiente:</p>
+    <ul class="noinc">${d.obs.map(o=>`<li>${E(o)}</li>`).join('')}</ul>
+    <p class="p">Los honorarios reflejan el alcance descrito. Cualquier modificación fuera del alcance acordado será cotizada por separado previo a su ejecución.</p></section>` : '';
+
+  // ── Aceptación + firmas ──
+  const primerPago = pg.aA>0 ? `el pago del anticipo (${f(pg.aA)})` : (pagosFases.length ? `el pago correspondiente a la primera fase` : 'la firma de esta propuesta');
+  const firmante = d.emp.firmaNombre || d.emp.autor || '';
+  const acept = `<section class="sec firmas-sec">${H('ACEPTACIÓN DE LA PROPUESTA')}
+    <p class="p">La aceptación de esta propuesta se formaliza con la firma de ambas partes y ${primerPago}.</p>
+    <div class="firmas">
+      <div class="firma">
+        <div class="firma-img">${d.emp.firma?`<img src="${d.emp.firma}" alt="">`:''}</div>
+        <div class="firma-l"></div>
+        ${firmante?`<div class="firma-n">${E(firmante)}</div>`:''}
+        ${d.emp.colegiado?`<div class="firma-s">Colegiado ${E(d.emp.colegiado)}</div>`:''}
+        <div class="firma-e">${E((d.emp.razonSocial||d.emp.nombre||'').toUpperCase())}</div>
+      </div>
+      <div class="firma">
+        <div class="firma-img"></div>
+        <div class="firma-l"></div>
+        <div class="firma-n">${E(d.cliente)}</div>
+        <div class="firma-s">Cliente</div>
+      </div>
+    </div>
+  </section>`;
+
+  const NAVY='#04203A';
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>Propuesta ${E(d.cotNum)} — ${E(d.proyecto)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+@page{size:letter;margin:12mm 19mm 14mm}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#fff}
+body{font-family:'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;color:#5f5f5f;font-size:10.5pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b,strong{color:#2b2b2b;font-weight:600}
+.pg-wrap{width:100%;border-collapse:collapse}
+.pg-wrap>thead td{height:20mm}
+.pg-wrap>tbody>tr>td{vertical-align:top}
+.run-logo{position:fixed;top:0;right:0;height:13mm;display:flex;align-items:flex-start;justify-content:flex-end;z-index:2}
+.run-logo img{max-height:11mm;max-width:38mm;object-fit:contain;opacity:.85}
+.run-logo span{font-size:9pt;letter-spacing:.2em;color:#aaa;text-transform:uppercase}
+.cover{position:relative}
+.cover-mask{position:absolute;top:-20mm;right:-2mm;width:70mm;height:19mm;background:#fff;z-index:5}
+.logo-big{max-height:26mm;max-width:70mm;object-fit:contain;display:block}
+.logo-txt{font-size:22pt;font-weight:700;letter-spacing:.12em;color:#bbb;text-transform:uppercase}
+.kicker{margin-top:6mm;font-size:6.5pt;letter-spacing:.42em;color:#9a9a9a;text-transform:uppercase}
+.titulo{margin-top:11mm;font-size:23pt;font-weight:700;color:${NAVY};line-height:1.15}
+.subt{font-size:14pt;color:${NAVY};font-weight:400;margin-top:1mm}
+.datos{width:100%;border-collapse:collapse;margin:10mm 0 11mm;font-size:9.5pt}
+.datos td{border:1.5px solid #dbdbdb;padding:3.2mm 4mm;vertical-align:top}
+.datos td:first-child{width:30%;color:#9a9a9a;text-transform:uppercase;font-size:8.8pt;letter-spacing:.02em}
+.datos td:last-child{color:#2f2f2f}
+.h{font-size:11pt;font-weight:700;color:#1c1c1c;text-transform:uppercase;margin:0 0 1.5mm;letter-spacing:.01em}
+.hn{font-weight:400;color:${NAVY}}
+.sec{margin-top:10mm}
+.brk{break-before:auto}
+.p{margin:0 0 2.5mm;color:#666}
+.alc{list-style:none;margin:4mm 0 0}
+.alc li{font-weight:700;color:${NAVY};font-size:11pt;margin-bottom:1.3mm}
+.alc li b{color:${NAVY}}
+.etapa{margin:3.5mm 0 0;break-inside:avoid}
+.et-t{font-weight:700;color:#1c1c1c}
+.et-d{color:#666}
+.tag{font-size:7.5pt;font-weight:600;color:#2d6a4f;background:#eef7f1;border-radius:10px;padding:0 6px;margin-left:4px;vertical-align:1px}
+.ent{margin-top:4mm}
+.ent-t{font-weight:700;color:${NAVY};font-size:9.8pt}
+.ent-l{margin:1mm 0 0 5mm;color:#666}
+.ent-l li{margin-bottom:.8mm;padding-left:1mm}
+.nota{font-style:italic;color:#555;margin-top:3mm}
+table.prog{width:100%;border-collapse:collapse;font-size:9pt;margin-top:2mm}
+table.prog th{text-align:left;font-size:7.5pt;text-transform:uppercase;letter-spacing:.08em;color:#999;border-bottom:1px solid #ddd;padding:1.5mm 2mm;font-weight:600}
+table.prog td{padding:1.4mm 2mm;border-bottom:.5px solid #eee;color:#555}
+table.hon{width:100%;border-collapse:collapse;margin-top:4mm;font-size:9.2pt;break-inside:auto}
+table.hon th{text-align:left;font-size:8.5pt;font-weight:700;color:#1c1c1c;text-transform:uppercase;border:1.5px solid #dbdbdb;padding:3.5mm 3mm}
+table.hon td{border:1.5px solid #dbdbdb;padding:3.5mm 3mm 4mm;vertical-align:top;color:#4a4a4a}
+table.hon tr{break-inside:avoid}
+table.hon td:first-child{width:30%;color:#2b2b2b}
+table.hon .sub{color:#aaa;font-size:8.3pt;margin-top:2.5mm}
+table.hon .r{text-align:right;white-space:nowrap}
+.tot{margin:4mm 0 0 auto;width:60%;break-inside:avoid}
+.tot-r{display:flex;justify-content:space-between;padding:1mm 0;font-size:9.5pt;color:#777}
+.tot-g{display:flex;justify-content:space-between;align-items:baseline;border-top:1.5px solid ${NAVY};margin-top:1.5mm;padding-top:2.5mm;font-weight:700;color:#1c1c1c;font-size:10.5pt}
+.tot-g span:last-child{color:${NAVY};font-size:15pt;font-weight:600}
+.pago{margin-top:7mm;break-inside:avoid}
+.pago-t{font-size:9pt;font-weight:700;color:${NAVY};letter-spacing:.06em}
+.pago-g{font-size:8.5pt;color:#999;text-transform:uppercase;letter-spacing:.06em;margin:3mm 0 1mm}
+.pago-r{display:flex;justify-content:space-between;padding:1.6mm 0;border-bottom:.5px solid #eee;font-size:9.5pt;color:#444}
+.pago-r em{font-style:normal;color:#999;margin-left:4px}
+.pago-n{font-size:8pt;color:#aaa;margin-top:1.5mm}
+.plazo{margin-top:6mm;color:#666}
+.gantt{background:#141518;border-radius:2px;padding:6mm 6mm 5mm;margin-top:4mm;color:#ddd;break-inside:avoid;font-family:'Open Sans',Helvetica,Arial,sans-serif}
+.g-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5mm}
+.g-k{font-size:7pt;letter-spacing:.3em;color:#D4A843;font-weight:600}
+.g-t{font-size:14pt;font-weight:700;color:#f1f1f1;margin-top:1mm}
+.g-big{font-size:19pt;color:#D4A843;text-align:right;line-height:1}
+.g-big small{display:block;font-size:7.5pt;color:#999;margin-top:1mm}
+.g-body{position:relative}
+.g-axis{display:grid;grid-template-columns:150px 1fr;margin-bottom:1.5mm}
+.g-ticks{position:relative;height:12px;font-size:6.5pt;color:#888;font-family:monospace}
+.g-ticks span{position:absolute;transform:translateX(-50%)}
+.g-row{display:grid;grid-template-columns:150px 1fr;align-items:center;min-height:11mm;border-top:1px solid rgba(255,255,255,0.05)}
+.g-f{font-size:6.5pt;color:#D4A843;letter-spacing:.12em;font-family:monospace}
+.g-n{font-size:8.5pt;color:#eee}
+.g-track{position:relative;height:9mm;background:rgba(255,255,255,0.02)}
+.g-track i{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.05)}
+.g-bar{position:absolute;top:1.8mm;height:5.4mm;border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:visible}
+.g-bar span{font-size:6.8pt;color:#1a1a1a;font-family:monospace;white-space:nowrap;padding:0 4px}
+.g-meta{position:absolute;top:14px;bottom:-6mm;width:0;border-left:1.5px solid #eee}
+.g-meta span{position:absolute;bottom:0;right:4px;font-size:6.5pt;color:#D4A843;font-family:monospace;white-space:nowrap}
+.g-nota{display:grid;grid-template-columns:30mm 1fr;gap:4mm;margin-top:8mm;padding:3mm 4mm;border-left:1.5px solid #D4A843;background:rgba(255,255,255,0.03);font-size:8pt;color:#ccc}
+.g-nk{font-size:6.8pt;letter-spacing:.2em;color:#D4A843;font-family:monospace}
+.noinc{list-style:none;margin:1mm 0 3mm}
+.noinc li{position:relative;padding-left:6mm;margin-bottom:1.2mm;color:#555;text-align:justify}
+.noinc li:before{content:'—';position:absolute;left:0;color:#555}
+.firmas-sec{break-inside:avoid}
+.firmas{display:grid;grid-template-columns:1fr 1fr;gap:16mm;margin-top:12mm;text-align:center}
+.firma-img{height:22mm;display:flex;align-items:flex-end;justify-content:center}
+.firma-img img{max-height:22mm;max-width:55mm;object-fit:contain}
+.firma-l{border-top:1px solid #bbb;margin:1mm 8mm 2mm}
+.firma-n{font-weight:700;color:#1c1c1c;font-size:9.5pt}
+.firma-s{font-size:8pt;color:#999;margin-top:.5mm}
+.firma-e{font-size:8.3pt;font-weight:700;color:#1c1c1c;margin-top:2mm;letter-spacing:.02em}
+.wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.04;z-index:0;pointer-events:none}
+.wm img{max-width:120mm;max-height:120mm}
+@media screen{body{max-width:180mm;margin:12mm auto}}
+</style></head><body>
+${d.emp.watermark?`<div class="wm"><img src="${d.emp.watermark}" alt=""></div>`:''}
+<div class="run-logo">${logoSm}</div>
+<table class="pg-wrap"><thead><tr><td></td></tr></thead><tbody><tr><td>
+<div class="cover">
+  <div class="cover-mask"></div>
+  ${logoBig}
+  <div class="kicker">Propuesta de servicios profesionales</div>
+  <div class="titulo">${E(d.proyecto)}</div>
+  <div class="subt">${E(subtitulo)}</div>
+  <table class="datos">${filas.map(r=>`<tr><td>${E(r[0])}</td><td>${E(r[1])}</td></tr>`).join('')}</table>
+  ${alcance}
+</div>
+${programa}
+${seccionesFases}
+${honorarios}
+${crono}
+${noInc}
+${acept}
+</td></tr></tbody></table>
+</body></html>`;
+}
+
+/* Abre la propuesta en una ventana nueva e imprime cuando cargan las fuentes */
+function _pdfAbrir(html){
+  const w=window.open('','_blank'); if(!w) return;
+  w.document.write(html); w.document.close();
+  let impreso=false;
+  const imprimir=()=>{ if(impreso) return; impreso=true; try{ w.focus(); w.print(); }catch(e){} };
+  try{ if(w.document.fonts && w.document.fonts.ready) w.document.fonts.ready.then(()=>setTimeout(imprimir,250)); }catch(e){}
+  setTimeout(imprimir, 1800);
+}
+window._pdfPropuesta=_pdfPropuesta;
+
+/* Planos cotizados agrupados por tipo, para el PDF.
+   qtyByName: {nombre: cantidad} (si falta, se lee del Cotizador) */
+function _pdfPlanosGrupos(qtyByName){
+  const q = qtyByName || (()=>{ const o={}; (typeof PLANO_NAMES!=='undefined'?PLANO_NAMES:[]).forEach((n,i)=>{ const v=parseFloat((document.getElementById('qp'+(i+1))||{}).value)||0; if(v>0) o[n]=v; }); return o; })();
+  const grupos=[]; let total=0;
+  (typeof PLANO_GROUPS!=='undefined'?PLANO_GROUPS:[]).forEach(g=>{
+    const items=g.planos.filter(n=>(q[n]||0)>0).map(n=>({n, q:q[n]}));
+    if(!items.length) return;
+    const cant=items.reduce((a,i)=>a+i.q,0); total+=cant;
+    grupos.push({label:g.label, cant, items});
+  });
+  return {grupos, total};
+}
+/* HTML de la sección Planimetrías (lista compacta por tipo + timbres) */
+function _pdfPlanimetriaHTML(pg, honPlanos, timb, f, esc){
+  const lista = pg.grupos.map(g=>`<div style="padding:3px 0 3px 28px;font-size:11px;color:#555;line-height:1.6"><strong style="color:#333;font-weight:500">${esc(g.label)} (${g.cant})</strong> — ${g.items.map(i=>esc(i.n)+(i.q>1?' ×'+i.q:'')).join(' · ')}</div>`).join('');
+  return `<div class="sec"><div class="sl">Planimetrías</div>
+    <p class="sd">Juego de planos técnicos para la ejecución de la obra${pg.total?`: <strong>${pg.total} plano${pg.total===1?'':'s'}</strong> en ${pg.grupos.length} especialidad${pg.grupos.length===1?'':'es'}`:''}.</p>
+    ${lista}
+    <div style="margin-top:6px">
+      <div class="svc"><div><div class="sn">Documentación técnica constructiva</div><div class="snt">${pg.total?pg.total+' planos para ejecución de obra':'Juego de planos para ejecución de obra'}</div></div><div class="sa">${f(honPlanos)}</div></div>
+      ${timb && timb.on && timb.total>0 ? `<div class="svc"><div><div class="sn">Planos timbrados (firma y sello)</div><div class="snt">${timb.planos} plano${timb.planos===1?'':'s'} × ${f(timb.costo)} por plano</div></div><div class="sa">${f(timb.total)}</div></div>` : ''}
+    </div></div>`;
+}
+
 function genCotizacion(){
   const s=window._st||{};
   // Checklist del Anteproyecto → lista de servicios incluidos
@@ -12738,7 +13312,8 @@ function genCotizacion(){
     /* Diagrama del terreno (tema claro) */
     const _tL = parseFloat(estadoCalc.programa.tL)||0;
     const _tA = parseFloat(estadoCalc.programa.tA)||0;
-    if(_tL && _tA){
+    // sólo si "Detalles de terreno" está activado en el Cotizador
+    if(estadoCalc.programa.tcActive && _tL && _tA){
       const _terrArea = _tL*_tA;
       const _n1A = _rooms.filter(r=>(r.level||1)===1).reduce((s,r)=>s+(parseFloat(r.area)||0),0);
       const _fos = _terrArea>0?Math.round(_n1A/_terrArea*100):0;
@@ -12777,8 +13352,22 @@ function genCotizacion(){
   const f1on=document.getElementById('fase1On').checked,f2on=document.getElementById('fase2On').checked;
   let calRows='';
   if(svDate){
-    sprints.filter((sp)=>{if(sp.type==='f1'&&!f1on)return false;if(sp.type==='f2'&&!f2on)return false;return dates[sp.id];}).forEach(sp=>{
+    const _vis = sprints.filter((sp)=>{if(sp.type==='f1'&&!f1on)return false;if(sp.type==='f2'&&!f2on)return false;if(sp.type==='pe'&&!f1on)return false;return dates[sp.id];});
+    const _f2s = _vis.filter(sp=>sp.type==='f2');
+    let _f2Hecho = false;
+    _vis.forEach(sp=>{
       const d=dates[sp.id];
+      if(sp.type==='f2'){
+        // Todas las entregas de planos en UNA sola fila, resumida por especialidad
+        if(_f2Hecho) return; _f2Hecho=true;
+        let ini=null, fin=null;
+        _f2s.forEach(x=>{ const dx=dates[x.id]; if(!ini||dx.start<ini) ini=dx.start; if(!fin||dx.end>fin) fin=dx.end; });
+        const pgx=_pdfPlanosGrupos();
+        const chips=pgx.grupos.map(g=>{ const t=g.label.replace(/^Planos /,''); return `<span style="font-size:9px;padding:1px 6px;border-radius:20px;background:#EAF3DE;color:#27500A;margin:1px">${t.charAt(0).toUpperCase()+t.slice(1)} · ${g.cant}</span>`; }).join('');
+        const apr=_f2s.some(x=>x.needsFeedback)?'<span style="font-size:9px;padding:1px 5px;border-radius:20px;background:#EAF3DE;color:#27500A;margin:1px">Requiere aprobación</span>':'';
+        calRows+=`<tr><td style="padding:6px 10px 6px 0;vertical-align:top;width:14px"><div style="width:8px;height:8px;border-radius:50%;background:#1D9E75;margin-top:4px"></div></td><td style="padding:6px 8px"><div style="font-size:12px;font-weight:500;color:#1a1a18">Planimetrías</div><div style="font-size:10px;color:#888;margin-top:1px">${fmtS(ini)} – ${fmtS(fin)}</div><div style="font-size:11px;color:#555;margin-top:3px;line-height:1.5">Juego de planos técnicos${pgx.total?` (${pgx.total} planos)`:''}${_f2s.length>1?`, entregado en ${_f2s.length} etapas`:''}. El detalle de planos está en la sección Planimetrías.</div><div style="margin-top:4px">${chips}${apr}</div></td></tr>`;
+        return;
+      }
       const ds=sp.type==='hito'?fmtL(d.start):`${fmtS(d.start)} – ${fmtS(d.end)}`;
       const dotC=sp.type==='f1'?'#185FA5':sp.type==='f2'?'#1D9E75':'#BA7517';
       const entTags=sp.entregables.map(e=>`<span style="font-size:9px;padding:1px 5px;border-radius:20px;background:${sp.type==='f2'?'#EAF3DE':'#E6F1FB'};color:${sp.type==='f2'?'#27500A':'#0C447C'};margin:1px">${e}</span>`).join('');
@@ -12801,128 +13390,80 @@ function genCotizacion(){
     .map(t => String(t).replace(/\{empresa\}/gi, s.empresaNombre||'el estudio'));
   const _obsAll = _obsUser.slice();
   if(!s.f2) _obsAll.unshift('No incluye planos hidráulicos, eléctricos ni constructivos de ningún tipo.');
-  if(!s.timbresOn) _obsAll.push('No incluye firma ni sello de planos finales.');
+  if(s.f2 && !s.timbresOn) _obsAll.push('No incluye firma ni sello de planos finales.');
+  if(s.f2 && s.timbres && s.timbres.total>0) _obsAll.push('Incluye firma y sello (timbre) de '+s.timbres.planos+' plano'+(s.timbres.planos===1?'':'s')+' finales.');
   const _obsHtml = _obsAll.map(t => '<li>'+_escPdf(t)+'</li>').join('');
   // Imágenes
   const _pdfWatermark = s.empWatermark ? `<div class="emp-pdf-watermark"><img src="${s.empWatermark}" alt=""></div>` : '';
   const _pdfLogo = s.empLogo ? `<div class="emp-pdf-logo"><img src="${s.empLogo}" alt="${_escPdf(s.empresaNombre||'')}"></div>` : '';
   const _pdfFirma = s.empFirma ? `<div class="emp-pdf-firma"><img src="${s.empFirma}" alt="Firma"><div class="emp-pdf-firma-line">${_escPdf(s.empresaNombre||'')}${s.autorNombre?' · '+_escPdf(s.autorNombre):''}</div></div>` : '';
-  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cotización ${cotNum} — ${s.empresaNombre||"Mi estudio"}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-size:12px;line-height:1.7;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-/* Identidad de empresa en el PDF */
-.emp-pdf-logo{text-align:center;margin:0 0 10px}
-.emp-pdf-logo img{max-height:72px;max-width:240px;object-fit:contain}
-.emp-pdf-watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;opacity:0.05}
-.emp-pdf-watermark img{max-width:440px;max-height:440px;object-fit:contain}
-.emp-pdf-firma{margin-top:34px}
-.emp-pdf-firma img{max-height:80px;max-width:230px;object-fit:contain;display:block}
-.emp-pdf-firma-line{margin-top:4px;border-top:1px solid #999;width:230px;padding-top:5px;font-size:11px;color:#555}
-.page{max-width:760px;margin:0 auto}
-.bw{padding:88px 44px 20px}
-.cb{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
-.cl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-bottom:3px}
-.cn2{font-size:17px;font-weight:300;color:#1a1a18}
-.pn{font-size:11px;color:#666;margin-top:2px}
-.badge{background:#f0f0ec;border-radius:3px;padding:3px 8px;font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:#666}
-.sec{margin-bottom:26px}
-.sl{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:#888;padding-bottom:6px;border-bottom:.5px solid #ddd;margin-bottom:10px}
-.sd{font-size:12px;color:#444;line-height:1.8;margin-bottom:8px;padding-left:28px}
-.svc{display:flex;justify-content:space-between;padding:8px 0 8px 28px;border-bottom:.5px solid #f0f0f0}
-.svc:last-child{border-bottom:none}
-.sn{font-size:12px;color:#333}
-.snt{font-size:10.5px;color:#aaa;margin-top:1px}
-.sa{font-size:12px;font-weight:500;color:#1a1a18;white-space:nowrap}
-.tb{margin-top:32px;border-top:2px solid #1a1a18;padding-top:18px}
-.tr2{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;color:#666;border-bottom:.5px solid #f4f4f4}
-.tr2:last-child{border-bottom:none}
-.tg{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:5px;border-top:1px solid #1a1a18}
-.tgl{font-size:13px;font-weight:500}
-.tga{font-size:21px;font-weight:300;letter-spacing:-.5px}
-.pg{display:flex;gap:10px;margin-top:20px}
-.pb{flex:1;border-radius:4px;padding:12px 14px}
-.pb-a{background:#f4faf7;border:1px solid #c8e6d8}
-.pb-m{background:#EEF4FF;border:1px solid #B5D4F4}
-.pb-s{background:#fdf4f4;border:1px solid #e8c8c8}
-.pl2{font-size:9px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:500}
-.pb-a .pl2{color:#2d6a4f}.pb-m .pl2{color:#0C447C}.pb-s .pl2{color:#7b2020}
-.pa2{font-size:16px;font-weight:400}
-.pb-a .pa2{color:#1a5c3c}.pb-m .pa2{color:#185FA5}.pb-s .pa2{color:#8b1a1a}
-.psb2{font-size:10px;color:#aaa;margin-top:2px}
-.cl2{margin-top:32px;padding-top:24px;border-top:1px solid #e8e8e8;font-size:12px;color:#555;line-height:1.8}
-.fb{margin-top:36px;display:flex;justify-content:space-between}
-.fb-l{font-size:11px;color:#888;line-height:1.8}
-.fb-l strong{display:block;font-size:13px;color:#1a1a18;font-weight:400;margin-bottom:1px}
-.ft-sep{height:1px;background:#ddd;margin:20px 0 0}
-.ft{padding:14px 0 44px}
-.ft p{font-size:9.5px;color:#bbb;line-height:1.6}
-
-/* PDF header/footer via @page (browser-native, no content overlap) */
-.pdf-ph,.pdf-pf{display:none!important}
-@media print{
-  html,body{width:210mm;margin:0;background:#fff!important}
-  .page{padding:0!important;max-width:182mm;margin:0 auto}
-  -webkit-print-color-adjust:exact;print-color-adjust:exact;
-}
-@page{
-  size:A4;
-  margin:18mm 14mm 20mm 14mm;
-}
-</style></head><body>
-${_pdfWatermark}
-<div class="page">
-<div class="bw">
-${_pdfLogo}
-<div class="cb"><div><div class="cl">Presentado a</div><div class="cn2">${cn}</div><div class="pn">${pt}</div></div><div style="text-align:right"><div class="badge" style="margin-bottom:4px">${s.m2||150} m²</div><span style="font-size:9px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;color:#aaa">${cotNum}</span><br><span style="font-size:9px;color:#bbb">${fecha}</span></div></div>
-<p style="font-size:12px;color:#555;line-height:1.8;margin-bottom:${progResumen?'14px':'28px'}">${_saludoHtml}</p>
-${progResumen ? `<div style="margin-bottom:24px;padding:12px 16px;background:#f8f8f8;border-radius:6px;border-left:3px solid #D4A843;page-break-inside:avoid">
-  <div style="font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:#888;font-weight:500;margin-bottom:4px">Programa arquitectónico</div>
-  <p style="font-size:11.5px;color:#555;line-height:1.7">${progResumen}</p>
-  ${progTabla}
-  ${progTerreno}
-</div>` : ''}
-${s.f1?`<div class="sec"><div class="sl">Anteproyecto</div><p class="sd">Desarrollo integral del diseño arquitectónico para un área de <strong>${s.m2} m²</strong>. Esta fase incluye: <strong>${(s.apIncluye&&s.apIncluye.length?s.apIncluye:['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones']).join(' · ')}</strong>.</p><div><div class="svc"><div><div class="sn">Diseño arquitectónico e imagen del proyecto</div><div class="snt">${(s.apIncluye&&s.apIncluye.length?s.apIncluye:['Modelado 3D','renderización y planos de presentación']).join(', ')}</div></div><div class="sa">${f(s.fee1)}</div></div></div></div>`:''}
-${s.f2?`<div class="sec"><div class="sl">Planimetrías</div><p class="sd">Elaboración del juego completo de planos técnicos: ${planosText}.</p><div><div class="svc"><div><div class="sn">Documentación técnica constructiva</div><div class="snt">Juego completo de planos para ejecución de obra</div></div><div class="sa">${f(s.fee2)}</div></div></div></div>`:''}
-${(s.fasesCot||[]).map(it=>`<div class="sec"><div class="sl">${_escPdf(it.nombre)}</div>${it.desc?`<p class="sd">${_escPdf(it.desc)}</p>`:''}<div><div class="svc"><div><div class="sn">${_escPdf(it.nombre)}</div><div class="snt">${_escPdf(it.detalle)}${it.semanas>0?' · duración estimada '+it.semanas+' semana'+(it.semanas==1?'':'s'):''}</div></div><div class="sa">${f(it.hon)}</div></div></div></div>`).join('')}
-${calRows?`<div class="sec"><div class="sl">Plan de entregas</div><table style="width:100%;border-collapse:collapse">${calRows}</table></div>`:''}
-<div class="tb">
-  ${s.f1?`<div class="tr2"><span>Anteproyecto</span><span>${f(s.fee1)}</span></div>`:''}
-  ${s.f2?`<div class="tr2"><span>Planimetrías</span><span>${f(s.fee2)}</span></div>`:''}
-  ${(s.fasesCot||[]).map(it=>`<div class="tr2"><span>${_escPdf(it.nombre)}</span><span>${f(it.hon)}</span></div>`).join('')}
-  ${s.iOn?`<div class="tr2"><span>IVA (${s.ir}%)</span><span>${f(s.ia)}</span></div>`:''}
-  <div class="tg"><span class="tgl">Total de honorarios</span><span class="tga">${f(s.tot)}</span></div>
-</div>
-<div class="pg">
-  ${(s.aA>0 || !(s.fasesCot||[]).length)?`<div class="pb pb-a"><div class="pl2">Anticipo al inicio</div><div class="pa2">${f(s.aA)}</div><div class="psb2">${s.pa}% ${(s.fasesCot||[]).length?'del diseño ':''}— al firmar contrato</div></div>`:''}
-  ${(s.f1&&s.mA>0)?`<div class="pb pb-m"><div class="pl2">Entrega Anteproyecto</div><div class="pa2">${f(s.mA)}</div><div class="psb2">${s.pf}% — al entregar anteproyecto</div></div>`:""}
-  ${s.sA>0?`<div class="pb pb-s"><div class="pl2">Saldo final</div><div class="pa2">${f(s.sA)}</div><div class="psb2">${s.ps}% — contra entrega final</div></div>`:""}
-</div>
-${(s.fasesCot||[]).length?`<div style="margin-top:12px;border:1px solid #f0d4de;background:#fdf6f9;border-radius:4px;padding:10px 14px;page-break-inside:avoid">
-  <div style="font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:#9b3a5e;font-weight:500;margin-bottom:4px">Cobro por fase</div>
-  ${s.fasesCot.map(it=>{ const k=s.iOn?(1+s.ir/100):1, t=it.hon*k; return `<div style="display:flex;justify-content:space-between;font-size:11.5px;color:#444;padding:3px 0"><span>${_escPdf(it.nombre)} <span style="color:#aaa;font-size:10px">— ${it.modelo==='mensual'?it.meses+' cuota'+(it.meses==1?'':'s')+' mensual'+(it.meses==1?'':'es')+' de '+f(t/it.meses):'al concluir la fase'}</span></span><span style="font-weight:500">${f(t)}</span></div>`; }).join('')}
-</div>`:''}
-<div class="cl2"><p>Los honorarios reflejan el alcance descrito. Cualquier modificación fuera del alcance acordado será cotizada por separado previo a su ejecución.</p><p style="margin-top:8px">Agradezco su confianza y quedo a sus órdenes.</p></div>
-<div style="margin:28px 0 24px;padding:20px 24px;background:#f8f8f8;border-radius:8px;border-left:3px solid #222">
-  <div style="font-size:12px;font-weight:700;color:#222;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Observaciones generales</div>
-  <ul style="margin:0;padding-left:16px;font-size:10.5px;color:#444;line-height:1.9">
-    ${_obsHtml}
-  </ul>
-</div>
-${_pdfFirma}
-<div class="fb"><div class="fb-l"><strong>${s.empresaNombre||"Mi estudio"}</strong><span>Servicios de diseño arquitectónico</span><span style="margin-top:2px;display:block">${fecha}${s.autorNombre?" · Elaborado por "+s.autorNombre:""}</span></div><div style="font-size:10px;color:#ccc">Vigencia: 30 días</div></div>
-</div>
-<div class="ft-sep"></div>
-<div class="ft"><p>Cotización ${cotNum} &nbsp;·&nbsp; ${fecha} &nbsp;·&nbsp; No incluye gastos de construcción, permisos ni estudios de suelos. Trabajo adicional requiere aprobación escrita.</p></div>
-</div>
-
-</body></html>`;
-  const w=window.open('','_blank');w.document.write(html);w.document.close();
-  setTimeout(()=>{
-    const hEl=w.document.getElementById('pdf-cotnum-h');
-    if(hEl) hEl.textContent=cotNum;
-    w.print();
-  },500);
+  // ── Datos para la propuesta (plantilla _pdfPropuesta) ──
+  const _perf = (typeof _perfil==='function') ? _perfil() : {};
+  const _gvN = id => parseFloat((document.getElementById(id)||{}).value)||0;
+  const _timb = s.timbres || {on:false,total:0};
+  const _visSp = sprints.filter(sp=>{ if((sp.type==='f1'||sp.type==='pe')&&!f1on) return false; if(sp.type==='f2'&&!f2on) return false; return true; });
+  // Cronograma por fase
+  let gantt=null, plazoTxt='';
+  if(svDate){
+    const ps=new Date(svDate+'T12:00:00'), DAY=86400000;
+    const off=dt=>Math.round((dt-ps)/DAY);
+    const rango=list=>{ let a=null,b=null; list.forEach(x=>{ const dx=dates[x.id]; if(!dx) return; if(a===null||dx.start<a) a=dx.start; if(b===null||dx.end>b) b=dx.end; }); return a?{a,b}:null; };
+    const durTxt=days=> days<=56 ? `${Math.max(1,Math.round(days/7))} sem` : `${(days/30).toFixed(days%30<3?0:1).replace('.0','')} meses`;
+    const rows=[];
+    const rA=f1on?rango(_visSp.filter(x=>x.type==='f1'||x.type==='pe')):null;
+    if(f1on && rA){ const ini=off(rA.a), fin=off(rA.b)+1; rows.push({key:'f1', nombre:'Anteproyecto', ini, fin, dur:durTxt(fin-ini)}); }
+    const rP=f2on?rango(_visSp.filter(x=>x.type==='f2')):null;
+    if(f2on && rP){ const ini=off(rP.a), fin=off(rP.b)+1; rows.push({key:'f2', nombre:'Planimetría', ini, fin, dur:durTxt(fin-ini)}); }
+    // otras fases: las que van ANTES del diseño en el mapa (ej. Prefactibilidad) se ubican antes del inicio
+    const _ord=(typeof _faseOrden==='function')?_faseOrden():[];
+    const _iAnte=_ord.findIndex(x=>x.kanban==='ante'||x.kanban==='plan');
+    const _antes=[], _despues=[];
+    (s.fasesCot||[]).forEach(it=>{ const k=_ord.findIndex(x=>x.id===it.id); (_iAnte>=0 && k>=0 && k<_iAnte ? _antes : _despues).push(it); });
+    const _dias=it=> it.semanas>0 ? Math.round(it.semanas*7) : (it.modelo==='mensual' ? Math.round(it.meses*30) : 0);
+    const _dur=(it,days)=> it.modelo==='mensual'&&!(it.semanas>0) ? `${it.meses} mes${it.meses==1?'':'es'}` : durTxt(days);
+    let back=0;
+    _antes.slice().reverse().forEach(it=>{ const days=_dias(it); if(days<=0) return; back-=days; rows.unshift({key:it.id, nombre:it.nombre, ini:back, fin:back+days, dur:_dur(it,days)}); });
+    let cursor = rows.length ? Math.max(0,...rows.map(r=>r.fin)) : 0;
+    _despues.forEach(it=>{ const days=_dias(it); if(days<=0) return; rows.push({key:it.id, nombre:it.nombre, ini:cursor, fin:cursor+days, dur:_dur(it,days)}); cursor+=days; });
+    // desplazar todo para que la primera barra empiece en 0
+    const shift = -Math.min(0,...rows.map(r=>r.ini));
+    rows.forEach(r=>{ r.ini+=shift; r.fin+=shift; }); cursor+=shift;
+    if(rows.length){
+      const peIso=parseFechaGT((document.getElementById('projEnd')||{}).value||'');
+      const ent = peIso ? off(new Date(peIso+'T12:00:00'))+1+shift : null;
+      const total=Math.max(cursor, ent||0, 7);
+      const big = total<=120 ? Math.round(total/7) : Math.round(total/30);
+      const bigLbl = total<=120 ? 'semanas en total' : 'meses en total';
+      const nombres=rows.map(r=>r.nombre);
+      gantt={rows, total, big, bigLbl,
+        titulo: nombres.length>1 ? `De ${nombres[0].toLowerCase()} a ${nombres[nombres.length-1].toLowerCase()}` : nombres[0],
+        entrega: ent, entregaTxt: peIso ? fmtS(new Date(peIso+'T12:00:00')) : '',
+        nota: (typeof _tlTodosLab==='function' && !_tlTodosLab()) ? `Los plazos se calcularon en días hábiles (${_tlCal().sab?'lunes a sábado':'lunes a viernes'}). Las fechas están sujetas a la aprobación oportuna de cada etapa.` : 'Las fechas están sujetas a la aprobación oportuna de cada etapa por parte del cliente.'};
+      const iniD=addDays(ps, -shift), finD=addDays(iniD, total-1);
+      plazoTxt = `${big} ${total<=120?'semanas':'meses'} · del ${fmtL(iniD)} al ${fmtL(finD)}`;
+    }
+  }
+  const _terrOn = !!(typeof estadoCalc!=='undefined' && estadoCalc.programa && estadoCalc.programa.tcActive);
+  const _tLv = _terrOn ? (parseFloat(estadoCalc.programa.tL)||0) : 0, _tAv = _terrOn ? (parseFloat(estadoCalc.programa.tA)||0) : 0;
+  const d = {
+    f, cotNum, fechaTxt: fecha, cliente: cn, proyecto: pt, desc: pd,
+    ubicacion: ((document.getElementById('projUbic')||{}).value||'').trim(),
+    m2: s.m2||0, iOn: s.iOn, ir: s.ir, ia: s.ia, sub: s.sub, tot: s.tot,
+    saludoHtml: _saludoHtml,
+    emp: { nombre: s.empresaNombre||'', autor: s.autorNombre||'', logo: s.empLogo, watermark: s.empWatermark, firma: s.empFirma,
+           firmaNombre: _perf.firmaNombre||'', colegiado: _perf.colegiado||'', razonSocial: _perf.razonSocial||'' },
+    terreno: (_terrOn && _tLv && _tAv) ? { on:true, tL:_tLv, tA:_tAv, area:_tLv*_tAv, svg: progTerreno } : null,
+    programa: progResumen ? { resumen: progResumen, tabla: progTabla } : null,
+    f1: { on: !!s.f1, hon: s.fee1||0,
+          detalle: (s.m2>0 ? `${s.m2} m² × ${f(_gvN('m2Rate'))}/m²` : '') + (_gvN('p1Extra')>0 ? ` + ${f(_gvN('p1Extra'))} ajustes` : ''),
+          incluye: s.apIncluye||[],
+          etapas: _visSp.filter(x=>x.type==='f1'||x.type==='pe').map(x=>({titulo:x.title, nota:x.clientNote, aprob:x.needsFeedback})) },
+    f2: { on: !!s.f2, hon: (s.fee2||0)-(_timb.total||0), grupos: _pdfPlanosGrupos(), timb: _timb },
+    fases: (s.fasesCot||[]).map(it=>Object.assign({}, it, { roles: ((typeof _pipeFase==='function' && _pipeFase(it.id)) ? (_pipeFase(it.id).roles||[]).map(r=>r.nombre) : []) })),
+    pagos: { aA:s.aA||0, mA:(s.f1&&s.f2)?(s.mA||0):0, sA:s.sA||0, pa:s.pa, pf:s.pf, ps:s.ps },
+    gantt, plazoTxt, calRows, obs: _obsAll
+  };
+  _pdfAbrir(_pdfPropuesta(d));
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -12956,8 +13497,13 @@ function genCotizacionDesde(id){
 
   const f1on=c.f1>0, f2on=c.f2>0;
   const iOn=c.iva>0;
-  const pa=c.tot>0?Math.round(c.antic/c.tot*100):0;
-  const pf=c.tot>0?Math.round(c.mid/c.tot*100):0;
+  // los % se aplican al diseño (Anteproyecto + Planimetrías); otras fases aparte
+  const _totD=(c.tot||0)-((typeof _f3Tot==='function')?_f3Tot(c):0);
+  const pa=_totD>0?Math.round(c.antic/_totD*100):0;
+  const pf=_totD>0?Math.round(c.mid/_totD*100):0;
+  const _timb=(c.timbres&&c.timbres.on&&c.timbres.total>0)?c.timbres:null;
+  const _fasesC=Array.isArray(c.fasesCot)?c.fasesCot:[];
+  const _kIva=(iOn && (c.sub||0)>0)?(1+(c.iva||0)/c.sub):1;
   const ps=Math.max(0,100-pa-pf);
 
   // ── Identidad de empresa + saludo + observaciones (Panel de la empresa) ──
@@ -12972,6 +13518,7 @@ function genCotizacionDesde(id){
     .map(t => String(t).replace(/\{empresa\}/gi, _empN2));
   const _obsAll = _obsUser.slice();
   if(!f2on) _obsAll.unshift('No incluye planos hidráulicos, eléctricos ni constructivos de ningún tipo.');
+  if(f2on && _timb) _obsAll.push('Incluye firma y sello (timbre) de '+_timb.planos+' plano'+(_timb.planos===1?'':'s')+' finales.');
   const _obsHtml = _obsAll.map(t => '<li>'+_escPdf(t)+'</li>').join('');
   const _empLogoV = (typeof _empLogo==='function')?_empLogo():'';
   const _empWmV   = (typeof _empWatermark==='function')?_empWatermark():'';
@@ -12980,131 +13527,25 @@ function genCotizacionDesde(id){
   const _pdfLogo = _empLogoV ? `<div class="emp-pdf-logo"><img src="${_empLogoV}" alt="${_escPdf(_empN2)}"></div>` : '';
   const _pdfFirma = _empFmV ? `<div class="emp-pdf-firma"><img src="${_empFmV}" alt="Firma"><div class="emp-pdf-firma-line">${_escPdf(_empN2)}${_usuarioN()?' · '+_escPdf(_usuarioN()):''}</div></div>` : '';
 
-  const html=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-<title>Cotización ${cotNum} — ${_empresaN()}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1a1a18;font-size:12px;line-height:1.7;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-/* Identidad de empresa en el PDF */
-.emp-pdf-logo{text-align:center;margin:0 0 10px}
-.emp-pdf-logo img{max-height:72px;max-width:240px;object-fit:contain}
-.emp-pdf-watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;opacity:0.05}
-.emp-pdf-watermark img{max-width:440px;max-height:440px;object-fit:contain}
-.emp-pdf-firma{margin-top:34px}
-.emp-pdf-firma img{max-height:80px;max-width:230px;object-fit:contain;display:block}
-.emp-pdf-firma-line{margin-top:4px;border-top:1px solid #999;width:230px;padding-top:5px;font-size:11px;color:#555}
-.page{max-width:760px;margin:0 auto}
-.bw{padding:88px 44px 20px}
-.cb{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #e8e8e8;display:flex;justify-content:space-between;align-items:flex-start}
-.cl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-bottom:3px}
-.cn2{font-size:17px;font-weight:300;color:#1a1a18}
-.pn{font-size:11px;color:#666;margin-top:2px}
-.badge{background:#f0f0ec;border-radius:3px;padding:3px 8px;font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:#666}
-.sec{margin-bottom:26px}
-.sl{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:#888;padding-bottom:6px;border-bottom:.5px solid #ddd;margin-bottom:10px}
-.sd{font-size:12px;color:#444;line-height:1.8;margin-bottom:8px;padding-left:28px}
-.svc{display:flex;justify-content:space-between;padding:8px 0 8px 28px;border-bottom:.5px solid #f0f0f0}
-.svc:last-child{border-bottom:none}
-.sn{font-size:12px;color:#333}
-.snt{font-size:10.5px;color:#aaa;margin-top:1px}
-.sa{font-size:12px;font-weight:500;color:#1a1a18;white-space:nowrap}
-.tb{margin-top:32px;border-top:2px solid #1a1a18;padding-top:18px}
-.tr2{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;color:#666;border-bottom:.5px solid #f4f4f4}
-.tr2:last-child{border-bottom:none}
-.tg{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:5px;border-top:1px solid #1a1a18}
-.tgl{font-size:13px;font-weight:500}
-.tga{font-size:21px;font-weight:300;letter-spacing:-.5px}
-.pg{display:flex;gap:10px;margin-top:20px}
-.pb{flex:1;border-radius:4px;padding:12px 14px}
-.pb-a{background:#f4faf7;border:1px solid #c8e6d8}
-.pb-m{background:#EEF4FF;border:1px solid #B5D4F4}
-.pb-s{background:#fdf4f4;border:1px solid #e8c8c8}
-.pl2{font-size:9px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;font-weight:500}
-.pb-a .pl2{color:#2d6a4f}.pb-m .pl2{color:#0C447C}.pb-s .pl2{color:#7b2020}
-.pa2{font-size:16px;font-weight:400}
-.pb-a .pa2{color:#1a5c3c}.pb-m .pa2{color:#185FA5}.pb-s .pa2{color:#8b1a1a}
-.psb2{font-size:10px;color:#aaa;margin-top:2px}
-.cl2{margin-top:32px;padding-top:24px;border-top:1px solid #e8e8e8;font-size:12px;color:#555;line-height:1.8}
-.fb{margin-top:36px;display:flex;justify-content:space-between}
-.fb-l{font-size:11px;color:#888;line-height:1.8}
-.fb-l strong{display:block;font-size:13px;color:#1a1a18;font-weight:400;margin-bottom:1px}
-.ft-sep{height:1px;background:#ddd;margin:20px 0 0}
-.ft{padding:14px 0 44px}
-.ft p{font-size:9.5px;color:#bbb;line-height:1.6}
-
-/* PDF running header/footer */
-.pdf-ph{position:fixed;top:0;left:0;right:0;height:60px;background:#fff;border-bottom:1.5px solid #1a1a18;
-  display:flex;align-items:center;justify-content:space-between;padding:0 40px;
-  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;z-index:100;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact}
-.pdf-pf{position:fixed;bottom:0;left:0;right:0;height:44px;background:#fff;border-top:0.5px solid #ddd;
-  display:flex;align-items:center;justify-content:space-between;padding:0 40px;
-  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;z-index:100;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact}
-
-.pdf-ph,.pdf-pf{display:none!important}
-@media print{html,body{width:210mm;margin:0;background:#fff!important}.page{padding:0!important;max-width:182mm;margin:0 auto}}
-@page{size:A4;margin:18mm 14mm 20mm 14mm}
-.emp-pdf-logo{text-align:center;margin:0 0 10px}
-.emp-pdf-logo img{max-height:72px;max-width:240px;object-fit:contain}
-.emp-pdf-watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;opacity:0.05}
-.emp-pdf-watermark img{max-width:440px;max-height:440px;object-fit:contain}
-.bw{position:relative;z-index:1}
-.emp-pdf-firma{margin-top:34px}
-.emp-pdf-firma img{max-height:80px;max-width:230px;object-fit:contain;display:block}
-.emp-pdf-firma-line{margin-top:4px;border-top:1px solid #999;width:230px;padding-top:5px;font-size:11px;color:#555}
-</style></head><body>
-${_pdfWatermark}
-<div class="pdf-ph">
-  <div style="display:flex;flex-direction:column">
-    <span style="font-size:11px;font-weight:500;color:#1a1a18;letter-spacing:.5px;text-transform:uppercase">${_empresaN()}</span>
-    <span style="font-size:9px;color:#aaa;letter-spacing:.3px">Arquitectura &amp; Interiorismo</span>
-  </div>
-  <div style="text-align:right">
-    <span style="font-size:9px;color:#aaa;font-family:monospace" id="pdf-cotnum-h"></span>
-  </div>
-</div>
-<div class="pdf-pf">
-  <span style="font-size:9px;color:#bbb">Servicios de diseño arquitectónico · No incluye gastos de construcción ni permisos</span>
-  <span style="font-size:9px;color:#bbb">Vigencia 30 días · Trabajo adicional requiere aprobación escrita</span>
-</div>
-<div class="page">
-<div class="bw">
-${_pdfLogo}
-<div class="cb"><div><div class="cl">Presentado a</div><div class="cn2">${cn}</div><div class="pn">${pt}</div></div>${m2?`<div class="badge">${m2} m²</div>`:''}<div style="text-align:right"><span style="font-size:9px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;color:#aaa">${cotNum}</span><br><span style="font-size:9px;color:#bbb">${fecha}</span></div></div>
-<p style="font-size:12px;color:#555;line-height:1.8;margin-bottom:28px">${_saludoHtml}</p>
-${f1on?`<div class="sec"><div class="sl">Anteproyecto</div>${m2?`<p class="sd">Desarrollo integral del diseño arquitectónico para un área de <strong>${m2} m²</strong>, incluyendo concepto, modelado 3D, visualización y documentación.</p>`:''}<div><div class="svc"><div><div class="sn">Diseño arquitectónico e imagen del proyecto</div><div class="snt">Modelado 3D, renderización y planos de presentación</div></div><div class="sa">${f(c.f1)}</div></div></div></div>`:''}
-${f2on?`<div class="sec"><div class="sl">Planimetrías</div>${planosText?`<p class="sd">Elaboración del juego completo de planos técnicos: ${planosText}.</p>`:''}<div><div class="svc"><div><div class="sn">Documentación técnica constructiva</div><div class="snt">Juego completo de planos para ejecución de obra</div></div><div class="sa">${f(c.f2)}</div></div></div></div>`:''}
-<div class="tb">
-  ${f1on?`<div class="tr2"><span>Anteproyecto</span><span>${f(c.f1)}</span></div>`:''}
-  ${f2on?`<div class="tr2"><span>Planimetrías</span><span>${f(c.f2)}</span></div>`:''}
-  ${iOn?`<div class="tr2"><span>IVA</span><span>${f(c.iva)}</span></div>`:''}
-  <div class="tg"><span class="tgl">Total de honorarios</span><span class="tga">${f(c.tot)}</span></div>
-</div>
-<div class="pg">
-  ${c.antic>0?`<div class="pb pb-a"><div class="pl2">Anticipo al inicio</div><div class="pa2">${f(c.antic)}</div><div class="psb2">${pa}% — al firmar contrato</div></div>`:''}
-  ${c.mid>0?`<div class="pb pb-m"><div class="pl2">Entrega Anteproyecto</div><div class="pa2">${f(c.mid)}</div><div class="psb2">${pf}% — al entregar anteproyecto</div></div>`:''}
-  ${c.saldo>0?`<div class="pb pb-s"><div class="pl2">Saldo final</div><div class="pa2">${f(c.saldo)}</div><div class="psb2">${ps}% — contra entrega final</div></div>`:''}
-</div>
-<div class="cl2"><p>Los honorarios reflejan el alcance descrito. Cualquier modificación fuera del alcance acordado será cotizada por separado previo a su ejecución.</p><p style="margin-top:8px">Agradezco su confianza y quedo a sus órdenes.</p></div>
-<div style="margin:28px 0 24px;padding:20px 24px;background:#f8f8f8;border-radius:8px;border-left:3px solid #222">
-  <div style="font-size:12px;font-weight:700;color:#222;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Observaciones generales</div>
-  <ul style="margin:0;padding-left:16px;font-size:10.5px;color:#444;line-height:1.9">
-    ${_obsHtml}
-  </ul>
-</div>
-${_pdfFirma}
-<div class="fb"><div class="fb-l"><strong>${_empresaN()}</strong><span>Servicios de diseño arquitectónico</span><span style="margin-top:2px;display:block">${fecha}${_usuarioN()?" · Elaborado por "+_usuarioN():""}</span></div><div style="font-size:10px;color:#ccc">Vigencia: 30 días</div></div>
-</div>
-<div class="ft-sep"></div>
-<div class="ft"><p>Cotización ${cotNum} &nbsp;·&nbsp; ${fecha} &nbsp;·&nbsp; No incluye gastos de construcción, permisos ni estudios de suelos.</p></div>
-</div>
-</body></html>`;
-
-  const w=window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-  setTimeout(()=>w.print(),500);
+  const _perf = (typeof _perfil==='function') ? _perfil() : {};
+  const _apDef = ['Diseño arquitectónico','Modelado 3D','Renderización','Plantas amuebladas, acotadas, techo','Elevaciones y secciones'];
+  const _spC = Array.isArray(c.sprints) ? c.sprints : [];
+  const d = {
+    f, cotNum, fechaTxt: fecha, cliente: c.cliente||'Cliente', proyecto: c.proyecto||'Proyecto', desc: c.desc||'',
+    ubicacion: c.ubicacion||'', m2: m2, iOn, ir: (c.sub>0 ? Math.round((c.iva||0)/c.sub*100) : 12), ia: c.iva||0,
+    sub: c.sub || ((c.tot||0)-(c.iva||0)), tot: c.tot||0,
+    saludoHtml: _saludoHtml,
+    emp: { nombre: _empN2, autor: (typeof _usuarioN==='function')?_usuarioN():'', logo: _empLogoV, watermark: _empWmV, firma: _empFmV,
+           firmaNombre: _perf.firmaNombre||'', colegiado: _perf.colegiado||'', razonSocial: _perf.razonSocial||'' },
+    terreno: null, programa: null,
+    f1: { on: f1on, hon: c.f1||0, detalle: m2>0 ? `${m2} m²` : '', incluye: Array.isArray(c.apIncluye) ? c.apIncluye : _apDef,
+          etapas: _spC.filter(x=>x.type==='f1'||x.type==='pe').map(x=>({titulo:x.title, nota:x.clientNote, aprob:x.needsFeedback})) },
+    f2: { on: f2on, hon: (c.f2||0)-(_timb?_timb.total:0), grupos: _pdfPlanosGrupos(c.planosQty||{}), timb: _timb },
+    fases: _fasesC.map(it=>Object.assign({}, it, { roles: ((typeof _pipeFase==='function' && _pipeFase(it.id)) ? (_pipeFase(it.id).roles||[]).map(r=>r.nombre) : []) })),
+    pagos: { aA:c.antic||0, mA:c.mid||0, sA:c.saldo||0, pa, pf, ps },
+    gantt: null, plazoTxt: '', calRows: '', obs: _obsAll
+  };
+  _pdfAbrir(_pdfPropuesta(d));
 }
 
 // ═══════ INGRESOS ═══════
@@ -13462,7 +13903,7 @@ function guardarCotConfirmado(d){
   const projStartSaved=((document.getElementById('projStart')||{}).value||'').trim()||fecha;
   const sprintsSaved=JSON.parse(JSON.stringify(typeof sprints!=='undefined'?sprints:[]));
   const nowTs=Date.now();
-  cots.push({id:nowTs,cliente:clienteRaw,proyecto:proyectoRaw,f1,f2,f3,f3Tot,fasesCot,fasesCobrado,oh,colab,iva,sub,tot,util,antic,mid,saldo,cobrado,cur,fecha,estado,colNombre3D,colNombreRend,colNombrePlanos,colabs,planosQty,m2:m2Saved,desc:descSaved,projStart:projStartSaved,sprints:sprintsSaved,updatedAt:nowTs});
+  cots.push({id:nowTs,cliente:clienteRaw,proyecto:proyectoRaw,ubicacion:((document.getElementById('projUbic')||{}).value||'').trim(),apIncluye:(window._st&&window._st.apIncluye)||null,f1,f2,f3,f3Tot,fasesCot,fasesCobrado,timbres:(window._st&&window._st.timbres&&f2>0)?window._st.timbres:null,diasLab:(typeof _tlCal==='function'?_tlCal():{sab:true,dom:true}),oh,colab,iva,sub,tot,util,antic,mid,saldo,cobrado,cur,fecha,estado,colNombre3D,colNombreRend,colNombrePlanos,colabs,planosQty,m2:m2Saved,desc:descSaved,projStart:projStartSaved,sprints:sprintsSaved,updatedAt:nowTs});
   saveCots(cots);
   hideFormCot();
   // reset form mini
@@ -13473,6 +13914,7 @@ function guardarCotConfirmado(d){
   document.getElementById('clientName').value='';
   document.getElementById('projTitle').value='';
   document.getElementById('projDesc').value='';
+  { const _u=document.getElementById('projUbic'); if(_u) _u.value=''; }
   document.getElementById('m2S').value='';
   document.getElementById('m2Rate').value='';
   document.getElementById('p1Extra').value=0;
@@ -18646,14 +19088,14 @@ if(typeof window !== 'undefined'){
   let _draftTimer = null;
 
   /* ── Campos del formulario a persistir ──────────────── */
-  const TEXT_FIELDS  = ['clientName','projTitle','projDesc',
+  const TEXT_FIELDS  = ['clientName','projTitle','projDesc','projUbic',
                         'colNombre3D','colNombreRend','colNombrePlanos'];
   const NUM_FIELDS   = ['m2S','m2Rate','p1Extra',
                         'col3D','colRend','colPlanos',
                         'cRevit','cD5','cCanva','cElec','cGas','cViat',
                         'ivaRate','pctAntic','pctF1pay',
                         'timbreCosto','capRate'];
-  const CHECK_FIELDS = ['fase1On','fase2On','ivaOn','timbresOn','isrOn','capOn','apInc1','apInc2','apInc3','apInc4','apInc5'];
+  const CHECK_FIELDS = ['fase1On','fase2On','ivaOn','timbresOn','isrOn','capOn','apInc1','apInc2','apInc3','apInc4','apInc5','tlSab','tlDom'];
 
   /* ── Helpers DOM ─────────────────────────────────────── */
   const $  = id => document.getElementById(id);
