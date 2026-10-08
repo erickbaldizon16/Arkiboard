@@ -2682,6 +2682,43 @@ select:-webkit-autofill{
 
 /* ═══ PANEL DE LA EMPRESA ═══ */
 /* ── Layout del Panel de empresa: sidebar vertical + contenido ── */
+/* ── Administrador: menú vertical ── */
+.adm-pane{display:none}
+.adm-pane.active{display:block;animation:fadeUp .25s var(--ease-out) both}
+.adm-head{margin-bottom:14px}
+.adm-tit{font-size:15px;font-weight:500;color:var(--text);font-family:var(--font-display)}
+.adm-sub{font-size:11.5px;color:var(--text-3);margin-top:2px;line-height:1.5}
+.adm-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.adm-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+@media (max-width:900px){.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.adm-btn{padding:6px 13px;font-size:10.5px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent,#1a1a1a);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+.adm-btn.ghost{background:transparent;color:var(--text-2);border-color:var(--border-2)}
+.adm-btn.ghost:hover{border-color:var(--border-accent);color:var(--accent)}
+.adm-btn.sm{padding:3px 9px;font-size:9.5px}
+.adm-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.adm-table th{text-align:left;padding:7px 8px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:9.5px;border-bottom:1px solid var(--border)}
+.adm-table td{padding:8px;border-bottom:0.5px solid var(--border);color:var(--text-2);vertical-align:middle}
+.adm-table .r{text-align:right;font-family:var(--font-mono);white-space:nowrap}
+.adm-table tr:hover td{background:rgba(255,255,255,0.02)}
+.adm-empty{padding:22px;text-align:center;color:var(--text-3);font-size:11.5px}
+.adm-tag{display:inline-block;font-size:9.5px;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.adm-tag.ok{background:rgba(76,175,114,0.14);color:#6FD49A}
+.adm-tag.pend{background:rgba(232,151,58,0.14);color:#E8973A}
+.adm-tag.late{background:rgba(224,90,90,0.15);color:#E86B6B}
+.adm-tag.mute{background:rgba(255,255,255,0.06);color:var(--text-3)}
+.adm-big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.adm-big b{font-size:26px;font-weight:500;font-family:var(--font-mono)}
+.adm-nota{font-size:10.5px;color:var(--text-3);line-height:1.55;margin-top:8px}
+.adm-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.adm-grid2{grid-template-columns:1fr}}
+.adm-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.05);overflow:hidden;margin-top:4px}
+.adm-bar>i{display:block;height:100%;border-radius:3px}
+.adm-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9990;display:flex;align-items:center;justify-content:center;padding:20px}
+.adm-modal{background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:22px 26px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
+.adm-modal-tit{font-family:var(--font-display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.adm-modal .fg{margin-bottom:.7rem}
+.adm-modal select,.adm-modal input{width:100%}
+.adm-modal-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
 .emp-layout{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}
 .emp-nav{display:flex;flex-direction:column;gap:3px;position:sticky;top:12px}
 .emp-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-md);background:transparent;border:1px solid transparent;color:var(--text-2);font-size:12.5px;font-family:var(--font-body);cursor:pointer;text-align:left;width:100%;transition:background .15s,color .15s,border-color .15s}
@@ -4031,12 +4068,15 @@ code.emp-tag{font-family:var(--font-mono)}
   </div>
   <div id="colbody_cint">
   <p class="nt" style="margin:.4rem 0 .75rem">Costos fijos del proyecto — se descuentan de tu utilidad</p>
-  <div class="cost-row"><span style="color:var(--text-2)">Revit</span><div class="fr" style="gap:6px"><input type="number" id="cRevit" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">D5 Render</span><div class="fr" style="gap:6px"><input type="number" id="cD5" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Canva</span><div class="fr" style="gap:6px"><input type="number" id="cCanva" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Electricidad</span><div class="fr" style="gap:6px"><input type="number" id="cElec" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Gasolina</span><div class="fr" style="gap:6px"><input type="number" id="cGas" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
-  <div class="cost-row"><span style="color:var(--text-2)">Viáticos / otros</span><div class="fr" style="gap:6px"><input type="number" id="cViat" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div id="cotCostosRows">
+  <div class="cost-row"><span style="color:var(--text-2)">Revit</span><div class="fr" style="gap:6px"><input type="number" id="cRevit" data-costo="revit" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">D5 Render</span><div class="fr" style="gap:6px"><input type="number" id="cD5" data-costo="d5" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Canva</span><div class="fr" style="gap:6px"><input type="number" id="cCanva" data-costo="canva" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Electricidad</span><div class="fr" style="gap:6px"><input type="number" id="cElec" data-costo="elec" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Gasolina</span><div class="fr" style="gap:6px"><input type="number" id="cGas" data-costo="gas" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  <div class="cost-row"><span style="color:var(--text-2)">Viáticos / otros</span><div class="fr" style="gap:6px"><input type="number" id="cViat" data-costo="viat" value="0" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>
+  </div>
+  <div style="text-align:right;margin-top:4px"><button type="button" onclick="cotCostosConfigurar()" style="background:none;border:none;color:var(--text-3);font-size:10px;cursor:pointer;padding:2px 0;font-family:var(--font-body)" title="Agregar, quitar o cambiar costos del catálogo">⚙ Configurar costos en Administrador</button></div>
   <div class="sep"></div>
   <div class="metric"><p class="ml">Total costos internos</p><p class="mv" id="ohAmt">—</p></div>
   </div>
@@ -4332,21 +4372,46 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
 
-  <!-- KPIs -->
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px" id="admin-kpis"></div>
+  <!-- ═══ Menú vertical del Administrador ═══ -->
+  <div class="emp-layout adm-layout">
+    <nav class="emp-nav" id="admNav">
+      <div class="emp-nav-label">Finanzas</div>
+      <button class="emp-nav-item adm-nav-item active" data-adm-sec="resultados" onclick="adminShowTab('resultados')"><span class="emp-nav-ico">📊</span>Estado de resultados</button>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="ingresos" onclick="adminShowTab('ingresos')"><span class="emp-nav-ico">💵</span>Ingresos</button>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="pagoscolab" onclick="adminShowTab('pagoscolab')"><span class="emp-nav-ico">🧾</span>Pagos a colaboradores</button>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="socios" onclick="adminShowTab('socios')"><span class="emp-nav-ico">🤝</span>Distribución entre socios</button>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="costos" onclick="adminShowTab('costos')"><span class="emp-nav-ico">🧮</span>Costos</button>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="impuestos" onclick="adminShowTab('impuestos')"><span class="emp-nav-ico">🏛</span>Impuestos</button>
+      <div class="emp-nav-label">Contabilidad</div>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="balance" onclick="adminShowTab('balance')"><span class="emp-nav-ico">⚖️</span>Contaduría</button>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="formulas" onclick="adminShowTab('formulas')"><span class="emp-nav-ico">📘</span>Fórmulas contables</button>
+      <div class="emp-nav-label">Organización</div>
+      <button class="emp-nav-item adm-nav-item" data-adm-sec="equipo" onclick="adminShowTab('equipo')"><span class="emp-nav-ico">👥</span>Equipo</button>
+    </nav>
+    <div class="emp-content">
 
-  <!-- Tabs internos -->
-  <div style="display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:0">
-    <button onclick="adminShowTab('finanzas')" class="admin-tab active" id="atab-finanzas">💰 Finanzas</button>
-    <button onclick="adminShowTab('contaduria')" class="admin-tab" id="atab-contaduria">📘 Contaduría</button>
-    <button onclick="adminShowTab('colab')" class="admin-tab" id="atab-colab">👥 Equipo</button>
+  <!-- Estado de resultados -->
+  <div class="adm-pane active" data-adm-pane="resultados">
+    <div class="adm-head"><div class="adm-tit">Estado de resultados</div><div class="adm-sub">Cómo le fue al estudio en el período: ingresos, egresos, impuestos y utilidad.</div></div>
+    <div class="adm-kpis" id="admin-kpis"></div>
+    <div id="atab-body-finanzas"></div>
   </div>
 
-  <!-- Tab: Ingresos -->
-  <div id="atab-body-finanzas" class="admin-tab-body"></div>
+  <!-- Ingresos -->
+  <div class="adm-pane" data-adm-pane="ingresos"><div id="adm-body-ingresos"></div></div>
+  <!-- Pagos a colaboradores -->
+  <div class="adm-pane" data-adm-pane="pagoscolab"><div id="adm-body-pagoscolab"></div></div>
+  <!-- Distribución entre socios -->
+  <div class="adm-pane" data-adm-pane="socios"><div id="adm-body-socios"></div></div>
+  <!-- Costos -->
+  <div class="adm-pane" data-adm-pane="costos"><div id="adm-body-costos"></div></div>
+  <!-- Impuestos -->
+  <div class="adm-pane" data-adm-pane="impuestos"><div id="adm-body-impuestos"></div></div>
+  <!-- Contaduría: balance financiero -->
+  <div class="adm-pane" data-adm-pane="balance"><div id="adm-body-balance"></div></div>
 
-  <!-- Tab: Contaduría (referencia del cálculo) -->
-  <div id="atab-body-contaduria" class="admin-tab-body" style="display:none">
+  <!-- Fórmulas contables (referencia del cálculo) -->
+  <div id="atab-body-contaduria" class="adm-pane" data-adm-pane="formulas">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap">
       <div>
         <div style="font-size:13px;font-weight:500;color:var(--text);font-family:var(--font-display)">Cómo se calcula la utilidad neta</div>
@@ -4402,8 +4467,8 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
 
-  <!-- Tab: Equipo (Lista + Organigrama fusionados) -->
-  <div id="atab-body-colab" class="admin-tab-body" style="display:none">
+  <!-- Equipo (Lista + Organigrama fusionados) -->
+  <div id="atab-body-colab" class="adm-pane" data-adm-pane="equipo">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
       <div>
         <div style="font-size:13px;font-weight:500;color:var(--text);font-family:var(--font-display)">Equipo de trabajo</div>
@@ -4472,6 +4537,9 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
 
+    </div><!-- /emp-content -->
+  </div><!-- /adm-layout -->
+
   <!-- Modal: registrar / editar colaborador -->
   <div id="awModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9990;align-items:center;justify-content:center;padding:20px">
     <div class="sc" style="width:100%;max-width:440px;position:relative;padding:1.8rem 1.7rem;max-height:90vh;overflow-y:auto" onclick="event.stopPropagation()">
@@ -4529,6 +4597,7 @@ code.emp-tag{font-family:var(--font-mono)}
       <div style="font-family:var(--font-display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px" id="adminCostoModalTitle">Nuevo costo</div>
       <input type="hidden" id="acm-tipo">
       <input type="hidden" id="acm-id">
+      <input type="hidden" id="acm-catid">
       <div style="margin-bottom:.65rem">
         <label class="lbl">Concepto *</label>
         <input type="text" id="acm-concepto" placeholder="Descripción del costo">
@@ -6337,26 +6406,8 @@ function adminFechaEnRango(fecha){
 
 /* ── Construir filas de ingresos desde avit_cots ─────────── */
 function adminGetIngresos(){
-  const cots = (loadCots ? loadCots() : []).filter(c=>!c.archivado);
-  const rows = [];
-  cots.forEach(c=>{
-    // Solo cotizaciones con algún cobro
-    const cobrado = c.cobrado||0;
-    if(!cobrado) return;
-    // Usamos la fecha de la cotización como proxy (cobros no tienen fecha propia aún)
-    if(!adminFechaEnRango(c.fecha)) return;
-    const capRate = c.capRate||0;
-    const capMonto = c.capMonto||0;
-    rows.push({
-      proyecto: c.proyecto||'—',
-      cliente:  c.cliente||'—',
-      concepto: 'Honorarios',
-      cobrado:  cobrado,
-      capRate,
-      capNeto:  capMonto,
-    });
-  });
-  return rows;
+  // Cobros con su fecha real (cobrosLog) + ingresos manuales, dentro del período
+  return admIngresosTodos().filter(r=>adminFechaEnRango(r.fecha)).map(r=>Object.assign({},r,{cobrado:r.monto}));
 }
 
 /* ── Construir filas de colaboradores desde avit_cots ──────── */
@@ -6859,7 +6910,9 @@ function finCalcular(){
   const ingresos = ingAuto + ingManual;
 
   // Costos: colaboradores (auto) + manuales clase 'costo'
-  const colab = adminGetColaboradores().reduce((s,r)=>s+r.monto,0);
+  const _pcR = (adminLoad().pagosColab||[]).filter(p=>adminFechaEnRango(p.fecha));
+  const colabFuente = _pcR.length ? 'pagos' : 'estimado';
+  const colab = _pcR.length ? _pcR.reduce((s,p)=>s+(+p.monto||0),0) : adminGetColaboradores().reduce((s,r)=>s+r.monto,0);
   const man = finEgresosManual();
   const costosManual = man.costos.reduce((s,r)=>s+(r.monto||0),0);
   const costos = colab + costosManual;
@@ -6883,7 +6936,7 @@ function finCalcular(){
 
   return {
     ingAuto, ingManual, ingresos,
-    colab, costosManual, costos,
+    colab, colabFuente, costosManual, costos,
     gastos,
     ivaDebito, ivaCredito, ivaPagar,
     isrBase, isr, impuestos,
@@ -6986,72 +7039,6 @@ function adminRenderManual(tipo){
 }
 
 /* ── Render Análisis ──────────────────────────────────────────── */
-function adminRenderAnalisis(){
-  const ing  =adminGetIngresos().reduce((s,r)=>s+r.cobrado,0);
-  const col  =adminGetColaboradores().reduce((s,r)=>s+r.monto,0);
-  const mkt  =adminGetCostosManual('marketing').reduce((s,r)=>s+(r.monto||0),0);
-  const vari =adminGetCostosManual('varios').reduce((s,r)=>s+(r.monto||0),0);
-  const egresos=col+mkt+vari;
-  const balance=ing-egresos;
-  const cap=adminCapAcumulado();
-  const fmt=n=>'GTQ '+Math.round(n).toLocaleString('es-GT');
-
-  // Desglose de egresos
-  const topEl=document.getElementById('admin-analisis-top');
-  if(topEl){
-    const pct=(t,eg)=>eg>0?Math.round(t/eg*100):0;
-    const bar=(p,c)=>`<div style="height:6px;border-radius:3px;background:rgba(255,255,255,0.05);margin-top:5px;overflow:hidden"><div style="height:100%;width:${Math.min(p,100)}%;background:${c};border-radius:3px;transition:width .4s"></div></div>`;
-    topEl.innerHTML=`
-      <div class="sc">
-        <div class="sc-title">Desglose de egresos</div>
-        ${[['Colaboradores',col,'#5AABF0'],[' Marketing',mkt,'#E07B2E'],['Costos varios',vari,'#5BC68A']].map(([l,v,c])=>`
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-            <span style="font-size:11px;color:var(--text-2)">${l}</span>
-            <span style="font-size:11px;font-weight:500;color:var(--text-2)">${pct(v,egresos)}% · ${fmt(v)}</span>
-          </div>${bar(pct(v,egresos),c)}`).join('')}
-      </div>
-      <div class="sc">
-        <div class="sc-title">Métricas clave</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
-          ${[
-            ['Margen operativo', ing>0?Math.round(balance/ing*100)+'%':'—', balance>=0?'var(--green)':'var(--red)'],
-            ['Punto de equilibrio', egresos<=ing?'✓ Cubierto':'✗ Déficit', egresos<=ing?'var(--green)':'var(--red)'],
-            ['Total ingresos', fmt(ing), 'var(--text)'],
-            ['Total egresos', fmt(egresos), 'var(--text)'],
-          ].map(([l,v,c])=>`<div class="admin-metrica"><div class="admin-metrica-val" style="color:${c}">${v}</div><div class="admin-metrica-lbl">${l}</div></div>`).join('')}
-        </div>
-      </div>`;
-  }
-
-  // Runway
-  const runwayEl=document.getElementById('admin-runway-box');
-  if(runwayEl){
-    const d=adminLoad();
-    const meta=d.runwayMeta||3;
-    const avgEgreso=egresos||1;
-    const runway=Math.round(cap/avgEgreso*10)/10;
-    const pctRunway=Math.min(runway/meta*100,100);
-    const runwayColor=runway>=meta?'var(--green)':runway>=meta*0.5?'var(--accent)':'var(--red)';
-    runwayEl.innerHTML=`
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span class="sc-title" style="margin-bottom:0">Runway de capital</span>
-        <div style="display:flex;align-items:center;gap:6px">
-          <span style="font-size:11px;color:var(--text-3)">Meta:</span>
-          <input type="number" value="${meta}" min="1" max="24" onchange="adminSetRunwayMeta(+this.value)"
-            style="width:44px;padding:3px 6px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:12px;text-align:center;font-family:var(--font-mono)">
-          <span style="font-size:11px;color:var(--text-3)">meses</span>
-        </div>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
-        <span style="font-size:24px;font-weight:500;color:${runwayColor}">${runway}</span>
-        <span style="font-size:12px;color:var(--text-3)">meses de reserva</span>
-        <span style="font-size:11px;color:var(--text-3);margin-left:auto">${fmt(cap)} capital acumulado</span>
-      </div>
-      <div class="admin-runway-bar"><div class="admin-runway-fill" style="width:${pctRunway}%;background:${runwayColor}"></div></div>
-      <p class="nt" style="margin-top:6px">Basado en el egreso del período seleccionado como referencia mensual.</p>`;
-  }
-}
-
 function adminSetRunwayMeta(v){
   const d=adminLoad(); d.runwayMeta=Math.max(1,v); adminSave(d);
   adminRenderAnalisis();
@@ -7082,7 +7069,7 @@ function adminRenderFinanzas(){
     <div class="sc" style="margin-bottom:14px">
       <div class="sc-title">Estado de resultados · ${adminMesLabel()}</div>
       ${row('Ingresos', c.ingresos, {bold:true, color:'var(--green)', sub:c.ingManual?`auto ${_finFmt(c.ingAuto)} + manual ${_finFmt(c.ingManual)}`:'cobros del período'})}
-      ${row('Colaboradores', c.colab, {indent:true, neg:true})}
+      ${row('Colaboradores', c.colab, {indent:true, neg:true, sub:c.colabFuente==='pagos'?'pagos registrados':'estimado de cotizaciones'})}
       ${row('Otros costos', c.costosManual, {indent:true, neg:true})}
       ${row('Costos', c.costos, {bold:true, color:'var(--red)', neg:true})}
       ${row('Gastos', c.gastos, {bold:true, color:'var(--red)', neg:true})}
@@ -7092,108 +7079,12 @@ function adminRenderFinanzas(){
       ${row('Utilidad neta', c.utilidad, {bold:true, color:c.utilidad>=0?'var(--green)':'var(--red)'})}
     </div>`;
 
-  // ── Panel de impuestos editable ──
-  const fiscal=`
-    <div class="sc" style="margin-bottom:14px">
-      <div class="sc-title">Impuestos <span style="font-size:10px;color:var(--text-3);text-transform:none;letter-spacing:0">· editá los valores para ajustar</span></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px">
-        <div>
-          <div style="font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px">IVA general (12%)</div>
-          <label class="lbl">Débito fiscal (IVA ventas)</label>
-          <input type="number" value="${Math.round(c.ivaDebito)}" onchange="finEditFiscal('ivaDebito',this.value)" style="font-family:var(--font-mono);margin-bottom:6px">
-          <label class="lbl">Crédito fiscal (IVA compras)</label>
-          <input type="number" value="${Math.round(c.ivaCredito)}" onchange="finEditFiscal('ivaCredito',this.value)" style="font-family:var(--font-mono);margin-bottom:6px">
-          <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:0.5px solid var(--border)">
-            <span style="font-size:11px;color:var(--text-3)">IVA a pagar</span>
-            <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent);font-weight:500">${_finFmt(c.ivaPagar)}</span>
-          </div>
-          <p class="nt" style="margin-top:5px">Crédito autocalculado como 12% de costos+gastos. Editá si difiere.</p>
-        </div>
-        <div>
-          <div style="font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px">ISR simplificado (5% / 7%)</div>
-          <label class="lbl">Base imponible (ingreso neto)</label>
-          <input type="number" value="${Math.round(c.isrBase)}" onchange="finEditFiscal('isrBase',this.value)" style="font-family:var(--font-mono);margin-bottom:6px">
-          <div style="font-size:10px;color:var(--text-3);line-height:1.6;margin-bottom:6px">
-            5% hasta ${_finFmt(FIN_ISR_TRAMO)}<br>
-            7% sobre el excedente
-          </div>
-          <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:0.5px solid var(--border)">
-            <span style="font-size:11px;color:var(--text-3)">ISR a pagar</span>
-            <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent);font-weight:500">${_finFmt(c.isr)}</span>
-          </div>
-          <p class="nt" style="margin-top:5px">Base precargada con ingresos del período. Ajustá si facturás distinto.</p>
-        </div>
-      </div>
-      <div style="margin-top:10px;text-align:right">
-        <button onclick="finResetFiscal()" style="padding:4px 11px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">↻ Restablecer automático</button>
-      </div>
-    </div>`;
-
-  // ── Distribución entre socios ──
-  const socios=finGetSocios();
-  const suma=finSociosSuma();
-  const sumaOk=Math.abs(suma-100)<0.01;
-  const sociosRows = socios.length ? socios.map((s,i)=>`
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
-      <input type="text" value="${escapeHtmlK(s.nombre||'')}" placeholder="Nombre del socio" oninput="finSocioEdit(${i},'nombre',this.value)" style="flex:1;font-size:12px">
-      <div style="display:flex;align-items:center;gap:4px;width:96px">
-        <input type="number" value="${s.pct||0}" min="0" max="100" oninput="finSocioEdit(${i},'pct',this.value)" style="width:60px;font-family:var(--font-mono);font-size:12px;text-align:right">
-        <span style="font-size:12px;color:var(--text-3)">%</span>
-      </div>
-      <span style="width:110px;text-align:right;font-size:12px;font-family:var(--font-mono);color:${c.utilidad>=0?'var(--green)':'var(--red)'}">${_finFmt(c.utilidad*(+s.pct||0)/100)}</span>
-      <button onclick="finSocioDel(${i})" class="cat-btn-ghost cat-btn-del" style="flex-shrink:0">×</button>
-    </div>`).join('') : '<p style="font-size:11px;color:var(--text-3);margin:0 0 8px">Agregá socios para repartir la utilidad.</p>';
-
-  const sociosBox=`
-    <div class="sc">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="sc-title" style="margin:0">Distribución entre socios</div>
-        <button onclick="finSocioAdd()" style="padding:4px 11px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">+ Socio</button>
-      </div>
-      ${sociosRows}
-      ${socios.length?`<div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:0.5px solid var(--border);margin-top:4px">
-        <span style="font-size:11px;color:${sumaOk?'var(--text-3)':'var(--red)'}">Suma: ${suma}% ${sumaOk?'✓':'— debe sumar 100%'}</span>
-        <span style="font-size:11px;color:var(--text-3)">Utilidad a repartir: <b style="font-family:var(--font-mono);color:var(--text-2)">${_finFmt(c.utilidad)}</b></span>
-      </div>`:''}
-    </div>`;
-
   // ── Sub-sección: análisis (runway + métricas) reubicada ──
   const analisis=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px" id="admin-analisis-top"></div>
     <div class="sc" id="admin-runway-box" style="margin-top:14px"></div>`;
 
-  // ── Lista de egresos manuales (costos + gastos) ──
-  const egr = [...man.costos.map(c=>({...c,_clase:'costo'})), ...man.gastos.map(c=>({...c,_clase:'gasto'}))];
-  const egresosBox=`
-    <div class="sc" style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="sc-title" style="margin:0">Egresos del período</div>
-        <button onclick="adminShowFormCosto('varios')" style="padding:5px 12px;font-size:10px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">+ Nuevo egreso</button>
-      </div>
-      ${egr.length?`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px">
-        <thead><tr style="border-bottom:1px solid var(--border)">
-          <th style="text-align:left;padding:6px 8px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Concepto</th>
-          <th style="text-align:left;padding:6px 8px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Clase</th>
-          <th style="text-align:left;padding:6px 8px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Categoría</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Monto</th>
-          <th style="text-align:right;padding:6px 8px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Fecha</th>
-          <th style="padding:6px 4px"></th>
-        </tr></thead>
-        <tbody>${egr.map(r=>`<tr class="admin-tr">
-          <td>${escapeHtmlK(r.concepto||'—')}</td>
-          <td><span style="font-size:10px;padding:2px 8px;border-radius:3px;background:${r._clase==='costo'?'rgba(90,158,212,0.12)':'rgba(224,123,46,0.12)'};color:${r._clase==='costo'?'#5AABF0':'#E07B2E'}">${r._clase==='costo'?'Costo':'Gasto'}</span></td>
-          <td style="color:var(--text-3)">${escapeHtmlK(r.categoria||'—')}</td>
-          <td style="text-align:right;font-family:var(--font-mono)">${_finFmt(r.monto||0)}</td>
-          <td style="text-align:right;color:var(--text-3)">${r.fecha||'—'}</td>
-          <td style="text-align:right;white-space:nowrap">
-            <button class="cat-btn-ghost" onclick="adminShowFormCosto('varios','${r.id}')" style="padding:2px 7px;font-size:11px">✎</button>
-            <button class="admin-del" onclick="adminEliminarCosto('${r.id}')">×</button>
-          </td>
-        </tr>`).join('')}</tbody>
-      </table></div>`:'<p style="font-size:11px;color:var(--text-3);margin:0">Sin egresos manuales en este período. Los colaboradores se cuentan como costo automáticamente.</p>'}
-    </div>`;
-
-  box.innerHTML = estado + egresosBox + fiscal + sociosBox + analisis;
+  box.innerHTML = estado + analisis;
 
   // Renderizar análisis reutilizando la función existente
   if(typeof adminRenderAnalisis==='function') adminRenderAnalisis();
@@ -7201,7 +7092,7 @@ function adminRenderFinanzas(){
 
 function finEditFiscal(campo,val){
   finSetFiscal({[campo]: val===''?null:+val});
-  adminRenderFinanzas();
+  adminRender();
 }
 window.finEditFiscal=finEditFiscal;
 
@@ -7209,13 +7100,13 @@ function finResetFiscal(){
   const d=adminLoad();
   const key=finPeriodoKey();
   if(d.fiscal && d.fiscal[key]){ delete d.fiscal[key]; adminSave(d); }
-  adminRenderFinanzas();
+  adminRender();
 }
 window.finResetFiscal=finResetFiscal;
 
-function finSocioAdd(){ const a=finGetSocios(); a.push({nombre:'',pct:0}); finSetSocios(a); adminRenderFinanzas(); }
+function finSocioAdd(){ const a=finGetSocios(); a.push({nombre:'',pct:0}); finSetSocios(a); adminRender(); }
 window.finSocioAdd=finSocioAdd;
-function finSocioDel(i){ const a=finGetSocios(); a.splice(i,1); finSetSocios(a); adminRenderFinanzas(); }
+function finSocioDel(i){ const a=finGetSocios(); a.splice(i,1); finSetSocios(a); adminRender(); }
 window.finSocioDel=finSocioDel;
 function finSocioEdit(i,campo,val){
   const a=finGetSocios();
@@ -7223,23 +7114,980 @@ function finSocioEdit(i,campo,val){
   a[i][campo]= campo==='pct' ? (+val||0) : val;
   finSetSocios(a);
   // No re-render completo en cada tecla para no perder foco; solo actualizar montos
-  if(campo==='pct') adminRenderFinanzas();
+  adminRender();
 }
 window.finSocioEdit=finSocioEdit;
 
-/* ── Tab navigation ───────────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════════════════
+   ADMINISTRADOR v2 — menú vertical + secciones
+   Extiende avit_admin con:
+     ingresosManual:[{id,fecha,concepto,cliente,proyecto,monto}]
+     pagosColab:[{id,numero,fecha,nombre,cotId,proyecto,concepto,monto,metodo,ref}], boletaSeq
+     pagosSocios:[{id,fecha,socio,quincena:'YYYY-MM-1|2',monto,nota}]
+     costosCat:[{id,nombre,inputId,categoria,clase,montoCot,montoMes,enCot}]
+     pagosSAT:{'YYYY-MM':{fecha,iva,isr,ref}}, satDesde:'YYYY-MM', saldoInicial
+   Y en cada cotización: cobrosLog:[{id,fecha,monto,concepto,legacy?}]
+   ══════════════════════════════════════════════════════════════ */
+var _admSec = 'resultados';
+const _ADM_ALIAS = { finanzas:'resultados', contaduria:'formulas', colab:'equipo', organigrama:'equipo' };
+const _ADM_SECS  = ['resultados','ingresos','pagoscolab','socios','costos','impuestos','balance','formulas','equipo'];
+
+/* ── utilidades ── */
+function _admHoyIso(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function _admDateIso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function _admIso(f){ return (typeof parseFechaGT==='function' ? parseFechaGT(f) : '') || ''; }
+function _admFechaTxt(f){ const i=_admIso(f); return i ? fmtFechaGT(i) : '—'; }
+function _admUid(p){ return p+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function _admE(s){ return (typeof escapeHtmlK==='function') ? escapeHtmlK(s==null?'':String(s)) : String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function _admF(n){ return 'GTQ '+Math.round(n||0).toLocaleString('es-GT'); }
+function _admF2(n){ return 'GTQ '+(+n||0).toLocaleString('es-GT',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function _admMesFin(anio,mes){ return _admDateIso(new Date(anio,mes+1,0)); }
+function _admKeyMes(iso){ return (iso||'').slice(0,7); }
+/* Ejecuta fn con el período fijado a un mes concreto (vista mensual) */
+function admConMes(anio,mes,fn){
+  const a=_adminAnio, m=_adminMes, v=_adminVista;
+  _adminAnio=anio; _adminMes=mes; _adminVista='mes';
+  try{ return fn(); } finally { _adminAnio=a; _adminMes=m; _adminVista=v; }
+}
+function _admHead(tit,sub,acciones){
+  return `<div class="adm-head-row"><div><div class="adm-tit">${tit}</div><div class="adm-sub">${sub}</div></div>${acciones?`<div style="display:flex;gap:6px;flex-wrap:wrap">${acciones}</div>`:''}</div>`;
+}
+function _admKpi(l,v,c,sub){
+  return `<div class="sc" style="padding:10px 14px!important"><div style="font-size:17px;font-weight:500;color:${c||'var(--text)'};font-family:var(--font-mono)">${v}</div><div style="font-size:10px;color:var(--text-3);margin-top:2px;text-transform:uppercase;letter-spacing:.07em">${l}</div>${sub?`<div style="font-size:10px;color:var(--text-3);margin-top:1px">${sub}</div>`:''}</div>`;
+}
+
+/* ── Modal genérico ──
+   campos: [{id,label,type:'text'|'number'|'date'|'select'|'textarea'|'month',value,options:[[v,l]],full,list:[..]}] */
+function admModalClose(){ const o=document.getElementById('admModalOv'); if(o) o.remove(); }
+function admModal(titulo, campos, onSave, okTxt){
+  admModalClose();
+  const ov=document.createElement('div'); ov.className='adm-modal-ov'; ov.id='admModalOv';
+  const selSt='width:100%;padding:7px 10px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-md);color:var(--text);font-size:12px;font-family:var(--font-body)';
+  const campo=c=>{
+    const v=c.value==null?'':c.value;
+    let inp;
+    if(c.type==='select') inp=`<select id="admf-${c.id}" style="${selSt}">${(c.options||[]).map(o=>`<option value="${_admE(o[0])}"${String(o[0])===String(v)?' selected':''}>${_admE(o[1])}</option>`).join('')}</select>`;
+    else if(c.type==='textarea') inp=`<textarea id="admf-${c.id}" rows="2" style="${selSt};resize:vertical">${_admE(v)}</textarea>`;
+    else {
+      const dl = c.list ? `<datalist id="admdl-${c.id}">${c.list.map(x=>`<option value="${_admE(x)}">`).join('')}</datalist>` : '';
+      inp=`<input id="admf-${c.id}" type="${c.type||'text'}" value="${_admE(v)}" ${c.type==='number'?'step="0.01" min="0" style="font-family:var(--font-mono)"':''} ${c.list?`list="admdl-${c.id}"`:''} ${c.placeholder?`placeholder="${_admE(c.placeholder)}"`:''}>${dl}`;
+    }
+    return `<div style="grid-column:span ${c.full?2:1}"><label class="lbl">${c.label}</label>${inp}${c.nota?`<div class="adm-nota" style="margin-top:3px">${c.nota}</div>`:''}</div>`;
+  };
+  ov.innerHTML=`<div class="adm-modal"><div class="adm-modal-tit">${titulo}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 12px">${campos.map(campo).join('')}</div>
+    <div class="adm-modal-btns"><button class="adm-btn ghost" data-x>Cancelar</button><button class="adm-btn" data-ok>${okTxt||'Guardar'}</button></div></div>`;
+  ov.addEventListener('mousedown',e=>{ if(e.target===ov) admModalClose(); });
+  document.body.appendChild(ov);
+  ov.querySelector('[data-x]').onclick=admModalClose;
+  ov.querySelector('[data-ok]').onclick=()=>{
+    const v={};
+    campos.forEach(c=>{ const el=document.getElementById('admf-'+c.id); if(!el) return;
+      v[c.id] = c.type==='number' ? (parseFloat(el.value)||0) : (el.value||'').trim(); });
+    if(onSave(v)!==false) admModalClose();
+  };
+  const first=ov.querySelector('input,select,textarea'); if(first) setTimeout(()=>first.focus(),50);
+}
+window.admModal=admModal; window.admModalClose=admModalClose;
+
+/* ══ Router del menú vertical ══ */
 function adminShowTab(tab){
-  ['finanzas','contaduria','colab'].forEach(t=>{
-    const body=document.getElementById('atab-body-'+t);
-    const btn =document.getElementById('atab-'+t);
-    if(body) body.style.display=t===tab?'block':'none';
-    if(btn){ btn.classList.toggle('active',t===tab); }
-  });
-  if(tab==='finanzas')  adminRenderFinanzas();
-  if(tab==='contaduria') adminRenderContaduria();
-  if(tab==='colab'){    adminRenderColab(); if(typeof awRender==='function') awRender(); if(typeof eqRefresh==='function') eqRefresh(); }
+  tab=_ADM_ALIAS[tab]||tab;
+  if(_ADM_SECS.indexOf(tab)<0) tab='resultados';
+  _admSec=tab;
+  document.querySelectorAll('#pg-admin .adm-pane').forEach(p=>p.classList.toggle('active', p.dataset.admPane===tab));
+  document.querySelectorAll('#admNav .adm-nav-item').forEach(b=>b.classList.toggle('active', b.dataset.admSec===tab));
+  const R={
+    resultados:()=>{ adminRenderKPIs(); adminRenderFinanzas(); },
+    ingresos:admRenderIngresos, pagoscolab:admRenderPagosColab, socios:admRenderSocios,
+    costos:admRenderCostos, impuestos:admRenderImpuestos, balance:admRenderBalance,
+    formulas:()=>{ if(typeof adminRenderContaduria==='function') adminRenderContaduria(); },
+    equipo:()=>{ adminRenderColab(); if(typeof awRender==='function') awRender(); if(typeof eqRefresh==='function') eqRefresh(); }
+  };
+  try{ R[tab](); }catch(e){ console.error('[admin]',tab,e); }
 }
 window.adminShowTab=adminShowTab;
+
+/* ══════════════════════════════════════════════════════════════
+   INGRESOS — registro con fecha real de cada cobro
+   ══════════════════════════════════════════════════════════════ */
+/* Se llama desde saveCots(): compara cobrado anterior vs nuevo y
+   deja asentado el movimiento con la fecha del día. */
+function _cobroConceptoSet(t){ window._cobroConcepto={t:t, ts:Date.now()}; }
+window._cobroConceptoSet=_cobroConceptoSet;
+function _cobroLogDiff(arr){
+  if(!Array.isArray(arr)) return;
+  let prev={};
+  try{ JSON.parse(localStorage.getItem('avit_cots')||'[]').forEach(c=>{ prev[c.id]=c; }); }catch(e){ return; }
+  const hoy=_admHoyIso();
+  const cc=window._cobroConcepto; window._cobroConcepto=null;
+  const conc=(cc && Date.now()-cc.ts<8000) ? cc.t : null;
+  const sum=l=>(l||[]).reduce((s,e)=>s+(+e.monto||0),0);
+  arr.forEach(c=>{
+    if(!c || c.id==null) return;
+    const now=+c.cobrado||0, p=prev[c.id];
+    if(!p){
+      // cotización nueva (o duplicada): el registro debe cuadrar con lo cobrado
+      if(Array.isArray(c.cobrosLog) && Math.abs(sum(c.cobrosLog)-now)<0.5) return;
+      if(now>0) c.cobrosLog=[{id:_admUid('cb'), fecha:_admIso(c.fecha)||hoy, monto:now, concepto:conc||'Cobro inicial'}];
+      else delete c.cobrosLog;
+      return;
+    }
+    if(!Array.isArray(c.cobrosLog)) c.cobrosLog = Array.isArray(p.cobrosLog) ? p.cobrosLog.slice() : [];
+    const before=+p.cobrado||0;
+    const d=Math.round((now-before)*100)/100;
+    if(Math.abs(d)<0.5) return;
+    if(!c.cobrosLog.length && before>0)
+      c.cobrosLog.push({id:_admUid('cb'), fecha:_admIso(p.fecha)||hoy, monto:before, concepto:'Cobros previos', legacy:true});
+    c.cobrosLog.push({id:_admUid('cb'), fecha:hoy, monto:d, concepto:conc||(d>0?'Cobro':'Ajuste')});
+  });
+}
+window._cobroLogDiff=_cobroLogDiff;
+
+/* Todas las filas de ingreso (todo el historial) */
+function admIngresosTodos(){
+  const rows=[];
+  const cots=(typeof loadCots==='function'?loadCots():[]).filter(c=>!c.archivado);
+  cots.forEach(c=>{
+    const capR=c.capRate||0, capM=c.capMonto||0, tot=c.tot||0;
+    const mk=(fecha,monto,concepto,extra)=>Object.assign({
+      fecha:_admIso(fecha), monto:monto, concepto:concepto, proyecto:c.proyecto||'—', cliente:c.cliente||'—',
+      cotId:c.id, capRate:capR, capNeto: tot>0 ? capM*monto/tot : 0, manual:false }, extra||{});
+    if(Array.isArray(c.cobrosLog) && c.cobrosLog.length){
+      c.cobrosLog.forEach(e=>{ if(+e.monto) rows.push(mk(e.fecha, +e.monto, e.concepto||'Cobro', {logId:e.id, legacy:!!e.legacy})); });
+    } else if((+c.cobrado||0)>0){
+      rows.push(mk(c.fecha, +c.cobrado, 'Honorarios (cobros previos)', {legacy:true}));
+    }
+  });
+  (adminLoad().ingresosManual||[]).forEach(m=>rows.push({
+    fecha:_admIso(m.fecha), monto:+m.monto||0, concepto:m.concepto||'Ingreso', proyecto:m.proyecto||'—',
+    cliente:m.cliente||'—', capRate:0, capNeto:0, manual:true, id:m.id }));
+  return rows.sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+}
+window.admIngresosTodos=admIngresosTodos;
+
+/* Cuentas por cobrar: cotizaciones aprobadas con saldo */
+function admPorCobrar(){
+  const cots=(typeof loadCots==='function'?loadCots():[]).filter(c=>!c.archivado);
+  const out=[];
+  cots.forEach(c=>{
+    const est=(typeof normalizeEstado==='function')?normalizeEstado(c):(c.estado||'emitida');
+    if(est==='emitida' || /rechaz|perdid|cancel/.test(c.estado||'')) return;
+    const saldo=Math.max(0,(c.tot||0)-(c.cobrado||0));
+    if(saldo>0.5) out.push({cotId:c.id, proyecto:c.proyecto||'—', cliente:c.cliente||'—', saldo, tot:c.tot||0});
+  });
+  return out;
+}
+
+function admRenderIngresos(){
+  const box=document.getElementById('adm-body-ingresos'); if(!box) return;
+  const todos=admIngresosTodos();
+  const rows=todos.filter(r=>adminFechaEnRango(r.fecha));
+  const total=rows.reduce((s,r)=>s+r.monto,0);
+  const cxc=admPorCobrar(), cxcTot=cxc.reduce((s,r)=>s+r.saldo,0);
+  const manualTot=rows.filter(r=>r.manual).reduce((s,r)=>s+r.monto,0);
+  // resumen anual
+  const anio=_adminAnio;
+  const porMes=Array.from({length:12},()=>({cob:0,man:0}));
+  todos.forEach(r=>{ if(!r.fecha||+r.fecha.slice(0,4)!==anio) return; const m=+r.fecha.slice(5,7)-1; if(r.manual) porMes[m].man+=r.monto; else porMes[m].cob+=r.monto; });
+  const maxMes=Math.max(1,...porMes.map(x=>x.cob+x.man));
+  const anioTot=porMes.reduce((s,x)=>s+x.cob+x.man,0);
+
+  box.innerHTML = _admHead('Ingresos · '+adminMesLabel(),
+      'Cada cobro queda registrado con su fecha real (anticipos, pagos intermedios, saldos y cobros de fases). Podés sumar ingresos que no vienen de una cotización.',
+      `<button class="adm-btn" onclick="admIngresoManual()">+ Ingreso manual</button>`)
+  + `<div class="adm-kpis">
+      ${_admKpi('Cobrado en el período',_admF(total),'var(--green)',rows.length+' movimiento(s)')}
+      ${_admKpi('Ingresos manuales',_admF(manualTot),'var(--text)','fuera de cotizaciones')}
+      ${_admKpi('Por cobrar',_admF(cxcTot),'var(--accent)',cxc.length+' proyecto(s) con saldo')}
+      ${_admKpi('Acumulado '+anio,_admF(anioTot),'var(--text)','enero – diciembre')}
+    </div>
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Movimientos del período</div>
+      ${rows.length?`<div style="overflow-x:auto"><table class="adm-table"><thead><tr>
+        <th>Fecha</th><th>Proyecto</th><th>Cliente</th><th>Concepto</th><th class="r">Monto</th><th class="r">Capital</th><th></th></tr></thead><tbody>
+        ${rows.slice().reverse().map(r=>`<tr>
+          <td style="white-space:nowrap;font-family:var(--font-mono)">${_admFechaTxt(r.fecha)}</td>
+          <td>${_admE(r.proyecto)}</td>
+          <td style="color:var(--text-3)">${_admE(r.cliente)}</td>
+          <td>${_admE(r.concepto)} ${r.manual?'<span class="adm-tag mute">manual</span>':''}${r.legacy?' <span class="adm-tag mute" title="Cobro registrado antes de existir el historial: usa la fecha de la cotización">fecha aprox.</span>':''}</td>
+          <td class="r" style="color:${r.monto<0?'var(--red)':'var(--text)'}">${_admF(r.monto)}</td>
+          <td class="r" style="color:var(--accent)">${r.capNeto?_admF(r.capNeto):'—'}</td>
+          <td style="text-align:right;white-space:nowrap">${r.manual
+            ?`<button class="cat-btn-ghost" style="padding:2px 7px;font-size:11px" onclick="admIngresoManual('${r.id}')">✎</button><button class="admin-del" onclick="admIngresoManualDel('${r.id}')">×</button>`
+            :`<button class="cat-btn-ghost" style="padding:2px 7px;font-size:11px" title="Corregir fecha / concepto" onclick="admCobroEditar(${JSON.stringify(r.cotId)},'${r.logId||''}')">✎</button>`}</td>
+        </tr>`).join('')}
+      </tbody></table></div>`:'<div class="adm-empty">No hay cobros registrados en este período.</div>'}
+    </div>
+    <div class="adm-grid2">
+      <div class="sc">
+        <div class="sc-title">Resumen mensual ${anio}</div>
+        ${porMes.map((x,i)=>{ const t=x.cob+x.man; return `<div style="display:grid;grid-template-columns:78px 1fr 110px;gap:8px;align-items:center;margin-top:6px;cursor:pointer" onclick="admIrMes(${anio},${i})" title="Ver ${MESES_ES[i]}">
+          <span style="font-size:11px;color:${i===_adminMes&&anio===_adminAnio?'var(--accent)':'var(--text-2)'}">${MESES_ES[i]}</span>
+          <div class="adm-bar" style="margin:0"><i style="width:${t/maxMes*100}%;background:var(--green)"></i></div>
+          <span style="font-size:11px;text-align:right;font-family:var(--font-mono);color:${t?'var(--text-2)':'var(--text-3)'}">${t?_admF(t):'—'}</span></div>`; }).join('')}
+      </div>
+      <div class="sc">
+        <div class="sc-title">Cuentas por cobrar</div>
+        ${cxc.length?`<table class="adm-table"><tbody>${cxc.sort((a,b)=>b.saldo-a.saldo).map(r=>`<tr><td>${_admE(r.proyecto)}<div style="font-size:10px;color:var(--text-3)">${_admE(r.cliente)}</div></td><td class="r">${_admF(r.saldo)}</td></tr>`).join('')}</tbody></table>`:'<div class="adm-empty">Sin saldos pendientes de cobro.</div>'}
+        <div class="adm-nota">Proyectos aprobados (fuera de «Cotizado») con saldo pendiente.</div>
+      </div>
+    </div>`;
+}
+function admIrMes(anio,mes){ _adminAnio=anio; _adminMes=mes; if(_adminVista!=='mes') adminSetVista('mes'); else _adminRefrescarActivo(); }
+window.admIrMes=admIrMes;
+
+function admIngresoManual(id){
+  const d=adminLoad(); const it=id?(d.ingresosManual||[]).find(x=>x.id===id):null;
+  admModal((it?'Editar':'Nuevo')+' ingreso manual',[
+    {id:'concepto',label:'Concepto *',value:it?it.concepto:'',full:true,placeholder:'Asesoría, venta de mobiliario, reembolso…'},
+    {id:'cliente',label:'Cliente',value:it?it.cliente:''},
+    {id:'proyecto',label:'Proyecto',value:it?it.proyecto:''},
+    {id:'monto',label:'Monto (GTQ) *',type:'number',value:it?it.monto:''},
+    {id:'fecha',label:'Fecha',type:'date',value:it?_admIso(it.fecha):_admHoyIso()},
+  ], v=>{
+    if(!v.concepto||!v.monto){ alert('Completá concepto y monto.'); return false; }
+    const d2=adminLoad(); d2.ingresosManual=d2.ingresosManual||[];
+    const rec={id:id||_admUid('ing'), concepto:v.concepto, cliente:v.cliente, proyecto:v.proyecto, monto:v.monto, fecha:v.fecha||_admHoyIso()};
+    const i=d2.ingresosManual.findIndex(x=>x.id===id);
+    if(i>=0) d2.ingresosManual[i]=rec; else d2.ingresosManual.push(rec);
+    adminSave(d2); adminRender();
+  });
+}
+function admIngresoManualDel(id){
+  if(!confirm('¿Eliminar este ingreso?')) return;
+  const d=adminLoad(); d.ingresosManual=(d.ingresosManual||[]).filter(x=>x.id!==id); adminSave(d); adminRender();
+}
+/* Corregir fecha/concepto de un cobro registrado (no cambia el monto cobrado del proyecto) */
+function admCobroEditar(cotId, logId){
+  const cots=loadCots(); const c=cots.find(x=>x.id===cotId); if(!c) return;
+  if(!Array.isArray(c.cobrosLog)||!c.cobrosLog.length){
+    c.cobrosLog=[{id:_admUid('cb'), fecha:_admIso(c.fecha)||_admHoyIso(), monto:+c.cobrado||0, concepto:'Cobros previos', legacy:true}];
+    logId=c.cobrosLog[0].id;
+  }
+  const e=c.cobrosLog.find(x=>x.id===logId)||c.cobrosLog[0];
+  admModal('Corregir cobro · '+_admE(c.proyecto||''),[
+    {id:'concepto',label:'Concepto',value:e.concepto||'',full:true},
+    {id:'fecha',label:'Fecha del cobro',type:'date',value:_admIso(e.fecha)||_admHoyIso(),nota:'El monto se modifica desde el proyecto (Estatus / Kanban).'},
+  ], v=>{
+    e.concepto=v.concepto||e.concepto; e.fecha=v.fecha||e.fecha; delete e.legacy;
+    localStorage.setItem('avit_cots',JSON.stringify(cots));
+    if(typeof triggerAutoSync==='function') triggerAutoSync();
+    adminRender();
+  });
+}
+window.admIngresoManual=admIngresoManual; window.admIngresoManualDel=admIngresoManualDel; window.admCobroEditar=admCobroEditar;
+
+/* ══════════════════════════════════════════════════════════════
+   PAGOS A COLABORADORES + BOLETAS
+   ══════════════════════════════════════════════════════════════ */
+/* Lo que se le debe a cada colaborador por proyecto (proyectos con cobro) */
+function admColabDevengado(){
+  const map={};
+  const cots=(typeof loadCots==='function'?loadCots():[]).filter(c=>!c.archivado && (c.cobrado||0)>0);
+  cots.forEach(c=>{
+    _cotColaboradoresDesglose(c).forEach(co=>{
+      if(!co.nombre||!co.monto) return;
+      const k=co.nombre.trim().toLowerCase()+'|'+c.id;
+      if(!map[k]) map[k]={nombre:co.nombre.trim(), cotId:c.id, proyecto:c.proyecto||'—', tareas:[], devengado:0, pagado:0};
+      map[k].devengado+=co.monto;
+      if(map[k].tareas.indexOf(co.tarea)<0) map[k].tareas.push(co.tarea);
+    });
+  });
+  const pagos=adminLoad().pagosColab||[];
+  pagos.forEach(p=>{
+    const k=(p.nombre||'').trim().toLowerCase()+'|'+p.cotId;
+    if(map[k]) map[k].pagado+=(+p.monto||0);
+  });
+  return Object.values(map).map(x=>Object.assign(x,{pendiente:Math.max(0,x.devengado-x.pagado)}));
+}
+window.admColabDevengado=admColabDevengado;
+
+function admRenderPagosColab(){
+  const box=document.getElementById('adm-body-pagoscolab'); if(!box) return;
+  const d=adminLoad();
+  const pagos=(d.pagosColab||[]).filter(p=>adminFechaEnRango(p.fecha)).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+  const totPer=pagos.reduce((s,p)=>s+(+p.monto||0),0);
+  const dev=admColabDevengado();
+  const pend=dev.filter(x=>x.pendiente>0.5).sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  const pendTot=pend.reduce((s,x)=>s+x.pendiente,0);
+  const personas=new Set(pend.map(x=>x.nombre.toLowerCase())).size;
+
+  box.innerHTML=_admHead('Pagos a colaboradores · '+adminMesLabel(),
+      'Registrá cada pago y generá su boleta. Lo pendiente sale de lo asignado a cada colaborador en los proyectos que ya tienen cobros.',
+      `<button class="adm-btn" onclick="admPagoColab()">+ Registrar pago</button>`)
+  + `<div class="adm-kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      ${_admKpi('Pagado en el período',_admF(totPer),'var(--text)',pagos.length+' boleta(s)')}
+      ${_admKpi('Pendiente por pagar',_admF(pendTot),pendTot>0?'var(--accent)':'var(--green)',personas+' colaborador(es)')}
+      ${_admKpi('Boletas emitidas',String((d.pagosColab||[]).length),'var(--text)','historial total')}
+    </div>
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Por pagar</div>
+      ${pend.length?`<div style="overflow-x:auto"><table class="adm-table"><thead><tr>
+        <th>Colaborador</th><th>Proyecto</th><th>Tarea</th><th class="r">Asignado</th><th class="r">Pagado</th><th class="r">Pendiente</th><th></th></tr></thead><tbody>
+        ${pend.map(x=>`<tr>
+          <td style="color:var(--text)">${_admE(x.nombre)}</td>
+          <td>${_admE(x.proyecto)}</td>
+          <td style="color:var(--text-3)">${_admE(x.tareas.join(', '))}</td>
+          <td class="r">${_admF(x.devengado)}</td>
+          <td class="r" style="color:var(--text-3)">${_admF(x.pagado)}</td>
+          <td class="r" style="color:var(--accent);font-weight:500">${_admF(x.pendiente)}</td>
+          <td style="text-align:right"><button class="adm-btn sm" onclick='admPagoColab(null,${JSON.stringify({nombre:x.nombre,cotId:x.cotId,monto:Math.round(x.pendiente*100)/100,concepto:x.tareas.join(", ")}).replace(/'/g,"&#39;")})'>Pagar</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`:'<div class="adm-empty">No hay pagos pendientes a colaboradores. 🎉</div>'}
+    </div>
+    <div class="sc">
+      <div class="sc-title">Pagos registrados en el período</div>
+      ${pagos.length?`<div style="overflow-x:auto"><table class="adm-table"><thead><tr>
+        <th>No.</th><th>Fecha</th><th>Colaborador</th><th>Proyecto</th><th>Concepto</th><th>Método</th><th class="r">Monto</th><th></th></tr></thead><tbody>
+        ${pagos.map(p=>`<tr>
+          <td style="font-family:var(--font-mono);color:var(--accent);white-space:nowrap">${_admE(p.numero||'—')}</td>
+          <td style="font-family:var(--font-mono);white-space:nowrap">${_admFechaTxt(p.fecha)}</td>
+          <td style="color:var(--text)">${_admE(p.nombre)}</td>
+          <td>${_admE(p.proyecto||'—')}</td>
+          <td style="color:var(--text-3)">${_admE(p.concepto||'—')}</td>
+          <td style="color:var(--text-3)">${_admE(p.metodo||'—')}</td>
+          <td class="r">${_admF2(p.monto)}</td>
+          <td style="text-align:right;white-space:nowrap">
+            <button class="adm-btn ghost sm" onclick="admBoletaPDF('${p.id}')">🧾 Boleta</button>
+            <button class="cat-btn-ghost" style="padding:2px 7px;font-size:11px" onclick="admPagoColab('${p.id}')">✎</button>
+            <button class="admin-del" onclick="admPagoColabDel('${p.id}')">×</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`:'<div class="adm-empty">Sin pagos registrados en este período.</div>'}
+      <div class="adm-nota">Los pagos registrados alimentan el costo «Colaboradores» del Estado de resultados. En meses sin pagos registrados se usa el estimado según lo asignado en las cotizaciones.</div>
+    </div>`;
+}
+
+function admPagoColab(id, pre){
+  const d=adminLoad(); const it=id?(d.pagosColab||[]).find(x=>x.id===id):null;
+  const base=it||pre||{};
+  const nombres=new Set();
+  try{ (typeof awLoad==='function'?awLoad():[]).forEach(w=>{ if(w.nombre) nombres.add(w.nombre); }); }catch(e){}
+  admColabDevengado().forEach(x=>nombres.add(x.nombre));
+  const cots=(typeof loadCots==='function'?loadCots():[]).filter(c=>!c.archivado);
+  admModal((it?'Editar pago':'Registrar pago')+' a colaborador',[
+    {id:'nombre',label:'Colaborador *',value:base.nombre||'',list:[...nombres],full:true},
+    {id:'cotId',label:'Proyecto',type:'select',value:base.cotId!=null?base.cotId:'',full:true,
+      options:[['','— General / sin proyecto —'],...cots.map(c=>[c.id,(c.proyecto||'Proyecto')+(c.cliente?' · '+c.cliente:'')])]},
+    {id:'concepto',label:'Concepto',value:base.concepto||'',full:true,placeholder:'Modelado 3D, renders, planos…'},
+    {id:'monto',label:'Monto (GTQ) *',type:'number',value:base.monto||''},
+    {id:'fecha',label:'Fecha de pago',type:'date',value:_admIso(base.fecha)||_admHoyIso()},
+    {id:'metodo',label:'Método',type:'select',value:base.metodo||'Transferencia',options:[['Transferencia','Transferencia'],['Depósito','Depósito'],['Efectivo','Efectivo'],['Cheque','Cheque']]},
+    {id:'ref',label:'No. de referencia',value:base.ref||''},
+  ], v=>{
+    if(!v.nombre||!v.monto){ alert('Completá colaborador y monto.'); return false; }
+    const d2=adminLoad(); d2.pagosColab=d2.pagosColab||[];
+    const cot=cots.find(c=>String(c.id)===String(v.cotId));
+    const rec=Object.assign({}, it||{}, {nombre:v.nombre, cotId:cot?cot.id:null, proyecto:cot?(cot.proyecto||''):'',
+      concepto:v.concepto, monto:v.monto, fecha:v.fecha||_admHoyIso(), metodo:v.metodo, ref:v.ref});
+    if(!it){
+      d2.boletaSeq=(d2.boletaSeq||0)+1;
+      rec.id=_admUid('pc'); rec.numero='BP-'+String(d2.boletaSeq).padStart(4,'0');
+      d2.pagosColab.push(rec);
+    } else {
+      const i=d2.pagosColab.findIndex(x=>x.id===it.id); if(i>=0) d2.pagosColab[i]=rec;
+    }
+    adminSave(d2); adminRender();
+    if(!it && confirm('Pago registrado ('+rec.numero+'). ¿Generar la boleta de pago ahora?')) admBoletaPDF(rec.id);
+  });
+}
+function admPagoColabDel(id){
+  if(!confirm('¿Eliminar este pago? La boleta dejará de estar disponible.')) return;
+  const d=adminLoad(); d.pagosColab=(d.pagosColab||[]).filter(x=>x.id!==id); adminSave(d); adminRender();
+}
+window.admPagoColab=admPagoColab; window.admPagoColabDel=admPagoColabDel;
+
+/* Número a letras (español) para la boleta */
+function admNumLetras(n){
+  const U=['','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidós','veintitrés','veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+  const D=['','','','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+  const C=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+  const apoc=s=>s.replace(/veintiuno$/,'veintiún').replace(/uno$/,'un');
+  const dec=x=>x<30?U[x]:D[Math.floor(x/10)]+(x%10?' y '+U[x%10]:'');
+  const cen=x=>{ if(x===100) return 'cien'; const c=Math.floor(x/100), r=x%100; return (C[c]+(r?' '+dec(r):'')).trim(); };
+  const mil=x=>{ const m=Math.floor(x/1000), r=x%1000; let s=''; if(m) s=(m===1?'mil':apoc(cen(m))+' mil'); if(r) s+=(s?' ':'')+cen(r); return s; };
+  const full=x=>{ if(x===0) return 'cero'; const mm=Math.floor(x/1e6), r=x%1e6; let s=''; if(mm) s=(mm===1?'un millón':apoc(mil(mm))+' millones'); if(r) s+=(s?' ':'')+mil(r); return s; };
+  const abs=Math.abs(+n||0); let ent=Math.floor(abs+1e-9); let cts=Math.round((abs-ent)*100); if(cts===100){ ent++; cts=0; }
+  const t=apoc(full(ent));
+  const txt=t+(ent===1?' quetzal':' quetzales')+' con '+String(cts).padStart(2,'0')+'/100';
+  return txt.charAt(0).toUpperCase()+txt.slice(1);
+}
+window.admNumLetras=admNumLetras;
+
+function admBoletaPDF(id){
+  const d=adminLoad(); const p=(d.pagosColab||[]).find(x=>x.id===id); if(!p) return;
+  const perf=(typeof _perfil==='function')?_perfil():{};
+  const emp=(typeof _empresaN==='function')?_empresaN():'Estudio';
+  const logo=(typeof _empLogo==='function')?_empLogo():'';
+  const E=_admE;
+  const iso=_admIso(p.fecha);
+  const fechaL=(typeof fmtDate==='function'&&iso)?fmtDate(iso):_admFechaTxt(p.fecha);
+  const w=(typeof awLoad==='function'?awLoad():[]).find(x=>(x.nombre||'').trim().toLowerCase()===(p.nombre||'').trim().toLowerCase())||{};
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Boleta ${E(p.numero)} · ${E(p.nombre)}</title>
+<style>
+@page{size:letter;margin:16mm}
+*{box-sizing:border-box}body{font-family:'Helvetica Neue',Arial,sans-serif;color:#1d1d1f;margin:0;font-size:12px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #1d1d1f;padding-bottom:14px}
+.hd img{max-height:54px;max-width:200px;object-fit:contain}
+.emp{font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.rs{font-size:10.5px;color:#666;margin-top:2px}
+.num{text-align:right}.num .t{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#888}
+.num .n{font-size:20px;font-weight:700;margin-top:2px}.num .f{font-size:11px;color:#555;margin-top:4px}
+h1{font-size:13px;letter-spacing:.22em;text-transform:uppercase;text-align:center;margin:26px 0 18px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+.dat td{padding:9px 10px;border-bottom:1px solid #e3e3e3;vertical-align:top}
+.dat td:first-child{width:34%;color:#777;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em}
+.tot{margin-top:18px;background:#f4f2ec;border-radius:8px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.tot .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:#666}
+.tot .v{font-size:24px;font-weight:700}
+.letras{margin-top:8px;font-size:11.5px;color:#444;font-style:italic}
+.decl{margin-top:22px;font-size:11px;color:#555;line-height:1.6}
+.firmas{display:flex;gap:40px;margin-top:70px}
+.firmas div{flex:1;border-top:1px solid #1d1d1f;padding-top:6px;text-align:center;font-size:11px}
+.firmas small{display:block;color:#888;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.ft{margin-top:40px;font-size:9px;color:#aaa;text-align:center}
+</style></head><body>
+<div class="hd">
+  <div>${logo?`<img src="${logo}" alt="">`:`<div class="emp">${E(emp)}</div>`}
+    ${logo?`<div class="rs" style="margin-top:6px">${E(emp)}</div>`:''}
+    ${perf.razonSocial?`<div class="rs">${E(perf.razonSocial)}</div>`:''}</div>
+  <div class="num"><div class="t">Boleta de pago</div><div class="n">${E(p.numero||'')}</div><div class="f">${E(fechaL)}</div></div>
+</div>
+<h1>Comprobante de pago a colaborador</h1>
+<table class="dat">
+  <tr><td>Colaborador</td><td><b>${E(p.nombre)}</b>${w.rol?`<br><span style="color:#777">${E(w.rol)}</span>`:''}</td></tr>
+  ${p.proyecto?`<tr><td>Proyecto</td><td>${E(p.proyecto)}</td></tr>`:''}
+  <tr><td>Concepto</td><td>${E(p.concepto||'Servicios profesionales')}</td></tr>
+  <tr><td>Forma de pago</td><td>${E(p.metodo||'—')}${p.ref?` · Ref. ${E(p.ref)}`:''}</td></tr>
+  <tr><td>Fecha de pago</td><td>${E(_admFechaTxt(p.fecha))}</td></tr>
+</table>
+<div class="tot"><span class="l">Total pagado</span><span class="v">${E(_admF2(p.monto))}</span></div>
+<div class="letras">${E(admNumLetras(p.monto))}</div>
+<div class="decl">Recibí de <b>${E(perf.razonSocial||emp)}</b> la cantidad indicada en concepto de pago por los servicios descritos, a mi entera satisfacción.</div>
+<div class="firmas">
+  <div>${E(perf.firmaNombre||emp)}<small>Entregado por</small></div>
+  <div>${E(p.nombre)}<small>Recibido por</small></div>
+</div>
+<div class="ft">Documento interno generado con Arkiboard · ${E(emp)}</div>
+</body></html>`;
+  if(typeof _pdfAbrir==='function') _pdfAbrir(html);
+  else { const wn=window.open('','_blank'); if(wn){ wn.document.write(html); wn.document.close(); } }
+}
+window.admBoletaPDF=admBoletaPDF;
+
+/* ══════════════════════════════════════════════════════════════
+   DISTRIBUCIÓN ENTRE SOCIOS — configuración + quincenas pagadas
+   ══════════════════════════════════════════════════════════════ */
+function admRenderSocios(){
+  const box=document.getElementById('adm-body-socios'); if(!box) return;
+  const anio=_adminAnio, mes=_adminMes, mk=adminMesKey(anio,mes);
+  const cMes=admConMes(anio,mes,finCalcular);
+  const util=cMes.utilidad;
+  const utilRep=Math.max(0,util);
+  const socios=finGetSocios();
+  const suma=finSociosSuma(), sumaOk=Math.abs(suma-100)<0.01;
+  const d=adminLoad(); const pagos=d.pagosSocios||[];
+  const pagMes=(nom,q)=>pagos.filter(p=>p.socio===nom && p.quincena===mk+'-'+q);
+  const sumL=l=>l.reduce((s,p)=>s+(+p.monto||0),0);
+
+  const conf=socios.length?socios.map((s,i)=>`
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+      <input type="text" value="${_admE(s.nombre||'')}" placeholder="Nombre del socio" onchange="finSocioEdit(${i},'nombre',this.value)" style="flex:1;font-size:12px">
+      <div style="display:flex;align-items:center;gap:4px;width:96px">
+        <input type="number" value="${s.pct||0}" min="0" max="100" onchange="finSocioEdit(${i},'pct',this.value)" style="width:60px;font-family:var(--font-mono);font-size:12px;text-align:right">
+        <span style="font-size:12px;color:var(--text-3)">%</span></div>
+      <button onclick="finSocioDel(${i})" class="cat-btn-ghost cat-btn-del" style="flex-shrink:0">×</button>
+    </div>`).join(''):'<p style="font-size:11px;color:var(--text-3);margin:0 0 8px">Agregá socios y su porcentaje para repartir la utilidad.</p>';
+
+  const celda=(s,q)=>{
+    const l=pagMes(s.nombre,q);
+    if(l.length) return l.map(p=>`<span class="adm-tag ok" title="${_admE(p.nota||'')}">✓ ${_admF(p.monto)} · ${_admFechaTxt(p.fecha).slice(0,5)}</span> <button class="admin-del" onclick="admSocioPagoDel('${p.id}')">×</button>`).join('<br>');
+    return `<button class="adm-btn ghost sm" onclick="admSocioPago(${socios.indexOf(s)},${q})">Registrar</button>`;
+  };
+  const filas=socios.filter(s=>s.nombre).map(s=>{
+    const corr=utilRep*(+s.pct||0)/100;
+    const pag=sumL(pagMes(s.nombre,1))+sumL(pagMes(s.nombre,2));
+    const pend=corr-pag;
+    return `<tr><td style="color:var(--text)">${_admE(s.nombre)}</td><td class="r">${+s.pct||0}%</td><td class="r">${_admF(corr)}</td>
+      <td>${celda(s,1)}</td><td>${celda(s,2)}</td>
+      <td class="r" style="color:${pend>0.5?'var(--accent)':pend<-0.5?'var(--red)':'var(--green)'}">${pend>0.5?_admF(pend):pend<-0.5?'−'+_admF(-pend)+' adelantado':'✓ Al día'}</td></tr>`;
+  }).join('');
+
+  const delAnio=pagos.filter(p=>(p.quincena||'').slice(0,4)===String(anio)).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+  const porSocio={}; delAnio.forEach(p=>{ porSocio[p.socio]=(porSocio[p.socio]||0)+(+p.monto||0); });
+
+  box.innerHTML=_admHead('Distribución entre socios · '+MESES_ES[mes]+' '+anio,
+      'Configurá socios y porcentajes. La utilidad neta del mes se reparte en dos quincenas; cada pago queda registrado.',
+      `<button class="adm-btn ghost" onclick="finSocioAdd()">+ Socio</button>`)
+  +`<div class="adm-kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      ${_admKpi('Utilidad neta del mes',_admF(util),util>=0?'var(--green)':'var(--red)',util<0?'sin utilidad para repartir':'base del reparto')}
+      ${_admKpi('Repartido en el mes',_admF(socios.reduce((s,x)=>s+sumL(pagMes(x.nombre,1))+sumL(pagMes(x.nombre,2)),0)),'var(--text)','1ª + 2ª quincena')}
+      ${_admKpi('Repartido en '+anio,_admF(delAnio.reduce((s,p)=>s+(+p.monto||0),0)),'var(--text)',delAnio.length+' pago(s)')}
+    </div>
+    <div class="adm-grid2" style="grid-template-columns:minmax(0,1fr) minmax(0,2fr);margin-bottom:14px">
+      <div class="sc"><div class="sc-title">Socios y porcentajes</div>${conf}
+        ${socios.length?`<div style="font-size:11px;margin-top:6px;padding-top:8px;border-top:0.5px solid var(--border);color:${sumaOk?'var(--text-3)':'var(--red)'}">Suma: ${suma}% ${sumaOk?'✓':'— debe sumar 100%'}</div>`:''}
+      </div>
+      <div class="sc"><div class="sc-title">Quincenas · ${MESES_ES[mes]} ${anio}</div>
+        ${filas?`<div style="overflow-x:auto"><table class="adm-table"><thead><tr><th>Socio</th><th class="r">%</th><th class="r">Corresponde</th><th>1ª quincena</th><th>2ª quincena</th><th class="r">Pendiente</th></tr></thead><tbody>${filas}</tbody></table></div>`
+        :'<div class="adm-empty">Agregá al menos un socio con nombre.</div>'}
+        <div class="adm-nota">«Corresponde» = utilidad neta del mes × porcentaje. Usá las flechas del período para ver otros meses.</div>
+      </div>
+    </div>
+    <div class="sc"><div class="sc-title">Historial ${anio}</div>
+      ${Object.keys(porSocio).length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${Object.entries(porSocio).map(([n,v])=>`<span class="adm-tag mute" style="font-size:10.5px;padding:4px 10px">${_admE(n)} · <b style="color:var(--text-2)">${_admF(v)}</b></span>`).join('')}</div>`:''}
+      ${delAnio.length?`<div style="overflow-x:auto"><table class="adm-table"><thead><tr><th>Fecha</th><th>Socio</th><th>Quincena</th><th>Nota</th><th class="r">Monto</th><th></th></tr></thead><tbody>
+        ${delAnio.map(p=>{ const [y,m,q]=(p.quincena||'').split('-'); return `<tr><td style="font-family:var(--font-mono)">${_admFechaTxt(p.fecha)}</td><td style="color:var(--text)">${_admE(p.socio)}</td>
+          <td>${q==='1'?'1ª':'2ª'} · ${MESES_ES[(+m||1)-1]} ${y}</td><td style="color:var(--text-3)">${_admE(p.nota||'')}</td><td class="r">${_admF(p.monto)}</td>
+          <td style="text-align:right"><button class="admin-del" onclick="admSocioPagoDel('${p.id}')">×</button></td></tr>`; }).join('')}
+      </tbody></table></div>`:'<div class="adm-empty">Todavía no hay quincenas pagadas este año.</div>'}
+    </div>`;
+}
+function admSocioPago(i,q){
+  const s=finGetSocios()[i]; if(!s) return;
+  const anio=_adminAnio, mes=_adminMes, mk=adminMesKey(anio,mes);
+  const util=Math.max(0,admConMes(anio,mes,finCalcular).utilidad);
+  const corr=util*(+s.pct||0)/100;
+  const pagos=adminLoad().pagosSocios||[];
+  const ya=pagos.filter(p=>p.socio===s.nombre && (p.quincena||'').indexOf(mk)===0).reduce((a,p)=>a+(+p.monto||0),0);
+  const sug = q===1 ? corr/2 : Math.max(0,corr-ya);
+  const fechaDef = q===1 ? _admDateIso(new Date(anio,mes,15)) : _admMesFin(anio,mes);
+  admModal(`${q===1?'1ª':'2ª'} quincena · ${_admE(s.nombre)}`,[
+    {id:'monto',label:'Monto (GTQ) *',type:'number',value:Math.round(sug*100)/100,nota:'Sugerido: '+(q===1?'mitad de lo que corresponde':'lo que falta del mes')},
+    {id:'fecha',label:'Fecha de pago',type:'date',value:fechaDef},
+    {id:'nota',label:'Nota',value:'',full:true,placeholder:'Transferencia, adelanto…'},
+  ], v=>{
+    if(!v.monto){ alert('Ingresá el monto.'); return false; }
+    const d=adminLoad(); d.pagosSocios=d.pagosSocios||[];
+    d.pagosSocios.push({id:_admUid('ps'), socio:s.nombre, quincena:mk+'-'+q, monto:v.monto, fecha:v.fecha||fechaDef, nota:v.nota});
+    adminSave(d); adminRender();
+  });
+}
+function admSocioPagoDel(id){
+  if(!confirm('¿Eliminar este pago de quincena?')) return;
+  const d=adminLoad(); d.pagosSocios=(d.pagosSocios||[]).filter(p=>p.id!==id); adminSave(d); adminRender();
+}
+window.admSocioPago=admSocioPago; window.admSocioPagoDel=admSocioPagoDel;
+
+/* ══════════════════════════════════════════════════════════════
+   COSTOS — catálogo ligado al Cotizador + pagos registrados
+   ══════════════════════════════════════════════════════════════ */
+const ADM_COSTOS_SEED=[
+  {id:'revit', nombre:'Revit',            inputId:'cRevit', categoria:'Software',   clase:'gasto', montoCot:0, montoMes:0, enCot:true},
+  {id:'d5',    nombre:'D5 Render',        inputId:'cD5',    categoria:'Software',   clase:'gasto', montoCot:0, montoMes:0, enCot:true},
+  {id:'canva', nombre:'Canva',            inputId:'cCanva', categoria:'Software',   clase:'gasto', montoCot:0, montoMes:0, enCot:true},
+  {id:'elec',  nombre:'Electricidad',     inputId:'cElec',  categoria:'Operativo',  clase:'gasto', montoCot:0, montoMes:0, enCot:true},
+  {id:'gas',   nombre:'Gasolina',         inputId:'cGas',   categoria:'Transporte', clase:'costo', montoCot:0, montoMes:0, enCot:true},
+  {id:'viat',  nombre:'Viáticos / otros', inputId:'cViat',  categoria:'Operativo',  clase:'costo', montoCot:0, montoMes:0, enCot:true},
+];
+const ADM_COSTO_CATS=['Software','Operativo','Transporte','Profesional','Fijo','Equipamiento','Otro'];
+function admCostosCat(){
+  const d=adminLoad();
+  if(!Array.isArray(d.costosCat)){ d.costosCat=JSON.parse(JSON.stringify(ADM_COSTOS_SEED)); adminSave(d); }
+  return d.costosCat;
+}
+function admCostosCatSave(arr){ const d=adminLoad(); d.costosCat=arr; adminSave(d); if(typeof cotCostosRender==='function') cotCostosRender(); }
+window.admCostosCat=admCostosCat;
+
+function admRenderCostos(){
+  const box=document.getElementById('adm-body-costos'); if(!box) return;
+  const cat=admCostosCat();
+  const d=adminLoad();
+  const mk=adminMesKey(_adminAnio,_adminMes);
+  const pagadoMes=id=>(d.costos||[]).filter(c=>c.catId===id && _admKeyMes(_admIso(c.fecha))===mk);
+  const man=finEgresosManual();
+  const egr=[...man.costos.map(c=>Object.assign({},c,{_clase:'costo'})), ...man.gastos.map(c=>Object.assign({},c,{_clase:'gasto'}))]
+            .sort((a,b)=>(_admIso(b.fecha)||'').localeCompare(_admIso(a.fecha)||''));
+  const egrTot=egr.reduce((s,r)=>s+(+r.monto||0),0);
+  const fijos=cat.reduce((s,x)=>s+(+x.montoMes||0),0);
+  const pendientes=cat.filter(x=>(+x.montoMes||0)>0 && !pagadoMes(x.id).length);
+  const selSt='padding:4px 6px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:11px;font-family:var(--font-body)';
+  const inSt='width:100%;padding:4px 6px;font-size:11.5px';
+
+  box.innerHTML=_admHead('Costos · '+adminMesLabel(),
+      'El catálogo de costos internos alimenta el Cotizador: lo que agregues, quites o cambies acá aparece allá. Registrá los pagos para llevar el control mensual.',
+      `<button class="adm-btn ghost" onclick="admCostoCatAdd()">+ Costo al catálogo</button><button class="adm-btn" onclick="adminShowFormCosto('varios')">+ Nuevo egreso</button>`)
+  +`<div class="adm-kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      ${_admKpi('Egresos del período',_admF(egrTot),'var(--red)',egr.length+' registro(s)')}
+      ${_admKpi('Costos fijos mensuales',_admF(fijos),'var(--text)','según catálogo')}
+      ${_admKpi('Pendientes de '+MESES_ES[_adminMes],String(pendientes.length),pendientes.length?'var(--accent)':'var(--green)',pendientes.length?_admF(pendientes.reduce((s,x)=>s+(+x.montoMes||0),0)):'todo pagado')}
+    </div>
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Catálogo de costos</div>
+      <div style="overflow-x:auto"><table class="adm-table"><thead><tr>
+        <th style="min-width:140px">Costo</th><th>Categoría</th><th>Clase</th><th class="r" title="Valor que se precarga en el Cotizador">En cotizador</th><th class="r" title="Lo que pagás al mes">Mensual</th><th style="text-align:center">Cotizador</th><th>${MESES_ES[_adminMes].slice(0,3)}</th><th></th></tr></thead><tbody>
+        ${cat.map((x,i)=>{ const pm=pagadoMes(x.id); return `<tr>
+          <td><input type="text" value="${_admE(x.nombre)}" onchange="admCostoCatEdit(${i},'nombre',this.value)" style="${inSt}"></td>
+          <td><select style="${selSt}" onchange="admCostoCatEdit(${i},'categoria',this.value)">${ADM_COSTO_CATS.map(c=>`<option${c===x.categoria?' selected':''}>${c}</option>`).join('')}</select></td>
+          <td><select style="${selSt}" onchange="admCostoCatEdit(${i},'clase',this.value)"><option value="costo"${x.clase==='costo'?' selected':''}>Costo</option><option value="gasto"${x.clase!=='costo'?' selected':''}>Gasto</option></select></td>
+          <td class="r"><input type="number" min="0" value="${+x.montoCot||0}" onchange="admCostoCatEdit(${i},'montoCot',this.value)" style="${inSt};width:84px;text-align:right;font-family:var(--font-mono)"></td>
+          <td class="r"><input type="number" min="0" value="${+x.montoMes||0}" onchange="admCostoCatEdit(${i},'montoMes',this.value)" style="${inSt};width:84px;text-align:right;font-family:var(--font-mono)"></td>
+          <td style="text-align:center"><label class="tog" style="margin:0;display:inline-flex" title="Mostrar en el Cotizador"><input type="checkbox"${x.enCot!==false?' checked':''} onchange="admCostoCatEdit(${i},'enCot',this.checked)"><span class="tog-sl"></span></label></td>
+          <td>${pm.length?`<span class="adm-tag ok">✓ ${_admF(pm.reduce((s,c)=>s+(+c.monto||0),0))}</span>`:((+x.montoMes||0)>0?'<span class="adm-tag pend">Pendiente</span>':'<span class="adm-tag mute">—</span>')}</td>
+          <td style="text-align:right;white-space:nowrap"><button class="adm-btn ghost sm" onclick="admCostoPagar(${i})">Registrar pago</button> <button class="admin-del" onclick="admCostoCatDel(${i})">×</button></td>
+        </tr>`; }).join('')}
+      </tbody></table></div>
+      ${cat.length?'':'<div class="adm-empty">El catálogo está vacío. Agregá costos para que aparezcan en el Cotizador.</div>'}
+      <div class="adm-nota"><b>En cotizador</b>: valor por defecto por proyecto en «Costos internos» (lo podés cambiar en cada cotización). <b>Mensual</b>: lo que pagás al mes; sirve para saber qué falta pagar.</div>
+    </div>
+    <div class="sc">
+      <div class="sc-title">Pagos y egresos del período</div>
+      ${egr.length?`<div style="overflow-x:auto"><table class="adm-table"><thead><tr>
+        <th>Fecha</th><th>Concepto</th><th>Clase</th><th>Categoría</th><th class="r">Monto</th><th></th></tr></thead><tbody>
+        ${egr.map(r=>`<tr>
+          <td style="font-family:var(--font-mono);white-space:nowrap">${_admFechaTxt(r.fecha)}</td>
+          <td style="color:var(--text)">${_admE(r.concepto||'—')}${r.tipo==='marketing'?' <span class="adm-tag mute">marketing</span>':''}</td>
+          <td><span class="adm-tag" style="background:${r._clase==='costo'?'rgba(90,158,212,0.12)':'rgba(224,123,46,0.12)'};color:${r._clase==='costo'?'#5AABF0':'#E07B2E'}">${r._clase==='costo'?'Costo':'Gasto'}</span></td>
+          <td style="color:var(--text-3)">${_admE(r.categoria||'—')}</td>
+          <td class="r">${_admF(r.monto||0)}</td>
+          <td style="text-align:right;white-space:nowrap"><button class="cat-btn-ghost" onclick="adminShowFormCosto('${r.tipo==='marketing'?'marketing':'varios'}','${r.id}')" style="padding:2px 7px;font-size:11px">✎</button><button class="admin-del" onclick="adminEliminarCosto('${r.id}')">×</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`:'<div class="adm-empty">Sin egresos registrados en este período.</div>'}
+      <div class="adm-nota">Los pagos a colaboradores se llevan en su propia sección; los impuestos, en Impuestos.</div>
+    </div>`;
+}
+function admCostoCatEdit(i,campo,val){
+  const cat=admCostosCat(); if(!cat[i]) return;
+  if(campo==='montoCot'||campo==='montoMes') val=Math.max(0,parseFloat(val)||0);
+  if(campo==='nombre'){ val=(val||'').trim(); if(!val) return admRenderCostos(); }
+  cat[i][campo]=val; admCostosCatSave(cat); admRenderCostos();
+}
+function admCostoCatAdd(){
+  admModal('Nuevo costo en el catálogo',[
+    {id:'nombre',label:'Nombre *',value:'',full:true,placeholder:'ArchiCAD, internet, impresiones…'},
+    {id:'categoria',label:'Categoría',type:'select',value:'Software',options:ADM_COSTO_CATS.map(c=>[c,c])},
+    {id:'clase',label:'Clase',type:'select',value:'gasto',options:[['gasto','Gasto'],['costo','Costo']]},
+    {id:'montoCot',label:'Monto por proyecto (cotizador)',type:'number',value:0},
+    {id:'montoMes',label:'Monto mensual',type:'number',value:0},
+  ], v=>{
+    if(!v.nombre){ alert('Poné un nombre.'); return false; }
+    const cat=admCostosCat();
+    cat.push({id:_admUid('cc'), nombre:v.nombre, categoria:v.categoria, clase:v.clase, montoCot:v.montoCot, montoMes:v.montoMes, enCot:true});
+    admCostosCatSave(cat); admRenderCostos();
+  },'Agregar');
+}
+function admCostoCatDel(i){
+  const cat=admCostosCat(); if(!cat[i]) return;
+  if(!confirm(`¿Quitar «${cat[i].nombre}» del catálogo?\n\nDesaparece del Cotizador. Los pagos ya registrados se conservan.`)) return;
+  cat.splice(i,1); admCostosCatSave(cat); admRenderCostos();
+}
+function admCostoPagar(i){
+  const x=admCostosCat()[i]; if(!x) return;
+  adminShowFormCosto('varios', null, {concepto:x.nombre, monto:x.montoMes||x.montoCot||'', categoria:x.categoria, clase:x.clase, catId:x.id});
+}
+window.admCostoCatEdit=admCostoCatEdit; window.admCostoCatAdd=admCostoCatAdd; window.admCostoCatDel=admCostoCatDel; window.admCostoPagar=admCostoPagar;
+
+/* Cotizador: filas de «Costos internos» desde el catálogo */
+function cotCostosRender(){
+  const box=document.getElementById('cotCostosRows'); if(!box) return;
+  const vals={};
+  box.querySelectorAll('input[data-costo]').forEach(i=>{ vals[i.dataset.costo]=i.value; });
+  const cat=admCostosCat().filter(x=>x.enCot!==false);
+  box.innerHTML = cat.length ? cat.map(x=>{
+    const id=x.inputId||('cc_'+x.id);
+    const v=(vals[x.id]!=null)?vals[x.id]:(+x.montoCot||0);
+    return `<div class="cost-row"><span style="color:var(--text-2)">${_admE(x.nombre)}</span><div class="fr" style="gap:6px"><input type="number" id="${id}" data-costo="${_admE(x.id)}" value="${_admE(v)}" min="0" class="narrow" oninput="calc()"><span style="font-size:10px;color:var(--text-3)">GTQ</span></div></div>`;
+  }).join('') : '<p class="nt" style="margin:.2rem 0 .5rem">No hay costos activos en el catálogo.</p>';
+}
+function cotCostosTotal(){
+  let s=0; document.querySelectorAll('#cotCostosRows input[data-costo]').forEach(i=>{ s+=parseFloat(i.value)||0; }); return s;
+}
+function cotCostosReset(){
+  cotCostosRender();
+  const cat=admCostosCat();
+  document.querySelectorAll('#cotCostosRows input[data-costo]').forEach(i=>{ const x=cat.find(c=>c.id===i.dataset.costo); i.value=x?(+x.montoCot||0):0; });
+}
+function cotCostosConfigurar(){
+  if(typeof showPage==='function') showPage('admin');
+  adminShowTab('costos');
+}
+window.cotCostosRender=cotCostosRender; window.cotCostosTotal=cotCostosTotal; window.cotCostosReset=cotCostosReset; window.cotCostosConfigurar=cotCostosConfigurar;
+document.addEventListener('DOMContentLoaded',()=>{ try{ cotCostosReset(); }catch(e){} });  // valores por defecto del catálogo; el borrador los pisa después
+
+/* ══════════════════════════════════════════════════════════════
+   IMPUESTOS — acumulado para pagar en la SAT
+   ══════════════════════════════════════════════════════════════ */
+function _admHabil(d){ const w=d.getDay(); return w!==0 && w!==6; }
+/* ISR simplificado: dentro de los primeros 10 días hábiles del mes siguiente */
+function admVenceISR(anio,mes){ const d=new Date(anio,mes+1,1); let n=0; for(let k=0;k<40;k++){ if(_admHabil(d) && ++n===10) return new Date(d); d.setDate(d.getDate()+1); } return d; }
+/* IVA general: a más tardar el último día hábil del mes siguiente */
+function admVenceIVA(anio,mes){ const d=new Date(anio,mes+2,0); while(!_admHabil(d)) d.setDate(d.getDate()-1); return d; }
+function admImpuestosMes(anio,mes){
+  return admConMes(anio,mes,()=>{ const c=finCalcular(); return {ing:c.ingresos, iva:c.ivaPagar, isr:c.isr, tot:c.impuestos}; });
+}
+function admSatDesde(){
+  const d=adminLoad();
+  if(!d.satDesde){ const h=new Date(); d.satDesde=adminMesKey(h.getFullYear(),h.getMonth()); adminSave(d); }
+  return d.satDesde;
+}
+/* Meses con control SAT desde satDesde hasta el mes actual (incluido) */
+function admSatMeses(){
+  const desde=admSatDesde(); const h=new Date();
+  let a=+desde.slice(0,4), m=+desde.slice(5,7)-1; const out=[];
+  for(let k=0;k<120;k++){
+    if(a>h.getFullYear() || (a===h.getFullYear() && m>h.getMonth())) break;
+    out.push({anio:a,mes:m,key:adminMesKey(a,m)});
+    m++; if(m>11){ m=0; a++; }
+  }
+  return out;
+}
+function admSatResumen(){
+  const d=adminLoad(); const pag=d.pagosSAT||{}; const hoy=new Date(); hoy.setHours(0,0,0,0);
+  let porPagar=0, vencido=0, curso=0, prox=null;
+  admSatMeses().forEach(x=>{
+    if(pag[x.key]) return;
+    const t=admImpuestosMes(x.anio,x.mes);
+    const cerrado=(x.anio<hoy.getFullYear()) || (x.anio===hoy.getFullYear() && x.mes<hoy.getMonth());
+    if(!cerrado){ curso+=t.tot; return; }
+    porPagar+=t.tot;
+    const vI=admVenceISR(x.anio,x.mes), vV=admVenceIVA(x.anio,x.mes);
+    if(vI<hoy) vencido+=t.isr; if(vV<hoy) vencido+=t.iva;
+    [[vI,t.isr,'ISR'],[vV,t.iva,'IVA']].forEach(([f,mt,tp])=>{ if(f>=hoy && mt>0 && (!prox||f<prox.f)) prox={f,mt,tp,mes:x.mes,anio:x.anio}; });
+  });
+  return {porPagar, vencido, curso, prox};
+}
+window.admSatResumen=admSatResumen;
+
+function admFiscalPanelHtml(c){
+  return `<div class="sc">
+      <div class="sc-title">Ajuste del período · ${adminMesLabel()} <span style="font-size:10px;color:var(--text-3);text-transform:none;letter-spacing:0">· editá si tu contador calculó distinto</span></div>
+      <div class="adm-grid2" style="margin-top:6px">
+        <div>
+          <div style="font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px">IVA general (12%)</div>
+          <label class="lbl">Débito fiscal (IVA ventas)</label>
+          <input type="number" value="${Math.round(c.ivaDebito)}" onchange="finEditFiscal('ivaDebito',this.value)" style="font-family:var(--font-mono);margin-bottom:6px">
+          <label class="lbl">Crédito fiscal (IVA compras)</label>
+          <input type="number" value="${Math.round(c.ivaCredito)}" onchange="finEditFiscal('ivaCredito',this.value)" style="font-family:var(--font-mono);margin-bottom:6px">
+          <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-3)">IVA a pagar</span><span style="font-size:12px;font-family:var(--font-mono);color:var(--accent);font-weight:500">${_finFmt(c.ivaPagar)}</span></div>
+          <p class="nt" style="margin-top:5px">Crédito autocalculado como 12% de costos+gastos.</p>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:6px">ISR simplificado (5% / 7%)</div>
+          <label class="lbl">Base imponible</label>
+          <input type="number" value="${Math.round(c.isrBase)}" onchange="finEditFiscal('isrBase',this.value)" style="font-family:var(--font-mono);margin-bottom:6px">
+          <div style="font-size:10px;color:var(--text-3);line-height:1.6;margin-bottom:6px">5% hasta ${_finFmt(FIN_ISR_TRAMO)} · 7% sobre el excedente</div>
+          <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-3)">ISR a pagar</span><span style="font-size:12px;font-family:var(--font-mono);color:var(--accent);font-weight:500">${_finFmt(c.isr)}</span></div>
+          <p class="nt" style="margin-top:5px">Base precargada con los ingresos del período.</p>
+        </div>
+      </div>
+      <div style="margin-top:10px;text-align:right"><button class="adm-btn ghost sm" onclick="finResetFiscal()">↻ Restablecer automático</button></div>
+    </div>`;
+}
+
+function admRenderImpuestos(){
+  const box=document.getElementById('adm-body-impuestos'); if(!box) return;
+  const d=adminLoad(); const pag=d.pagosSAT||{};
+  const desde=admSatDesde();
+  const res=admSatResumen();
+  const anio=_adminAnio; const hoy=new Date(); hoy.setHours(0,0,0,0);
+  const fC=dt=>String(dt.getDate()).padStart(2,'0')+'/'+String(dt.getMonth()+1).padStart(2,'0');
+  let filas='';
+  for(let m=0;m<12;m++){
+    const key=adminMesKey(anio,m);
+    const futuro=(anio>hoy.getFullYear())||(anio===hoy.getFullYear() && m>hoy.getMonth());
+    if(futuro){ filas+=`<tr style="opacity:.4"><td>${MESES_ES[m]}</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td>—</td><td></td><td></td></tr>`; continue; }
+    const t=admImpuestosMes(anio,m);
+    const cerrado=!(anio===hoy.getFullYear() && m===hoy.getMonth());
+    const vI=admVenceISR(anio,m), vV=admVenceIVA(anio,m);
+    const p=pag[key]; const fuera=key<desde;
+    let est, acc;
+    if(p){ est=`<span class="adm-tag ok">✓ Pagado ${_admFechaTxt(p.fecha).slice(0,5)}</span>`; acc=`<button class="cat-btn-ghost" style="padding:2px 7px;font-size:11px" onclick="admSatPagar('${key}')">✎</button><button class="admin-del" title="Deshacer" onclick="admSatDeshacer('${key}')">×</button>`; }
+    else if(fuera){ est='<span class="adm-tag mute">Fuera de control</span>'; acc=`<button class="adm-btn ghost sm" onclick="admSatPagar('${key}')">Marcar pagado</button>`; }
+    else if(!cerrado){ est='<span class="adm-tag mute">En curso</span>'; acc=''; }
+    else if(vI<hoy||vV<hoy){ est='<span class="adm-tag late">Vencido</span>'; acc=`<button class="adm-btn sm" onclick="admSatPagar('${key}')">Marcar pagado</button>`; }
+    else { est='<span class="adm-tag pend">Por pagar</span>'; acc=`<button class="adm-btn sm" onclick="admSatPagar('${key}')">Marcar pagado</button>`; }
+    filas+=`<tr${m===_adminMes?' style="background:rgba(212,168,67,0.05)"':''}>
+      <td style="color:var(--text)">${MESES_ES[m]}</td><td class="r" style="color:var(--text-3)">${_admF(t.ing)}</td>
+      <td class="r">${_admF(t.iva)}</td><td class="r">${_admF(t.isr)}</td><td class="r" style="color:var(--text);font-weight:500">${_admF(p?((+p.iva||0)+(+p.isr||0)):t.tot)}</td>
+      <td style="font-size:10.5px;color:var(--text-3);white-space:nowrap">ISR ${fC(vI)} · IVA ${fC(vV)}</td><td>${est}</td><td style="text-align:right;white-space:nowrap">${acc}</td></tr>`;
+  }
+  const c=finCalcular();
+  box.innerHTML=_admHead('Impuestos (SAT)',
+      'Lo que vas acumulando para pagar en la SAT, mes a mes. Régimen: IVA general 12% + ISR simplificado (5% hasta Q30,000 / 7% excedente).',
+      `<label style="display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--text-3)">Control desde <input type="month" value="${desde}" onchange="admSatSetDesde(this.value)" style="width:auto;padding:3px 6px;font-size:11px"></label>`)
+  +`<div class="adm-kpis">
+      ${_admKpi('Acumulado por pagar',_admF(res.porPagar),res.porPagar>0?'var(--accent)':'var(--green)','meses cerrados sin pagar')}
+      ${_admKpi('Vencido',_admF(res.vencido),res.vencido>0?'var(--red)':'var(--green)',res.vencido>0?'pagá cuanto antes':'nada vencido')}
+      ${_admKpi('Acumulando este mes',_admF(res.curso),'var(--text)',MESES_ES[hoy.getMonth()]+' (aún abierto)')}
+      ${_admKpi('Próximo vencimiento',res.prox?(String(res.prox.f.getDate()).padStart(2,'0')+'/'+String(res.prox.f.getMonth()+1).padStart(2,'0')):'—','var(--text)',res.prox?(res.prox.tp+' '+MESES_ES[res.prox.mes].slice(0,3)+' · '+_admF(res.prox.mt)):'sin pendientes')}
+    </div>
+    <div class="sc" style="margin-bottom:14px">
+      <div class="sc-title">Calendario ${anio}</div>
+      <div style="overflow-x:auto"><table class="adm-table"><thead><tr><th>Mes</th><th class="r">Ingresos</th><th class="r">IVA</th><th class="r">ISR</th><th class="r">Total</th><th>Vence</th><th>Estado</th><th></th></tr></thead><tbody>${filas}</tbody></table></div>
+      <div class="adm-nota">Fechas de referencia: ISR simplificado dentro de los primeros 10 días hábiles del mes siguiente; IVA a más tardar el último día hábil del mes siguiente (no considera asuetos). Verificá montos y fechas con tu contador antes de presentar en Declaraguate.</div>
+    </div>
+    ${admFiscalPanelHtml(c)}`;
+}
+function admSatSetDesde(v){ if(!/^\d{4}-\d{2}$/.test(v||'')) return; const d=adminLoad(); d.satDesde=v; adminSave(d); adminRender(); }
+function admSatPagar(key){
+  const a=+key.slice(0,4), m=+key.slice(5,7)-1;
+  const t=admImpuestosMes(a,m); const p=(adminLoad().pagosSAT||{})[key]||{};
+  admModal('Pago SAT · '+MESES_ES[m]+' '+a,[
+    {id:'iva',label:'IVA pagado (GTQ)',type:'number',value:p.iva!=null?p.iva:Math.round(t.iva)},
+    {id:'isr',label:'ISR pagado (GTQ)',type:'number',value:p.isr!=null?p.isr:Math.round(t.isr)},
+    {id:'fecha',label:'Fecha de pago',type:'date',value:_admIso(p.fecha)||_admHoyIso()},
+    {id:'ref',label:'No. formulario / boleta SAT',value:p.ref||''},
+  ], v=>{
+    const d=adminLoad(); d.pagosSAT=d.pagosSAT||{};
+    d.pagosSAT[key]={iva:v.iva, isr:v.isr, fecha:v.fecha||_admHoyIso(), ref:v.ref};
+    adminSave(d); adminRender();
+  });
+}
+function admSatDeshacer(key){
+  if(!confirm('¿Quitar el registro de pago de este mes?')) return;
+  const d=adminLoad(); if(d.pagosSAT) delete d.pagosSAT[key]; adminSave(d); adminRender();
+}
+window.admSatSetDesde=admSatSetDesde; window.admSatPagar=admSatPagar; window.admSatDeshacer=admSatDeshacer;
+
+/* ══════════════════════════════════════════════════════════════
+   CONTADURÍA — balance financiero (estimado)
+   ══════════════════════════════════════════════════════════════ */
+function admBalanceCalc(){
+  const d=adminLoad();
+  const r=adminGetRango(); const ult=r[r.length-1];
+  const hasta=_admMesFin(ult.anio,ult.mes);
+  const le=f=>{ const i=_admIso(f); return i && i<=hasta; };
+  const sum=(l,fn)=>l.reduce((s,x)=>s+(+(fn?fn(x):x.monto)||0),0);
+  const ing=admIngresosTodos().filter(x=>le(x.fecha));
+  const entradas=sum(ing);
+  const egresos=sum((d.costos||[]).filter(x=>le(x.fecha)));
+  const pColab=sum((d.pagosColab||[]).filter(x=>le(x.fecha)));
+  const pSocios=sum((d.pagosSocios||[]).filter(x=>le(x.fecha)));
+  const pSat=sum(Object.values(d.pagosSAT||{}).filter(x=>le(x.fecha)),x=>(+x.iva||0)+(+x.isr||0));
+  const saldoIni=+d.saldoInicial||0;
+  const caja=saldoIni+entradas-egresos-pColab-pSocios-pSat;
+  const cxc=admPorCobrar().reduce((s,x)=>s+x.saldo,0);
+  const sat=admSatResumen();
+  const impPorPagar=sat.porPagar+sat.curso;
+  const colabPorPagar=admColabDevengado().reduce((s,x)=>s+x.pendiente,0);
+  // utilidades por distribuir en el mes de referencia
+  const util=Math.max(0,admConMes(ult.anio,ult.mes,finCalcular).utilidad);
+  const mk=adminMesKey(ult.anio,ult.mes);
+  const repMes=sum((d.pagosSocios||[]).filter(p=>(p.quincena||'').indexOf(mk)===0));
+  const sociosPorPagar=finGetSocios().length?Math.max(0,util-repMes):0;
+  const activos=caja+cxc, pasivos=impPorPagar+colabPorPagar+sociosPorPagar;
+  // flujo del período seleccionado
+  const enR=f=>adminFechaEnRango(f);
+  const fl={
+    entradas:sum(ing.filter(x=>enR(x.fecha))),
+    egresos:sum((d.costos||[]).filter(x=>enR(x.fecha))),
+    colab:sum((d.pagosColab||[]).filter(x=>enR(x.fecha))),
+    socios:sum((d.pagosSocios||[]).filter(x=>enR(x.fecha))),
+    sat:sum(Object.values(d.pagosSAT||{}).filter(x=>enR(x.fecha)),x=>(+x.iva||0)+(+x.isr||0)),
+  };
+  fl.neto=fl.entradas-fl.egresos-fl.colab-fl.socios-fl.sat;
+  return {hasta, saldoIni, entradas, egresos, pColab, pSocios, pSat, caja, cxc, impPorPagar, colabPorPagar, sociosPorPagar, activos, pasivos, patrimonio:activos-pasivos, cap:adminCapAcumulado(), fl};
+}
+window.admBalanceCalc=admBalanceCalc;
+
+function admRenderBalance(){
+  const box=document.getElementById('adm-body-balance'); if(!box) return;
+  const b=admBalanceCalc();
+  const ln=(l,v,o={})=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:${o.bold?'9px':'6px'} 0;${o.bold?'border-top:0.5px solid var(--border)':''}">
+      <span style="font-size:${o.bold?13:12}px;${o.indent?'padding-left:14px;':''}color:${o.bold?'var(--text)':'var(--text-2)'};${o.bold?'font-weight:600':''}">${l}${o.sub?`<span style="font-size:10px;color:var(--text-3);margin-left:6px">${o.sub}</span>`:''}</span>
+      <span style="font-size:${o.bold?14:12.5}px;font-family:var(--font-mono);color:${o.color||(o.bold?'var(--text)':'var(--text-2)')};${o.bold?'font-weight:600':''}">${o.neg&&v>0?'−':''}${_admF(v)}</span></div>`;
+  box.innerHTML=_admHead('Contaduría · balance financiero',
+      'Fotografía de la situación del estudio al cierre de '+_admFechaTxt(b.hasta)+': lo que tenés, lo que debés y lo que queda. Es un estimado a partir de lo registrado en Arkiboard.',
+      `<label style="display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--text-3)">Saldo inicial de caja <input type="number" value="${Math.round(b.saldoIni)}" onchange="admSetSaldoInicial(this.value)" style="width:110px;padding:3px 6px;font-size:11px;font-family:var(--font-mono);text-align:right"></label>`)
+  +`<div class="adm-kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      ${_admKpi('Activos',_admF(b.activos),'var(--green)','caja + por cobrar')}
+      ${_admKpi('Pasivos',_admF(b.pasivos),'var(--red)','obligaciones pendientes')}
+      ${_admKpi('Patrimonio',_admF(b.patrimonio),b.patrimonio>=0?'var(--green)':'var(--red)','activos − pasivos')}
+    </div>
+    <div class="adm-grid2" style="margin-bottom:14px">
+      <div class="sc"><div class="sc-title">Activos</div>
+        ${ln('Caja y bancos (estimado)',b.caja,{indent:true,color:b.caja<0?'var(--red)':undefined})}
+        ${ln('Cuentas por cobrar',b.cxc,{indent:true,sub:'saldos de proyectos'})}
+        ${ln('Total activos',b.activos,{bold:true,color:'var(--green)'})}
+        <div class="adm-nota">Incluye ${_admF(b.cap)} reservados como capitalización en las cotizaciones cobradas.</div>
+      </div>
+      <div class="sc"><div class="sc-title">Pasivos y patrimonio</div>
+        ${ln('Impuestos por pagar (SAT)',b.impPorPagar,{indent:true})}
+        ${ln('Colaboradores por pagar',b.colabPorPagar,{indent:true})}
+        ${ln('Utilidades por distribuir',b.sociosPorPagar,{indent:true,sub:'socios, mes'})}
+        ${ln('Total pasivos',b.pasivos,{bold:true,color:'var(--red)'})}
+        ${ln('Patrimonio',b.patrimonio,{bold:true,color:b.patrimonio>=0?'var(--green)':'var(--red)'})}
+      </div>
+    </div>
+    <div class="adm-grid2">
+      <div class="sc"><div class="sc-title">Flujo de caja · ${adminMesLabel()}</div>
+        ${ln('Entradas (cobros + ingresos)',b.fl.entradas,{color:'var(--green)'})}
+        ${ln('Costos y gastos pagados',b.fl.egresos,{indent:true,neg:true})}
+        ${ln('Pagos a colaboradores',b.fl.colab,{indent:true,neg:true})}
+        ${ln('Retiros de socios',b.fl.socios,{indent:true,neg:true})}
+        ${ln('Impuestos pagados',b.fl.sat,{indent:true,neg:true})}
+        ${ln('Flujo neto',b.fl.neto,{bold:true,color:b.fl.neto>=0?'var(--green)':'var(--red)'})}
+      </div>
+      <div class="sc"><div class="sc-title">Cómo se calcula la caja</div>
+        ${ln('Saldo inicial',b.saldoIni,{indent:true})}
+        ${ln('+ Cobros e ingresos acumulados',b.entradas,{indent:true})}
+        ${ln('− Costos y gastos',b.egresos,{indent:true,neg:true})}
+        ${ln('− Colaboradores',b.pColab,{indent:true,neg:true})}
+        ${ln('− Socios',b.pSocios,{indent:true,neg:true})}
+        ${ln('− Impuestos',b.pSat,{indent:true,neg:true})}
+        ${ln('Caja estimada',b.caja,{bold:true})}
+        <div class="adm-nota">Ingresá el saldo de tus cuentas al empezar a usar Arkiboard como «saldo inicial» para que la caja cuadre con el banco. No sustituye los estados financieros de tu contador.</div>
+      </div>
+    </div>`;
+}
+function admSetSaldoInicial(v){ const d=adminLoad(); d.saldoInicial=parseFloat(v)||0; adminSave(d); adminRender(); }
+window.admSetSaldoInicial=admSetSaldoInicial;
+
+/* ── Análisis (Estado de resultados): métricas clave, desglose y runway ── */
+function adminRenderAnalisis(){
+  const c=finCalcular();
+  const nMeses=adminGetRango().length||1;
+  const egresos=c.costos+c.gastos;
+  const cap=adminCapAcumulado();
+  const topEl=document.getElementById('admin-analisis-top');
+  if(topEl){
+    const tot=egresos+c.impuestos;
+    const pct=v=>tot>0?Math.round(v/tot*100):0;
+    topEl.innerHTML=`
+      <div class="sc"><div class="sc-title">Desglose de egresos</div>
+        ${[['Colaboradores',c.colab,'#5AABF0'],['Otros costos',c.costosManual,'#9B8CE8'],['Gastos',c.gastos,'#E07B2E'],['Impuestos',c.impuestos,'#E86B6B']].map(([l,v,col])=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:11px;color:var(--text-2)">${l}</span><span style="font-size:11px;font-weight:500;color:var(--text-2)">${pct(v)}% · ${_admF(v)}</span></div>
+          <div class="adm-bar"><i style="width:${Math.min(pct(v),100)}%;background:${col}"></i></div>`).join('')}
+      </div>
+      <div class="sc"><div class="sc-title">Métricas clave</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+          ${[
+            ['Margen neto', c.ingresos>0?Math.round(c.utilidad/c.ingresos*100)+'%':'—', c.utilidad>=0?'var(--green)':'var(--red)'],
+            ['Margen bruto', c.ingresos>0?Math.round((c.ingresos-c.costos)/c.ingresos*100)+'%':'—', 'var(--text)'],
+            ['Punto de equilibrio', egresos+c.impuestos<=c.ingresos?'✓ Cubierto':'✗ Déficit', egresos+c.impuestos<=c.ingresos?'var(--green)':'var(--red)'],
+            ['Carga fiscal', c.ingresos>0?Math.round(c.impuestos/c.ingresos*100)+'%':'—', 'var(--text)'],
+            ['Egreso mensual prom.', _admF(egresos/nMeses), 'var(--text)'],
+            ['Por cobrar', _admF(admPorCobrar().reduce((s,x)=>s+x.saldo,0)), 'var(--accent)'],
+          ].map(([l,v,col])=>`<div class="admin-metrica"><div class="admin-metrica-val" style="color:${col}">${v}</div><div class="admin-metrica-lbl">${l}</div></div>`).join('')}
+        </div>
+      </div>`;
+  }
+  const runwayEl=document.getElementById('admin-runway-box');
+  if(runwayEl){
+    const d=adminLoad();
+    const meta=d.runwayMeta||3;
+    const mensual=(egresos/nMeses)||0;
+    const runway=mensual>0?Math.round(cap/mensual*10)/10:0;
+    const pctRunway=mensual>0?Math.min(runway/meta*100,100):0;
+    const col=runway>=meta?'var(--green)':runway>=meta*0.5?'var(--accent)':'var(--red)';
+    runwayEl.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span class="sc-title" style="margin-bottom:0">Runway de capital</span>
+        <div style="display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--text-3)">Meta:</span>
+          <input type="number" value="${meta}" min="1" max="24" onchange="adminSetRunwayMeta(+this.value)" style="width:44px;padding:3px 6px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:12px;text-align:center;font-family:var(--font-mono)">
+          <span style="font-size:11px;color:var(--text-3)">meses</span></div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;flex-wrap:wrap">
+        <span style="font-size:24px;font-weight:500;color:${mensual>0?col:'var(--text-3)'}">${mensual>0?runway:'—'}</span>
+        <span style="font-size:12px;color:var(--text-3)">meses de reserva</span>
+        <span style="font-size:11px;color:var(--text-3);margin-left:auto">${_admF(cap)} capital acumulado · ${_admF(mensual)}/mes de egresos</span>
+      </div>
+      <div class="admin-runway-bar"><div class="admin-runway-fill" style="width:${pctRunway}%;background:${col}"></div></div>
+      <p class="nt" style="margin-top:6px">Cuántos meses cubre el capital reservado con el egreso promedio (costos + gastos) del período seleccionado.</p>`;
+  }
+}
+
 
 /* ── Contaduría: referencia del cálculo de utilidad neta ── */
 function adminRenderContaduria(){
@@ -7356,7 +8204,7 @@ function genPDFContaduria(){
 window.genPDFContaduria = genPDFContaduria;
 
 /* ── Formulario costos manuales ───────────────────────────── */
-function adminShowFormCosto(tipo, id){
+function adminShowFormCosto(tipo, id, pre){
   const modal=document.getElementById('adminCostoModal');
   if(!modal) return;
   modal.style.display='flex';
@@ -7388,7 +8236,14 @@ function adminShowFormCosto(tipo, id){
     document.getElementById('acm-fecha').value=fmtFechaGT(hoy);
     if(tipo==='marketing') document.getElementById('acm-duracion-tipo').value='Específica';
     else { const rb=document.querySelector('input[name="acm-clase"][value="gasto"]'); if(rb) rb.checked=true; }
+    if(pre && tipo!=='marketing'){
+      if(pre.concepto) document.getElementById('acm-concepto').value=pre.concepto;
+      if(pre.monto) document.getElementById('acm-monto').value=pre.monto;
+      if(pre.categoria) document.getElementById('acm-cat-var').value=pre.categoria;
+      const rb2=document.querySelector('input[name="acm-clase"][value="'+(pre.clase==='costo'?'costo':'gasto')+'"]'); if(rb2) rb2.checked=true;
+    }
   }
+  { const ce=document.getElementById('acm-catid'); if(ce) ce.value = id ? (((adminLoad().costos||[]).find(c=>c.id===id)||{}).catId||'') : ((pre&&pre.catId)||''); }
   setTimeout(()=>document.getElementById('acm-concepto').focus(),60);
 }
 
@@ -7419,6 +8274,7 @@ function adminGuardarCosto(){
     item.categoria=document.getElementById('acm-cat-var').value;
     const claseEl=document.querySelector('input[name="acm-clase"]:checked');
     item.clase = claseEl ? claseEl.value : 'gasto';
+    const catEl=document.getElementById('acm-catid'); if(catEl && catEl.value) item.catId=catEl.value;
   }
   if(id){ const i=d.costos.findIndex(c=>c.id===id); if(i>=0) d.costos[i]=item; else d.costos.push(item); }
   else d.costos.push(item);
@@ -7726,11 +8582,7 @@ window.adminGenReporte = adminGenReporte;
 function adminRender(){
   const lbl=document.getElementById('admin-mes-label');
   if(lbl) lbl.textContent=adminMesLabel();
-  adminRenderKPIs();
-  // Render del tab activo
-  const active=document.querySelector('.admin-tab.active');
-  const tab=active?active.id.replace('atab-',''):'finanzas';
-  adminShowTab(tab);
+  adminShowTab(_admSec||'resultados');
 }
 
 /* ── Hook en showPage ─────────────────────────────────────── */
@@ -10333,7 +11185,7 @@ Object.assign(window,{
 const _adminOrgTabOrig = window.adminShowTab;
 window.adminShowTab = function(tab){
   _adminOrgTabOrig.apply(this, arguments);
-  if(tab==='colab' && typeof _eqVista!=='undefined' && _eqVista==='org'){
+  if((tab==='colab'||tab==='equipo'||tab==='organigrama') && typeof _eqVista!=='undefined' && _eqVista==='org'){
     requestAnimationFrame(()=>{ if(typeof orgRender==='function') orgRender(); });
   }
 };
@@ -12067,7 +12919,7 @@ function calc(){
   const _elAmtRd=document.getElementById('colAmtRend'); if(_elAmtRd)_elAmtRd.textContent=fmt(cRd);
   const _elAmtPl=document.getElementById('colAmtPlanos'); if(_elAmtPl)_elAmtPl.textContent=fmt(cPl);
   const _elTot=document.getElementById('colTotal'); if(_elTot)_elTot.textContent=fmt(cTot);
-  const cm=['cRevit','cD5','cCanva','cElec','cGas','cViat'].reduce((a,id)=>a+gv(id),0);
+  const cm=(typeof cotCostosTotal==='function')?cotCostosTotal():['cRevit','cD5','cCanva','cElec','cGas','cViat'].reduce((a,id)=>a+gv(id),0);
   const oh=cm; // costos fijos directos, sin porcentaje
   document.getElementById('ohAmt').textContent=fmt(oh);
   const iOn=document.getElementById('ivaOn').checked,ir=parseInt(document.getElementById('ivaRate').value);
@@ -13955,7 +14807,7 @@ function renderFlujo(cots){
   `;
 }
 
-function saveCots(arr){localStorage.setItem('avit_cots',JSON.stringify(arr));if(typeof triggerAutoSync==='function')triggerAutoSync();}
+function saveCots(arr){try{if(typeof _cobroLogDiff==='function')_cobroLogDiff(arr);}catch(e){console.warn('cobroLog',e);}localStorage.setItem('avit_cots',JSON.stringify(arr));if(typeof triggerAutoSync==='function')triggerAutoSync();}
 
 function fmtCur(n,c){return(c||'GTQ')+' '+Math.round(n).toLocaleString()}
 
@@ -14209,7 +15061,7 @@ function guardarCotConfirmado(d){
   document.getElementById('col3D').value=0;
   document.getElementById('colRend').value=0;
   document.getElementById('colPlanos').value=0;
-  ['cRevit','cD5','cCanva','cElec','cGas','cViat'].forEach(id=>document.getElementById(id).value=0);
+  if(typeof cotCostosReset==='function') cotCostosReset(); else ['cRevit','cD5','cCanva','cElec','cGas','cViat'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=0; });
   document.getElementById('ivaOn').checked=false;
   document.getElementById('isrOn').checked=false;
   if(typeof toggleFactura==='function') toggleFactura(false);
@@ -14271,7 +15123,7 @@ function updateEstado(id,estado){
     }
   }
 
-  if(estado==='cobrado_total'||estado==='completada') c.cobrado=(c.tot||0)-_f3Tot(c)+_cobF(c);
+  if(estado==='cobrado_total'||estado==='completada'){ c.cobrado=(c.tot||0)-_f3Tot(c)+_cobF(c); if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Cobro total'); }
   saveCots(cots);renderIngresos();if(document.getElementById('pg-est').classList.contains('active'))renderEstatus();
 }
 /* Devuelve el id de columna del Kanban para un estado dado */
@@ -16118,7 +16970,7 @@ function kanbanFaseAvanzar(cotId, fid){
     if(_it && _it.hon>0){
       const t=_cfTotProj(c,_it), pend=Math.round(Math.max(0,t-_nCF(_it.cobrado)));
       if(pend>0 && confirm(`Queda ${fmtCur(pend,c.cur)} por cobrar de «${f.nombre}».\n\n¿Registrarlo como cobrado ahora?`)){
-        _it.cobrado=_nCF(_it.cobrado)+pend; c.cobrado=_nCF(c.cobrado)+pend; c.fasesCobrado=_cobF(c)+pend;
+        _it.cobrado=_nCF(_it.cobrado)+pend; c.cobrado=_nCF(c.cobrado)+pend; c.fasesCobrado=_cobF(c)+pend; if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Cobro de fase · '+f.nombre);
       }
     }
     preguntar=_pipeSalirDe(c, fid, null);
@@ -16440,6 +17292,7 @@ function kanbanFaseCobrar(cotId, fid, todo){
   if(!confirm(`¿Registrar ${etiqueta} de ${fmtCur(monto,c.cur)} por «${it.nombre}»?\n\nQuedaría pendiente ${fmtCur(Math.max(0,pend-monto),c.cur)}.`)) return;
   it.cobrado=_nCF(it.cobrado)+monto;
   c.cobrado=_nCF(c.cobrado)+monto;
+  if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Cobro de fase · '+it.nombre);
   c.fasesCobrado=_cobF(c)+monto;
   c.updatedAt=Date.now();
   saveCots(cots);
@@ -17137,6 +17990,7 @@ function procesarMilestone(cotId, milestone){
   if(milestone === 'anticipo'){
     // Sumar anticipo al cobrado y mover a siguiente columna
     c.cobrado = (c.cobrado||0) + (c.antic||0);
+    if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Anticipo');
     sellarInicioReal(c);                          // ← arranca el cronómetro del proyecto
     if(hasF1) c.estado = 'en_progreso';     // → Anteproyecto
     else if(hasF2) c.estado = 'f1_entregada'; // → Planos (solo F2 contratada)
@@ -17155,6 +18009,7 @@ function procesarMilestone(cotId, milestone){
   else if(milestone === 'entrega_f2'){
     // Sumar mid-payment al cobrado y mover a Entrega
     c.cobrado = (c.cobrado||0) + (c.mid||0);
+    if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Pago intermedio');
     c.estado = 'f2_entregada';
   }
   else if(milestone === 'aprobado'){
@@ -17166,6 +18021,7 @@ function procesarMilestone(cotId, milestone){
     // Saldo del DISEÑO: las otras fases se cobran aparte desde su pipeline
     const saldo = Math.max(0, ((c.tot||0) - _f3Tot(c)) - ((c.cobrado||0) - _cobF(c)));
     c.cobrado = (c.cobrado||0) + saldo;
+    if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Saldo final');
     c.estado = 'cobrado_total';
   }
 
@@ -17652,6 +18508,7 @@ function saveEditCot(id){
       return cobF;
     })()
   };
+  if(typeof _cobroConceptoSet==='function') _cobroConceptoSet('Ajuste manual');
   saveCots(cots);
   closeModal();
   renderIngresos();
@@ -19419,6 +20276,7 @@ if(typeof window !== 'undefined'){
 
         TEXT_FIELDS.forEach( id => { draft[id] = gv(id); });
         NUM_FIELDS.forEach(  id => { draft[id] = gv(id); });
+        draft.costosCot = {}; document.querySelectorAll('#cotCostosRows input[data-costo]').forEach(i => { draft.costosCot[i.dataset.costo] = i.value; });
         CHECK_FIELDS.forEach(id => { draft[id] = gc(id); });
 
         draft.cur      = (typeof window.cur !== 'undefined') ? window.cur : 'GTQ';
@@ -19459,6 +20317,7 @@ if(typeof window !== 'undefined'){
       if(typeof awLlenarSelects === 'function') awLlenarSelects();
       TEXT_FIELDS.forEach( id => { if(d[id]!=null) sv(id, d[id]); });
       NUM_FIELDS.forEach(  id => { if(d[id]!=null) sv(id, d[id]); });
+      if(d.costosCot){ if(typeof cotCostosRender==='function') cotCostosRender(); Object.keys(d.costosCot).forEach(k => { const i=document.querySelector('#cotCostosRows input[data-costo="'+k+'"]'); if(i && d.costosCot[k]!=null) i.value=d.costosCot[k]; }); }
       CHECK_FIELDS.forEach(id => { if(d[id]!=null) sc(id, d[id]); });
 
       if(d.projStart){
