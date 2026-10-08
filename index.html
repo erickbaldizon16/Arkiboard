@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Arkiboard — Gestión para estudios de arquitectura</title>
+<link id="appFavicon" rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M8AAAMBAQAY3Y2wAAAAAElFTkSuQmCC">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400;500&display=swap');
@@ -220,8 +221,9 @@ glass system vuelve al glassmorphism cálido/menta */
 .topbar-logo{
   font-family:var(--font-display);font-size:13px;font-weight:600;
   letter-spacing:.06em;color:var(--gray-100);
-  display:flex;flex-direction:column;gap:1px;min-width:100px;
+  display:flex;flex-direction:row;align-items:center;gap:10px;min-width:100px;
 }
+.topbar-logo-txt{display:flex;flex-direction:column;gap:1px;min-width:0}
 .topbar-logo span{
   font-size:8px;font-weight:300;letter-spacing:0.44em;
   color:var(--gray-500);text-transform:uppercase;
@@ -1145,6 +1147,25 @@ input.narrow{width:88px}input.mid{width:108px}
   background:var(--accent-subtle);color:var(--accent);border:1px solid var(--border-accent);
 }
 .aw-info{flex:1;min-width:0}
+.aw-rol-lbl{font-size:11.5px;color:var(--accent);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aw-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.aw-chip{font-size:10px;color:var(--text-2);background:rgba(255,255,255,0.04);border:0.5px solid var(--border);border-radius:20px;padding:1px 8px;white-space:nowrap}
+/* Selector de vista Lista / Organigrama */
+.eq-vista{display:inline-flex;gap:2px;padding:3px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:12px}
+.eq-vtab{padding:5px 14px;font-size:11px;border:none;border-radius:var(--r-sm);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-body);transition:all .15s}
+.eq-vtab:hover{color:var(--text)}
+.eq-vtab.active{background:var(--accent-subtle);color:var(--accent)}
+/* Banner de próximos cumpleaños */
+.aw-cumple-banner{display:flex;align-items:flex-start;gap:11px;padding:10px 14px;margin-bottom:4px;border-radius:var(--r-md);background:rgba(224,112,152,0.08);border:1px solid rgba(224,112,152,0.28)}
+.aw-cumple-ico{font-size:18px;line-height:1.2}
+.aw-cumple-body{flex:1;min-width:0}
+.aw-cumple-tit{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#E07098;font-family:var(--font-display);margin-bottom:4px}
+.aw-cumple-list{display:flex;flex-wrap:wrap;gap:6px}
+.aw-cumple-item{font-size:11.5px;color:var(--text-2);background:rgba(255,255,255,0.04);border-radius:20px;padding:2px 10px}
+.aw-cumple-item em{font-style:normal;color:var(--text-3)}
+.aw-cumple-item.hoy{background:rgba(224,112,152,0.18);color:#F0A8C4}
+.org-cake{margin-left:5px;font-size:11px}
+
 .aw-nombre{font-size:13px;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .aw-email{font-size:11px;color:var(--text-3);font-family:var(--font-mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
 .aw-stats{display:flex;gap:18px;flex-shrink:0;text-align:center}
@@ -2694,6 +2715,8 @@ select:-webkit-autofill{
 }
 .emp-upload-label{font-size:12px;font-weight:500;color:var(--text)}
 .emp-upload-hint{font-size:9.5px;color:var(--text-3);font-family:var(--font-mono);letter-spacing:.02em;margin-top:-4px}
+.emp-preview.favicon{aspect-ratio:1/1;max-width:96px;margin-left:auto;margin-right:auto}
+.emp-preview.favicon img{image-rendering:auto;max-width:72px;max-height:72px}
 .emp-preview{
   height:96px;border-radius:var(--r-sm);border:1px dashed var(--border-2);
   display:flex;align-items:center;justify-content:center;overflow:hidden;
@@ -3177,8 +3200,11 @@ code.emp-tag{font-family:var(--font-mono)}
 
 <div class="topbar">
   <div class="topbar-logo">
+    <img id="topFavicon" alt="" style="display:none;width:30px;height:30px;border-radius:7px;object-fit:contain;flex-shrink:0">
+    <div class="topbar-logo-txt">
     <span style="font-size:15px;font-weight:700;letter-spacing:0.10em;color:var(--text);font-family:var(--font-display);line-height:1.1;text-transform:uppercase">Arkiboard</span>
     <span id="empresaNombreTop" style="font-size:8.5px;font-weight:400;letter-spacing:0.20em;color:var(--accent);text-transform:uppercase;font-family:var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px"></span>
+    </div>
   </div>
   <div class="nav-tabs">
     <button class="ntab active" data-page="home" onclick="showPage('home')">Inicio</button>
@@ -3409,7 +3435,28 @@ code.emp-tag{font-family:var(--font-mono)}
             <button class="emp-btn ghost" onclick="empQuitarImg('firma')" id="empFirmaDel" style="display:none">Quitar</button>
           </div>
         </div>
+
+        <!-- Favicon -->
+        <div class="emp-upload-card">
+          <div class="emp-upload-label">Favicon</div>
+          <div class="emp-upload-hint">Cuadrado · ícono de la pestaña de Chrome</div>
+          <div class="emp-preview favicon" id="empFaviconPreview" data-empty="1">
+            <span class="emp-preview-empty">Sin favicon</span>
+          </div>
+          <div class="emp-upload-actions">
+            <label class="emp-btn">
+              Subir ícono
+              <input type="file" accept="image/png,image/x-icon,image/vnd.microsoft.icon,image/svg+xml" onchange="empSubirImg(event,'favicon')" hidden>
+            </label>
+            <button class="emp-btn ghost" onclick="empQuitarImg('favicon')" id="empFaviconDel" style="display:none">Quitar</button>
+          </div>
+        </div>
       </div>
+
+      <p class="nt" id="empFaviconNota" style="margin:12px 0 0;line-height:1.6">
+        🖼 El favicon aparece en la pestaña de Chrome mientras usás la app. Si no lo ves al instante, recargá con <b>Ctrl/Cmd + Shift + R</b> o reabrí la pestaña (Chrome guarda el ícono en caché).<br>
+        Para que también aparezca en marcadores e historial con la app cerrada, hay que subir un archivo <code style="font-family:var(--font-mono);background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px">favicon.ico</code> al hosting de tu sitio (arkiboard.com); eso se hace una sola vez por fuera del panel.
+      </p>
     </div>
 
     </div><!-- /pane identidad -->
@@ -3742,7 +3789,8 @@ code.emp-tag{font-family:var(--font-mono)}
     <label class="tog"><input type="checkbox" id="fase1On" checked onchange="toggleFase1()"><span class="tog-sl"></span></label>
   </div>
 
-  <!-- Configuración general (fusionada): m² / tarifa / moneda — siempre visible -->
+  <!-- Configuración general (m² / tarifa / moneda): parte del Anteproyecto -->
+  <div id="fase1Config">
   <div class="r2">
     <div class="fg"><label class="lbl">Metros cuadrados</label><div class="fr"><input type="number" id="m2S" min="1" max="99999" step="1" value="" placeholder="0" oninput="syncM2(this.value)" style="width:110px;font-size:15px;font-weight:500"><span class="fv" style="margin-left:6px">m²</span></div></div>
     <div class="fg"><label class="lbl">Tarifa por m²</label><div class="fr"><input type="number" id="m2Rate" value="" placeholder="0" min="1" class="mid" oninput="calc()"><span class="fv" id="cSym">GTQ/m²</span></div></div>
@@ -3752,6 +3800,9 @@ code.emp-tag{font-family:var(--font-mono)}
     <span class="cur-fixed-value" id="curFixedValue">GTQ</span>
     <span class="cur-fixed-hint">Se define en Ajustes</span>
   </div>
+  </div>
+
+  <p class="nt" id="fase1Off" style="display:none;margin:.3rem 0 0">Anteproyecto desactivado. Activá el interruptor para cotizar el diseño.</p>
 
   <div id="fase1Body">
     <div class="r2">
@@ -4288,8 +4339,7 @@ code.emp-tag{font-family:var(--font-mono)}
   <div style="display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:0">
     <button onclick="adminShowTab('finanzas')" class="admin-tab active" id="atab-finanzas">💰 Finanzas</button>
     <button onclick="adminShowTab('contaduria')" class="admin-tab" id="atab-contaduria">📘 Contaduría</button>
-    <button onclick="adminShowTab('colab')" class="admin-tab" id="atab-colab">👷 Arkiworkers</button>
-        <button onclick="adminShowTab('organigrama')" class="admin-tab" id="atab-organigrama">🏛 Organigrama</button>
+    <button onclick="adminShowTab('colab')" class="admin-tab" id="atab-colab">👥 Equipo</button>
   </div>
 
   <!-- Tab: Ingresos -->
@@ -4352,52 +4402,81 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
 
-  <!-- Tab: Arkiworkers -->
+  <!-- Tab: Equipo (Lista + Organigrama fusionados) -->
   <div id="atab-body-colab" class="admin-tab-body" style="display:none">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap">
       <div>
         <div style="font-size:13px;font-weight:500;color:var(--text);font-family:var(--font-display)">Equipo de trabajo</div>
-        <div style="font-size:11px;color:var(--text-3);margin-top:2px">Registrá a tu equipo para asignarles sprints y tareas en los proyectos.</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:2px">Registrá a tu equipo: sus datos, su rol y su lugar en el organigrama. Se usan para asignar sprints y tareas.</div>
       </div>
       <button class="emp-btn primary" onclick="awAbrirModal()" style="flex-shrink:0">＋ Agregar colaborador</button>
     </div>
 
+    <!-- Selector de vista -->
+    <div class="eq-vista">
+      <button class="eq-vtab active" id="eqv-lista" onclick="eqVista('lista')">☰ Lista</button>
+      <button class="eq-vtab" id="eqv-org" onclick="eqVista('org')">🏛 Organigrama</button>
+    </div>
+
+    <!-- Aviso de cumpleaños próximos -->
+    <div id="aw-cumples"></div>
+
     <!-- KPIs del equipo -->
-    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px" id="aw-kpis"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:10px 0 16px" id="aw-kpis"></div>
 
-    <!-- Lista de colaboradores registrados -->
-    <div id="aw-lista"></div>
+    <!-- ── Vista LISTA ── -->
+    <div id="eq-vista-lista">
+      <div id="aw-lista"></div>
 
-    <!-- Costos derivados del cotizador (histórico) -->
-    <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border)">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <span style="font-size:11px;color:var(--text-3)">Costos por proyecto · Derivados del Cotizador</span>
-        <span style="font-size:13px;font-weight:500;color:var(--red)" id="admin-col-total">GTQ 0</span>
+      <!-- Costos derivados del cotizador (histórico) -->
+      <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:11px;color:var(--text-3)">Costos por proyecto · Derivados del Cotizador</span>
+          <span style="font-size:13px;font-weight:500;color:var(--red)" id="admin-col-total">GTQ 0</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:11px" id="admin-col-table">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Colaborador</th>
+                <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Proyecto</th>
+                <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Tarea</th>
+                <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">% Asig.</th>
+                <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Monto</th>
+              </tr>
+            </thead>
+            <tbody id="admin-col-body">
+              <tr><td colspan="5" style="padding:24px;text-align:center;color:var(--text-3)">No hay colaboradores registrados en este período.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:11px" id="admin-col-table">
-          <thead>
-            <tr style="border-bottom:1px solid var(--border)">
-              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Colaborador</th>
-              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Proyecto</th>
-              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Tarea</th>
-              <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">% Asig.</th>
-              <th style="text-align:right;padding:6px 10px;color:var(--text-3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:10px">Monto</th>
-            </tr>
-          </thead>
-          <tbody id="admin-col-body">
-            <tr><td colspan="5" style="padding:24px;text-align:center;color:var(--text-3)">No hay colaboradores registrados en este período.</td></tr>
-          </tbody>
-        </table>
+    </div>
+
+    <!-- ── Vista ORGANIGRAMA ── -->
+    <div id="eq-vista-org" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <span style="font-size:11px;color:var(--text-3)">Arrastrá los nodos para moverlos · Doble clic para editar · Clic derecho para más opciones</span>
+        <div style="display:flex;gap:6px">
+          <button style="padding:5px 11px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''" onclick="orgAutoLayout()">↻ Auto-layout</button>
+          <button style="padding:5px 11px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''" onclick="orgGenPDF()" style="padding:5px 13px;font-size:10px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase">📄 Constancia PDF</button>
+        </div>
       </div>
+      <div id="orgWrap" style="position:relative;width:100%;height:520px;background:rgba(255,255,255,0.02);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:default;user-select:none">
+        <svg id="orgSvg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible"></svg>
+        <svg viewBox="0 0 600 14" style="position:absolute;bottom:14px;left:0;right:0;width:100%;opacity:.18;pointer-events:none;z-index:0">
+          <path d="M0,7 C60,0 120,14 180,7 S300,0 360,7 S480,14 540,7 S600,4 620,7" stroke="#D4A843" stroke-width="1" fill="none"/>
+        </svg>
+      </div>
+      <p style="font-size:10px;color:var(--text-3);margin-top:8px;text-align:center">Los nodos son tus colaboradores. Editá sus datos desde aquí o desde la Lista: es la misma ficha.</p>
     </div>
   </div>
 
-  <!-- Modal: registrar / editar Arkiworker -->
+  <!-- Modal: registrar / editar colaborador -->
   <div id="awModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9990;align-items:center;justify-content:center;padding:20px">
-    <div class="sc" style="width:100%;max-width:400px;position:relative;padding:1.8rem 1.7rem" onclick="event.stopPropagation()">
+    <div class="sc" style="width:100%;max-width:440px;position:relative;padding:1.8rem 1.7rem;max-height:90vh;overflow-y:auto" onclick="event.stopPropagation()">
       <button onclick="awCerrarModal()" title="Cerrar"
-        style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--border-2);background:transparent;color:var(--text-2);cursor:pointer;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+        style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--border-2);background:transparent;color:var(--text-2);cursor:pointer;font-size:15px;line-height:1">×</button>
       <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px" id="awModalKicker">Nuevo colaborador</div>
       <div style="font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--text);margin-bottom:16px" id="awModalTitle">Agregar al equipo</div>
 
@@ -4406,11 +4485,35 @@ code.emp-tag{font-family:var(--font-mono)}
 
       <div class="fg" style="margin-bottom:.8rem">
         <label class="lbl">Nombre completo *</label>
-        <input type="text" id="aw-nombre" placeholder="Ej. Ana Sofía Morales" onkeydown="if(event.key==='Enter')document.getElementById('aw-email').focus()">
+        <input type="text" id="aw-nombre" placeholder="Ej. Ana Sofía Morales" onkeydown="if(event.key==='Enter')document.getElementById('aw-rol').focus()">
       </div>
-      <div class="fg" style="margin-bottom:1.2rem">
-        <label class="lbl">Correo electrónico *</label>
-        <input type="email" id="aw-email" placeholder="ana@correo.com" spellcheck="false" onkeydown="if(event.key==='Enter')awGuardar()">
+      <div class="r2" style="margin-bottom:.8rem">
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Rol / cargo</label>
+          <input type="text" id="aw-rol" placeholder="Ej. Arquitecto, Renderista">
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Teléfono</label>
+          <input type="text" id="aw-telefono" placeholder="Ej. 5555-5555" spellcheck="false">
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:.8rem">
+        <label class="lbl">Correo electrónico</label>
+        <input type="email" id="aw-email" placeholder="ana@correo.com" spellcheck="false">
+      </div>
+      <div class="r2" style="margin-bottom:1rem">
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Cumpleaños</label>
+          <input type="date" id="aw-cumple" style="font-family:var(--font-mono)">
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="lbl">Fecha de ingreso</label>
+          <input type="date" id="aw-ingreso" style="font-family:var(--font-mono)">
+        </div>
+      </div>
+      <div id="aw-reporta-wrap" class="fg" style="margin-bottom:1.2rem">
+        <label class="lbl">Reporta a <span style="text-transform:none;letter-spacing:0;color:var(--text-3)">(organigrama)</span></label>
+        <select id="aw-reporta"></select>
       </div>
 
       <div style="display:flex;justify-content:flex-end;gap:8px">
@@ -4420,34 +4523,6 @@ code.emp-tag{font-family:var(--font-mono)}
     </div>
   </div>
 
-  <!-- Tab: Marketing (3 sub-tabs) -->
-
-  <!-- Tab: Costos Varios -->
-  <!-- Tab: Organigrama -->
-  <div id="atab-body-organigrama" class="admin-tab-body" style="display:none">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-      <span style="font-size:11px;color:var(--text-3)">Arrastrá los nodos para moverlos · Arrastrá el fondo para navegar la pizarra · Doble clic para editar · Clic derecho para opciones</span>
-      <div style="display:flex;gap:6px">
-        <button onclick="orgAddNode()" style="padding:5px 11px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">+ Nodo</button>
-        <button onclick="orgAutoLayout()" style="padding:5px 11px;font-size:10px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">↻ Auto-layout</button>
-        <button onclick="orgSave()" style="padding:5px 12px;font-size:10px;border:1px solid var(--accent);border-radius:var(--r-md);background:transparent;color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase">Guardar</button>
-        <button onclick="orgGenPDF()" style="padding:5px 13px;font-size:10px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase">📄 Constancia PDF</button>
-      </div>
-    </div>
-    <!-- Canvas del organigrama -->
-    <div id="orgWrap" style="position:relative;width:100%;height:520px;background:rgba(255,255,255,0.02);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:default;user-select:none">
-      <!-- SVG de conexiones (z-index bajo, detrás de los nodos) -->
-      <svg id="orgSvg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible"></svg>
-      <!-- Onda decorativa Avit -->
-      <svg viewBox="0 0 600 14" style="position:absolute;bottom:14px;left:0;right:0;width:100%;opacity:.18;pointer-events:none;z-index:0">
-        <path d="M0,7 C60,0 120,14 180,7 S300,0 360,7 S480,14 540,7 S600,4 620,7" stroke="#D4A843" stroke-width="1" fill="none"/>
-      </svg>
-      <!-- Nodos se generan aquí vía JS -->
-    </div>
-    <p style="font-size:10px;color:var(--text-3);margin-top:8px;text-align:center">
-      Doble clic en un nodo para editar · Clic derecho para conectar, agregar hijo o eliminar · Los cambios se guardan en <code style="font-family:var(--font-mono);background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px">avit_organigrama</code>
-    </p>
-  </div>
   <!-- Modal formulario costo -->
   <div id="adminCostoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9990;align-items:center;justify-content:center;padding:20px">
     <div style="background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:22px 26px;width:100%;max-width:440px" onclick="event.stopPropagation()">
@@ -6290,8 +6365,66 @@ function adminGetIngresos(){
    Estructura organizacional para asignar sprints a colaboradores.
    localStorage['avit_arkiworkers'] = [{id, nombre, email, creadoEn}]
    ════════════════════════════════════════════════════════════ */
-function awLoad(){ try{ return JSON.parse(localStorage.getItem('avit_arkiworkers')||'[]'); }catch(e){ return []; } }
-function awSave(arr){ localStorage.setItem('avit_arkiworkers', JSON.stringify(arr)); }
+/* Modelo unificado de colaborador:
+   {id, nombre, email, rol, cumple(MM-DD o AAAA-MM-DD), ingreso(ISO),
+    telefono, parentId, x, y, color, creadoEn}
+   Al cargar, migra: (1) arkiworkers viejos (solo nombre/email) y
+   (2) nodos del organigrama (avit_organigrama) que aún no estén en la lista. */
+function _awRaw(){ try{ return JSON.parse(localStorage.getItem('avit_arkiworkers')||'[]'); }catch(e){ return []; } }
+function awLoad(){
+  let lista=_awRaw();
+  let changed=false;
+  // normalizar campos faltantes
+  lista.forEach((w,i)=>{
+    if(w.x==null){ w.x = 40 + (i%4)*180; changed=true; }
+    if(w.y==null){ w.y = 40 + Math.floor(i/4)*130; changed=true; }
+    if(w.parentId===undefined){ w.parentId = (i===0?null:(lista[0]&&lista[0].id)||null); changed=true; }
+    if(w.rol===undefined){ w.rol=''; changed=true; }
+    if(w.cumple===undefined){ w.cumple=''; changed=true; }
+    if(w.ingreso===undefined){ w.ingreso=''; changed=true; }
+    if(w.telefono===undefined){ w.telefono=''; changed=true; }
+  });
+  // migrar nodos del organigrama legado una sola vez
+  if(!localStorage.getItem('avit_org_migrado')){
+    let org=null; try{ org=JSON.parse(localStorage.getItem('avit_organigrama')||'null'); }catch(e){}
+    const nodes=(org&&Array.isArray(org.nodes))?org.nodes:[];
+    if(nodes.length){
+      // mapa viejo-id → nuevo-id (por si ya existe un colaborador con ese nombre)
+      const idMap={};
+      nodes.forEach(nd=>{
+        const nombre=(nd.nombre||'').trim();
+        const ya = nombre ? lista.find(w=>(w.nombre||'').trim().toLowerCase()===nombre.toLowerCase()) : null;
+        if(ya){
+          idMap[nd.id]=ya.id;
+          // conservar posición/rol/color del nodo si el colaborador no los tenía
+          if(ya.x==null||ya.x===undefined) ya.x=nd.x;
+          if(ya.y==null||ya.y===undefined) ya.y=nd.y;
+          if(!ya.rol && nd.rol) ya.rol=nd.rol;
+          if(!ya.color && nd.color) ya.color=nd.color;
+        } else {
+          const nid='aw_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6);
+          idMap[nd.id]=nid;
+          lista.push({ id:nid, nombre:nombre||'Colaborador', email:'', rol:nd.rol||'',
+            cumple:'', ingreso:'', telefono:'', parentId:null,
+            x:nd.x, y:nd.y, color:nd.color||'', creadoEn:Date.now() });
+        }
+      });
+      // reconstruir jerarquía con los ids nuevos
+      nodes.forEach(nd=>{
+        const w=lista.find(x=>x.id===idMap[nd.id]); if(!w) return;
+        w.parentId = nd.parentId ? (idMap[nd.parentId]||null) : null;
+      });
+      changed=true;
+    }
+    try{ localStorage.setItem('avit_org_migrado','1'); }catch(e){}
+  }
+  if(changed) awSave(lista);
+  return lista;
+}
+function awSave(arr){
+  localStorage.setItem('avit_arkiworkers', JSON.stringify(arr));
+  if(typeof triggerAutoSync==='function') triggerAutoSync();
+}
 
 /* Trabajos de un colaborador: totales e "en proceso" (proyectos activos).
    Cuenta tanto los roles del cotizador como las tareas asignadas en el Kanban. */
@@ -6327,11 +6460,40 @@ function awIniciales(nombre){
   return (w.length>=2 ? w[0][0]+w[w.length-1][0] : (w[0]||'?').slice(0,2)).toUpperCase();
 }
 
-/* ── Render de la pestaña ── */
+/* ── Utilidades de fechas de colaborador ── */
+function _awNuevoId(){ return 'aw_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6); }
+/* Días hasta el próximo cumpleaños (0 = hoy). Acepta AAAA-MM-DD o MM-DD. */
+function awDiasCumple(cumple){
+  if(!cumple) return null;
+  const m=(''+cumple).match(/(\d{4})?-?(\d{2})-(\d{2})$/);
+  if(!m) return null;
+  const mes=parseInt(m[2],10), dia=parseInt(m[3],10);
+  if(!mes||!dia) return null;
+  const hoy=new Date(); hoy.setHours(0,0,0,0);
+  let prox=new Date(hoy.getFullYear(), mes-1, dia);
+  if(prox<hoy) prox=new Date(hoy.getFullYear()+1, mes-1, dia);
+  return Math.round((prox-hoy)/86400000);
+}
+const _AW_MESES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function awFmtCumple(cumple){
+  if(!cumple) return '';
+  const m=(''+cumple).match(/(\d{4})?-?(\d{2})-(\d{2})$/); if(!m) return '';
+  return parseInt(m[3],10)+' '+_AW_MESES[parseInt(m[2],10)-1];
+}
+function awAntiguedad(ingreso){
+  if(!ingreso) return '';
+  const d=new Date(ingreso+'T12:00:00'); if(isNaN(d)) return '';
+  const meses=Math.max(0, Math.round((Date.now()-d)/(86400000*30.44)));
+  if(meses<1) return 'recién ingresó';
+  if(meses<12) return meses+' mes'+(meses===1?'':'es');
+  const a=Math.floor(meses/12), r=meses%12;
+  return a+' año'+(a===1?'':'s')+(r?' '+r+'m':'');
+}
+
+/* ── Render de la pestaña (lista + KPIs + cumpleaños) ── */
 function awRender(){
   const cont = document.getElementById('aw-lista');
   const kpis = document.getElementById('aw-kpis');
-  if(!cont) return;
   const lista = awLoad();
 
   if(kpis){
@@ -6343,31 +6505,37 @@ function awRender(){
                    + box(totalT,'Trabajos asignados','var(--text)');
   }
 
+  awRenderCumples(lista);
+
+  if(!cont) return;
   if(!lista.length){
     cont.innerHTML = `<div class="aw-empty">
       Todavía no registraste a nadie.<br>
-      Agregá a tu equipo para poder asignarles sprints en los proyectos.
+      Agregá a tu equipo para poder asignarles sprints y ubicarlos en el organigrama.
     </div>`;
     return;
   }
 
   cont.innerHTML = lista.map(w=>{
     const t = awTrabajos(w.nombre);
+    const col = (typeof orgColor==='function') ? orgColor(w) : 'var(--accent)';
+    const jefe = w.parentId ? lista.find(x=>x.id===w.parentId) : null;
+    const chips=[];
+    if(w.telefono) chips.push(`<span class="aw-chip">📞 ${escapeHtmlK(w.telefono)}</span>`);
+    if(w.email)    chips.push(`<span class="aw-chip">✉ ${escapeHtmlK(w.email)}</span>`);
+    if(w.cumple)   chips.push(`<span class="aw-chip">🎂 ${escapeHtmlK(awFmtCumple(w.cumple))}</span>`);
+    if(w.ingreso)  chips.push(`<span class="aw-chip">📅 ${escapeHtmlK(awAntiguedad(w.ingreso))}</span>`);
+    if(jefe)       chips.push(`<span class="aw-chip">↳ ${escapeHtmlK(jefe.nombre)}</span>`);
     return `<div class="aw-card">
-      <div class="aw-avatar">${awIniciales(w.nombre)}</div>
+      <div class="aw-avatar" style="background:${col}22;color:${col}">${awIniciales(w.nombre)}</div>
       <div class="aw-info">
         <div class="aw-nombre">${escapeHtmlK(w.nombre)}</div>
-        <div class="aw-email">${escapeHtmlK(w.email||'—')}</div>
+        <div class="aw-rol-lbl">${escapeHtmlK(w.rol||'Sin rol asignado')}</div>
+        ${chips.length?`<div class="aw-chips">${chips.join('')}</div>`:''}
       </div>
       <div class="aw-stats">
-        <div>
-          <div class="aw-stat-val act">${t.activos}</div>
-          <div class="aw-stat-lbl">En proceso</div>
-        </div>
-        <div>
-          <div class="aw-stat-val">${t.total}</div>
-          <div class="aw-stat-lbl">Asignados</div>
-        </div>
+        <div><div class="aw-stat-val act">${t.activos}</div><div class="aw-stat-lbl">En proceso</div></div>
+        <div><div class="aw-stat-val">${t.total}</div><div class="aw-stat-lbl">Asignados</div></div>
       </div>
       <div class="aw-acts">
         <button class="aw-btn" title="Editar" onclick="awAbrirModal('${w.id}')">✎</button>
@@ -6377,17 +6545,71 @@ function awRender(){
   }).join('');
 }
 
+/* Aviso de próximos cumpleaños (dentro de 30 días) */
+function awRenderCumples(lista){
+  const box=document.getElementById('aw-cumples'); if(!box) return;
+  lista = lista || awLoad();
+  const prox = lista
+    .map(w=>({w, d:awDiasCumple(w.cumple)}))
+    .filter(x=>x.d!=null && x.d<=30)
+    .sort((a,b)=>a.d-b.d);
+  if(!prox.length){ box.innerHTML=''; box.style.display='none'; return; }
+  box.style.display='block';
+  box.innerHTML = `<div class="aw-cumple-banner">
+    <span class="aw-cumple-ico">🎂</span>
+    <div class="aw-cumple-body">
+      <div class="aw-cumple-tit">Próximos cumpleaños</div>
+      <div class="aw-cumple-list">${prox.map(x=>{
+        const cuando = x.d===0?'hoy':x.d===1?'mañana':'en '+x.d+' días';
+        return `<span class="aw-cumple-item${x.d<=1?' hoy':''}">${escapeHtmlK(x.w.nombre)} · ${awFmtCumple(x.w.cumple)} <em>(${cuando})</em></span>`;
+      }).join('')}</div>
+    </div>
+  </div>`;
+}
+
+/* ── Vista Lista / Organigrama ── */
+var _eqVista='lista';
+function eqVista(v){
+  _eqVista=v;
+  const L=document.getElementById('eq-vista-lista'), O=document.getElementById('eq-vista-org');
+  if(L) L.style.display=v==='lista'?'block':'none';
+  if(O) O.style.display=v==='org'?'block':'none';
+  document.getElementById('eqv-lista')?.classList.toggle('active',v==='lista');
+  document.getElementById('eqv-org')?.classList.toggle('active',v==='org');
+  if(v==='org'){ requestAnimationFrame(()=>{ if(typeof orgRender==='function') orgRender(); }); }
+}
+function eqRefresh(){ eqVista(_eqVista); awRender(); }
+window.eqVista=eqVista; window.eqRefresh=eqRefresh;
+window.awDiasCumple=awDiasCumple; window.awRenderCumples=awRenderCumples;
+
 /* ── Modal de registro / edición ── */
 let _awDestino = null;   // id del <select> que disparó el alta desde el Cotizador
 
+/* Llena el <select> "Reporta a" con los demás colaboradores */
+function awLlenarReporta(selfId, parentId){
+  const sel=document.getElementById('aw-reporta'); if(!sel) return;
+  const lista=awLoad();
+  let html='<option value="">— Nadie (nivel superior) —</option>';
+  lista.filter(w=>w.id!==selfId).forEach(w=>{
+    html+=`<option value="${w.id}" ${w.id===parentId?'selected':''}>${escapeHtmlK(w.nombre)}${w.rol?' · '+escapeHtmlK(w.rol):''}</option>`;
+  });
+  sel.innerHTML=html;
+  sel.value=parentId||'';
+}
 function awAbrirModal(id, destino){
   _awDestino = destino || null;
   const ov = document.getElementById('awModal');
   if(!ov) return;
   const w = id ? awLoad().find(x=>x.id===id) : null;
-  document.getElementById('aw-id').value    = w ? w.id : '';
-  document.getElementById('aw-nombre').value= w ? w.nombre : '';
-  document.getElementById('aw-email').value = w ? (w.email||'') : '';
+  const sv=(f,v)=>{ const e=document.getElementById(f); if(e) e.value=v||''; };
+  sv('aw-id',    w?w.id:'');
+  sv('aw-nombre',w?w.nombre:'');
+  sv('aw-rol',   w?w.rol:'');
+  sv('aw-telefono',w?w.telefono:'');
+  sv('aw-email', w?w.email:'');
+  sv('aw-cumple',w?(w.cumple&&w.cumple.length===10?w.cumple:''):'');
+  sv('aw-ingreso',w?w.ingreso:'');
+  awLlenarReporta(w?w.id:null, w?w.parentId:null);
   document.getElementById('awModalKicker').textContent = w ? 'Editar colaborador' : 'Nuevo colaborador';
   document.getElementById('awModalTitle').textContent  = w ? w.nombre : 'Agregar al equipo';
   _awErr('');
@@ -6409,33 +6631,43 @@ function _awErr(m){
 }
 
 function awGuardar(){
-  const id     = document.getElementById('aw-id').value;
-  const nombre = (document.getElementById('aw-nombre').value||'').trim();
-  const email  = (document.getElementById('aw-email').value||'').trim();
+  const gv=f=>{ const e=document.getElementById(f); return e?(e.value||'').trim():''; };
+  const id     = gv('aw-id');
+  const nombre = gv('aw-nombre');
+  const email  = gv('aw-email');
+  const rol    = gv('aw-rol');
+  const telefono = gv('aw-telefono');
+  const cumple = gv('aw-cumple');
+  const ingreso= gv('aw-ingreso');
+  const parentId = gv('aw-reporta') || null;
 
   if(!nombre){ _awErr('Escribí el nombre del colaborador.'); return; }
-  if(!email){ _awErr('Escribí el correo electrónico.'); return; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ _awErr('El correo no parece válido.'); return; }
+  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ _awErr('El correo no parece válido.'); return; }
 
   const lista = awLoad();
-  // No repetir correos entre colaboradores distintos
-  const dup = lista.find(w => (w.email||'').toLowerCase()===email.toLowerCase() && w.id!==id);
-  if(dup){ _awErr('Ese correo ya está registrado para '+dup.nombre+'.'); return; }
+  if(email){
+    const dup = lista.find(w => (w.email||'').toLowerCase()===email.toLowerCase() && w.id!==id);
+    if(dup){ _awErr('Ese correo ya está registrado para '+dup.nombre+'.'); return; }
+  }
 
   let nombreAnterior = null;
   if(id){
     const w = lista.find(x=>x.id===id);
-    if(w){ nombreAnterior = w.nombre; w.nombre=nombre; w.email=email; }
+    if(w){ nombreAnterior = w.nombre;
+      Object.assign(w, {nombre, email, rol, telefono, cumple, ingreso, parentId});
+    }
   } else {
-    lista.push({ id:'aw_'+Date.now(), nombre, email, creadoEn:Date.now() });
+    const i=lista.length;
+    lista.push({ id:_awNuevoId(), nombre, email, rol, telefono, cumple, ingreso,
+      parentId, x:40+(i%4)*180, y:40+Math.floor(i/4)*130, color:'', creadoEn:Date.now() });
   }
   awSave(lista);
 
-  // Si le cambiaron el nombre, actualizarlo donde ya estaba asignado
   if(nombreAnterior && nombreAnterior!==nombre) awRenombrarEnTodo(nombreAnterior, nombre);
 
   awCerrarModal();
   awRender();
+  if(typeof orgRender==='function' && _eqVista==='org') orgRender();
   awLlenarSelects(_awDestino ? {[_awDestino]:nombre} : null);
   if(typeof calc==='function') try{ calc(); }catch(e){}
   const ss=document.getElementById('syncStatus');
@@ -6466,10 +6698,16 @@ function awEliminar(id){
   if(!w) return;
   const t=awTrabajos(w.nombre);
   let msg='¿Eliminar a '+w.nombre+' del equipo?';
-  if(t.activos>0) msg+='\n\nTiene '+t.activos+' trabajo'+(t.activos===1?'':'s')+' en proceso. Las asignaciones que ya hiciste en los proyectos NO se borran, pero dejará de aparecer en la lista para asignar.';
+  if(t.activos>0) msg+='\n\nTiene '+t.activos+' trabajo'+(t.activos===1?'':'s')+' en proceso. Las asignaciones que ya hiciste en los proyectos NO se borran, pero dejará de aparecer para asignar.';
   if(!confirm(msg)) return;
-  awSave(lista.filter(x=>x.id!==id));
+  // reasignar hijos al superior del eliminado (no dejarlos huérfanos)
+  const nuevoPadre = w.parentId || null;
+  const resto = lista.filter(x=>x.id!==id);
+  resto.forEach(x=>{ if(x.parentId===id) x.parentId=nuevoPadre; });
+  awSave(resto);
+  if(_orgSelected===id) _orgSelected=null;
   awRender();
+  if(typeof orgRender==='function' && _eqVista==='org') orgRender();
   awLlenarSelects();
 }
 
@@ -6991,7 +7229,7 @@ window.finSocioEdit=finSocioEdit;
 
 /* ── Tab navigation ───────────────────────────────────────── */
 function adminShowTab(tab){
-  ['finanzas','contaduria','colab','organigrama'].forEach(t=>{
+  ['finanzas','contaduria','colab'].forEach(t=>{
     const body=document.getElementById('atab-body-'+t);
     const btn =document.getElementById('atab-'+t);
     if(body) body.style.display=t===tab?'block':'none';
@@ -6999,7 +7237,7 @@ function adminShowTab(tab){
   });
   if(tab==='finanzas')  adminRenderFinanzas();
   if(tab==='contaduria') adminRenderContaduria();
-  if(tab==='colab'){    adminRenderColab(); if(typeof awRender==='function') awRender(); }
+  if(tab==='colab'){    adminRenderColab(); if(typeof awRender==='function') awRender(); if(typeof eqRefresh==='function') eqRefresh(); }
 }
 window.adminShowTab=adminShowTab;
 
@@ -9035,12 +9273,12 @@ window.exportarProgramaJSON = exportarProgramaJSON;
    MÓDULO ORGANIGRAMA — Agile drag-and-drop org chart
    ══════════════════════════════════════════════════════════════ */
 
-const ORG_DEFAULT = {nodes:[
-  {id:'n0',nombre:'Dirección',rol:'Director / Fundador',parentId:null,x:320,y:40,color:'#00E5FF'},
-]};
-
-function orgLoad(){ try{ return JSON.parse(localStorage.getItem('avit_organigrama')||'null')||JSON.parse(JSON.stringify(ORG_DEFAULT)); }catch(e){ return JSON.parse(JSON.stringify(ORG_DEFAULT)); } }
-function orgSave(){ localStorage.setItem('avit_organigrama',JSON.stringify({nodes:_orgNodes})); }
+/* El organigrama ahora es una VISTA de los colaboradores (awLoad()).
+   _orgNodes apunta directamente a la lista de colaboradores; cada "nodo"
+   es un colaborador con x, y, parentId, color. orgSave() persiste en
+   avit_arkiworkers. */
+function orgSyncNodes(){ _orgNodes = (typeof awLoad==='function') ? awLoad() : []; return _orgNodes; }
+function orgSave(){ if(typeof awSave==='function') awSave(_orgNodes); }
 
 var _orgNodes=[];
 var _orgDrag=null;
@@ -9054,6 +9292,7 @@ function orgRender(){
   const wrap = document.getElementById('orgWrap');
   const svg  = document.getElementById('orgSvg');
   if(!wrap||!svg) return;
+  orgSyncNodes();
 
   // 1. Limpiar nodos previos (no el SVG)
   wrap.querySelectorAll('.org-node').forEach(el=>el.remove());
@@ -9085,11 +9324,13 @@ function orgRender(){
     d.className='org-node'+(!n.parentId?' org-node-root':'');
     d.dataset.id=n.id;
     d.style.cssText=`position:absolute;left:${n.x}px;top:${n.y}px;width:160px;z-index:10;cursor:grab;user-select:none`;
+    const cakeDays = (typeof awDiasCumple==='function') ? awDiasCumple(n.cumple) : null;
+    const cake = (cakeDays!=null && cakeDays<=30) ? `<span class="org-cake" title="Cumpleaños ${cakeDays===0?'hoy':'en '+cakeDays+' día'+(cakeDays===1?'':'s')}">🎂</span>` : '';
     d.innerHTML=`
       <div class="org-node-inner${_orgSelected===n.id?' selected':''}">
         <div class="org-avatar" style="background:${col}22;color:${col};border-color:${col}44">${ini}</div>
-        <div class="org-name" title="${escapeHtmlK(n.nombre)}">${escapeHtmlK(n.nombre)}</div>
-        <div class="org-rol">${escapeHtmlK(n.rol||'')}</div>
+        <div class="org-name" title="${escapeHtmlK(n.nombre)}">${escapeHtmlK(n.nombre)}${cake}</div>
+        <div class="org-rol">${escapeHtmlK(n.rol||'—')}</div>
       </div>
       <div class="org-node-badge" onclick="event.stopPropagation();orgCtxOpen(event,'${n.id}')">⋮</div>`;
     d.addEventListener('mousedown', orgDragStart, false);
@@ -9183,22 +9424,8 @@ window.orgCtxClose=orgCtxClose;
 
 /* ── Editar ───────────────────────────────────────────────────── */
 function orgEditNode(id){
-  const n=_orgNodes.find(x=>x.id===id); if(!n) return;
-  const m=document.createElement('div');
-  m.id='orgEditModal';
-  m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9990;display:flex;align-items:center;justify-content:center;padding:20px';
-  m.onclick=e=>{if(e.target===m)m.remove();};
-  m.innerHTML=`<div style="background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:22px 26px;width:100%;max-width:340px" onclick="event.stopPropagation()">
-    <div style="font-family:var(--font-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px">Editar colaborador</div>
-    <div style="margin-bottom:.65rem"><label class="lbl">Nombre</label><input type="text" id="orgEName" value="${n.nombre||''}"></div>
-    <div style="margin-bottom:1rem"><label class="lbl">Rol / Cargo</label><input type="text" id="orgERol" value="${n.rol||''}" placeholder="Arquitecto, Diseñador..."></div>
-    <div style="display:flex;justify-content:flex-end;gap:8px">
-      <button onclick="document.getElementById('orgEditModal').remove()" style="padding:6px 13px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">Cancelar</button>
-      <button onclick="orgSaveEdit('${id}')" style="padding:6px 16px;font-size:11px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">Guardar</button>
-    </div>
-  </div>`;
-  document.body.appendChild(m);
-  setTimeout(()=>document.getElementById('orgEName')?.select(),60);
+  // Usa el modal unificado de colaborador (misma ficha que la Lista)
+  if(typeof awAbrirModal==='function'){ awAbrirModal(id); return; }
 }
 function orgSaveEdit(id){
   const n=_orgNodes.find(x=>x.id===id); if(!n) return;
@@ -9211,17 +9438,21 @@ window.orgSaveEdit=orgSaveEdit;
 
 /* ── Agregar ─────────────────────────────────────────────────── */
 function orgAddNode(){
-  const id='n'+Date.now();
-  const px=_orgSelected?(_orgNodes.find(n=>n.id===_orgSelected)?.x||200):200;
-  const py=_orgSelected?(_orgNodes.find(n=>n.id===_orgSelected)?.y||100)+140:300;
-  _orgNodes.push({id,nombre:'Nuevo colaborador',rol:'Cargo',parentId:_orgSelected||(_orgNodes[0]?.id||null),x:px,y:py});
-  orgRender(); orgEditNode(id);
+  orgSyncNodes();
+  const sel=_orgSelected?_orgNodes.find(n=>n.id===_orgSelected):null;
+  const px=sel?sel.x:200, py=sel?sel.y+140:300;
+  const id=_awNuevoId();
+  _orgNodes.push({id,nombre:'Nuevo colaborador',email:'',rol:'',cumple:'',ingreso:'',telefono:'',
+    parentId:_orgSelected||(_orgNodes[0]&&_orgNodes[0].id)||null,x:px,y:py,color:'',creadoEn:Date.now()});
+  orgSave(); orgRender(); if(typeof awAbrirModal==='function') awAbrirModal(id);
 }
 function orgAddChild(parentId){
+  orgSyncNodes();
   const p=_orgNodes.find(n=>n.id===parentId);
-  const id='n'+Date.now();
-  _orgNodes.push({id,nombre:'Nuevo colaborador',rol:'Cargo',parentId,x:(p?.x||200)+20,y:(p?.y||100)+140});
-  orgRender(); orgEditNode(id);
+  const id=_awNuevoId();
+  _orgNodes.push({id,nombre:'Nuevo colaborador',email:'',rol:'',cumple:'',ingreso:'',telefono:'',
+    parentId,x:(p?p.x:200)+20,y:(p?p.y:100)+140,color:'',creadoEn:Date.now()});
+  orgSave(); orgRender(); if(typeof awAbrirModal==='function') awAbrirModal(id);
 }
 window.orgAddNode=orgAddNode; window.orgAddChild=orgAddChild;
 
@@ -9263,11 +9494,8 @@ window.orgPickColor=orgPickColor; window.orgSetColor=orgSetColor;
 
 /* ── Eliminar ─────────────────────────────────────────────────── */
 function orgDeleteNode(id){
-  if(!confirm('¿Eliminar este nodo?')) return;
-  _orgNodes=_orgNodes.filter(n=>n.id!==id);
-  _orgNodes.forEach(n=>{if(n.parentId===id) n.parentId=null;});
-  if(_orgSelected===id) _orgSelected=null;
-  orgRender(); orgSave();
+  // Eliminar = quitar al colaborador del equipo (misma acción que en la Lista)
+  if(typeof awEliminar==='function'){ awEliminar(id); return; }
 }
 window.orgDeleteNode=orgDeleteNode;
 
@@ -9290,11 +9518,12 @@ function orgAutoLayout(){
 window.orgAutoLayout=orgAutoLayout;
 
 /* ── Guardar públicamente ─────────────────────────────────────── */
-window.orgSave=function(){ orgSave(); const ss=document.getElementById('syncStatus'); if(ss){ss.textContent='✦ Organigrama guardado';setTimeout(()=>{if(ss.textContent==='✦ Organigrama guardado')ss.textContent='';},2000);} };
+window.orgSave=function(){ if(typeof awSave==='function') awSave(_orgNodes); const ss=document.getElementById('syncStatus'); if(ss){ss.textContent='✦ Organigrama guardado';setTimeout(()=>{if(ss.textContent==='✦ Organigrama guardado')ss.textContent='';},2000);} };
 
 
 /* ─── Constancia Oficial del Organigrama ─── */
 function orgGenPDF(){
+  orgSyncNodes();
   const fecha   = new Date().toLocaleDateString('es-GT',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   const fechaS  = new Date().toLocaleDateString('es-GT',{day:'2-digit',month:'long',year:'numeric'});
   const nodes   = _orgNodes || [];
@@ -10104,9 +10333,8 @@ Object.assign(window,{
 const _adminOrgTabOrig = window.adminShowTab;
 window.adminShowTab = function(tab){
   _adminOrgTabOrig.apply(this, arguments);
-  if(tab==='organigrama'){
-    const d=orgLoad(); _orgNodes=d.nodes||[];
-    requestAnimationFrame(orgRender);
+  if(tab==='colab' && typeof _eqVista!=='undefined' && _eqVista==='org'){
+    requestAnimationFrame(()=>{ if(typeof orgRender==='function') orgRender(); });
   }
 };
 
@@ -10366,6 +10594,7 @@ function renderEmpresa(){
   empPintarImg('logo', p.logo);
   empPintarImg('watermark', p.watermark);
   empPintarImg('firma', p.firma);
+  empPintarImg('favicon', p.favicon);
   // Observaciones
   _empObs = Array.isArray(p.observaciones) ? p.observaciones.slice() : EMP_OBS_DEFAULT.slice();
   empObsRender();
@@ -10402,10 +10631,38 @@ function empRutasReset(){
 window.empRutasReset = empRutasReset;
 
 /* ── Imágenes (logo / watermark / firma) ── */
-const _EMP_IMG_IDS = {logo:'empLogoPreview', watermark:'empWatermarkPreview', firma:'empFirmaPreview'};
-const _EMP_DEL_IDS = {logo:'empLogoDel', watermark:'empWatermarkDel', firma:'empFirmaDel'};
+const _EMP_IMG_IDS = {logo:'empLogoPreview', watermark:'empWatermarkPreview', firma:'empFirmaPreview', favicon:'empFaviconPreview'};
+const _EMP_DEL_IDS = {logo:'empLogoDel', watermark:'empWatermarkDel', firma:'empFirmaDel', favicon:'empFaviconDel'};
+
+/* Aplica el favicon guardado al <link> del <head> para que Chrome lo muestre */
+function empAplicarFavicon(dataUrl){
+  let link = document.getElementById('appFavicon');
+  if(!link){
+    link = document.createElement('link');
+    link.id = 'appFavicon'; link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  if(dataUrl){
+    // tipo MIME según el dataURL (png / x-icon / svg)
+    const m = (''+dataUrl).match(/^data:([^;]+)/);
+    link.type = m ? m[1] : 'image/png';
+    link.href = dataUrl;
+  } else {
+    // favicon transparente 1×1 por defecto (sin ícono propio)
+    link.type = 'image/png';
+    link.href = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M8AAAMBAQAY3Y2wAAAAAElFTkSuQmCC';
+  }
+  // Mostrar el favicon también en la cabecera (a la izquierda del nombre)
+  const topImg = document.getElementById('topFavicon');
+  if(topImg){
+    if(dataUrl){ topImg.src = dataUrl; topImg.style.display = ''; }
+    else { topImg.removeAttribute('src'); topImg.style.display = 'none'; }
+  }
+}
+window.empAplicarFavicon = empAplicarFavicon;
 
 function empPintarImg(tipo, dataUrl){
+  if(tipo==='favicon') empAplicarFavicon(dataUrl);
   const box = document.getElementById(_EMP_IMG_IDS[tipo]);
   const del = document.getElementById(_EMP_DEL_IDS[tipo]);
   if(!box) return;
@@ -10414,7 +10671,7 @@ function empPintarImg(tipo, dataUrl){
     box.dataset.empty = '0';
     if(del) del.style.display = '';
   } else {
-    const labels = {logo:'Sin logo', watermark:'Sin marca de agua', firma:'Sin firma'};
+    const labels = {logo:'Sin logo', watermark:'Sin marca de agua', firma:'Sin firma', favicon:'Sin favicon'};
     box.innerHTML = '<span class="emp-preview-empty">'+labels[tipo]+'</span>';
     box.dataset.empty = '1';
     if(del) del.style.display = 'none';
@@ -10424,23 +10681,47 @@ function empPintarImg(tipo, dataUrl){
 function empSubirImg(ev, tipo){
   const file = ev.target.files && ev.target.files[0];
   if(!file){ return; }
-  if(file.type !== 'image/png'){
-    alert('El archivo debe ser un .png');
+  const esFavicon = (tipo==='favicon');
+  const okTypes = esFavicon
+    ? ['image/png','image/x-icon','image/vnd.microsoft.icon','image/svg+xml']
+    : ['image/png'];
+  if(okTypes.indexOf(file.type)===-1){
+    alert(esFavicon ? 'El favicon debe ser .png, .ico o .svg' : 'El archivo debe ser un .png');
     ev.target.value = '';
     return;
   }
-  if(file.size > 2*1024*1024){
-    alert('La imagen es muy pesada (máx. 2 MB). Optimizala e intentá de nuevo.');
+  const maxMB = esFavicon ? 1 : 2;
+  if(file.size > maxMB*1024*1024){
+    alert('La imagen es muy pesada (máx. '+maxMB+' MB). Optimizala e intentá de nuevo.');
     ev.target.value = '';
     return;
   }
+  const guardar = (dataUrl) => {
+    const p = _perfil();
+    p[tipo] = dataUrl;   // dataURL base64
+    _perfilSave(p);
+    empPintarImg(tipo, dataUrl);
+    _empFlash((esFavicon?'Favicon':tipo.charAt(0).toUpperCase()+tipo.slice(1))+' actualizado');
+  };
   const reader = new FileReader();
   reader.onload = e => {
-    const p = _perfil();
-    p[tipo] = e.target.result;   // dataURL base64
-    _perfilSave(p);
-    empPintarImg(tipo, e.target.result);
-    _empFlash(tipo.charAt(0).toUpperCase()+tipo.slice(1)+' actualizado');
+    const dataUrl = e.target.result;
+    // Avisar (no bloquear) si el favicon no es cuadrado
+    if(esFavicon && file.type!=='image/svg+xml' && file.type!=='image/x-icon' && file.type!=='image/vnd.microsoft.icon'){
+      const img = new Image();
+      img.onload = () => {
+        if(img.width !== img.height){
+          if(!confirm('El favicon no es cuadrado ('+img.width+'×'+img.height+'). Se verá deformado en la pestaña. ¿Usarlo de todos modos?')){
+            ev.target.value=''; return;
+          }
+        }
+        guardar(dataUrl);
+      };
+      img.onerror = () => guardar(dataUrl);
+      img.src = dataUrl;
+    } else {
+      guardar(dataUrl);
+    }
   };
   reader.readAsDataURL(file);
   ev.target.value = '';
@@ -11234,7 +11515,7 @@ window.setupNext = setupNext;
 
 
 /* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
-const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_organigrama','avit_roles','avit_fases','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
+const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_arkiworkers','avit_organigrama','avit_roles','avit_fases','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
 async function _pullDatos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
@@ -11692,6 +11973,8 @@ function toggleIsr(){
 function toggleFase1(){
   const on=document.getElementById('fase1On').checked;
   const fb=document.getElementById('fase1Body'); if(fb) fb.style.display=on?'':'none';
+  const fc=document.getElementById('fase1Config'); if(fc) fc.style.display=on?'':'none';
+  const fo=document.getElementById('fase1Off'); if(fo) fo.style.display=on?'none':'block';
   setVis('colF1Row',on);setVis('colRendRow',on);
   document.getElementById('rowF1r').style.display=on?'flex':'none';
   const rf=document.getElementById('rowPctF1');rf.style.opacity=on?'1':'0.35';rf.style.pointerEvents=on?'':'none';
@@ -17382,15 +17665,17 @@ function closeModal(){
 document.addEventListener('DOMContentLoaded',()=>{
   renderPlanosRows();
   if(typeof awLlenarSelects==='function') awLlenarSelects();
-  const t=new Date(),n=new Date(t),dy=t.getDay(),df=dy===1?7:(8-dy)%7||7;
-  n.setDate(t.getDate()+df);
-  document.getElementById('projStart').value=fmtFechaGT(n.toISOString().split('T')[0]);
+  // Fecha de inicio por defecto = hoy; la entrega se calcula sola desde los sprints.
+  document.getElementById('projStart').value=fmtFechaGT(new Date().toISOString().split('T')[0]);
+  window._projEndManual=false;
   document.getElementById('ing-year').value=new Date().getFullYear();
   // Snapshot inicial de cantidades (antes de calc) para que la primera llamada
   // no dispare la sincronización con un delta artificial
   if(typeof inicializarPlanoQtyPrev === 'function') inicializarPlanoQtyPrev();
   if(typeof colabRender === 'function') colabRender();   // colaboradores múltiples
   if(typeof cotFasesRender === 'function') cotFasesRender();   // otras fases (Procesos)
+  // Favicon de la empresa en la pestaña de Chrome (desde el arranque)
+  try{ if(typeof empAplicarFavicon==='function'){ const _pf=JSON.parse(localStorage.getItem('avit_perfil')||'{}'); if(_pf.favicon) empAplicarFavicon(_pf.favicon); } }catch(e){}
   calc();renderIngresos();renderArtefactos();renderHome();
 
   // ═══ Atajos de teclado globales ═══
