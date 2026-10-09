@@ -2683,6 +2683,61 @@ select:-webkit-autofill{
 /* ═══ PANEL DE LA EMPRESA ═══ */
 /* ── Layout del Panel de empresa: sidebar vertical + contenido ── */
 /* ── Administrador: menú vertical ── */
+/* ── Proyectos: período de métricas ── */
+.ing-per{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;margin-bottom:10px;border:1px solid var(--border-accent);border-radius:var(--r-lg);background:var(--accent-subtle,rgba(212,168,67,0.06))}
+.ing-per-l,.ing-per-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ing-per-tit{font-family:var(--font-display);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.ing-per select{width:auto;padding:5px 9px;font-size:12px}
+.ing-seg{display:inline-flex;padding:2px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:rgba(0,0,0,0.12)}
+.ing-seg button{padding:4px 10px;font-size:10.5px;border:none;border-radius:calc(var(--r-md) - 2px);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.ing-seg button.on{background:var(--accent);color:var(--text-on-accent,#111)}
+.ing-nav,.ing-hoy{padding:3px 9px;font-size:13px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-3);cursor:pointer}
+.ing-hoy{font-size:10px;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase}
+.ing-per-lbl{font-size:11.5px;color:var(--text-2);font-family:var(--font-mono);min-width:150px;text-align:center}
+.ing-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:.9rem}
+.ing-chip{display:flex;align-items:center;gap:8px;padding:6px 10px;border:0.5px solid var(--border);border-radius:var(--r-md);background:rgba(255,255,255,0.02);min-width:0;cursor:default}
+.ing-chip-ico{font-size:14px;flex-shrink:0;opacity:.85}
+.ing-chip-tx{display:grid;grid-template-columns:auto 1fr;column-gap:6px;align-items:baseline;min-width:0}
+.ing-chip-tx b{font-size:15px;font-weight:500;font-family:var(--font-mono);color:var(--text)}
+.ing-chip-tx span{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ing-chip-tx i{grid-column:1/-1;font-style:normal;font-size:9.5px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ing-chip.ok b{color:var(--green)}
+.ing-chip.late{border-color:rgba(224,90,90,0.4)}
+.ing-chip.late b{color:var(--red)}
+.ing-chip.mute b{color:var(--text-3)}
+@media(max-width:900px){.ing-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.ing-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.ing-per-lbl{min-width:0}}
+
+/* ── Resumen compacto de métricas: solo en móvil ── */
+.ing-msum{display:none}
+@media(max-width:720px){
+  .ing-msum{
+    display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;
+    padding:9px 12px;margin-bottom:8px;border:1px solid var(--border-accent);border-radius:var(--r-lg);
+    background:var(--accent-subtle,rgba(212,168,67,0.06));cursor:pointer;text-align:left;
+    font-family:var(--font-body);color:inherit;
+  }
+  .ing-msum-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .ing-msum-tx b{font-size:10px;font-family:var(--font-display);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  .ing-msum-tx span{font-size:11.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ing-msum-chev{font-size:13px;color:var(--text-3);flex-shrink:0;transition:transform .15s}
+  .ing-metrics{display:none}
+  .ing-metrics.open{display:block;animation:fadeUp .2s var(--ease-out) both}
+  /* más compacto cuando sí se expande en móvil */
+  .ing-per{padding:8px 9px;gap:7px}
+  .ing-per-l,.ing-per-r{gap:6px}
+  .ing-per select{padding:4px 7px;font-size:11.5px}
+  .ing-seg button{padding:3px 7px;font-size:9.5px}
+  .ing-nav,.ing-hoy{padding:2px 7px;font-size:12px}
+  .ing-per-lbl{font-size:10.5px}
+  .ing-chip{padding:5px 8px;gap:6px}
+  .ing-chip-ico{font-size:12px}
+  .ing-chip-tx b{font-size:13px}
+  .ing-chip-tx span{font-size:8.5px}
+  .ing-chip-tx i{display:none}
+  #ing-kpis .metric{padding:8px 10px!important}
+  #ing-kpis .ml{margin-bottom:2px!important}
+}
 .adm-pane{display:none}
 .adm-pane.active{display:block;animation:fadeUp .25s var(--ease-out) both}
 .adm-head{margin-bottom:14px}
@@ -3285,7 +3340,7 @@ code.emp-tag{font-family:var(--font-mono)}
         <button onclick="showPage('calc');toggleStudioMenu()" class="menu-config-item" data-page="calc">
           🧮 Cotizador
         </button>
-        <button onclick="showPage('ing');setTimeout(()=>document.getElementById('sec-herramientas')?.scrollIntoView({behavior:'smooth'}),120);toggleStudioMenu()" class="menu-config-item" data-page="herramientas">
+        <button onclick="showPage('home');setTimeout(()=>document.getElementById('sec-herramientas')?.scrollIntoView({behavior:'smooth'}),120);toggleStudioMenu()" class="menu-config-item" data-page="herramientas">
           🔧 Mis herramientas
         </button>
       </div>
@@ -4988,14 +5043,73 @@ code.emp-tag{font-family:var(--font-mono)}
   </div>
 </div>
 
+<div class="sc" id="sec-herramientas">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div class="sc-title" style="margin:0">🛠 Mis herramientas</div>
+    <button onclick="openArtefactoModal()" style="padding:5px 12px;font-size:10px;font-weight:500;border:0.5px solid var(--border-accent);border-radius:var(--r-md);background:var(--accent-subtle);color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">+ Agregar</button>
+  </div>
+  <p style="font-size:11px;color:var(--text-3);margin-bottom:12px">Calculadoras integradas y acceso rápido a tus artefactos de Claude.</p>
+
+  <!-- Calculadoras integradas -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+    <button onclick="showPage('estimado')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md);cursor:pointer;text-align:left;transition:all .15s var(--ease-out)" onmouseover="this.style.borderColor='rgba(212,168,67,0.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+      <span style="font-size:22px;flex-shrink:0">🧮</span>
+      <div style="min-width:0">
+        <div style="font-size:12px;font-weight:500;color:var(--text);font-family:var(--font-display)">Estimado rápido</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:1px">Costo por m² directo</div>
+      </div>
+    </button>
+    <button onclick="showPage('programa')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md);cursor:pointer;text-align:left;transition:all .15s var(--ease-out)" onmouseover="this.style.borderColor='rgba(212,168,67,0.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
+      <span style="font-size:22px;flex-shrink:0">📐</span>
+      <div style="min-width:0">
+        <div style="font-size:12px;font-weight:500;color:var(--text);font-family:var(--font-display)">Programa arquitectónico</div>
+        <div style="font-size:10px;color:var(--text-3);margin-top:1px">Presupuesto por ambientes</div>
+      </div>
+    </button>
+  </div>
+
+  <!-- Artefactos externos -->
+  <div id="artefactos-lista"></div>
+</div>
+
 </div><!-- /pg-home -->
 
 
 <!-- ═══════════════════════════════════════════════ PÁGINA: INGRESOS -->
 <div class="page" id="pg-ing">
 
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem">
-  <div id="ing-kpis" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;flex:1"></div>
+<!-- Período de las métricas (solo afecta las métricas, no el listado) -->
+<!-- Resumen compacto · solo visible en móvil, alterna el bloque completo -->
+<button type="button" class="ing-msum" id="ingMsum" onclick="ingToggleMetrics()">
+  <span class="ing-msum-tx">
+    <b id="ing-msum-per">—</b>
+    <span id="ing-msum-val">—</span>
+  </span>
+  <span class="ing-msum-chev" id="ingMsumChev">▾</span>
+</button>
+<div class="ing-metrics" id="ingMetrics">
+  <div class="ing-per">
+    <div class="ing-per-l">
+      <span class="ing-per-tit">Período</span>
+      <select id="ing-year" onchange="ingSetAnio(this.value)" title="Año"></select>
+      <div class="ing-seg" id="ing-modos">
+        <button data-modo="mes" onclick="ingSetModo('mes')">Mes</button>
+        <button data-modo="bim" onclick="ingSetModo('bim')">Bimestre</button>
+        <button data-modo="trim" onclick="ingSetModo('trim')">Trimestre</button>
+        <button data-modo="sem" onclick="ingSetModo('sem')">Semestre</button>
+        <button data-modo="anio" onclick="ingSetModo('anio')">Año</button>
+      </div>
+      <select id="ing-month" onchange="ingSetIdx(this.value)"></select>
+    </div>
+    <div class="ing-per-r">
+      <button class="ing-nav" onclick="ingNav(-1)" title="Anterior">←</button>
+      <span id="ing-per-label" class="ing-per-lbl">—</span>
+      <button class="ing-nav" onclick="ingNav(1)" title="Siguiente">→</button>
+      <button class="ing-hoy" onclick="ingHoy()">Hoy</button>
+    </div>
+  </div>
+  <div id="ing-kpis" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:8px"></div>
+  <div id="ing-strip" class="ing-strip"></div>
 </div>
 
 <div class="sc" id="formCot" style="display:none">
@@ -5055,55 +5169,14 @@ code.emp-tag{font-family:var(--font-mono)}
 
 <div class="sc">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem">
-    <div class="sc-title" style="margin:0">Resumen mensual</div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-      <label class="lbl" style="margin:0">Año:</label>
-      <select id="ing-year" onchange="renderIngresos()" style="width:auto;padding:4px 8px;font-size:12px"></select>
-      <label class="lbl" style="margin:0">Mes:</label>
-      <select id="ing-month" onchange="renderIngresos()" style="width:auto;padding:4px 8px;font-size:12px">
-        <option value="all">Todos</option>
-        <option value="0">Enero</option><option value="1">Febrero</option><option value="2">Marzo</option>
-        <option value="3">Abril</option><option value="4">Mayo</option><option value="5">Junio</option>
-        <option value="6">Julio</option><option value="7">Agosto</option><option value="8">Septiembre</option>
-        <option value="9">Octubre</option><option value="10">Noviembre</option><option value="11">Diciembre</option>
-      </select>
-    </div>
+    <div class="sc-title" style="margin:0">Resumen mensual <span id="ing-res-lbl" style="color:var(--text-3);font-weight:400;letter-spacing:0;text-transform:none;font-family:var(--font-body);font-size:11px;margin-left:6px"></span></div>
   </div>
   <div id="ing-mensual"></div>
 </div>
 
 <div class="sc">
-  <div class="sc-title">Cotizaciones registradas</div>
+  <div class="sc-title">Proyectos en curso</div>
   <div id="ing-lista"></div>
-</div>
-
-<div class="sc" id="sec-herramientas">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-    <div class="sc-title" style="margin:0">🛠 Mis herramientas</div>
-    <button onclick="openArtefactoModal()" style="padding:5px 12px;font-size:10px;font-weight:500;border:0.5px solid var(--border-accent);border-radius:var(--r-md);background:var(--accent-subtle);color:var(--accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.08em;text-transform:uppercase">+ Agregar</button>
-  </div>
-  <p style="font-size:11px;color:var(--text-3);margin-bottom:12px">Calculadoras integradas y acceso rápido a tus artefactos de Claude.</p>
-
-  <!-- Calculadoras integradas -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
-    <button onclick="showPage('estimado')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md);cursor:pointer;text-align:left;transition:all .15s var(--ease-out)" onmouseover="this.style.borderColor='rgba(212,168,67,0.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
-      <span style="font-size:22px;flex-shrink:0">🧮</span>
-      <div style="min-width:0">
-        <div style="font-size:12px;font-weight:500;color:var(--text);font-family:var(--font-display)">Estimado rápido</div>
-        <div style="font-size:10px;color:var(--text-3);margin-top:1px">Costo por m² directo</div>
-      </div>
-    </button>
-    <button onclick="showPage('programa')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:var(--r-md);cursor:pointer;text-align:left;transition:all .15s var(--ease-out)" onmouseover="this.style.borderColor='rgba(212,168,67,0.35)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">
-      <span style="font-size:22px;flex-shrink:0">📐</span>
-      <div style="min-width:0">
-        <div style="font-size:12px;font-weight:500;color:var(--text);font-family:var(--font-display)">Programa arquitectónico</div>
-        <div style="font-size:10px;color:var(--text-3);margin-top:1px">Presupuesto por ambientes</div>
-      </div>
-    </button>
-  </div>
-
-  <!-- Artefactos externos -->
-  <div id="artefactos-lista"></div>
 </div>
 
 <div class="sc" id="sc-terminados" style="display:none">
@@ -14807,7 +14880,7 @@ function renderFlujo(cots){
   `;
 }
 
-function saveCots(arr){try{if(typeof _cobroLogDiff==='function')_cobroLogDiff(arr);}catch(e){console.warn('cobroLog',e);}localStorage.setItem('avit_cots',JSON.stringify(arr));if(typeof triggerAutoSync==='function')triggerAutoSync();}
+function saveCots(arr){try{if(typeof _cotHitosDiff==='function')_cotHitosDiff(arr);}catch(e){console.warn('hitos',e);}try{if(typeof _cobroLogDiff==='function')_cobroLogDiff(arr);}catch(e){console.warn('cobroLog',e);}localStorage.setItem('avit_cots',JSON.stringify(arr));if(typeof triggerAutoSync==='function')triggerAutoSync();}
 
 function fmtCur(n,c){return(c||'GTQ')+' '+Math.round(n).toLocaleString()}
 
@@ -16003,57 +16076,253 @@ function renderHome(){
   }
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   PROYECTOS · período de las métricas (mes / bimestre / trimestre /
+   semestre / año). Las fechas SOLO afectan las métricas; el listado
+   de proyectos en curso no se filtra.
+   ══════════════════════════════════════════════════════════════ */
+const ING_MODOS = { mes:{n:12,size:1,lbl:'Mes'}, bim:{n:6,size:2,lbl:'Bimestre'}, trim:{n:4,size:3,lbl:'Trimestre'}, sem:{n:2,size:6,lbl:'Semestre'}, anio:{n:1,size:12,lbl:'Año'} };
+const _ING_MES3 = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const _ING_MESL = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var _ingPer = (function(){
+  const h=new Date();
+  let p={modo:'mes', anio:h.getFullYear(), idx:h.getMonth()};
+  try{ const s=JSON.parse(localStorage.getItem('avit_ing_periodo')||'null'); if(s && ING_MODOS[s.modo]) p=Object.assign(p,s); }catch(e){}
+  return p;
+})();
+function _ingPerSave(){ try{ localStorage.setItem('avit_ing_periodo', JSON.stringify(_ingPer)); }catch(e){} }
+
+function _ingIso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function _ingToIso(f){
+  if(!f) return '';
+  if(typeof f==='number'){ const d=new Date(f); return isNaN(d)?'':_ingIso(d); }
+  return (typeof parseFechaGT==='function' ? parseFechaGT(f) : '') || '';
+}
+/* Rango activo → {anio, m0, m1, desde, hasta, label} */
+function ingRango(){
+  const M=ING_MODOS[_ingPer.modo]||ING_MODOS.mes;
+  const idx=Math.min(Math.max(0,_ingPer.idx|0), M.n-1);
+  const a=_ingPer.anio, m0=idx*M.size, m1=m0+M.size-1;
+  const desde=_ingIso(new Date(a,m0,1)), hasta=_ingIso(new Date(a,m1+1,0));
+  let label;
+  if(_ingPer.modo==='mes') label=_ING_MESL[m0]+' '+a;
+  else if(_ingPer.modo==='anio') label='Año '+a;
+  else if(_ingPer.modo==='sem') label=(idx===0?'1er':'2º')+' semestre '+a;
+  else if(_ingPer.modo==='trim') label='T'+(idx+1)+' · '+_ING_MES3[m0]+'–'+_ING_MES3[m1]+' '+a;
+  else label=_ING_MES3[m0]+'–'+_ING_MES3[m1]+' '+a;
+  return {anio:a, m0, m1, desde, hasta, label, modo:_ingPer.modo};
+}
+function _ingEn(iso,r){ return !!iso && iso>=r.desde && iso<=r.hasta; }
+function _ingSubOpts(modo){
+  const M=ING_MODOS[modo];
+  if(modo==='mes') return _ING_MESL.map((l,i)=>[i,l]);
+  if(modo==='anio') return [[0,'Enero – Diciembre']];
+  if(modo==='sem') return [[0,'1er semestre (Ene–Jun)'],[1,'2º semestre (Jul–Dic)']];
+  return Array.from({length:M.n},(_,i)=>{ const a=i*M.size, b=a+M.size-1;
+    return [i,(modo==='trim'?'T'+(i+1)+' · ':'')+_ING_MES3[a]+'–'+_ING_MES3[b]]; });
+}
+function ingSetModo(modo){
+  if(!ING_MODOS[modo]) return;
+  const r=ingRango();
+  _ingPer.modo=modo;
+  // conservar el mes de referencia: el actual si es este año; si no, el inicio del rango previo
+  const h=new Date();
+  const ref = (_ingPer.anio===h.getFullYear()) ? h.getMonth() : r.m0;
+  _ingPer.idx=Math.floor(ref/ING_MODOS[modo].size);
+  _ingPerSave(); renderIngresos();
+}
+function ingSetAnio(v){ _ingPer.anio=parseInt(v)||new Date().getFullYear(); _ingPerSave(); renderIngresos(); }
+function ingSetIdx(v){ _ingPer.idx=parseInt(v)||0; _ingPerSave(); renderIngresos(); }
+function ingNav(d){
+  const M=ING_MODOS[_ingPer.modo];
+  let i=(_ingPer.idx|0)+d, a=_ingPer.anio;
+  if(i<0){ i=M.n-1; a--; } if(i>=M.n){ i=0; a++; }
+  _ingPer.idx=i; _ingPer.anio=a; _ingPerSave(); renderIngresos();
+}
+function ingHoy(){ const h=new Date(); _ingPer.anio=h.getFullYear(); _ingPer.idx=Math.floor(h.getMonth()/ING_MODOS[_ingPer.modo].size); _ingPerSave(); renderIngresos(); }
+Object.assign(window,{ingSetModo,ingSetAnio,ingSetIdx,ingNav,ingHoy,ingRango});
+
+/* ── Fechas clave de cada proyecto ── */
+const _COT_TERMINAL = e => e==='cobrado_total' || e==='completada';
+function _cotEsCotizado(c){ return (typeof normalizeEstado==='function' ? normalizeEstado(c) : (c.estado||'emitida'))==='emitida'; }
+/* Cuándo se captó (cliente aprobó). null si sigue como cotización */
+function cotFechaCaptacion(c){
+  if(!c || _cotEsCotizado(c)) return null;
+  if(c.captadoEn) return c.captadoEn;
+  const cands=[];
+  if(c.fechaInicioReal) cands.push(_ingToIso(c.fechaInicioReal));
+  Object.values(c.faseInicio||{}).forEach(f=>{ const i=_ingToIso(f); if(i) cands.push(i); });
+  (c.cobrosLog||[]).forEach(e=>{ const i=_ingToIso(e.fecha); if(i && +e.monto>0) cands.push(i); });
+  const v=cands.filter(Boolean).sort()[0];
+  return v || _ingToIso(c.fecha) || null;
+}
+/* Cuándo se terminó (cobrado total). null si no está terminado */
+function cotFechaTermino(c){
+  if(!c || !_COT_TERMINAL(c.estado)) return null;
+  if(c.terminadoEn) return c.terminadoEn;
+  const log=(c.cobrosLog||[]).map(e=>_ingToIso(e.fecha)).filter(Boolean).sort();
+  if(log.length) return log[log.length-1];
+  return _ingToIso(c.updatedAt) || _ingToIso(c.fecha) || null;
+}
+/* Vencimiento más antiguo de una fase atrasada (ISO) o null */
+function cotAtrasoDesde(c){
+  if(!c || c.archivado || _COT_TERMINAL(c.estado) || _cotEsCotizado(c)) return null;
+  const cds=[];
+  try{ if(typeof _colDeEstado==='function' && typeof _countdownFase==='function'){ const col=_colDeEstado(c.estado); if(col) cds.push(_countdownFase(c,col)); } }catch(e){}
+  try{ if(typeof _countdownFaseProp==='function' && c.pipe && Array.isArray(c.pipe.activas)) c.pipe.activas.forEach(fid=>cds.push(_countdownFaseProp(c,fid))); }catch(e){}
+  const hoy=new Date(); hoy.setHours(12,0,0,0);
+  const venc=cds.filter(cd=>cd && cd.nivel==='tarde').map(cd=>{ const d=new Date(hoy); d.setDate(d.getDate()+cd.restantes); return _ingIso(d); }).sort();
+  return venc[0]||null;
+}
+Object.assign(window,{cotFechaCaptacion,cotFechaTermino,cotAtrasoDesde});
+
+/* Se llama desde saveCots(): sella captadoEn / terminadoEn al cambiar de estado */
+function _cotHitosDiff(arr){
+  if(!Array.isArray(arr)) return;
+  let prev={};
+  try{ JSON.parse(localStorage.getItem('avit_cots')||'[]').forEach(c=>{ prev[c.id]=c; }); }catch(e){ return; }
+  const hoy=_ingIso(new Date());
+  arr.forEach(c=>{
+    if(!c || c.id==null) return;
+    const p=prev[c.id];
+    const cotizado=_cotEsCotizado(c), term=_COT_TERMINAL(c.estado);
+    if(!p){   // nueva (o duplicada)
+      delete c.captadoEn; delete c.terminadoEn;
+      if(!cotizado) c.captadoEn=_ingToIso(c.fecha)||hoy;
+      if(term) c.terminadoEn=_ingToIso(c.fecha)||hoy;
+      return;
+    }
+    const pCot=_cotEsCotizado(p), pTerm=_COT_TERMINAL(p.estado);
+    if(cotizado) delete c.captadoEn;
+    else if(!c.captadoEn) c.captadoEn = pCot ? hoy : (cotFechaCaptacion(p)||hoy);
+    if(!term) delete c.terminadoEn;
+    else if(!c.terminadoEn) c.terminadoEn = pTerm ? (cotFechaTermino(p)||hoy) : hoy;
+  });
+}
+window._cotHitosDiff=_cotHitosDiff;
+
+/* ── Cálculo de métricas del período ── */
+function ingMetricas(){
+  const r=ingRango();
+  const all=(typeof loadCots==='function'?loadCots():[]);
+  const vivos=all.filter(c=>!c.archivado);
+  const captados=vivos.filter(c=>_ingEn(cotFechaCaptacion(c),r));
+  const cotizados=all.filter(c=>_ingEn(_ingToIso(c.fecha),r));
+  const enCurso=vivos.filter(c=>!_cotEsCotizado(c) && !_COT_TERMINAL(c.estado));
+  const enCotizacion=vivos.filter(c=>_cotEsCotizado(c));
+  const terminados=vivos.filter(c=>_ingEn(cotFechaTermino(c),r));
+  const archivados=all.filter(c=>c.archivado && _ingEn(_ingToIso(c.archivadoEn),r));
+  const atrasados=vivos.map(c=>({c,v:cotAtrasoDesde(c)})).filter(x=>x.v && x.v<=r.hasta).map(x=>x.c);
+  // dinero
+  const contratado=captados.reduce((s,c)=>s+(+c.tot||0),0);
+  const utilidad=captados.reduce((s,c)=>s+(+c.util||0),0);
+  const porCobrar=captados.reduce((s,c)=>s+Math.max(0,(+c.tot||0)-(+c.cobrado||0)),0);
+  const carteraTotal=vivos.filter(c=>!_cotEsCotizado(c)).reduce((s,c)=>s+Math.max(0,(+c.tot||0)-(+c.cobrado||0)),0);
+  let cobros=[];
+  if(typeof admIngresosTodos==='function') cobros=admIngresosTodos().filter(x=>!x.manual && _ingEn(x.fecha,r));
+  const cobrado=cobros.reduce((s,x)=>s+(+x.monto||0),0);
+  // por mes dentro del rango
+  const meses=[];
+  for(let m=r.m0;m<=r.m1;m++){
+    const k=r.anio+'-'+String(m+1).padStart(2,'0');
+    const cm=captados.filter(c=>(cotFechaCaptacion(c)||'').slice(0,7)===k);
+    meses.push({mes:m, tot:cm.reduce((s,c)=>s+(+c.tot||0),0), util:cm.reduce((s,c)=>s+(+c.util||0),0),
+      f1:cm.reduce((s,c)=>s+(+c.f1||0),0), f2:cm.reduce((s,c)=>s+(+c.f2||0),0), n:cm.length,
+      cobrado:cobros.filter(x=>(x.fecha||'').slice(0,7)===k).reduce((s,x)=>s+(+x.monto||0),0)});
+  }
+  return {r, captados, cotizados, enCurso, enCotizacion, terminados, archivados, atrasados,
+          contratado, utilidad, porCobrar, carteraTotal, cobrado, nCobros:cobros.length, meses};
+}
+window.ingMetricas=ingMetricas;
+
+/* ── Render de la barra de período + KPIs + franja ── */
+function ingRenderMetricas(){
+  const cur=(typeof window.cur!=='undefined'&&window.cur)||'GTQ';
+  const F=n=>(typeof fmtCur==='function')?fmtCur(n,cur):('GTQ '+Math.round(n).toLocaleString('es-GT'));
+  // años disponibles
+  const cots=(typeof loadCots==='function'?loadCots():[]);
+  const ys=new Set([new Date().getFullYear(), _ingPer.anio]);
+  cots.forEach(c=>{ [_ingToIso(c.fecha), cotFechaCaptacion(c)].forEach(i=>{ if(i) ys.add(+i.slice(0,4)); }); });
+  const years=[...ys].filter(y=>y>1990&&y<2200).sort((a,b)=>b-a);
+  const yEl=document.getElementById('ing-year');
+  if(yEl) yEl.innerHTML=years.map(y=>`<option value="${y}"${y===_ingPer.anio?' selected':''}>${y}</option>`).join('');
+  document.querySelectorAll('#ing-modos [data-modo]').forEach(b=>b.classList.toggle('on', b.dataset.modo===_ingPer.modo));
+  const sEl=document.getElementById('ing-month');
+  if(sEl){
+    sEl.innerHTML=_ingSubOpts(_ingPer.modo).map(([v,l])=>`<option value="${v}"${v===(_ingPer.idx|0)?' selected':''}>${l}</option>`).join('');
+    sEl.style.display=_ingPer.modo==='anio'?'none':'';
+  }
+  const M=ingMetricas(); const r=M.r;
+  const lbl=document.getElementById('ing-per-label');
+  if(lbl) lbl.textContent=fmtFechaGT(r.desde)+' – '+fmtFechaGT(r.hasta);
+  const k=document.getElementById('ing-kpis');
+  if(k) k.innerHTML=`
+    <div class="metric"><p class="ml">Contratado · ${r.label}</p><p class="mv">${F(M.contratado)}</p><p class="ms">${M.captados.length} proyecto${M.captados.length!==1?'s':''} captado${M.captados.length!==1?'s':''}</p></div>
+    <div class="metric"><p class="ml">Cobrado en el período</p><p class="mv" style="color:#0F6E56">${F(M.cobrado)}</p><p class="ms">${M.nCobros} cobro${M.nCobros!==1?'s':''} registrado${M.nCobros!==1?'s':''}</p></div>
+    <div class="metric"><p class="ml">Por cobrar de lo contratado</p><p class="mv" style="color:#185FA5">${F(M.porCobrar)}</p><p class="ms">cartera total ${F(M.carteraTotal)}</p></div>
+    <div class="metric"><p class="ml">Utilidad estimada</p><p class="mv" style="color:#0F6E56">${F(M.utilidad)}</p><p class="ms">${M.contratado>0?Math.round(M.utilidad/M.contratado*100):0}% margen</p></div>`;
+  const nom=l=>l.slice(0,12).map(c=>'• '+(c.proyecto||'Proyecto')+(c.cliente?' — '+c.cliente:'')).join('\n')+(l.length>12?'\n…':'');
+  const chip=(ico,n,l,sub,cls,lista)=>`<div class="ing-chip ${cls||''}"${lista&&lista.length?` title="${(typeof escapeHtmlK==='function'?escapeHtmlK(nom(lista)):'')}"`:''}>
+      <span class="ing-chip-ico">${ico}</span><div class="ing-chip-tx"><b>${n}</b><span>${l}</span>${sub?`<i>${sub}</i>`:''}</div></div>`;
+  const s=document.getElementById('ing-strip');
+  if(s) s.innerHTML=
+      chip('🎯',M.captados.length,'Nuevos proyectos',`aprobados · ${M.cotizados.length} cotización${M.cotizados.length!==1?'es':''} emitida${M.cotizados.length!==1?'s':''}`,'',M.captados)
+    + chip('⚙️',M.enCurso.length,'En curso',`hoy · ${M.enCotizacion.length} en cotización`,'',M.enCurso)
+    + chip('✅',M.terminados.length,'Terminados','cobrados por completo','ok',M.terminados)
+    + chip('🗄',M.archivados.length,'Archivados','desestimados','mute',M.archivados)
+    + chip('⚠',M.atrasados.length,'Atrasados','con fase vencida',M.atrasados.length?'late':'',M.atrasados);
+  // Resumen compacto (solo se ve en móvil, con el bloque completo colapsado)
+  const perEl=document.getElementById('ing-msum-per');
+  if(perEl) perEl.textContent=r.label;
+  const valEl=document.getElementById('ing-msum-val');
+  if(valEl) valEl.textContent=`${F(M.contratado)} contratado · ${M.enCurso.length} en curso${M.atrasados.length?' · '+M.atrasados.length+' atrasado'+(M.atrasados.length!==1?'s':''):''}`;
+  return M;
+}
+window.ingRenderMetricas=ingRenderMetricas;
+
+/* Colapsar/expandir el bloque de métricas en móvil (en escritorio siempre está visible) */
+function ingToggleMetrics(){
+  const open = document.getElementById('ingMetrics').classList.toggle('open');
+  try{ localStorage.setItem('avit_ing_metrics_open', open?'1':'0'); }catch(e){}
+  const chev=document.getElementById('ingMsumChev'); if(chev) chev.textContent = open ? '▴' : '▾';
+}
+window.ingToggleMetrics=ingToggleMetrics;
+(function(){
+  let open=false;
+  try{ open = localStorage.getItem('avit_ing_metrics_open')==='1'; }catch(e){}
+  if(open) document.addEventListener('DOMContentLoaded',()=>{
+    const el=document.getElementById('ingMetrics'); if(el) el.classList.add('open');
+    const chev=document.getElementById('ingMsumChev'); if(chev) chev.textContent='▴';
+  });
+})();
+
 function renderIngresos(){
   const _cotsAll=loadCots();
   const cotsArchivadas=_cotsAll.filter(c=>c.archivado);
   const cots=_cotsAll.filter(c=>!c.archivado);   // los archivados no cuentan ni se listan aquí
-  const yearSel=document.getElementById('ing-year');
-  // populate years
-  const years=[...new Set(cots.map(c=>new Date(c.fecha).getFullYear()))];
-  const currentYear=new Date().getFullYear();
-  if(!years.includes(currentYear)) years.push(currentYear);
-  years.sort((a,b)=>b-a);
-  const selYear=parseInt(yearSel.value)||currentYear;
-  yearSel.innerHTML=years.map(y=>`<option value="${y}" ${y===selYear?'selected':''}>${y}</option>`).join('');
-
-  const yearCots=cots.filter(c=>new Date(c.fecha).getFullYear()===selYear);
-  const totalTot=yearCots.reduce((a,c)=>a+c.tot,0);
-  const totalCobrado=yearCots.reduce((a,c)=>a+c.cobrado,0);
-  const totalPendiente=totalTot-totalCobrado;
-  const totalUtil=yearCots.reduce((a,c)=>a+c.util,0);
-  const cur=yearCots.length>0?yearCots[yearCots.length-1].cur:'GTQ';
-
-  // KPIs
-  document.getElementById('ing-kpis').innerHTML=`
-    <div class="metric"><p class="ml">Facturado ${selYear}</p><p class="mv">${fmtCur(totalTot,cur)}</p><p class="ms">${yearCots.length} proyecto${yearCots.length!==1?'s':''}</p></div>
-    <div class="metric"><p class="ml">Ya cobrado</p><p class="mv" style="color:#0F6E56">${fmtCur(totalCobrado,cur)}</p></div>
-    <div class="metric"><p class="ml">Por cobrar</p><p class="mv" style="color:#185FA5">${fmtCur(totalPendiente,cur)}</p></div>
-    <div class="metric"><p class="ml">Utilidad estimada</p><p class="mv" style="color:#0F6E56">${fmtCur(totalUtil,cur)}</p><p class="ms">${totalTot>0?Math.round(totalUtil/totalTot*100):0}% margen</p></div>`;
-
-  // Monthly breakdown — respect month filter
-  const selMonth=document.getElementById('ing-month').value;
-  const byMonth=Array.from({length:12},(_,m)=>{
-    const mc=yearCots.filter(c=>new Date(c.fecha).getMonth()===m);
-    return{mes:m,cots:mc,tot:mc.reduce((a,c)=>a+c.tot,0),cobrado:mc.reduce((a,c)=>a+c.cobrado,0),util:mc.reduce((a,c)=>a+c.util,0),f1:mc.reduce((a,c)=>a+c.f1,0),f2:mc.reduce((a,c)=>a+c.f2,0)};
-  });
-  const maxTot=Math.max(...byMonth.map(m=>m.tot),1);
-  const activeMeses=selMonth==='all'?byMonth.filter(m=>m.tot>0):[byMonth[parseInt(selMonth)]].filter(m=>m&&m.tot>0);
-
+  // Métricas del período elegido (no filtran el listado)
+  const _M=ingRenderMetricas();
+  const cur=(typeof window.cur!=='undefined'&&window.cur)||'GTQ';
+  const _resLbl=document.getElementById('ing-res-lbl'); if(_resLbl) _resLbl.textContent='· '+_M.r.label;
+  const byMonth=_M.meses;
+  const maxTot=Math.max(...byMonth.map(m=>Math.max(m.tot,m.cobrado)),1);
+  const activeMeses=byMonth.filter(m=>m.tot>0||m.cobrado>0);
   if(!activeMeses.length){
-    document.getElementById('ing-mensual').innerHTML='<p class="empty" style="padding:.75rem 0">No hay cotizaciones registradas para '+selYear+'. Agrega una con el botón de arriba.</p>';
+    document.getElementById('ing-mensual').innerHTML='<p class="empty" style="padding:.75rem 0">Sin proyectos captados ni cobros en '+_M.r.label+'.</p>';
   } else {
     document.getElementById('ing-mensual').innerHTML=activeMeses.map(m=>`
       <div class="ing-mes-row">
         <div class="ing-mes-grid" style="display:grid;grid-template-columns:60px 1fr 1fr 1fr 1fr;gap:8px;align-items:center">
           <span style="font-size:12px;font-weight:500;color:var(--text)">${MESES[m.mes]}</span>
-          <div><p class="lbl" style="margin:0">Facturado</p><p style="font-size:13px;font-weight:500">${fmtCur(m.tot,cur)}</p></div>
+          <div><p class="lbl" style="margin:0">Contratado</p><p style="font-size:13px;font-weight:500">${fmtCur(m.tot,cur)}</p></div>
           <div><p class="lbl" style="margin:0">Cobrado</p><p style="font-size:13px;font-weight:500;color:#0F6E56">${fmtCur(m.cobrado,cur)}</p></div>
           <div class="hide-mobile"><p class="lbl" style="margin:0">Anteproyecto / Planimetría</p><p style="font-size:11px;color:var(--text-2)">${fmtCur(m.f1,cur)} <span style="color:var(--text-3)">/</span> ${fmtCur(m.f2,cur)}</p></div>
           <div><p class="lbl" style="margin:0">Utilidad</p><p style="font-size:12px;font-weight:500;color:#0F6E56">${fmtCur(m.util,cur)}</p></div>
         </div>
         <div class="ing-bar-track">
-          <div class="ing-bar-cobrado" style="width:${Math.round(m.cobrado/maxTot*100)}%"></div>
-          <div class="ing-bar-pendiente" style="width:${Math.round((m.tot-m.cobrado)/maxTot*100)}%"></div>
+          <div class="ing-bar-cobrado" style="width:${Math.round(Math.min(m.cobrado,maxTot)/maxTot*100)}%"></div>
+          <div class="ing-bar-pendiente" style="width:${Math.round(Math.max(0,m.tot-m.cobrado)/maxTot*100)}%"></div>
         </div>
       </div>`).join('');
   }
@@ -16088,14 +16357,14 @@ function renderIngresos(){
     return found?found.l:(c.estado||'—');
   }
   if(!cots.length){
-    document.getElementById('ing-lista').innerHTML='<p class="empty" style="padding:.75rem 0">Ninguna cotización registrada aún.</p>';
+    document.getElementById('ing-lista').innerHTML='<p class="empty" style="padding:.75rem 0">Todavía no hay proyectos registrados.</p>';
   } else {
     const activos = cots.filter(c => c.estado !== 'cobrado_total' && c.estado !== 'completada');
     const terminados = cots.filter(c => c.estado === 'cobrado_total' || c.estado === 'completada');
 
     // Lista de activos
     if(!activos.length){
-      document.getElementById('ing-lista').innerHTML='<p class="empty" style="padding:.75rem 0">No hay cotizaciones activas. Las terminadas aparecen abajo en 📁 Proyectos terminados.</p>';
+      document.getElementById('ing-lista').innerHTML='<p class="empty" style="padding:.75rem 0">No hay proyectos en curso. Los terminados aparecen abajo en 📁 Proyectos terminados.</p>';
     } else {
       document.getElementById('ing-lista').innerHTML=[...activos].reverse().map(c=>cardCot(c, false, getEstadoOpts, estadoAOpcion, estadoLabel)).join('');
     }
@@ -18525,7 +18794,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Fecha de inicio por defecto = hoy; la entrega se calcula sola desde los sprints.
   document.getElementById('projStart').value=fmtFechaGT(new Date().toISOString().split('T')[0]);
   window._projEndManual=false;
-  document.getElementById('ing-year').value=new Date().getFullYear();
   // Snapshot inicial de cantidades (antes de calc) para que la primera llamada
   // no dispare la sincronización con un delta artificial
   if(typeof inicializarPlanoQtyPrev === 'function') inicializarPlanoQtyPrev();
