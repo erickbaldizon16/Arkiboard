@@ -2070,7 +2070,7 @@ en claro debe ser oscuro (filter invert) */
 .kb-fase-cob em{font-style:normal;color:#6FD49A;font-family:var(--font-body)}
 .pm-sp.fase{background:rgba(224,112,152,0.16);color:#E07098;border:1px solid rgba(224,112,152,0.32)}
 /* ── Pipelines por fase (Kanban) ── */
-.kb-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;margin-bottom:4px;scrollbar-width:thin}
+.kb-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;margin-bottom:4px}
 .kb-tab{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border:1px solid var(--border-2);border-radius:20px;background:transparent;color:var(--text-2);font-size:11.5px;cursor:pointer;font-family:var(--font-body);white-space:nowrap;transition:all .15s}
 .kb-tab:hover{border-color:var(--border-accent);color:var(--text)}
 .kb-tab.vacia{color:var(--text-3)}
@@ -2683,6 +2683,23 @@ select:-webkit-autofill{
 /* ═══ PANEL DE LA EMPRESA ═══ */
 /* ── Layout del Panel de empresa: sidebar vertical + contenido ── */
 /* ── Administrador: menú vertical ── */
+/* ── Barras de desplazamiento minimalistas (siguen el color del tema) ── */
+@supports not selector(::-webkit-scrollbar){
+  html{scrollbar-width:thin;scrollbar-color:rgba(127,160,170,.28) transparent}
+  *{scrollbar-width:thin;scrollbar-color:rgba(127,160,170,.28) transparent}
+}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(127,160,170,.26);border-radius:999px;border:1px solid transparent;background-clip:padding-box;transition:background .2s}
+::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent) 60%,transparent);background-clip:padding-box}
+::-webkit-scrollbar-thumb:active{background:var(--accent);background-clip:padding-box}
+html::-webkit-scrollbar,body::-webkit-scrollbar{width:7px;height:7px;background:transparent}
+html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb{background:rgba(127,160,170,.26);border-radius:999px;border:1px solid transparent;background-clip:padding-box}
+html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--accent) 60%,transparent);background-clip:padding-box}
+.nav-tabs::-webkit-scrollbar{display:none}
+@media (max-width:720px){::-webkit-scrollbar{width:3px;height:3px}}
+
 /* ── Proyectos: período de métricas ── */
 .ing-per{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;margin-bottom:10px;border:1px solid var(--border-accent);border-radius:var(--r-lg);background:var(--accent-subtle,rgba(212,168,67,0.06))}
 .ing-per-l,.ing-per-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -3381,6 +3398,14 @@ code.emp-tag{font-family:var(--font-mono)}
           <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px">Sesión iniciada</div>
           <div id="userMenuEmail" style="font-family:var(--font-mono);font-size:11px;color:var(--text);overflow-wrap:anywhere">—</div>
           <div id="userMenuNombre" style="font-size:10.5px;color:var(--text-3);margin-top:2px"></div>
+        </div>
+        <!-- Selector de empresa activa (multi-empresa) -->
+        <div id="empresaSelectorWrap" style="display:none;padding:6px 10px 8px;border-bottom:1px solid rgba(128,128,128,0.12);margin-bottom:5px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Empresa activa</div>
+            <span id="userMenuRolBadge" style="display:none;font-size:9px;padding:2px 7px;border-radius:999px;background:var(--accent-subtle);color:var(--accent);font-weight:600"></span>
+          </div>
+          <select id="userMenuEmpresa" onchange="cambiarEmpresaActiva(this.value)" style="width:100%;padding:6px 9px;font-size:11.5px;min-height:auto"></select>
         </div>
         <!-- Empresa: ahora se edita en Estudio → Panel de la empresa -->
         <!-- Diseño de interfaz -->
@@ -12440,23 +12465,320 @@ window.setupNext = setupNext;
 
 
 /* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
-const _SYNC_KEYS=['avit_cots','avit_clients','avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_arkiworkers','avit_organigrama','avit_roles','avit_fases','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
-async function _pullDatos(){
+const _SYNC_KEYS=['avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_arkiworkers','avit_organigrama','avit_roles','avit_fases','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
+
+/* ── Multi-empresa: resolución de la empresa activa y mi rol ─
+   avit_cots / avit_clients ya NO viajan en el JSON de avit_data:
+   viven en las tablas reales (proyectos, clientes, proyecto_finanzas,
+   participaciones, hitos) y se sincronizan con _pullProyectos/_pushProyectos. */
+var _empresaActivaId = null;
+var _miRolActivo = null;
+var _miMiembroIdActivo = null;
+var _syncTimerProyectos = null;
+var _misEmpresas = []; // [{id, nombre, rol, miembroId}] — todas las empresas del usuario
+
+function _esUUID(s){ return typeof s==='string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s); }
+
+async function _resolverEmpresaActiva(){
+  if(!_sbConfigured() || !_sbUser) return null;
+  try{
+    const {data,error} = await _sb.from('miembros').select('id,empresa_id,rol').eq('user_id',_sbUser.id);
+    if(error || !data || !data.length) return null;
+    const empresaIds = [...new Set(data.map(m=>m.empresa_id))];
+    const {data:empresasRows} = await _sb.from('empresas').select('id,nombre').in('id',empresaIds);
+    const nombrePorEmpresa = {}; (empresasRows||[]).forEach(e=>{ nombrePorEmpresa[e.id]=e.nombre; });
+    _misEmpresas = data.map(m=>({ id:m.empresa_id, nombre:nombrePorEmpresa[m.empresa_id]||'Empresa', rol:m.rol, miembroId:m.id }));
+
+    const guardada = localStorage.getItem('avit_empresa_activa');
+    const elegido = data.find(m=>m.empresa_id===guardada) || data[0];
+    _empresaActivaId = elegido.empresa_id;
+    _miRolActivo = elegido.rol;
+    _miMiembroIdActivo = elegido.id;
+    try{ localStorage.setItem('avit_empresa_activa', _empresaActivaId); }catch(e){}
+    if(typeof _renderEmpresaSelector==='function') _renderEmpresaSelector();
+    return elegido;
+  }catch(e){ console.warn('[Arkiboard] resolverEmpresaActiva falló', e); return null; }
+}
+
+/* ── Selector de empresa (en la burbuja de usuario) ── */
+function _renderEmpresaSelector(){
+  const wrap = document.getElementById('empresaSelectorWrap');
+  const sel = document.getElementById('userMenuEmpresa');
+  const badge = document.getElementById('userMenuRolBadge');
+  if(!wrap || !sel) return;
+  if(!_misEmpresas.length){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  sel.innerHTML = _misEmpresas.map(e=>
+    `<option value="${e.id}"${e.id===_empresaActivaId?' selected':''}>${(e.nombre||'Empresa').replace(/</g,'&lt;')}</option>`
+  ).join('');
+  if(badge){
+    badge.textContent = _miRolActivo==='colaborador' ? 'Colaborador' : (_miRolActivo==='socio' ? 'Socio' : '');
+    badge.style.display = _miRolActivo ? 'inline-block' : 'none';
+  }
+}
+async function cambiarEmpresaActiva(id){
+  if(!id || id===_empresaActivaId) return;
+  try{ localStorage.setItem('avit_empresa_activa', id); }catch(e){}
+  const ss=document.getElementById('syncStatus');
+  if(ss){ ss.textContent='☁ cambiando de empresa…'; }
+  location.reload();
+}
+window._renderEmpresaSelector = _renderEmpresaSelector;
+window.cambiarEmpresaActiva = cambiarEmpresaActiva;
+
+/* Campos "de plata" del cotizador — se guardan en proyecto_finanzas.detalle,
+   NUNCA en proyectos.detalle (que un colaborador también puede leer). */
+const _CAMPOS_FINANCIEROS = ['f1','f2','f3','f3Tot','oh','iva','sub','tot','util','antic','mid','saldo','cobrado','cur',
+  'colab','colabs','colNombre3D','colNombreRend','colNombrePlanos','fasesCot','fasesCobrado','timbres'];
+/* Campos propios del objeto cot que no se guardan dentro de ningún detalle
+   (viven como columnas reales o se reconstruyen al vuelo). */
+const _CAMPOS_PROPIOS = ['id','proyecto','cliente','clienteId','estado','updatedAt','_participaciones','_hitos'];
+
+function _detalleProyecto(c){
+  const out={};
+  Object.keys(c).forEach(k=>{
+    if(_CAMPOS_PROPIOS.includes(k) || _CAMPOS_FINANCIEROS.includes(k)) return;
+    out[k]=c[k];
+  });
+  return out;
+}
+function _detalleFinanzas(c){
+  const out={};
+  _CAMPOS_FINANCIEROS.forEach(k=>{ if(c[k]!==undefined) out[k]=c[k]; });
+  return out;
+}
+
+/* ── Snapshot de ids conocidos en la nube (sirve para detectar borrados) ── */
+const _IDS_CONOCIDOS_KEY = '_arkiboard_ids_conocidos';
+function _idsConocidos(){
+  try{ return JSON.parse(localStorage.getItem(_IDS_CONOCIDOS_KEY)||'null') || {proyectos:[],clientes:[],participaciones:[]}; }
+  catch(e){ return {proyectos:[],clientes:[],participaciones:[]}; }
+}
+function _guardarIdsConocidos(snap){
+  try{ localStorage.setItem(_IDS_CONOCIDOS_KEY, JSON.stringify(snap)); }catch(e){}
+}
+
+/* ── Lectura: reconstruye avit_cots / avit_clients desde las tablas reales ── */
+async function _pullProyectos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
-    const {data,error}=await _sb.from('avit_data').select('payload').eq('user_id',_sbUser.id).maybeSingle();
-    if(error || !data || !data.payload) return;
-    const pl=data.payload;
-    /* Traer datos de la nube no es una acción del usuario: no debe
-       generar un paso de deshacer ni descartar el historial. */
+    const miembro = await _resolverEmpresaActiva();
+    if(!miembro){ console.log('[Arkiboard] sin empresa activa todavía'); return; }
+    const eid = _empresaActivaId;
+    const soyColaborador = _miRolActivo === 'colaborador';
+
+    let proyectos=[], clientesRows=[], finanzasRows=[], participRows=[], hitosRows=[], miembrosRows=[];
+
+    if(soyColaborador){
+      const {data:part} = await _sb.from('participaciones').select('*').eq('miembro_id', _miMiembroIdActivo);
+      participRows = part||[];
+      const pids = [...new Set(participRows.map(x=>x.proyecto_id))];
+      if(pids.length){
+        const {data:pr} = await _sb.from('proyectos').select('*').in('id',pids);
+        proyectos = pr||[];
+        const {data:h} = await _sb.from('hitos').select('*').in('proyecto_id',pids);
+        hitosRows = h||[];
+      }
+    } else {
+      const [{data:pr},{data:cl},{data:fin},{data:part},{data:h},{data:mi}] = await Promise.all([
+        _sb.from('proyectos').select('*').eq('empresa_id',eid),
+        _sb.from('clientes').select('*').eq('empresa_id',eid),
+        _sb.from('proyecto_finanzas').select('*').eq('empresa_id',eid),
+        _sb.from('participaciones').select('*').eq('empresa_id',eid),
+        _sb.from('hitos').select('*').eq('empresa_id',eid),
+        _sb.from('miembros').select('id,user_id').eq('empresa_id',eid)
+      ]);
+      proyectos=pr||[]; clientesRows=cl||[]; finanzasRows=fin||[]; participRows=part||[]; hitosRows=h||[]; miembrosRows=mi||[];
+    }
+
+    let nombrePorMiembroId = {};
+    if(miembrosRows.length){
+      const userIds = miembrosRows.map(m=>m.user_id);
+      const {data:perfiles} = await _sb.from('perfiles').select('id,nombre').in('id',userIds);
+      const nombrePorUser = {}; (perfiles||[]).forEach(p=>{ nombrePorUser[p.id]=p.nombre; });
+      miembrosRows.forEach(m=>{ nombrePorMiembroId[m.id] = nombrePorUser[m.user_id] || 'Socio'; });
+    }
+
+    const clienteNombrePorId = {}; clientesRows.forEach(c=>{ clienteNombrePorId[c.id]=c.nombre; });
+    const finanzasPorProyecto = {}; finanzasRows.forEach(f=>{ finanzasPorProyecto[f.proyecto_id]=f; });
+    const participPorProyecto = {}; participRows.forEach(x=>{ (participPorProyecto[x.proyecto_id]=participPorProyecto[x.proyecto_id]||[]).push(x); });
+    const hitosPorProyecto = {}; hitosRows.forEach(h=>{ (hitosPorProyecto[h.proyecto_id]=hitosPorProyecto[h.proyecto_id]||[]).push(h); });
+
+    /* Guardar qué ids existen hoy en la nube — así _pushProyectos sabe
+       qué se borró localmente y tiene que borrarse también allá. */
+    if(!soyColaborador){
+      _guardarIdsConocidos({
+        proyectos: proyectos.map(p=>p.id),
+        clientes: clientesRows.map(c=>c.id),
+        participaciones: participRows.map(x=>x.id)
+      });
+    }
+
+    const cots = proyectos.map(p=>{
+      const base = Object.assign({}, p.detalle||{});
+      base.id = p.id;
+      base.proyecto = p.nombre;
+      base.estado = base.estado || p.fase || '';
+      base.updatedAt = base.updatedAt || Date.parse(p.created_at) || Date.now();
+      base._hitos = (hitosPorProyecto[p.id]||[]).map(h=>({id:h.id,titulo:h.titulo,tipo:h.tipo,fecha:h.fecha,estado:h.estado}));
+
+      if(soyColaborador){
+        base.cliente=''; base.clienteId=null;
+        base._participaciones = (participPorProyecto[p.id]||[])
+          .filter(x=>x.miembro_id===_miMiembroIdActivo)
+          .map(x=>({id:x.id,tarea:x.tarea,monto:x.monto,estado:x.estado,instrucciones:x.instrucciones,link:x.material_url}));
+      } else {
+        base.cliente = clienteNombrePorId[p.cliente_id] || base.cliente || '';
+        base.clienteId = p.cliente_id;
+        const fin = finanzasPorProyecto[p.id];
+        if(fin){
+          Object.assign(base, fin.detalle||{});
+          base.tot = fin.honorario||0;
+          base.cobrado = fin.cobrado||0;
+          base.colab = fin.costos||0;
+        }
+        base._participaciones = (participPorProyecto[p.id]||[]).map(x=>({
+          id:x.id, tarea:x.tarea, monto:x.monto, estado:x.estado,
+          instrucciones:x.instrucciones, link:x.material_url,
+          quien: x.nombre_externo || nombrePorMiembroId[x.miembro_id] || 'Sin asignar',
+          miembroId:x.miembro_id
+        }));
+      }
+      return base;
+    });
+
     const _prev=(typeof _undoBusy!=='undefined')?_undoBusy:false;
     try{
       if(typeof _undoBusy!=='undefined') _undoBusy=true;
-      _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
+      localStorage.setItem('avit_cots', JSON.stringify(cots));
+      if(!soyColaborador){
+        const clientesOut = clientesRows.map(c=>({
+          id:c.id, nombre:c.nombre, empresa:'', nit:c.nit||'', tel:c.telefono||'', email:c.email||'',
+          captacion:'', notas:c.notas||'', creadoEn:Date.parse(c.created_at)||Date.now()
+        }));
+        localStorage.setItem('avit_clients', JSON.stringify(clientesOut));
+      }
     } finally {
       if(typeof _undoBusy!=='undefined') _undoBusy=_prev;
       if(typeof _undoBase!=='undefined' && typeof _undoSnap==='function') _undoBase=_undoSnap();
     }
+    console.log('[Arkiboard] Proyectos sincronizados desde la nube ('+cots.length+')');
+  }catch(e){ console.warn('[Arkiboard] pull proyectos falló', e); }
+}
+
+/* ── Escritura: empuja avit_cots / avit_clients a las tablas reales ──
+   Crea, actualiza Y borra (diffing contra el snapshot de ids conocidos
+   guardado en el último _pullProyectos), y crea participaciones nuevas
+   automáticamente cuando aparecen localmente. */
+async function _pushProyectos(){
+  if(!_sbConfigured() || !_sbUser || !_empresaActivaId || _miRolActivo!=='socio') return;
+  const eid = _empresaActivaId;
+  try{
+    const cots = loadCots();
+    const clientesLocal = cliLoad();
+
+    /* Borrados: cualquier id que estaba en el snapshot de la nube pero ya
+       no aparece localmente se borra también en Supabase. */
+    const conocidos = _idsConocidos();
+    const idsProyectoLocal = new Set(cots.map(c=>c.id).filter(_esUUID));
+    const idsClienteLocal = new Set(clientesLocal.map(c=>c.id).filter(_esUUID));
+    const idsParticipLocal = new Set(cots.flatMap(c=>(c._participaciones||[]).map(p=>p.id)).filter(_esUUID));
+
+    const proyectosBorrados = (conocidos.proyectos||[]).filter(id=>!idsProyectoLocal.has(id));
+    const clientesBorrados = (conocidos.clientes||[]).filter(id=>!idsClienteLocal.has(id));
+    const participBorradas = (conocidos.participaciones||[]).filter(id=>!idsParticipLocal.has(id));
+
+    if(participBorradas.length) await _sb.from('participaciones').delete().in('id', participBorradas);
+    if(proyectosBorrados.length) await _sb.from('proyectos').delete().in('id', proyectosBorrados);
+    if(clientesBorrados.length) await _sb.from('clientes').delete().in('id', clientesBorrados);
+
+    for(const cli of clientesLocal){
+      if(!_esUUID(cli.id)){
+        const {data,error} = await _sb.from('clientes').insert({
+          empresa_id:eid, nombre:cli.nombre||'Sin nombre', nit:cli.nit||null,
+          telefono:cli.tel||null, email:cli.email||null, notas:cli.notas||null
+        }).select('id').single();
+        if(!error && data) cli.id = data.id;
+      } else {
+        await _sb.from('clientes').update({
+          nombre:cli.nombre||'Sin nombre', nit:cli.nit||null, telefono:cli.tel||null,
+          email:cli.email||null, notas:cli.notas||null
+        }).eq('id', cli.id);
+      }
+    }
+    cliSave(clientesLocal);
+    const clienteIdPorNombre = {}; clientesLocal.forEach(c=>{ clienteIdPorNombre[c.nombre]=c.id; });
+
+    for(const c of cots){
+      const clienteId = _esUUID(c.clienteId) ? c.clienteId : (clienteIdPorNombre[c.cliente] || null);
+      const detalleP = _detalleProyecto(c);
+      const detalleF = _detalleFinanzas(c);
+
+      let pid = c.id;
+      if(!_esUUID(pid)){
+        const {data,error} = await _sb.from('proyectos').insert({
+          empresa_id:eid, cliente_id:clienteId, nombre:c.proyecto||'Sin nombre',
+          fase:c.estado||null, detalle:detalleP
+        }).select('id').single();
+        if(error||!data){ console.warn('[Arkiboard] no se pudo crear proyecto', c.proyecto, error); continue; }
+        pid = data.id; c.id = pid;
+      } else {
+        await _sb.from('proyectos').update({
+          cliente_id:clienteId, nombre:c.proyecto||'Sin nombre', fase:c.estado||null, detalle:detalleP
+        }).eq('id', pid);
+      }
+
+      await _sb.from('proyecto_finanzas').upsert({
+        proyecto_id:pid, empresa_id:eid,
+        honorario:c.tot||0, cobrado:c.cobrado||0, costos:c.colab||0, detalle:detalleF
+      });
+
+      const partis = c._participaciones || [];
+      for(const pt of partis){
+        if(_esUUID(pt.id)){
+          await _sb.from('participaciones').update({
+            tarea:pt.tarea||'', monto:pt.monto||0, estado:pt.estado||'pendiente',
+            instrucciones:pt.instrucciones||null, material_url:pt.link||null
+          }).eq('id', pt.id);
+        } else {
+          const miembroId = _esUUID(pt.miembroId) ? pt.miembroId : null;
+          const nombreExterno = miembroId ? null : (pt.quien || pt.nombreExterno || null);
+          if(!miembroId && !nombreExterno) continue; // falta "quien" para la participación
+          const {data,error} = await _sb.from('participaciones').insert({
+            empresa_id:eid, proyecto_id:pid,
+            miembro_id:miembroId, nombre_externo:nombreExterno,
+            tarea:pt.tarea||'', monto:pt.monto||0, estado:pt.estado||'pendiente',
+            instrucciones:pt.instrucciones||null, material_url:pt.link||null
+          }).select('id').single();
+          if(!error && data) pt.id = data.id;
+          else console.warn('[Arkiboard] no se pudo crear participación', pt, error);
+        }
+      }
+    }
+    saveCots(cots);
+    const ss=document.getElementById('syncStatus');
+    if(ss){ss.textContent='☁ guardado';setTimeout(()=>{if(ss.textContent==='☁ guardado')ss.textContent='';},1500);}
+  }catch(e){ console.warn('[Arkiboard] push proyectos falló', e); }
+}
+
+async function _pullDatos(){
+  if(!_sbConfigured() || !_sbUser) return;
+  try{
+    const {data,error}=await _sb.from('avit_data').select('payload').eq('user_id',_sbUser.id).maybeSingle();
+    if(!error && data && data.payload){
+      const pl=data.payload;
+      /* Traer datos de la nube no es una acción del usuario: no debe
+         generar un paso de deshacer ni descartar el historial. */
+      const _prev=(typeof _undoBusy!=='undefined')?_undoBusy:false;
+      try{
+        if(typeof _undoBusy!=='undefined') _undoBusy=true;
+        _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
+      } finally {
+        if(typeof _undoBusy!=='undefined') _undoBusy=_prev;
+        if(typeof _undoBase!=='undefined' && typeof _undoSnap==='function') _undoBase=_undoSnap();
+      }
+    }
+    await _pullProyectos();
     console.log('[Arkiboard] Datos sincronizados desde la nube');
   }catch(e){ console.warn('[Arkiboard] pull falló', e); }
 }
@@ -12479,6 +12801,10 @@ function _instalarAutoSync(){
     if(_SYNC_KEYS.includes(k) && _sbUser){
       clearTimeout(_syncTimer);
       _syncTimer=setTimeout(_pushDatos, 2500);   // debounce 2.5s
+    }
+    if((k==='avit_cots'||k==='avit_clients') && _sbUser && _miRolActivo==='socio'){
+      clearTimeout(_syncTimerProyectos);
+      _syncTimerProyectos=setTimeout(_pushProyectos, 2500);   // debounce 2.5s
     }
   };
 }
