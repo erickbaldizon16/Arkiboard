@@ -3321,6 +3321,9 @@ code.emp-tag{font-family:var(--font-mono)}
     <button class="ntab" data-page="ing" onclick="showPage('ing')">Proyectos</button>
     <button class="ntab" data-page="est" onclick="showPage('est')">Kanban</button>
     <button class="ntab" data-page="pm" onclick="showPage('pm')">PM</button>
+    <!-- Pestañas propias de Arkiteam (colaborador) — ocultas por defecto, _aplicarGatingVersion las muestra -->
+    <button class="ntab" data-page="misproy" onclick="renderMisProyectos();showPage('misproy')" style="display:none">Mis proyectos</button>
+    <button class="ntab" data-page="mispagos" onclick="renderMisPagos();showPage('mispagos')" style="display:none">Mis pagos</button>
     <!-- Studio dropdown -->
     <div style="position:relative" id="studioMenuWrap">
       <button onclick="toggleStudioMenu()" id="studioMenuBtn"
@@ -3405,7 +3408,7 @@ code.emp-tag{font-family:var(--font-mono)}
             <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Cuenta activa en</div>
             <span id="userMenuRolBadge" style="display:none;font-size:9px;padding:2px 7px;border-radius:999px;background:var(--accent-subtle);color:var(--accent);font-weight:600"></span>
           </div>
-          <select id="userMenuEmpresa" onchange="cambiarEmpresaActiva(this.value)" style="width:100%;padding:6px 9px;font-size:11.5px;min-height:auto"></select>
+          <select id="cuentaActivaSelect" onchange="cambiarEmpresaActiva(this.value)" style="width:100%;padding:6px 9px;font-size:11.5px;min-height:auto"></select>
         </div>
         <!-- Empresa: ahora se edita en Estudio → Panel de la empresa -->
         <!-- Diseño de interfaz -->
@@ -5099,6 +5102,21 @@ code.emp-tag{font-family:var(--font-mono)}
 
 </div><!-- /pg-home -->
 
+<!-- ═══════════════════════════════════════════════ PÁGINA: MIS PROYECTOS (Arkiteam) -->
+<div class="page" id="pg-misproy">
+  <h1 style="font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--text);letter-spacing:-0.01em;margin:0 0 4px">Mis proyectos</h1>
+  <p style="font-size:12px;color:var(--text-3);margin:0 0 18px">Tus sprints, fechas de entrega y revisiones — sin datos de cliente ni financieros.</p>
+  <div id="misproy-body"></div>
+</div>
+<!-- /pg-misproy -->
+
+<!-- ═══════════════════════════════════════════════ PÁGINA: MIS PAGOS (Arkiteam) -->
+<div class="page" id="pg-mispagos">
+  <h1 style="font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--text);letter-spacing:-0.01em;margin:0 0 4px">Mis pagos</h1>
+  <p style="font-size:12px;color:var(--text-3);margin:0 0 18px">Lo que te corresponde por tarea — pendiente y pagado.</p>
+  <div id="mispagos-body"></div>
+</div>
+<!-- /pg-mispagos -->
 
 <!-- ═══════════════════════════════════════════════ PÁGINA: INGRESOS -->
 <div class="page" id="pg-ing">
@@ -11414,6 +11432,8 @@ function toggleUserMenu(){
   const open = menu.style.display==='none' || !menu.style.display;
   if(open){
     aplicarPerfilUI();
+    if(typeof _renderEmpresaSelector==='function') _renderEmpresaSelector();
+    if(typeof _aplicarGatingVersion==='function') _aplicarGatingVersion();
     const r = btn.getBoundingClientRect();
     menu.style.display='block';
     const mw = menu.offsetWidth||240;
@@ -12552,7 +12572,7 @@ async function _resolverEmpresaActiva(){
    una opción por cada empresa de la que es miembro. */
 function _renderEmpresaSelector(){
   const wrap = document.getElementById('empresaSelectorWrap');
-  const sel = document.getElementById('userMenuEmpresa');
+  const sel = document.getElementById('cuentaActivaSelect');
   const badge = document.getElementById('userMenuRolBadge');
   if(!wrap || !sel) return;
   wrap.style.display='block';
@@ -12563,8 +12583,11 @@ function _renderEmpresaSelector(){
     `<option value="${o.id}"${o.id===activoId?' selected':''}>${(o.nombre||'').replace(/</g,'&lt;')} · ${o.version}</option>`
   ).join('');
   if(badge){
-    badge.textContent = _miVersionActiva || '';
-    badge.style.display = _miVersionActiva ? 'inline-block' : 'none';
+    // Siempre hay una versión (Arkiworker como piso) — nunca debe quedar en blanco.
+    badge.textContent = _miVersionActiva || 'Arkiworker';
+    badge.style.display = 'inline-block';
+    badge.style.background = 'var(--accent-subtle, rgba(0,229,255,0.14))';
+    badge.style.color = 'var(--accent, #00E5FF)';
   }
 }
 async function cambiarEmpresaActiva(id){
@@ -12575,23 +12598,260 @@ async function cambiarEmpresaActiva(id){
   if(ss){ ss.textContent='☁ cambiando de cuenta…'; }
   location.reload();
 }
-/* ── Gating por versión: Panel de la empresa y Administrador solo en Arkipro ── */
+/* ── Gating por versión ──
+   Arkipro: todo habilitado.
+   Arkiteam: solo sus propias pestañas "Mis proyectos"/"Mis pagos" — nada
+     de gestión completa (Proyectos/Kanban/PM/menú Estudio), nunca ve
+     cliente ni cifras financieras (eso ya viene filtrado desde _pullProyectos).
+   Arkiworker: dashboard completo salvo Panel de la empresa y Administrador
+     (son funciones de empresa; en modo personal no aplican). */
+/* Marca/desmarca un botón como "bloqueado por plan": lo deja clickeable
+   (nunca pointer-events:none) pero opacado, y la primera vez que se marca
+   reemplaza su onclick original por un interceptor que, mientras esté
+   bloqueado, muestra el modal de upsell en vez de navegar. Al desbloquearlo
+   (cambiar de versión) se restaura el comportamiento normal. */
+function _gatearBoton(el, bloqueado){
+  if(!el) return;
+  if(!el._origOnclick){
+    el._origOnclick = el.onclick;
+    el.onclick = function(ev){
+      if(el.dataset.bloqueado === '1'){
+        if(ev){ ev.preventDefault(); ev.stopPropagation(); }
+        _mostrarUpsellArkipro();
+        return false;
+      }
+      return el._origOnclick ? el._origOnclick.call(el, ev) : undefined;
+    };
+  }
+  el.dataset.bloqueado = bloqueado ? '1' : '0';
+  el.style.opacity = bloqueado ? '0.42' : '';
+  el.style.cursor = bloqueado ? 'not-allowed' : '';
+  if(bloqueado) el.title = 'Disponible en Arkipro';
+  else el.removeAttribute('title');
+}
+
+/* ── Gating por versión ──
+   Arkipro: todo habilitado.
+   Arkiteam: solo sus propias pestañas "Mis proyectos"/"Mis pagos" — el resto
+     (Proyectos/Kanban/PM/menú Estudio) se ve opacado y ofrece upsell, nunca
+     cliente ni cifras financieras (eso ya viene filtrado desde _pullProyectos).
+   Arkiworker: dashboard completo salvo Panel de la empresa y Administrador,
+     opacados con el mismo upsell (son funciones de empresa). */
 function _aplicarGatingVersion(){
-  const permitido = _miVersionActiva === 'Arkipro';
+  const esArkipro = _miVersionActiva === 'Arkipro';
+  const esArkiteam = _miVersionActiva === 'Arkiteam';
+
+  // Panel de la empresa / Administrador: solo Arkipro.
   ['empresa','admin'].forEach(pagina=>{
     document.querySelectorAll('[data-page="'+pagina+'"]').forEach(el=>{
-      el.style.display = permitido ? '' : 'none';
+      _gatearBoton(el, !esArkipro);
     });
   });
+
+  // Gestión completa (Proyectos/Kanban/PM) + menú Estudio entero: bloqueada para Arkiteam.
+  ['ing','est','pm'].forEach(pagina=>{
+    document.querySelectorAll('.ntab[data-page="'+pagina+'"]').forEach(el=>{
+      _gatearBoton(el, esArkiteam);
+    });
+  });
+  const studioBtn = document.getElementById('studioMenuBtn');
+  _gatearBoton(studioBtn, esArkiteam);
+
+  // Pestañas propias del colaborador: solo Arkiteam (estas sí se ocultan —
+  // no son un "mejorá tu plan", simplemente no aplican a las otras versiones).
+  ['misproy','mispagos'].forEach(pagina=>{
+    document.querySelectorAll('.ntab[data-page="'+pagina+'"]').forEach(el=>{
+      el.style.display = esArkiteam ? '' : 'none';
+    });
+  });
+
+  // Si quedó activa una página que esta versión ya no puede ver, volver a Inicio.
+  const pagActiva = document.querySelector('.page.active');
+  if(pagActiva){
+    const idActivo = pagActiva.id.replace(/^pg-/,'');
+    const prohibida = esArkiteam
+      ? ['ing','est','pm','empresa','clientes','admin','marketing','catalogo','calc']
+      : (esArkipro ? [] : ['empresa','admin']);
+    if(prohibida.includes(idActivo) && typeof showPage==='function') showPage('home');
+  }
 }
+
+/* ── Modal de upsell: se muestra cuando se intenta usar una función de Arkipro ──
+   ⚠ Los dos enlaces son placeholders — decime a dónde deben apuntar
+   (WhatsApp, mailto, una página de planes) y los actualizo. */
+var ARKIPRO_SUSCRIBIRSE_URL = 'mailto:hola@avitestudio.com?subject=Quiero%20suscribirme%20a%20Arkipro';
+var ARKIPRO_INFO_URL = null; // null = expande el texto del propio modal en vez de linkear afuera
+function _mostrarUpsellArkipro(){
+  document.getElementById('upsellArkiproModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = 'upsellArkiproModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.onclick = e => { if(e.target === modal) modal.remove(); };
+  modal.innerHTML = `
+    <div style="background:var(--bg-surface-2,#1a1b1e);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:26px 28px;width:100%;max-width:420px;font-family:var(--font-body);text-align:center" onclick="event.stopPropagation()">
+      <div style="font-size:30px;margin-bottom:10px">🔒</div>
+      <div style="font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px">Función de Arkipro</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6;margin-bottom:6px" id="upsellArkiproTexto">
+        Esta función (gestión completa de proyectos, clientes y finanzas) está disponible solo en cuentas <b>Arkipro</b>.
+        Tu versión actual es <b>${_escHtml(_miVersionActiva||'Arkiworker')}</b>.
+      </div>
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <button onclick="_upsellMasInfo()" style="flex:1;padding:9px 14px;font-size:11px;border:0.5px solid var(--border-2);border-radius:var(--r-md);background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Más información</button>
+        <button onclick="_upsellSuscribirse()" style="flex:1;padding:9px 14px;font-size:11px;border:1px solid var(--accent);border-radius:var(--r-md);background:var(--accent);color:var(--text-on-accent);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase">Suscribirse</button>
+      </div>
+      <button onclick="document.getElementById('upsellArkiproModal').remove()" style="margin-top:12px;background:transparent;border:0;color:var(--text-3);font-size:11px;cursor:pointer;text-decoration:underline">Cerrar</button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+function _upsellMasInfo(){
+  if(ARKIPRO_INFO_URL){ window.open(ARKIPRO_INFO_URL,'_blank'); return; }
+  const t = document.getElementById('upsellArkiproTexto');
+  if(t) t.innerHTML += '<br><br>Arkipro habilita el Panel de la empresa, el Administrador (ingresos, pagos a colaboradores, boletas) y la gestión completa de Proyectos/Kanban/PM para todo tu equipo. Arkiworker y Arkiteam son gratuitas; Arkipro es la cuenta de pago para estudios.';
+}
+function _upsellSuscribirse(){
+  window.open(ARKIPRO_SUSCRIBIRSE_URL, '_blank');
+}
+window._mostrarUpsellArkipro = _mostrarUpsellArkipro;
+window._upsellMasInfo = _upsellMasInfo;
+window._upsellSuscribirse = _upsellSuscribirse;
 window._renderEmpresaSelector = _renderEmpresaSelector;
 window.cambiarEmpresaActiva = cambiarEmpresaActiva;
 window._aplicarGatingVersion = _aplicarGatingVersion;
 
+/* ── Vistas de Arkiteam: "Mis proyectos" (sprint/hitos) y "Mis pagos" ──
+   Leen avit_cots tal cual lo deja _pullProyectos para un colaborador:
+   cliente/clienteId vacíos, _participaciones ya filtradas a las propias,
+   sin ningún campo financiero del proyecto (tot/cobrado/colab/etc). */
+function _escHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function _misProyectosData(){
+  const cots = (typeof loadCots==='function' ? loadCots() : []).filter(c=>!c.archivado);
+  return cots.map(c=>({
+    proyecto: c.proyecto || 'Sin nombre',
+    estado: c.estado || '',
+    hitos: (c._hitos||[]).slice().sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||'')),
+    participaciones: c._participaciones || []
+  }));
+}
+function renderMisProyectos(){
+  const box = document.getElementById('misproy-body');
+  if(!box) return;
+  const datos = _misProyectosData();
+  if(!datos.length){
+    box.innerHTML = '<div class="sc" style="text-align:center;color:var(--text-3);padding:2rem">Todavía no tenés proyectos asignados.</div>';
+    return;
+  }
+  const hoy = new Date().toISOString().slice(0,10);
+  let proxima = null;
+  datos.forEach(d=>{
+    d.hitos.forEach(h=>{
+      if(h.estado!=='hecho' && h.fecha && h.fecha>=hoy && (!proxima || h.fecha<proxima.fecha)){
+        proxima = Object.assign({proyecto:d.proyecto}, h);
+      }
+    });
+  });
+
+  let html = '';
+  if(proxima){
+    html += `<div class="sc" style="border-color:var(--border-accent);margin-bottom:14px">
+      <div style="font-family:var(--font-display);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">⏰ Próxima entrega</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text)">${_escHtml(proxima.titulo||'Sin título')}</div>
+      <div style="font-size:12px;color:var(--text-3);margin-top:3px">${_escHtml(proxima.proyecto)} · ${typeof fmtDate==='function'?fmtDate(proxima.fecha):_escHtml(proxima.fecha)}</div>
+    </div>`;
+  }
+
+  html += datos.map(d=>{
+    const hitosHtml = d.hitos.length ? d.hitos.map(h=>{
+      const hecho = h.estado==='hecho';
+      const icono = h.tipo==='revision' ? '🔍' : (h.tipo==='entrega' ? '📦' : '🏁');
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(128,128,128,0.08)">
+        <span style="font-size:15px">${icono}</span>
+        <div style="flex:1">
+          <div style="font-size:12.5px;font-weight:500;color:var(--text)${hecho?';text-decoration:line-through;opacity:.55':''}">${_escHtml(h.titulo||'Hito')}</div>
+          <div style="font-size:10.5px;color:var(--text-3)">${h.fecha ? (typeof fmtDate==='function'?fmtDate(h.fecha):_escHtml(h.fecha)) : 'Sin fecha'}</div>
+        </div>
+        <span style="font-size:9px;padding:3px 8px;border-radius:999px;${hecho?'background:var(--green-lt);color:var(--green)':'background:var(--accent-subtle,rgba(0,229,255,0.12));color:var(--accent)'}">${hecho?'Hecho':'Pendiente'}</span>
+      </div>`;
+    }).join('') : '<div style="font-size:11.5px;color:var(--text-3);padding:8px 0">Sin hitos todavía.</div>';
+
+    return `<div class="sc" style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--text)">${_escHtml(d.proyecto)}</span>
+        <span style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em">${_escHtml(d.estado)}</span>
+      </div>
+      ${hitosHtml}
+    </div>`;
+  }).join('');
+
+  box.innerHTML = html;
+}
+function _misPagosData(){
+  const cots = (typeof loadCots==='function' ? loadCots() : []).filter(c=>!c.archivado);
+  const filas = [];
+  cots.forEach(c=>{
+    (c._participaciones||[]).forEach(p=>{
+      filas.push({
+        proyecto: c.proyecto || 'Sin nombre', tarea: p.tarea || 'Tarea',
+        monto: +p.monto||0, estado: p.estado || 'pendiente',
+        instrucciones: p.instrucciones || '', link: p.link || ''
+      });
+    });
+  });
+  return filas;
+}
+function renderMisPagos(){
+  const box = document.getElementById('mispagos-body');
+  if(!box) return;
+  const filas = _misPagosData();
+  const pendiente = filas.filter(f=>f.estado!=='pagado').reduce((s,f)=>s+f.monto,0);
+  const pagado = filas.filter(f=>f.estado==='pagado').reduce((s,f)=>s+f.monto,0);
+  const fmt = typeof _admF==='function' ? _admF : (n=>'GTQ '+Math.round(n||0).toLocaleString('es-GT'));
+
+  let html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+    <div class="sc" style="text-align:center">
+      <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Pendiente de cobro</div>
+      <div style="font-size:20px;font-weight:700;color:var(--accent)">${fmt(pendiente)}</div>
+    </div>
+    <div class="sc" style="text-align:center">
+      <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Ya pagado</div>
+      <div style="font-size:20px;font-weight:700;color:var(--green)">${fmt(pagado)}</div>
+    </div>
+  </div>`;
+
+  if(!filas.length){
+    html += '<div class="sc" style="text-align:center;color:var(--text-3);padding:2rem">Todavía no tenés tareas asignadas con pago.</div>';
+  } else {
+    html += filas.map(f=>{
+      const pagada = f.estado==='pagado';
+      return `<div class="sc" style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text)">${_escHtml(f.tarea)}</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px">${_escHtml(f.proyecto)}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:15px;font-weight:700;color:var(--text)">${fmt(f.monto)}</div>
+            <span style="font-size:9px;padding:2px 8px;border-radius:999px;${pagada?'background:var(--green-lt);color:var(--green)':'background:var(--accent-subtle,rgba(0,229,255,0.12));color:var(--accent)'}">${pagada?'Pagado':'Pendiente'}</span>
+          </div>
+        </div>
+        ${f.instrucciones ? `<div style="font-size:11.5px;color:var(--text-2);margin-top:8px;line-height:1.5">${_escHtml(f.instrucciones)}</div>` : ''}
+        ${f.link ? `<a href="${_escHtml(f.link)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:11px;color:var(--accent);text-decoration:underline">📎 Ver material de entrega</a>` : ''}
+      </div>`;
+    }).join('');
+  }
+  box.innerHTML = html;
+}
+window.renderMisProyectos = renderMisProyectos;
+window.renderMisPagos = renderMisPagos;
+
 /* Campos "de plata" del cotizador — se guardan en proyecto_finanzas.detalle,
    NUNCA en proyectos.detalle (que un colaborador también puede leer). */
 const _CAMPOS_FINANCIEROS = ['f1','f2','f3','f3Tot','oh','iva','sub','tot','util','antic','mid','saldo','cobrado','cur',
-  'colab','colabs','colNombre3D','colNombreRend','colNombrePlanos','fasesCot','fasesCobrado','timbres'];
+  'colab','colabs','colNombre3D','colNombreRend','colNombrePlanos','fasesCot','fasesCobrado','timbres',
+  /* Modelo viejo de % y monto por colaborador (ver _cotColaboradoresDesglose) — sin esto
+     se filtraban a proyectos.detalle, visible para cualquier colaborador asignado. */
+  'p3D','c3D','pRd','cRd','pPl','cPl'];
 /* Campos propios del objeto cot que no se guardan dentro de ningún detalle
    (viven como columnas reales o se reconstruyen al vuelo). */
 const _CAMPOS_PROPIOS = ['id','proyecto','cliente','clienteId','estado','updatedAt','_participaciones','_hitos'];
@@ -12794,6 +13054,20 @@ async function _pushProyectos(){
         proyecto_id:pid, empresa_id:eid,
         honorario:c.tot||0, cobrado:c.cobrado||0, costos:c.colab||0, detalle:detalleF
       });
+
+      /* Si la cotización todavía no tiene _participaciones propias (es el caso
+         de TODA cotización creada desde el Cotizador normal, que solo llena
+         colabs/colNombre3D/etc — el modelo viejo de % por fase), las derivamos
+         de ahí para que de verdad lleguen a la tabla participaciones y el
+         colaborador las vea en "Mis proyectos"/"Mis pagos". Se escriben de
+         vuelta en c._participaciones (con el id real ya asignado) para no
+         re-derivarlas ni duplicarlas en el siguiente push. */
+      if((!c._participaciones || !c._participaciones.length) && typeof _cotColaboradoresDesglose==='function'){
+        const derivadas = _cotColaboradoresDesglose(c)
+          .filter(co=>co.nombre && co.monto)
+          .map(co=>({ tarea:co.tarea||'Colaboración', monto:co.monto, estado:'pendiente', instrucciones:null, link:null, quien:(co.nombre||'').trim() }));
+        if(derivadas.length) c._participaciones = derivadas;
+      }
 
       const partis = c._participaciones || [];
       for(const pt of partis){
