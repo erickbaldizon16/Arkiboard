@@ -3402,7 +3402,7 @@ code.emp-tag{font-family:var(--font-mono)}
         <!-- Selector de empresa activa (multi-empresa) -->
         <div id="empresaSelectorWrap" style="display:none;padding:6px 10px 8px;border-bottom:1px solid rgba(128,128,128,0.12);margin-bottom:5px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-            <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Empresa activa</div>
+            <div style="font-family:var(--font-display);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3)">Cuenta activa en</div>
             <span id="userMenuRolBadge" style="display:none;font-size:9px;padding:2px 7px;border-radius:999px;background:var(--accent-subtle);color:var(--accent);font-weight:600"></span>
           </div>
           <select id="userMenuEmpresa" onchange="cambiarEmpresaActiva(this.value)" style="width:100%;padding:6px 9px;font-size:11.5px;min-height:auto"></select>
@@ -12466,65 +12466,127 @@ window.setupNext = setupNext;
 
 /* ── SYNC de datos con Supabase (tabla avit_data) ──────────── */
 const _SYNC_KEYS=['avit_admin','avit_sched','avit_estrategias','avit_catalogo','avit_arkiworkers','avit_organigrama','avit_roles','avit_fases','avit_recibos','avit_sprint_tracker','avit_perfil','avit_calc_draft','avit_calc','avit_artifacts'];
+const _ID_CUENTA_PERSONAL = '__personal__';
+/* En modo personal (Arkiworker) avit_cots/avit_clients SÍ viajan en el JSON
+   de avit_data (son la base de datos personal del usuario, de nadie más).
+   En una empresa (Arkipro/Arkiteam) viven en las tablas reales y se
+   sincronizan aparte con _pullProyectos/_pushProyectos — por eso se excluyen
+   de aquí en ese caso, para no sincronizar el mismo dato por dos caminos. */
+function _modoPersonalGuardado(){
+  const v = localStorage.getItem('avit_empresa_activa');
+  return !v || v === _ID_CUENTA_PERSONAL;
+}
+function _syncKeysActivas(){
+  return _modoPersonalGuardado() ? _SYNC_KEYS.concat(['avit_cots','avit_clients']) : _SYNC_KEYS;
+}
 
-/* ── Multi-empresa: resolución de la empresa activa y mi rol ─
-   avit_cots / avit_clients ya NO viajan en el JSON de avit_data:
-   viven en las tablas reales (proyectos, clientes, proyecto_finanzas,
-   participaciones, hitos) y se sincronizan con _pullProyectos/_pushProyectos. */
+/* ── Multi-cuenta: resolución de la cuenta activa (Arkiworker / Arkiteam / Arkipro) ─
+   Arkiworker: cuenta personal, por defecto al crear la cuenta. Sin empresa_id,
+     datos propios en avit_data (nunca compartidos). Panel de empresa y
+     Administrador deshabilitados (_aplicarGatingVersion).
+   Arkiteam: colaborador dentro de una empresa — gratis, solo ve lo suyo.
+   Arkipro: socio dentro de una empresa — todas las funciones habilitadas. */
 var _empresaActivaId = null;
 var _miRolActivo = null;
 var _miMiembroIdActivo = null;
+var _miVersionActiva = 'Arkiworker';
 var _syncTimerProyectos = null;
-var _misEmpresas = []; // [{id, nombre, rol, miembroId}] — todas las empresas del usuario
+var _misEmpresas = []; // [{id, nombre, rol, miembroId, version}] — empresas donde soy miembro
 
 function _esUUID(s){ return typeof s==='string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s); }
+function _versionPorRol(rol){ return rol==='socio' ? 'Arkipro' : 'Arkiteam'; }
 
 async function _resolverEmpresaActiva(){
   if(!_sbConfigured() || !_sbUser) return null;
   try{
     const {data,error} = await _sb.from('miembros').select('id,empresa_id,rol').eq('user_id',_sbUser.id);
-    if(error || !data || !data.length) return null;
-    const empresaIds = [...new Set(data.map(m=>m.empresa_id))];
-    const {data:empresasRows} = await _sb.from('empresas').select('id,nombre').in('id',empresaIds);
-    const nombrePorEmpresa = {}; (empresasRows||[]).forEach(e=>{ nombrePorEmpresa[e.id]=e.nombre; });
-    _misEmpresas = data.map(m=>({ id:m.empresa_id, nombre:nombrePorEmpresa[m.empresa_id]||'Empresa', rol:m.rol, miembroId:m.id }));
+    const miembros = (!error && data) ? data : [];
+
+    let nombrePorEmpresa = {};
+    if(miembros.length){
+      const empresaIds = [...new Set(miembros.map(m=>m.empresa_id))];
+      const {data:empresasRows} = await _sb.from('empresas').select('id,nombre').in('id',empresaIds);
+      (empresasRows||[]).forEach(e=>{ nombrePorEmpresa[e.id]=e.nombre; });
+    }
+    _misEmpresas = miembros.map(m=>({
+      id:m.empresa_id, nombre:nombrePorEmpresa[m.empresa_id]||'Empresa',
+      rol:m.rol, miembroId:m.id, version:_versionPorRol(m.rol)
+    }));
 
     const guardada = localStorage.getItem('avit_empresa_activa');
-    const elegido = data.find(m=>m.empresa_id===guardada) || data[0];
-    _empresaActivaId = elegido.empresa_id;
-    _miRolActivo = elegido.rol;
-    _miMiembroIdActivo = elegido.id;
-    try{ localStorage.setItem('avit_empresa_activa', _empresaActivaId); }catch(e){}
+    const elegido = guardada ? miembros.find(m=>m.empresa_id===guardada) : null;
+
+    if(elegido){
+      _empresaActivaId = elegido.empresa_id;
+      _miRolActivo = elegido.rol;
+      _miMiembroIdActivo = elegido.id;
+      _miVersionActiva = _versionPorRol(elegido.rol);
+    } else if(!guardada && miembros.length){
+      /* Primera vez que resolvemos y ya es miembro de alguna empresa: se
+         queda en la primera (compatibilidad con cuentas ya existentes). */
+      const primera = miembros[0];
+      _empresaActivaId = primera.empresa_id;
+      _miRolActivo = primera.rol;
+      _miMiembroIdActivo = primera.id;
+      _miVersionActiva = _versionPorRol(primera.rol);
+      try{ localStorage.setItem('avit_empresa_activa', _empresaActivaId); }catch(e){}
+    } else {
+      /* Modo personal (Arkiworker): sin cuenta guardada y sin empresas,
+         o la cuenta guardada es explícitamente la personal, o apuntaba
+         a una empresa de la que ya no es miembro. */
+      _empresaActivaId = null;
+      _miRolActivo = null;
+      _miMiembroIdActivo = null;
+      _miVersionActiva = 'Arkiworker';
+      try{ localStorage.setItem('avit_empresa_activa', _ID_CUENTA_PERSONAL); }catch(e){}
+    }
+
     if(typeof _renderEmpresaSelector==='function') _renderEmpresaSelector();
-    return elegido;
+    if(typeof _aplicarGatingVersion==='function') _aplicarGatingVersion();
+    return elegido || null;
   }catch(e){ console.warn('[Arkiboard] resolverEmpresaActiva falló', e); return null; }
 }
 
-/* ── Selector de empresa (en la burbuja de usuario) ── */
+/* ── Selector de cuenta activa (en la burbuja de usuario) ──
+   Siempre incluye "Arkiworker (personal)" — toda cuenta la tiene — más
+   una opción por cada empresa de la que es miembro. */
 function _renderEmpresaSelector(){
   const wrap = document.getElementById('empresaSelectorWrap');
   const sel = document.getElementById('userMenuEmpresa');
   const badge = document.getElementById('userMenuRolBadge');
   if(!wrap || !sel) return;
-  if(!_misEmpresas.length){ wrap.style.display='none'; return; }
   wrap.style.display='block';
-  sel.innerHTML = _misEmpresas.map(e=>
-    `<option value="${e.id}"${e.id===_empresaActivaId?' selected':''}>${(e.nombre||'Empresa').replace(/</g,'&lt;')}</option>`
+  const opciones = [{id:_ID_CUENTA_PERSONAL, nombre:'Arkiworker (personal)', version:'Arkiworker'}]
+    .concat(_misEmpresas.map(e=>({id:e.id, nombre:e.nombre, version:e.version})));
+  const activoId = _empresaActivaId || _ID_CUENTA_PERSONAL;
+  sel.innerHTML = opciones.map(o=>
+    `<option value="${o.id}"${o.id===activoId?' selected':''}>${(o.nombre||'').replace(/</g,'&lt;')} · ${o.version}</option>`
   ).join('');
   if(badge){
-    badge.textContent = _miRolActivo==='colaborador' ? 'Colaborador' : (_miRolActivo==='socio' ? 'Socio' : '');
-    badge.style.display = _miRolActivo ? 'inline-block' : 'none';
+    badge.textContent = _miVersionActiva || '';
+    badge.style.display = _miVersionActiva ? 'inline-block' : 'none';
   }
 }
 async function cambiarEmpresaActiva(id){
-  if(!id || id===_empresaActivaId) return;
+  const actual = _empresaActivaId || _ID_CUENTA_PERSONAL;
+  if(!id || id===actual) return;
   try{ localStorage.setItem('avit_empresa_activa', id); }catch(e){}
   const ss=document.getElementById('syncStatus');
-  if(ss){ ss.textContent='☁ cambiando de empresa…'; }
+  if(ss){ ss.textContent='☁ cambiando de cuenta…'; }
   location.reload();
+}
+/* ── Gating por versión: Panel de la empresa y Administrador solo en Arkipro ── */
+function _aplicarGatingVersion(){
+  const permitido = _miVersionActiva === 'Arkipro';
+  ['empresa','admin'].forEach(pagina=>{
+    document.querySelectorAll('[data-page="'+pagina+'"]').forEach(el=>{
+      el.style.display = permitido ? '' : 'none';
+    });
+  });
 }
 window._renderEmpresaSelector = _renderEmpresaSelector;
 window.cambiarEmpresaActiva = cambiarEmpresaActiva;
+window._aplicarGatingVersion = _aplicarGatingVersion;
 
 /* Campos "de plata" del cotizador — se guardan en proyecto_finanzas.detalle,
    NUNCA en proyectos.detalle (que un colaborador también puede leer). */
@@ -12563,7 +12625,7 @@ async function _pullProyectos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
     const miembro = await _resolverEmpresaActiva();
-    if(!miembro){ console.log('[Arkiboard] sin empresa activa todavía'); return; }
+    if(!miembro){ console.log('[Arkiboard] modo personal (Arkiworker) o sin empresa activa — nada que traer de proyectos/clientes compartidos'); return; }
     const eid = _empresaActivaId;
     const soyColaborador = _miRolActivo === 'colaborador';
 
@@ -12772,7 +12834,7 @@ async function _pullDatos(){
       const _prev=(typeof _undoBusy!=='undefined')?_undoBusy:false;
       try{
         if(typeof _undoBusy!=='undefined') _undoBusy=true;
-        _SYNC_KEYS.forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
+        _syncKeysActivas().forEach(k=>{ if(pl[k]!=null) localStorage.setItem(k, typeof pl[k]==='string'?pl[k]:JSON.stringify(pl[k])); });
       } finally {
         if(typeof _undoBusy!=='undefined') _undoBusy=_prev;
         if(typeof _undoBase!=='undefined' && typeof _undoSnap==='function') _undoBase=_undoSnap();
@@ -12786,7 +12848,7 @@ async function _pushDatos(){
   if(!_sbConfigured() || !_sbUser) return;
   try{
     const payload={};
-    _SYNC_KEYS.forEach(k=>{ const v=localStorage.getItem(k); if(v!=null) payload[k]=v; });
+    _syncKeysActivas().forEach(k=>{ const v=localStorage.getItem(k); if(v!=null) payload[k]=v; });
     await _sb.from('avit_data').upsert({user_id:_sbUser.id, payload, updated_at:new Date().toISOString()});
     const ss=document.getElementById('syncStatus');
     if(ss){ss.textContent='☁ guardado';setTimeout(()=>{if(ss.textContent==='☁ guardado')ss.textContent='';},1500);}
@@ -12798,13 +12860,13 @@ function _instalarAutoSync(){
   const orig=localStorage.setItem.bind(localStorage);
   localStorage.setItem=function(k,v){
     orig(k,v);
-    if(_SYNC_KEYS.includes(k) && _sbUser){
+    if(_syncKeysActivas().includes(k) && _sbUser){
       clearTimeout(_syncTimer);
-      _syncTimer=setTimeout(_pushDatos, 2500);   // debounce 2.5s
+      _syncTimer=setTimeout(_pushDatos, 2500);   // debounce 2.5s — incluye avit_cots/avit_clients en modo personal
     }
     if((k==='avit_cots'||k==='avit_clients') && _sbUser && _miRolActivo==='socio'){
       clearTimeout(_syncTimerProyectos);
-      _syncTimerProyectos=setTimeout(_pushProyectos, 2500);   // debounce 2.5s
+      _syncTimerProyectos=setTimeout(_pushProyectos, 2500);   // debounce 2.5s — solo en Arkipro (empresa real)
     }
   };
 }
